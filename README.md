@@ -1,8 +1,10 @@
-# YOUR PROJECT NAME
+# Settlers of Catan (by team Toyota Camry)
 
 ## Contributors
-- PERSON
-- PERSON
+- Anthony Alvarez
+- Breanna Lu
+- Hayley McCormack
+- Xavier Khan
 
 ## Dependencies
 - JDK 11
