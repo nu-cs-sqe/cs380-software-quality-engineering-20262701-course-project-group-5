@@ -3,7 +3,7 @@
 1. [done] Anthony: Add contributors to README ([links to pr](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/4)
 2. [done] Breanna: build badge to readme ([Links to pr](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/5))
 3. [done] Anthony: Github actions ([Links to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/1))
-4. [can't do ] everyone I suppose: Add branch protection rules
+4. [done] Breanna: add branch protection rules
 
 # Week 4 (10/19/2026-10/25/2026)
 **Planning and Progress Tracking**:
