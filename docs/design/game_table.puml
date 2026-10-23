@@ -107,6 +107,7 @@ GameTable --> GamePlayer
 GameTable --> GameBoard
 GameTable --> Card
 GameTable --> Dice
+GameTable --> Observer
 
 GamePlayer --> PlayerHand
 GamePlayer --> Piece
