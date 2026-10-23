@@ -1,0 +1,11 @@
+.label {
+    -fx-text-fill: #972C24;
+}
+
+.root-pane
+{
+    -fx-background-image: url("/assets/Catan_Background.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 700 500;
+    -fx-background-position: center center;
+}

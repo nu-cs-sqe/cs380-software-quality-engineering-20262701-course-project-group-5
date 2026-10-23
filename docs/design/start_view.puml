@@ -1,0 +1,43 @@
+@startuml
+
+package ui.view {
+    +class StartView {
+    ' need to change to fit Catan
+        -titleExploding: Text
+        -titleKittens: Text
+        -subTitleCardGame: Text
+        -subLine1: Text
+        -subLine2: Text
+        -startGameButton: Button
+        -settingsButton: Button
+        +StartView()
+        -createTitle() -> VBox
+        -createDescription() -> VBox
+        -createButtons() -> VBox
+    }
+
+}
+
+package javafx {
+
+    +class StackPane {
+    }
+
+    +class VBox {
+    }
+
+    +class Text {
+    }
+
+    +class Button {
+    }
+
+}
+
+' named JavaFX UI classes
+StartView --|> StackPane
+StartView --> VBox
+StartView --> Text
+StartView --> Button
+
+@enduml
