@@ -18,6 +18,15 @@ class PlayerSetUpView {
 
 }
 
+class PlayerSetUpController {
+
+    -players: List<Player>
+    -view: PlayerSetUpView
+
+    +PlayerSetUpController(): void
+    +nextPlayer(): void
+}
+
 
 
 enum Color {
@@ -25,5 +34,7 @@ enum Color {
 
 
 PlayerSetUpView ..|> Color
+PlayerSetUpController ..|> Player
+PlayerSetUpController ..|> PlayerSetUpView
 
 @enduml
