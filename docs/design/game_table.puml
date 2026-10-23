@@ -61,6 +61,9 @@ package domain {
     +class Road {
     }
 
+    +class Robber {
+    }
+
     +class Harbor {
     }
 
@@ -115,6 +118,7 @@ ResourceOwner ..> ResourceType
 
 GameBoard --> Hex
 
+Hex --> Piece
 Hex --> VertexPoint
 Hex --> Edge
 Hex --> ResourceType
@@ -125,10 +129,13 @@ Edge --> Harbor
 Harbor --> ResourceType
 
 PlayerHand --> Card
+PlayerHand ..> ResourceCard
+PlayerHand ..> DevelopmentCard
 
 Settlement <|-- Piece
 City <|-- Piece
 Road <|-- Piece
+Robber <|-- Piece
 
 Piece --> ResourceOwner
 Piece ..> ResourceType
