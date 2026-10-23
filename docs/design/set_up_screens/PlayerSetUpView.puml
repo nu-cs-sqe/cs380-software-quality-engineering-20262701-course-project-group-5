@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class PlayerSetUpView {
+
+    -nameBox: TextField
+    -readyButton: Button
+    -final COLORS: List<Color>
+    -usedColors: List<Color>
+    -background: javafx.scene.image.Image
+
+    -validateName(name: String): boolean
+    -validateColor(colorSelection: Color): boolean
+    +PlayerSetUpView(backgroundPhoto: javafx.scene.image.Image)
+    ' should be available to the
+    +nextPlayer(): void
+    +validate(): boolean
+
+}
+
+class PlayerSetUpController {
+
+    -players: List<Player>
+    -view: PlayerSetUpView
+
+    +PlayerSetUpController(): void
+    +nextPlayer(): void
+}
+
+
+
+enum Color {
+}
+
+
+PlayerSetUpView ..|> Color
+PlayerSetUpController ..|> Player
+PlayerSetUpController ..|> PlayerSetUpView
+
+@enduml
