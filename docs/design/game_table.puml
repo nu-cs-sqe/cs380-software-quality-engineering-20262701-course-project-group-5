@@ -133,10 +133,10 @@ PlayerHand --> Card
 PlayerHand ..> ResourceCard
 PlayerHand ..> DevelopmentCard
 
-Settlement <|-- Piece
-City <|-- Piece
-Road <|-- Piece
-Robber <|-- Piece
+Settlement --|> Piece
+City --|> Piece
+Road --|> Piece
+Robber --|> Piece
 
 Piece --> ResourceOwner
 Piece ..> ResourceType
