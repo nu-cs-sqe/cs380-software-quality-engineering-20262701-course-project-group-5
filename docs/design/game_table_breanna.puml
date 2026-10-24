@@ -121,6 +121,14 @@ package domain {
         DESERT
     }
 
+    enum BuildType {
+        ROAD
+        SETTLEMENT
+        CITY
+        +getCost() : Map<ResourceType, int>
+        +getMaxPieces() : int
+    }
+
     class DevelopmentCard {
         -boughtThisTurn : boolean
         -played : boolean
@@ -167,6 +175,27 @@ package domain {
         +isFree() : boolean
         +getRoad() : Road
         +getEndpoints() : List<VertexPoint>
+    }
+
+    class BuildManager {
+        +getValidSettlementSpots(player : GamePlayer, phase : GamePhase) : List<VertexPoint>
+        +getValidCitySpots(player : GamePlayer) : List<VertexPoint>
+        +getValidRoadSpots(player : GamePlayer, phase : GamePhase) : List<Edge>
+        'build
+        +buildSettlement(player : GamePlayer, vertex : VertexPoint, phase : GamePhase) : void
+        +buildCity(player : GamePlayer, vertex : VertexPoint) : void
+        +buildRoad(player : GamePlayer, edge : Edge, phase : GamePhase) : void
+        'checks for validity, ties to highlighting
+        -isValidSettlementSpot(player : GamePlayer, vertex : VertexPoint, phase : GamePhase) : boolean
+        -isValidCitySpot(player : GamePlayer, vertex : VertexPoint) : boolean
+        -isValidRoadSpot(player : GamePlayer, edge : Edge, phase : GamePhase) : boolean
+        -isFarEnoughFromBuildings(vertex : VertexPoint) : boolean
+        -isVertexConnectedToOwnRoad(player : GamePlayer, vertex : VertexPoint) : boolean
+        -isEdgeConnectedToOwnPieces(player : GamePlayer, edge : Edge) : boolean
+        -touchesSetupSettlement(player : GamePlayer, edge : Edge) : boolean
+        -hasPiecesLeft(player : GamePlayer, type : BuildType) : boolean
+        'updates player resources
+        -charge(player : GamePlayer, type : BuildType) : void
     }
 
     class Harbor {
