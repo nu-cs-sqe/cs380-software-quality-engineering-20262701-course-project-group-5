@@ -1,7 +1,7 @@
 @startuml
 
 +interface Observer {
-    +update() -> void
+    +update() : void
 }
 
 +enum Color {
@@ -28,15 +28,15 @@ package domain {
     }
 
     +interface ResourceInventory {
-        +addResources(ResourceStack) -> void
-        +hasResources(ResourceStack) -> boolean
-        +removeResources(ResourceStack) -> void
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
     }
 
     +interface PieceInventory {
-        +addPiece(Piece) -> void
-        +hasPiece(Piece) -> boolean
-        +removePiece(Piece) -> void
+        +addPiece(piece : Piece) : void
+        +hasPiece(piece : Piece) : boolean
+        +removePiece(piece : Piece) : void
     }
 
 package player {
@@ -52,10 +52,17 @@ package player {
 package board {
 
     +class GameBoard {
+        -vertices : Set<Vertex>
+        -edges : Set<Edge>
+        -hexes : Set<Hex>
     }
 
     +abstract class Hex {
-        +produceResources() -> void
+        -{final} tokenValue : int
+        -vertices : Set<Vertex>
+        -canProduce : boolean
+        -pieces : List<Piece>
+        +produceResources() : void
     }
 
     +class HillsHex {
@@ -79,11 +86,26 @@ package board {
     +class OceanHex {
     }
 
-    +class VertexPoint {
-        +produceResources(List<ResourceStack>) -> void
+    +abstract class Location {
+        -pieces : List<Piece>
+        +getPieceData() : List<PieceData>
+        +addPiece(piece : Piece)) : void
+        +removePieceWithData(data : PieceData) : void
+    }
+
+    +class Vertex {
+        -point : Point
+        +produceResources(stacks : List<ResourceStack>) -> void
     }
 
     +class Edge {
+        -endpoints : Set<Point>
+        +getEndpoints : Pair<Point, Point>
+    }
+
+    +class Point {
+        +{final} x : int
+        +{final} y : int
     }
 
 }
@@ -91,7 +113,12 @@ package board {
 package piece {
 
     +abstract class Piece {
-        +produceResources(List<ResourceStack>) -> void
+        +produceResources(stacks : List<ResourceStack>) -> void
+    }
+
+    +class PieceData {
+        +{final} type : String
+        +{final} color : Color
     }
 
     +class Settlement {
@@ -112,20 +139,24 @@ package piece {
 }
 
     +interface Buyable {
-        +getCost() -> List<ResourceStack>
-        +onBoughtEffect() -> void
+        +getCost() : List<ResourceStack>
+        +onBoughtEffect() : void
     }
 
     +class Dice {
     }
 
     +interface Playable {
-        +onPlayEffect() -> void
+        +onPlayEffect() : void
     }
 
 package resource {
 
     +abstract class ResourceStack {
+        -amount : int
+        +increase(amount : int) : void
+        +size() : int
+        +decrease(amount : int) : void
     }
 
     +class BrickResourceStack {
@@ -190,12 +221,15 @@ GamePlayer ..> ResourceStack
 ResourceInventory ..> ResourceStack
 
 GameBoard --> Hex
-GameBoard --> VertexPoint
+GameBoard --> Vertex
 GameBoard --> Edge
 
 Hex --> Piece
-Hex --> VertexPoint
+Hex --> Vertex
 Hex --> Edge
+
+Edge --> Vertex
+Edge ..> PieceData
 
 Hex --> ResourceStack
 HillsHex --|> Hex
@@ -206,9 +240,13 @@ PastureHex --|> Hex
 DesertHex --|> Hex
 OceanHex --|> Hex
 
-VertexPoint --> Piece
+Vertex --> Piece
+Vertex --> Point
+Vertex --|> Location
 Edge --> Piece
-Edge --> Harbor
+Edge --> Point
+Edge --|> Location
+
 Harbor --> ResourceStack
 
 PlayerInventory ..|> ResourceInventory
@@ -226,6 +264,7 @@ City ..|> Buyable
 Road --|> Piece
 Road ..|> Buyable
 Robber --|> Piece
+Harbor --|> Piece
 
 BrickResourceStack --|> ResourceStack
 LumberResourceStack --|> ResourceStack
@@ -236,6 +275,9 @@ WoolResourceStack --|> ResourceStack
 Piece --> ResourceInventory
 Piece ..> ResourceStack
 Piece --> Color
+Piece --> PieceData
+
+PieceData --> Color
 
 Development ..|> Playable
 Development ..|> Buyable
