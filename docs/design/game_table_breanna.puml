@@ -96,6 +96,8 @@ package domain {
     class GamePlayer {
         -name : String
         -color : Color
+        -lastPlacedSettlement : Settlement
+        +countPieces(type : BuildType) : int
         +addResources(ResourceType, int) : void
         +getVictoryPoints() : int
     }
@@ -107,6 +109,7 @@ package domain {
 
     class PlayerHand {
         -resourceCounts : Map<ResourceType, int>
+        +canAfford(type : BuildType) : boolean
         +addResources(ResourceType, int) : void
         +removeResources(ResourceType, int) : void
         +count(ResourceType) : int
