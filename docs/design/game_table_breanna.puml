@@ -60,7 +60,25 @@ package domain {
     class TradeOffer {
         -offered : Map<ResourceType, int>
         -requested : Map<ResourceType, int>
-        +accept() : void
+    }
+
+    class TradeManager {
+        -playerWants : Map<GamePlayer, List<TradeOffer>>
+        -pendingRequests : List<TradeRequest>
+        +announceWants(offer : TradeOffer, owner : GamePlayer) : void
+        +revokeWants(offer : TradeOffer, owner : GamePlayer) : void
+        +peekTradeOffers() : Map<GamePlayer, List<TradeOffer>>
+        +tradeOffersOfResourceType(resource : ResourceType) : Map<GamePlayer, List<TradeOffer>>
+        +requestOffer(requester : GamePlayer, owner : GamePlayer, offer : TradeOffer) : void
+        +finalizeTrade(request : TradeRequest) : void
+        +rejectTrade(request : TradeRequest) : void
+        -validateTrade(request : TradeRequest) : boolean
+    }
+
+    class TradeRequest {
+        -requester : GamePlayer
+        -owner : GamePlayer
+        -offer : TradeOffer
     }
 
     interface ResourceOwner {
@@ -190,7 +208,16 @@ GameTable --> Dice
 GameTable --> GamePhase
 GameTable --> LongestRoadPlaque
 GameTable --> LargestArmyPlaque
-GameTable --> TradeOffer
+'GameTable --> TradeOffer
+
+GameTable --> TradeManager
+TradeManager --> TradeOffer
+TradeManager --> TradeRequest
+TradeManager --> GamePlayer
+TradeManager ..> ResourceType
+TradeManager ..> PlayerHand
+TradeRequest --> TradeOffer
+TradeRequest --> GamePlayer
 
 GamePlayer ..|> ResourceOwner
 Bank ..|> ResourceOwner
@@ -208,7 +235,7 @@ Bank ..> ResourceType
 
 DevelopmentCard --> DevelopmentCardType
 
-TradeOffer --> GamePlayer
+'TradeOffer --> GamePlayer
 TradeOffer ..> ResourceType
 
 Plaque --> GamePlayer
