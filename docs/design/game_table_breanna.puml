@@ -1,5 +1,5 @@
 @startuml
-title Catan - Revised Class Design
+title Catan - Class Design v2 (Breanna)
 
 package common {
 
