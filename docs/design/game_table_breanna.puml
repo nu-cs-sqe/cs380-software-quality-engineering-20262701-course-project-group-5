@@ -63,14 +63,9 @@ package domain {
     }
 
     class TradeManager {
-        -playerWants : Map<GamePlayer, List<TradeOffer>>
-        -pendingRequests : List<TradeRequest>
-        +determineTradeType(owner: GamePlayer, )
-        +announceWants(offer : TradeOffer, owner : GamePlayer) : void
-        +revokeWants(offer : TradeOffer, owner : GamePlayer) : void
-        +peekTradeOffers() : Map<GamePlayer, List<TradeOffer>>
-        +tradeOffersOfResourceType(resource : ResourceType) : Map<GamePlayer, List<TradeOffer>>
-        +requestOffer(requester : GamePlayer, owner : GamePlayer, offer : TradeOffer) : void
+        -requester : GamePlayer
+        -offerer :
+        +determineTradeType(requester: GamePlayer, offerer: )
         +finalizeTrade(request : TradeRequest) : void
         +rejectTrade(request : TradeRequest) : void
         -validateTrade(request : TradeRequest) : boolean
@@ -79,14 +74,21 @@ package domain {
     class PlayerTrade
     {
         -requester : GamePlayer
+        -pendingRequests : List<TradeRequest>
+        -playerWants : Map<GamePlayer, List<TradeOffer>>
+        +tradeOffersOfResourceType(resource : ResourceType) : Map<GamePlayer, List<TradeOffer>>
+        +announceWants(offer : TradeOffer, owner : GamePlayer) : void
+        +revokeWants(offer : TradeOffer, owner : GamePlayer) : void
+        +requestOffer(requester : GamePlayer, owner : GamePlayer, offer : TradeOffer) : void
+        +peekTradeOffers() : Map<GamePlayer, List<TradeOffer>>
     }
 
     class SupplyTrade
     {
         -requester : GamePlayer
         -supply : Bank
-        +tradeOfferSupply(supply:Bank):TradeOffer
-        +tradeOfferHarbor(supply:Bank):TradeOffer
+        +requestOfferSupply(requester:GamePlayer, harbor:Bank, offer : TradeOffer): void
+        +requestOfferHarbor(requester:GamePlayer, supply:Bank, , offer : TradeOffer): void
         -isHarbor(supplier: boolean)
     }
 
