@@ -21,14 +21,16 @@ package game_table {
 package ui {
 
     class GameTableController {
+        +selectBuildType(type : BuildType) : void
+        +vertexClicked(vertex : VertexPoint) : void
+        +edgeClicked(edge : Edge) : void
         +rollDice() : void
-        +buildSettlement(VertexPoint) : void
-        +buildCity(VertexPoint) : void
-        +buildRoad(Edge) : void
         +endTurn() : void
     }
 
     class GameTableView {
+        +highlightSpots(vertices : List<VertexPoint>, edges : List<Edge>) : void
+        +clearHighlights() : void
         +render() : void
     }
 
@@ -46,6 +48,12 @@ package domain {
     class GameTable {
         -phase : GamePhase
         -currentPlayer : GamePlayer
+        -selectedBuildType : BuildType
+        +selectBuildType(type : BuildType) : void
+        +getHighlightedVertices() : List<VertexPoint>
+        +getHighlightedEdges() : List<Edge>
+        +placeOnVertex(vertex : VertexPoint) : void
+        +placeOnEdge(edge : Edge) : void
         +addObserver(Observer) : void
         +notifyObservers() : void
         +rollDice() : void
