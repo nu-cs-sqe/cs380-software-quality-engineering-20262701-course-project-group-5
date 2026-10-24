@@ -9,8 +9,9 @@ import javafx.scene.text.Text;
 
 public class StartView extends StackPane {
 
-    private Text titleExploding;
-    private Text titleKittens;
+    private Text titleCredit;
+    private Text titleCatan;
+    private Text tagLine;
 
     private Text subTitleCardGame;
     private Text subLine1;
@@ -51,13 +52,16 @@ public class StartView extends StackPane {
         VBox titleBox = new VBox(titleBoxSpacing);
         titleBox.setAlignment(Pos.CENTER);
 
-        titleExploding = new Text("Catan");
-        titleExploding.getStyleClass().add("title-exploding");
+        titleCredit = new Text("KLAUS TEUBER's");
+        titleCredit.getStyleClass().add("title-credit");
 
-        titleKittens = new Text();
-        titleKittens.getStyleClass().add("title-kittens");
+        titleCatan = new Text("CATAN");
+        titleCatan.getStyleClass().add("title-catan");
 
-        titleBox.getChildren().addAll(titleExploding, titleKittens);
+        tagLine = new Text("SETTLE BUILD TRADE");
+        tagLine.getStyleClass().add("title-credit");
+
+        titleBox.getChildren().addAll(titleCredit, titleCatan, tagLine);
 
         return titleBox;
     }
