@@ -12,6 +12,15 @@ package game_table {
 package ui {
 
     +class GameTableController {
+        -{final} view : GameTableView
+        -{final} board : GameBoard
+        -{final} dice : Dice
+        -{final} bank : Bank
+        -{final} players : List<GamePlayer>
+        +GameTableController()
+        +startPlayerDiceRoll(player : Player) : void
+        +startPlayerPlacementTurn(player : Player) : void
+        +startPlayerGameTurn(player : Player) : void
     }
 
     +class GameTableView {
@@ -21,10 +30,26 @@ package ui {
 
 package domain {
 
-    +class GameTable {
+    +class Bank {
+        -observers : List<Observer>
+        -resourceStacks : List<ResourceStack>
+        -developments : List<Development>
+        +Bank()
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+        +hasDevelopmentsRemaining() : boolean
+        +removeDevelopment() : void
+        -notifyObservers() : void
     }
 
-    +class Bank {
+    +class Dice {
+        -observers : List<Observer>
+        -lastDiceRoll : int
+        +Dice(randomSource : Random)
+        +roll() : int
+        +getLastDiceRoll() : int
+        -notifyObservers() : void
     }
 
     +interface ResourceInventory {
@@ -42,9 +67,31 @@ package domain {
 package player {
 
     +class GamePlayer {
+        -observers : List<Observer>
+        -color : Color
+        -victoryPoints : int
+        -inventory : PlayerInventory
+        +getInventory() : PlayerInventory
+        +rollDice(dice : Dice) : void
+        +play(item : Playable) : void
+        +buy(item : Buyable) : void
+        +place(piece : Piece, location : Location) : void
+        -notifyObservers() : void
     }
 
     +class PlayerInventory {
+        -pieces : List<Piece>
+        -resourceStacks : List<ResourceStack>
+        -developments : List<Development>
+        +addPiece(piece : Piece) : void
+        +hasPiece(piece : Piece) : boolean
+        +removePiece(piece : Piece) : void
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+        +addDevelopment(development : Development) : void
+        +hasDevelopment(development : Development) : boolean
+        +removeDevelopment(development : Development) : void
     }
 
 }
@@ -52,9 +99,11 @@ package player {
 package board {
 
     +class GameBoard {
+        -observers : List<Observer>
         -vertices : Set<Vertex>
         -edges : Set<Edge>
         -hexes : Set<Hex>
+        -notifyObservers() : void
     }
 
     +abstract class Hex {
@@ -143,9 +192,6 @@ package piece {
         +onBoughtEffect() : void
     }
 
-    +class Dice {
-    }
-
     +interface Playable {
         +onPlayEffect() : void
     }
@@ -183,15 +229,15 @@ package development {
 
 }
 
-package plaque {
+package award {
 
-    +interface Plaque {
+    +interface Award {
     }
 
-    +class LongestRoadPlaque {
+    +class LongestRoadAward {
     }
 
-    +class LargestArmyPlaque {
+    +class LargestArmyAward {
     }
 
 }
@@ -201,22 +247,25 @@ package plaque {
 }
 
 GameTableController --> GameTableView
-GameTableController --> GameTable
 GameTableController ..|> Observer
 GameTableView ..|> Observer
 
-GameTable --> GamePlayer
-GameTable --> GameBoard
-GameTable --> Bank
-GameTable --> Dice
-GameTable --> Observer
+GameTableController --> GamePlayer
+GameTableController --> GameBoard
+GameTableController --> Bank
+GameTableController --> Dice
+
+GameBoard --> Observer
+GamePlayer --> Observer
+Dice --> Observer
+Bank --> Observer
 
 Bank ..|> ResourceInventory
 
 GamePlayer --> PlayerInventory
-GamePlayer --> Piece
+GamePlayer ..> Piece
 GamePlayer --> Color
-GamePlayer --> Plaque
+GamePlayer --> Award
 GamePlayer ..> ResourceStack
 ResourceInventory ..> ResourceStack
 
@@ -282,7 +331,7 @@ PieceData --> Color
 Development ..|> Playable
 Development ..|> Buyable
 
-LongestRoadPlaque ..|> Plaque
-LargestArmyPlaque ..|> Plaque
+LongestRoadAward ..|> Award
+LargestArmyAward ..|> Award
 
 @enduml
