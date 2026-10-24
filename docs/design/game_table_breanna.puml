@@ -158,10 +158,15 @@ package domain {
 
     class VertexPoint {
         +isFree() : boolean
+        +getBuilding() : Building
+        +getNeighbors() : List<VertexPoint>
+        +getEdges() : List<Edge>
     }
 
     class Edge {
         +isFree() : boolean
+        +getRoad() : Road
+        +getEndpoints() : List<VertexPoint>
     }
 
     class Harbor {
