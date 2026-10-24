@@ -1,0 +1,240 @@
+@startuml
+title Catan - Revised Class Design
+
+package common {
+
+    interface Observer {
+        +update() : void
+    }
+
+    enum Color {
+        RED
+        BLUE
+        ORANGE
+        WHITE
+    }
+
+}
+
+package game_table {
+
+package ui {
+
+    class GameTableController {
+        +rollDice() : void
+        +buildSettlement(VertexPoint) : void
+        +buildCity(VertexPoint) : void
+        +buildRoad(Edge) : void
+        +endTurn() : void
+    }
+
+    class GameTableView {
+        +render() : void
+    }
+
+}
+
+package domain {
+
+    enum GamePhase {
+        SETUP
+        ROLL
+        TRADE_BUILD
+        END_TURN
+    }
+
+    class GameTable {
+        -phase : GamePhase
+        -currentPlayer : GamePlayer
+        +addObserver(Observer) : void
+        +notifyObservers() : void
+        +rollDice() : void
+        +nextTurn() : void
+        +getWinner() : GamePlayer
+    }
+
+    class Dice {
+        +roll() : int
+    }
+
+    class TradeOffer {
+        -offered : Map<ResourceType, int>
+        -requested : Map<ResourceType, int>
+        +accept() : void
+    }
+
+    interface ResourceOwner {
+        +addResources(ResourceType, int) : void
+    }
+
+    class GamePlayer {
+        -name : String
+        -color : Color
+        +addResources(ResourceType, int) : void
+        +getVictoryPoints() : int
+    }
+
+    class Bank {
+        +addResources(ResourceType, int) : void
+        +drawDevelopmentCard() : DevelopmentCard
+    }
+
+    class PlayerHand {
+        -resourceCounts : Map<ResourceType, int>
+        +addResources(ResourceType, int) : void
+        +removeResources(ResourceType, int) : void
+        +count(ResourceType) : int
+    }
+
+    enum ResourceType {
+        WOOD
+        BRICK
+        WOOL
+        GRAIN
+        ORE
+    }
+
+    enum TerrainType {
+        FOREST
+        HILLS
+        PASTURE
+        FIELDS
+        MOUNTAINS
+        DESERT
+    }
+
+    class DevelopmentCard {
+        -boughtThisTurn : boolean
+        -played : boolean
+    }
+
+    enum DevelopmentCardType {
+        KNIGHT
+        VICTORY_POINT
+        ROAD_BUILDING
+        YEAR_OF_PLENTY
+        MONOPOLY
+    }
+
+    abstract class Plaque {
+        -holder : GamePlayer
+        +victoryPoints : int = 2
+        +transferTo(GamePlayer) : void
+    }
+
+    class LongestRoadPlaque {
+    }
+
+    class LargestArmyPlaque {
+    }
+
+    class GameBoard {
+        +getRobberHex() : Hex
+        +moveRobber(Hex) : void
+    }
+
+    class Hex {
+        -diceNumber : int
+        +produceResources() : void
+    }
+
+    class VertexPoint {
+        +isFree() : boolean
+    }
+
+    class Edge {
+        +isFree() : boolean
+    }
+
+    class Harbor {
+        -tradeRatio : int
+    }
+
+    class Robber {
+    }
+
+    abstract class Piece {
+        -owner : GamePlayer
+    }
+
+    class Road {
+    }
+
+    abstract class Building {
+        +getProduction() : int
+    }
+
+    class Settlement {
+        +getProduction() : int
+    }
+
+    class City {
+        +getProduction() : int
+    }
+
+}
+
+}
+
+GameTableController --> GameTableView
+GameTableController --> GameTable
+GameTableView ..|> Observer
+GameTable --> Observer
+
+GameTable --> GamePlayer
+GameTable --> GameBoard
+GameTable --> Bank
+GameTable --> Dice
+GameTable --> GamePhase
+GameTable --> LongestRoadPlaque
+GameTable --> LargestArmyPlaque
+GameTable --> TradeOffer
+
+GamePlayer ..|> ResourceOwner
+Bank ..|> ResourceOwner
+ResourceOwner ..> ResourceType
+
+GamePlayer --> PlayerHand
+GamePlayer --> Piece
+GamePlayer --> Color
+
+PlayerHand ..> ResourceType
+PlayerHand --> DevelopmentCard
+
+Bank --> DevelopmentCard
+Bank ..> ResourceType
+
+DevelopmentCard --> DevelopmentCardType
+
+TradeOffer --> GamePlayer
+TradeOffer ..> ResourceType
+
+Plaque --> GamePlayer
+LongestRoadPlaque --|> Plaque
+LargestArmyPlaque --|> Plaque
+
+GameBoard --> Hex
+GameBoard --> VertexPoint
+GameBoard --> Edge
+GameBoard --> Harbor
+GameBoard --> Robber
+
+Hex --> TerrainType
+Hex --> VertexPoint
+Hex ..> ResourceOwner
+
+VertexPoint --> VertexPoint
+VertexPoint --> Edge
+VertexPoint --> Building
+Edge --> Road
+
+Harbor --> VertexPoint
+Harbor --> ResourceType
+
+Piece --> GamePlayer
+Road --|> Piece
+Building --|> Piece
+Settlement --|> Building
+City --|> Building
+
+@enduml
