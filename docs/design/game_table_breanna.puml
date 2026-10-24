@@ -147,7 +147,9 @@ package domain {
     }
 
     class Harbor {
-        -tradeRatio : int
+        -resourceType : ResourceType
+        +appliesTo(ResourceType) : boolean
+        +getTradeRatio() : int
     }
 
     class Robber {
