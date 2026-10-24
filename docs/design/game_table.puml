@@ -1,0 +1,337 @@
+@startuml
+
++interface Observer {
+    +update() : void
+}
+
++enum Color {
+}
+
+package game_table {
+
+package ui {
+
+    +class GameTableController {
+        -{final} view : GameTableView
+        -{final} board : GameBoard
+        -{final} dice : Dice
+        -{final} bank : Bank
+        -{final} players : List<GamePlayer>
+        +GameTableController()
+        +startPlayerDiceRoll(player : Player) : void
+        +startPlayerPlacementTurn(player : Player) : void
+        +startPlayerGameTurn(player : Player) : void
+    }
+
+    +class GameTableView {
+    }
+
+}
+
+package domain {
+
+    +class Bank {
+        -observers : List<Observer>
+        -resourceStacks : List<ResourceStack>
+        -developments : List<Development>
+        +Bank()
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+        +hasDevelopmentsRemaining() : boolean
+        +removeDevelopment() : void
+        -notifyObservers() : void
+    }
+
+    +class Dice {
+        -observers : List<Observer>
+        -lastDiceRoll : int
+        +Dice(randomSource : Random)
+        +roll() : int
+        +getLastDiceRoll() : int
+        -notifyObservers() : void
+    }
+
+    +interface ResourceInventory {
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+    }
+
+    +interface PieceInventory {
+        +addPiece(piece : Piece) : void
+        +hasPiece(piece : Piece) : boolean
+        +removePiece(piece : Piece) : void
+    }
+
+package player {
+
+    +class GamePlayer {
+        -observers : List<Observer>
+        -color : Color
+        -victoryPoints : int
+        -inventory : PlayerInventory
+        +getInventory() : PlayerInventory
+        +rollDice(dice : Dice) : void
+        +play(item : Playable) : void
+        +buy(item : Buyable) : void
+        +place(piece : Piece, location : Location) : void
+        -notifyObservers() : void
+    }
+
+    +class PlayerInventory {
+        -pieces : List<Piece>
+        -resourceStacks : List<ResourceStack>
+        -developments : List<Development>
+        +addPiece(piece : Piece) : void
+        +hasPiece(piece : Piece) : boolean
+        +removePiece(piece : Piece) : void
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+        +addDevelopment(development : Development) : void
+        +hasDevelopment(development : Development) : boolean
+        +removeDevelopment(development : Development) : void
+    }
+
+}
+
+package board {
+
+    +class GameBoard {
+        -observers : List<Observer>
+        -vertices : Set<Vertex>
+        -edges : Set<Edge>
+        -hexes : Set<Hex>
+        -notifyObservers() : void
+    }
+
+    +abstract class Hex {
+        -{final} tokenValue : int
+        -vertices : Set<Vertex>
+        -canProduce : boolean
+        -pieces : List<Piece>
+        +produceResources() : void
+    }
+
+    +class HillsHex {
+    }
+
+    +class ForestHex {
+    }
+
+    +class MountainsHex {
+    }
+
+    +class FieldsHex {
+    }
+
+    +class PastureHex {
+    }
+
+    +class DesertHex {
+    }
+
+    +class OceanHex {
+    }
+
+    +abstract class Location {
+        -pieces : List<Piece>
+        +getPieceData() : List<PieceData>
+        +addPiece(piece : Piece)) : void
+        +removePieceWithData(data : PieceData) : void
+    }
+
+    +class Vertex {
+        -point : Point
+        +produceResources(stacks : List<ResourceStack>) -> void
+    }
+
+    +class Edge {
+        -endpoints : Set<Point>
+        +getEndpoints : Pair<Point, Point>
+    }
+
+    +class Point {
+        +{final} x : int
+        +{final} y : int
+    }
+
+}
+
+package piece {
+
+    +abstract class Piece {
+        +produceResources(stacks : List<ResourceStack>) -> void
+    }
+
+    +class PieceData {
+        +{final} type : String
+        +{final} color : Color
+    }
+
+    +class Settlement {
+    }
+
+    +class City {
+    }
+
+    +class Road {
+    }
+
+    +class Robber {
+    }
+
+    +class Harbor {
+    }
+
+}
+
+    +interface Buyable {
+        +getCost() : List<ResourceStack>
+        +onBoughtEffect() : void
+    }
+
+    +interface Playable {
+        +onPlayEffect() : void
+    }
+
+package resource {
+
+    +abstract class ResourceStack {
+        -amount : int
+        +increase(amount : int) : void
+        +size() : int
+        +decrease(amount : int) : void
+    }
+
+    +class BrickResourceStack {
+    }
+
+    +class LumberResourceStack {
+    }
+
+    +class OreResourceStack {
+    }
+
+    +class GrainResourceStack {
+    }
+
+    +class WoolResourceStack {
+    }
+
+}
+
+package development {
+
+    +abstract class Development {
+    }
+
+}
+
+package award {
+
+    +interface Award {
+    }
+
+    +class LongestRoadAward {
+    }
+
+    +class LargestArmyAward {
+    }
+
+}
+
+}
+
+}
+
+GameTableController --> GameTableView
+GameTableController ..|> Observer
+GameTableView ..|> Observer
+
+GameTableController --> GamePlayer
+GameTableController --> GameBoard
+GameTableController --> Bank
+GameTableController --> Dice
+
+GameBoard --> Observer
+GamePlayer --> Observer
+Dice --> Observer
+Bank --> Observer
+
+Bank ..|> ResourceInventory
+
+GamePlayer --> PlayerInventory
+GamePlayer ..> Piece
+GamePlayer --> Color
+GamePlayer --> Award
+GamePlayer ..> ResourceStack
+ResourceInventory ..> ResourceStack
+
+GameBoard --> Hex
+GameBoard --> Vertex
+GameBoard --> Edge
+
+Hex --> Piece
+Hex --> Vertex
+Hex --> Edge
+
+Edge --> Vertex
+Edge ..> PieceData
+
+Hex --> ResourceStack
+HillsHex --|> Hex
+ForestHex --|> Hex
+MountainsHex --|> Hex
+FieldsHex --|> Hex
+PastureHex --|> Hex
+DesertHex --|> Hex
+OceanHex --|> Hex
+
+Vertex --> Piece
+Vertex --> Point
+Vertex --|> Location
+Edge --> Piece
+Edge --> Point
+Edge --|> Location
+
+Harbor --> ResourceStack
+
+PlayerInventory ..|> ResourceInventory
+PlayerInventory ..|> PieceInventory
+PlayerInventory --> ResourceStack
+PlayerInventory --> Piece
+PlayerInventory --> Bank
+PlayerInventory ..> Playable
+PlayerInventory ..> Buyable
+
+Settlement --|> Piece
+Settlement ..|> Buyable
+City --|> Piece
+City ..|> Buyable
+Road --|> Piece
+Road ..|> Buyable
+Robber --|> Piece
+Harbor --|> Piece
+
+BrickResourceStack --|> ResourceStack
+LumberResourceStack --|> ResourceStack
+OreResourceStack --|> ResourceStack
+GrainResourceStack --|> ResourceStack
+WoolResourceStack --|> ResourceStack
+
+Piece --> ResourceInventory
+Piece ..> ResourceStack
+Piece --> Color
+Piece --> PieceData
+
+PieceData --> Color
+
+Development ..|> Playable
+Development ..|> Buyable
+
+LongestRoadAward ..|> Award
+LargestArmyAward ..|> Award
+
+@enduml
