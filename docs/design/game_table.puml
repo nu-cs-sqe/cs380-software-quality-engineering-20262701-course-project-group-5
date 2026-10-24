@@ -27,9 +27,6 @@ package domain {
     +class Bank {
     }
 
-    +class GamePlayer {
-    }
-
     +interface ResourceInventory {
         +addResources(ResourceStack) -> void
         +hasResources(ResourceStack) -> boolean
@@ -42,8 +39,17 @@ package domain {
         +removePiece(Piece) -> void
     }
 
+package player {
+
+    +class GamePlayer {
+    }
+
     +class PlayerInventory {
     }
+
+}
+
+package board {
 
     +class GameBoard {
     }
@@ -63,13 +69,13 @@ package domain {
 
     +class FieldsHex {
     }
-    
+
     +class PastureHex {
     }
-    
+
     +class DesertHex {
     }
-    
+
     +class OceanHex {
     }
 
@@ -79,6 +85,10 @@ package domain {
 
     +class Edge {
     }
+
+}
+
+package piece {
 
     +abstract class Piece {
         +produceResources(List<ResourceStack>) -> void
@@ -99,6 +109,8 @@ package domain {
     +class Harbor {
     }
 
+}
+
     +interface Buyable {
         +getCost() -> List<ResourceStack>
         +onBoughtEffect() -> void
@@ -111,8 +123,7 @@ package domain {
         +onPlayEffect() -> void
     }
 
-    +abstract class Development {
-    }
+package resource {
 
     +abstract class ResourceStack {
     }
@@ -132,6 +143,17 @@ package domain {
     +class WoolResourceStack {
     }
 
+}
+
+package development {
+
+    +abstract class Development {
+    }
+
+}
+
+package plaque {
+
     +interface Plaque {
     }
 
@@ -140,6 +162,8 @@ package domain {
 
     +class LargestArmyPlaque {
     }
+
+}
 
 }
 
