@@ -84,8 +84,10 @@ package domain {
     class SupplyTrade
     {
         -requester : GamePlayer
-        -supplier : Bank
-        +checkHarbor(supplier: boolean)
+        -supply : Bank
+        +tradeOfferSupply(supply:Bank):TradeOffer
+        +tradeOfferHarbor(supply:Bank):TradeOffer
+        -isHarbor(supplier: boolean)
     }
 
     class TradeRequest {
