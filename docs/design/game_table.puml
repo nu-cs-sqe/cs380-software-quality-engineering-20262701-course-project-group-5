@@ -24,32 +24,64 @@ package domain {
     +class GameTable {
     }
 
+    +class Bank {
+    }
+
     +class GamePlayer {
     }
 
-    +interface ResourceOwner {
-        +addResources(ResourceType, int)
+    +interface ResourceInventory {
+        +addResources(ResourceStack) -> void
+        +hasResources(ResourceStack) -> boolean
+        +removeResources(ResourceStack) -> void
     }
 
-    +class PlayerHand {
+    +interface PieceInventory {
+        +addPiece(Piece) -> void
+        +hasPiece(Piece) -> boolean
+        +removePiece(Piece) -> void
+    }
+
+    +class PlayerInventory {
     }
 
     +class GameBoard {
     }
 
-    +class Hex {
-        +produceResource() -> void
+    +abstract class Hex {
+        +produceResources() -> void
+    }
+
+    +class HillsHex {
+    }
+
+    +class ForestHex {
+    }
+
+    +class MountainsHex {
+    }
+
+    +class FieldsHex {
+    }
+    
+    +class PastureHex {
+    }
+    
+    +class DesertHex {
+    }
+    
+    +class OceanHex {
     }
 
     +class VertexPoint {
-        +produceResources(List<ResourceType>) -> void
+        +produceResources(List<ResourceStack>) -> void
     }
 
     +class Edge {
     }
 
     +abstract class Piece {
-        +produceResources(List<ResourceType>) -> void
+        +produceResources(List<ResourceStack>) -> void
     }
 
     +class Settlement {
@@ -67,22 +99,37 @@ package domain {
     +class Harbor {
     }
 
+    +interface Buyable {
+        +getCost() -> List<ResourceStack>
+        +onBoughtEffect() -> void
+    }
+
     +class Dice {
     }
 
-    +interface Card {
+    +interface Playable {
+        +onPlayEffect() -> void
     }
 
-    +class ResourceCard {
+    +abstract class Development {
     }
 
-    +class DevelopmentCard {
+    +abstract class ResourceStack {
     }
 
-    +enum ResourceType {
+    +class BrickResourceStack {
     }
 
-    +enum DevelopmentCardType {
+    +class LumberResourceStack {
+    }
+
+    +class OreResourceStack {
+    }
+
+    +class GrainResourceStack {
+    }
+
+    +class WoolResourceStack {
     }
 
     +interface Plaque {
@@ -105,47 +152,69 @@ GameTableView ..|> Observer
 
 GameTable --> GamePlayer
 GameTable --> GameBoard
-GameTable --> Card
+GameTable --> Bank
 GameTable --> Dice
 GameTable --> Observer
 
-GamePlayer --> PlayerHand
+Bank ..|> ResourceInventory
+
+GamePlayer --> PlayerInventory
 GamePlayer --> Piece
 GamePlayer --> Color
 GamePlayer --> Plaque
-GamePlayer ..|> ResourceOwner
-GamePlayer ..> ResourceType
-ResourceOwner ..> ResourceType
+GamePlayer ..> ResourceStack
+ResourceInventory ..> ResourceStack
 
 GameBoard --> Hex
+GameBoard --> VertexPoint
+GameBoard --> Edge
 
 Hex --> Piece
 Hex --> VertexPoint
 Hex --> Edge
-Hex --> ResourceType
+
+Hex --> ResourceStack
+HillsHex --|> Hex
+ForestHex --|> Hex
+MountainsHex --|> Hex
+FieldsHex --|> Hex
+PastureHex --|> Hex
+DesertHex --|> Hex
+OceanHex --|> Hex
 
 VertexPoint --> Piece
 Edge --> Piece
 Edge --> Harbor
-Harbor --> ResourceType
+Harbor --> ResourceStack
 
-PlayerHand --> Card
-PlayerHand ..> ResourceCard
-PlayerHand ..> DevelopmentCard
+PlayerInventory ..|> ResourceInventory
+PlayerInventory ..|> PieceInventory
+PlayerInventory --> ResourceStack
+PlayerInventory --> Piece
+PlayerInventory --> Bank
+PlayerInventory ..> Playable
+PlayerInventory ..> Buyable
 
 Settlement --|> Piece
+Settlement ..|> Buyable
 City --|> Piece
+City ..|> Buyable
 Road --|> Piece
+Road ..|> Buyable
 Robber --|> Piece
 
-Piece --> ResourceOwner
-Piece ..> ResourceType
+BrickResourceStack --|> ResourceStack
+LumberResourceStack --|> ResourceStack
+OreResourceStack --|> ResourceStack
+GrainResourceStack --|> ResourceStack
+WoolResourceStack --|> ResourceStack
+
+Piece --> ResourceInventory
+Piece ..> ResourceStack
 Piece --> Color
 
-ResourceCard ..|> Card
-ResourceCard --> ResourceType
-DevelopmentCard ..|> Card
-DevelopmentCard --> DevelopmentCardType
+Development ..|> Playable
+Development ..|> Buyable
 
 LongestRoadPlaque ..|> Plaque
 LargestArmyPlaque ..|> Plaque
