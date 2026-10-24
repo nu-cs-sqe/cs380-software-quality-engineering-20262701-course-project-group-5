@@ -65,6 +65,7 @@ package domain {
     class TradeManager {
         -playerWants : Map<GamePlayer, List<TradeOffer>>
         -pendingRequests : List<TradeRequest>
+        +determineTradeType(owner: GamePlayer, )
         +announceWants(offer : TradeOffer, owner : GamePlayer) : void
         +revokeWants(offer : TradeOffer, owner : GamePlayer) : void
         +peekTradeOffers() : Map<GamePlayer, List<TradeOffer>>
@@ -73,6 +74,18 @@ package domain {
         +finalizeTrade(request : TradeRequest) : void
         +rejectTrade(request : TradeRequest) : void
         -validateTrade(request : TradeRequest) : boolean
+    }
+
+    class PlayerTrade
+    {
+        -requester : GamePlayer
+    }
+
+    class SupplyTrade
+    {
+        -requester : GamePlayer
+        -supplier : Bank
+        +checkHarbor(supplier: boolean)
     }
 
     class TradeRequest {
@@ -212,12 +225,15 @@ GameTable --> LargestArmyPlaque
 
 GameTable --> TradeManager
 TradeManager --> TradeOffer
-TradeManager --> TradeRequest
+TradeManager --> PlayerTrade
+TradeManager --> SupplyTrade
 TradeManager --> GamePlayer
 TradeManager ..> ResourceType
 TradeManager ..> PlayerHand
 TradeRequest --> TradeOffer
 TradeRequest --> GamePlayer
+SupplyTrade-->TradeOffer
+PlayerTrade-->TradeRequest
 
 GamePlayer ..|> ResourceOwner
 Bank ..|> ResourceOwner
