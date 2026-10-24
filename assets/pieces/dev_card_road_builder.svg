@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="dev_card_road_builder.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#aae28c"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.75811588"
+     inkscape:cx="396.3774"
+     inkscape:cy="561.25984"
+     inkscape:window-width="1920"
+     inkscape:window-height="1111"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <color-profile
+       name="Agfa-:-Swop-Standard"
+       xlink:href="../../../../../../../../../../Windows/system32/spool/drivers/color/RSWOP.icm"
+       id="color-profile1" />
+    <rect
+       x="131.90596"
+       y="35.614608"
+       width="539.49536"
+       height="114.75818"
+       id="rect8" />
+  </defs>
+  <rect
+     style="fill:#aade87;stroke-width:0.264999;paint-order:markers fill stroke"
+     id="rect9"
+     width="211.14571"
+     height="297"
+     x="0.6980024"
+     y="0.6980024" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#1a1a1a;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect2"
+       width="96.324318"
+       height="234.17979"
+       x="55.491184"
+       y="63.169212" />
+    <rect
+       style="fill:#ffdd55;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect3"
+       width="7.6780257"
+       height="45.370152"
+       x="101.55934"
+       y="75.733253" />
+    <rect
+       style="fill:#ffdd55;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect4"
+       width="8.7250299"
+       height="50.954174"
+       x="101.90835"
+       y="163.68155" />
+    <rect
+       style="fill:#ffdd55;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect5"
+       width="7.3290243"
+       height="54.095184"
+       x="101.90835"
+       y="235.57578" />
+    <rect
+       style="fill:#999999;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect6"
+       width="14.658049"
+       height="233.83078"
+       x="40.484135"
+       y="63.169212" />
+    <rect
+       style="fill:#999999;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect7"
+       width="13.262045"
+       height="233.13278"
+       x="152.5135"
+       y="65.263222" />
+    <path
+       sodipodi:type="star"
+       style="fill:#ff6600;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path7"
+       inkscape:flatsided="true"
+       sodipodi:sides="6"
+       sodipodi:cx="2.7920094"
+       sodipodi:cy="93.881317"
+       sodipodi:r1="58.006683"
+       sodipodi:r2="50.23526"
+       sodipodi:arg1="1.0479189"
+       sodipodi:arg2="1.5715177"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 31.759106,144.13749 -58.006668,-0.0419 -28.967097,-50.256166 29.039571,-50.214327 58.006669,0.04184 28.967097,50.25617 z"
+       transform="translate(55.491188,73.988249)" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.1111px;text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#1a1a1a;stroke-width:0.264999;paint-order:markers fill stroke"
+       x="57.713787"
+       y="163.33255"
+       id="text7"><tspan
+         sodipodi:role="line"
+         id="tspan7"
+         style="fill:#1a1a1a;stroke-width:0.265"
+         x="57.713787"
+         y="163.33255">ROAD WORK</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#1a1a1a;stroke-width:0.265"
+         x="57.713787"
+         y="180.97142"
+         id="tspan8"> AHEAD</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,6.9800237,-2.0940071)"
+       id="text8"
+       style="font-size:74.6667px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect8);fill:#1a1a1a;stroke-width:1.00157;paint-order:markers fill stroke"><tspan
+         x="131.90625"
+         y="103.55261"
+         id="tspan2">ROAD BUILDER</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.1111px;writing-mode:lr-tb;direction:ltr;fill:#1a1a1a;stroke-width:0.264999;paint-order:markers fill stroke"
+       x="32.457111"
+       y="44.323154"
+       id="text10"><tspan
+         sodipodi:role="line"
+         id="tspan10"
+         style="stroke-width:0.265"
+         x="32.457111"
+         y="44.323154">build two roads for free</tspan></text>
+  </g>
+</svg>
