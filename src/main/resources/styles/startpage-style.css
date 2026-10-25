@@ -2,19 +2,26 @@
 {
     -fx-background-image: url("/assets/Catan_Background.jpg");
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 700 500;
+    -fx-background-size: 800 500;
     -fx-background-position: center center;
 }
 
 .title-credit
 {
-    -fx-text-fill: #972C24;
     -fx-font-size: 20px;
+    -fx-fill: linear-gradient(to bottom, #F1D86C, #F3EC9E);
+    -fx-font-family:"Times New Roman";
 }
 
 .title-catan
 {
-    -fx-text-fill: #972C24;
-    -fx-font-size: 50px;
-    -fx-font-family:"Impact";
+    -fx-fill: linear-gradient(to bottom, #F1D86C, #F3EC9E);
+    -fx-font-size: 90px;
+    -fx-font-family:"Times New Roman";
+}
+
+.btn
+{
+    -fx-background-color: linear-gradient(to bottom, #F1D86C, #F3EC9E);
+    -fx-font-family:"Times New Roman";
 }

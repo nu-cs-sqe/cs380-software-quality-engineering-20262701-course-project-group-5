@@ -21,7 +21,7 @@ public class StartView extends StackPane {
     private Button settingsButton;
 
     private static final int containerWidth = 500;
-    private static final int buttonBoxWidth = 320;
+    private static final int buttonBoxWidth = 200;
     private static final int containerSpacing = 25;
     private static final int titleBoxSpacing = -10;
     private static final int descriptionBoxSpacing = 10;
@@ -93,11 +93,11 @@ public class StartView extends StackPane {
         buttonBox.setMaxWidth(buttonBoxWidth);
 
         startGameButton = new Button("START");
-        startGameButton.getStyleClass().add("btn-main");
+        startGameButton.getStyleClass().add("btn");
         startGameButton.setMaxWidth(Double.MAX_VALUE);
 
         settingsButton = new Button("SETTINGS");
-        settingsButton.getStyleClass().add("btn-sec");
+        settingsButton.getStyleClass().add("btn");
         settingsButton.setMaxWidth(Double.MAX_VALUE);
 
         buttonBox.getChildren().addAll(

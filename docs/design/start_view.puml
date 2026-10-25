@@ -3,8 +3,9 @@
 package ui.view {
     +class StartView {
     ' need to change to fit Catan
-        -titleExploding: Text
-        -titleKittens: Text
+        -titleCredit: Text
+        -titleCatan: Text
+        -tagline: Text
         -subTitleCardGame: Text
         -subLine1: Text
         -subLine2: Text
