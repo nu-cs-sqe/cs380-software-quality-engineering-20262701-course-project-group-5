@@ -13,7 +13,6 @@ package ui.view {
         -settingsButton: Button
         +StartView()
         -createTitle() -> VBox
-        -createDescription() -> VBox
         -createButtons() -> VBox
     }
 }
