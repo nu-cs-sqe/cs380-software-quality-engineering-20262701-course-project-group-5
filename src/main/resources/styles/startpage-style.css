@@ -22,6 +22,9 @@
 
 .btn
 {
-    -fx-background-color: linear-gradient(to bottom, #F1D86C, #F3EC9E);
+    -fx-background-color: #C21E25;
+    -fx-text-fill: #F1D86C;
     -fx-font-family:"Times New Roman";
+    -fx-border-color: #7A1317;
+    -fx-border-width: 1px;
 }

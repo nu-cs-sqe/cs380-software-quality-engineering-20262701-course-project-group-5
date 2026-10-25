@@ -13,18 +13,13 @@ public class StartView extends StackPane {
     private Text titleCatan;
     private Text tagLine;
 
-    private Text subTitleCardGame;
-    private Text subLine1;
-    private Text subLine2;
-
     private Button startGameButton;
     private Button settingsButton;
 
     private static final int containerWidth = 500;
     private static final int buttonBoxWidth = 200;
-    private static final int containerSpacing = 25;
+    private static final int containerSpacing = 200;
     private static final int titleBoxSpacing = -10;
-    private static final int descriptionBoxSpacing = 10;
     private static final int buttonBoxSpacing = 20;
 
     public StartView() {
@@ -35,11 +30,10 @@ public class StartView extends StackPane {
         container.setMaxWidth(containerWidth);
 
         VBox titleBox = createTitle();
-        VBox descriptionBox = createDescription();
         VBox buttonBox = createButtons();
 
         container.getChildren().addAll(
-                titleBox, descriptionBox, buttonBox
+                titleBox, buttonBox
         );
         this.getChildren().add(container);
 
@@ -66,26 +60,6 @@ public class StartView extends StackPane {
         return titleBox;
     }
 
-    private VBox createDescription() {
-        VBox descriptionBox = new VBox(descriptionBoxSpacing);
-        descriptionBox.setAlignment(Pos.CENTER);
-        descriptionBox.getStyleClass().add("description-box");
-
-        subTitleCardGame = new Text();
-        subTitleCardGame.getStyleClass().add("subtitle-card-game");
-
-        descriptionBox.setSpacing(descriptionBoxSpacing);
-
-        subLine1 = new Text();
-        subLine1.getStyleClass().add("sub-line-detail");
-
-        subLine2 = new Text();
-        subLine2.getStyleClass().add("sub-line-detail");
-
-        descriptionBox.getChildren().addAll(subTitleCardGame, subLine1, subLine2);
-
-        return descriptionBox;
-    }
 
     private VBox createButtons() {
         VBox buttonBox = new VBox(buttonBoxSpacing);

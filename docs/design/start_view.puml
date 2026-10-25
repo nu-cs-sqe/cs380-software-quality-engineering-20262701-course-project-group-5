@@ -16,7 +16,6 @@ package ui.view {
         -createDescription() -> VBox
         -createButtons() -> VBox
     }
-
 }
 
 package javafx {
