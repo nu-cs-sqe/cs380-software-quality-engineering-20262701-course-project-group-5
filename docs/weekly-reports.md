@@ -7,10 +7,21 @@
 
 # Week 4 (10/19/2026-10/25/2026)
 **Planning and Progress Tracking**:
-1. [done] Person: Task (Links to PR)
-2. [not started] Person: Task (Links to PR)
-3. [80% done] Person: Task (Links to PR)
-4. etc.
+
+
+Breanna and Xavier:
+[In progress] software design + uml diagrams
+
+Hayley:
+started on UI
+[in progress] review software design
+
+Anthony:
+[ready to merge] make all assests
+[in progress] review software design
+
+decided to add additional team meeting on wednesday
+TODO: team organization docs (Anthony will pic it up)
 
 # Week 5 (10/26/2026-11/01/2026)
 **Planning and Progress Tracking**:
