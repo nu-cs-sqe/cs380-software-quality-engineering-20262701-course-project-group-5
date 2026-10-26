@@ -11,17 +11,23 @@
 
 Breanna and Xavier:
 [In progress] software design + uml diagrams
+- Breanna: design goes more in depth on the Trading and Building functionalities, more enums used [link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/23)]
+- Breanna: updated Hayley's UI with uml diagram [link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/22)]
+- Xavier: developing the MVC, classes used for terrain and resource type [link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/18)]
 
 Hayley:
-started on UI
+started on UI [link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/22)]
+refactored TradeManager on Breanna's PR [[link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/24)]
 [in progress] review software design
 
 Anthony:
-[ready to merge] make all assests
+[ready to merge] make all assets [[link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/21)]
 [in progress] review software design
 
 decided to add additional team meeting on wednesday
-TODO: team organization docs (Anthony will pic it up)
+TODO: 
+- team organization docs (Anthony will pic it up)
+- make meeting minutes for Wednesday (everyone)
 
 # Week 5 (10/26/2026-11/01/2026)
 **Planning and Progress Tracking**:
