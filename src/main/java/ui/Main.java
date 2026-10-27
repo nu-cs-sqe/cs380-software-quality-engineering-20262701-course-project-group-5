@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 import ui.view.StartView;
 
 public class Main extends Application {
-    private static final int containerWidth = 640;
-    private static final int containerHeight = 480;
+    private static final int containerWidth = 800;
+    private static final int containerHeight = 640;
 
     @Override
     public void start(Stage stage) {

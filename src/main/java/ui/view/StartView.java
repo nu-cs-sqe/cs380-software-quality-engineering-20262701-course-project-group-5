@@ -18,8 +18,8 @@ public class StartView extends StackPane {
 
     private static final int containerWidth = 500;
     private static final int buttonBoxWidth = 200;
-    private static final int containerSpacing = 200;
-    private static final int titleBoxSpacing = -10;
+    private static final int containerSpacing = 300;
+    private static final int titleBoxSpacing = -5;
     private static final int buttonBoxSpacing = 20;
 
     public StartView() {
@@ -44,7 +44,7 @@ public class StartView extends StackPane {
 
     private VBox createTitle() {
         VBox titleBox = new VBox(titleBoxSpacing);
-        titleBox.setAlignment(Pos.CENTER);
+        titleBox.setAlignment(Pos.TOP_CENTER);
 
         titleCredit = new Text("KLAUS TEUBER's");
         titleCredit.getStyleClass().add("title-credit");
@@ -63,7 +63,7 @@ public class StartView extends StackPane {
 
     private VBox createButtons() {
         VBox buttonBox = new VBox(buttonBoxSpacing);
-        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setAlignment(Pos.BOTTOM_CENTER);
         buttonBox.setMaxWidth(buttonBoxWidth);
 
         startGameButton = new Button("START");
