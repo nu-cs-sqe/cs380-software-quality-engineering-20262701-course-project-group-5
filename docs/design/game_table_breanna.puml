@@ -64,10 +64,10 @@ package domain {
 
     class TradeManager {
         -requester : GamePlayer
-        -offerer :
-        +determineTradeType(requester: GamePlayer, offerer: )
+        -offerer : ResourceOwner
         +finalizeTrade(request : TradeRequest) : void
         +rejectTrade(request : TradeRequest) : void
+        -isPlayer(requester: GamePlayer, offerer: ResourceOwner)
         -validateTrade(request : TradeRequest) : boolean
     }
 
