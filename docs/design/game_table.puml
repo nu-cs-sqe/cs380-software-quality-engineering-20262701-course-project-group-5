@@ -15,14 +15,17 @@ package mvc_util {
 
 }
 
-
-
 +enum Color {
     NONE,
     RED,
     BLUE,
     WHITE,
     ORANGE
+}
+
++class PlayerData {
+    +{final} color : Color
+    +{final} name : String
 }
 
 package game_table {
@@ -35,20 +38,41 @@ package ui {
         -{final} dice : Dice
         -{final} bank : Bank
         -{final} players : List<GamePlayer>
-        +GameTableController()
+        -activePlayer : GamePlayer
+        -phase : GamePhase
+        +GameTableController(Set<PlayerData>, board : GameBoard, dice : Dice, bank : Bank)
         +update() : void
-        +startPlayerDiceRoll(player : Player) : void
-        +startPlayerPlacementTurn(player : Player) : void
-        +startPlayerGameTurn(player : Player) : void
+        -updateView() : void
+        +getGamePhase() : GamePhase
+        -routeUserInput() : void
+        -startNewPlayerTurn() : void
+        -startCurrentPlayerDiceRoll() : void
+        -startCurrentPlayerAction() : void
+        -startCurrentPlayerPlacementTurn() : void
+        -startCurrentPlayerGameTurn() : void
+        -endCurrentPlayerTurn() : void
     }
 
     +class GameTableView {
+        -{final} players : Set<PlayerData>
+        …
+        +GameTableView(Set<PlayerData>)
         +update() : void
+        …()
     }
 
 }
 
 package domain {
+
+    +enum GamePhase {
+        SETUP,
+        REGULAR
+    }
+
+    +interface GamePhaseHolder {
+        +getGamePhase() : GamePhase
+    }
 
     +class Bank {
         -resourceStacks : List<ResourceStack>
@@ -77,12 +101,14 @@ package domain {
 package player {
 
     +class GamePlayer {
-        -color : Color
-        -victoryPointsTracker : VictoryPointsTracker
-        -roadLengthTracker : ScoreTracker
-        -armySizeTracker : ScoreTracker
-        -inventory : PlayerInventory
+        -{final} color : Color
+        -{final} victoryPointsTracker : ScoreTracker
+        -{final} roadLengthTracker : ScoreTracker
+        -{final} armySizeTracker : ScoreTracker
+        -{final} inventory : PlayerInventory
+        -{final} placementHelper : PlacementHelper
         -awards : List<Award>
+        +Player(color : Color, placementHelper : PlacementHelper)
         +getInventory() : PlayerInventory
         +rollDice(dice : Dice) : void
         +play(item : Playable) : void
@@ -103,6 +129,24 @@ package player {
         +addDevelopment(development : Development) : void
         +hasDevelopment(development : Development) : boolean
         +removeDevelopment(development : Development) : void
+    }
+
+    class PlacementHelper {
+        -{final} color : Color
+        -{final} board : GameBoard
+        -{final} gamePhaseHolder : GamePhaseHolder
+        +PlacementHelper(color : Color)
+        +getValidBuildingSpots() : List<Vertex>
+        +getValidRoadSpots() : List<Edge>
+        ' build
+        +place(piece : Piece, location : Location) : void
+        ' checks for validity, ties to highlighting
+        -isValidBuildingSpot(vertex : Vertex) : boolean
+        -isValidRoadSpot(edge : Edge) : boolean
+        -isFarEnoughFromBuildings(vertex : Vertex) : boolean
+        -isVertexConnectedToOwnRoad(Color, vertex : Vertex) : boolean
+        -isEdgeConnectedToOwnPieces(Color, edge : Edge) : boolean
+        -touchesSetupSettlement(Color, edge : Edge) : boolean
     }
 
 }
@@ -193,7 +237,8 @@ package piece {
         #ownerResources : ResourceInventory
         #ownerPieces : PieceInventory
         +Piece(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
-        +getPieceData() : PieceData
+        +abstract getPieceData() : PieceData
+        +getBuildCost() : List<ResourceStack>
         +placeEffect() : void
         +removeEffect() : void
     }
@@ -318,12 +363,17 @@ Observed --> Observer
 
 GameTableController --> GameTableView
 GameTableController ..|> Observer
+GameTableController ..|> GamePhaseHolder
 GameTableView ..|> Observer
 
 GameTableController --> GamePlayer
 GameTableController --> GameBoard
 GameTableController --> Bank
 GameTableController --> Dice
+GameTableController --> GamePhase
+GameTableController ..> PlacementHelper
+GameTableController ..> PlayerData
+GameTableView --> PlayerData
 
 GameBoard --|> Observed
 Dice --|> Observed
@@ -338,6 +388,16 @@ GamePlayer ..> Piece
 GamePlayer --> Color
 GamePlayer --> Award
 GamePlayer ..> ResourceStack
+GamePlayer --> PlacementHelper
+
+PlacementHelper --> Color
+PlacementHelper --> GameBoard
+PlacementHelper --> GamePhaseHolder
+PlacementHelper ..> GamePhase
+PlacementHelper ..> Location
+PlacementHelper ..> Vertex
+PlacementHelper ..> Edge
+
 ResourceInventory ..> ResourceStack
 
 GameBoard --> Hex
