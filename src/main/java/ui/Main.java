@@ -6,20 +6,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-
+import ui.view.StartView;
 
 public class Main extends Application {
+    private static final int containerWidth = 800;
+    private static final int containerHeight = 640;
+
     @Override
     public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
-        String stylePath = "/styles/setupstyle.css";
-        scene.getStylesheets().add(
-                getClass().getResource(stylePath).toExternalForm()
-        );
+        Scene scene = new Scene(new StartView(), containerWidth, containerHeight);
         stage.setScene(scene);
         stage.show();
     }

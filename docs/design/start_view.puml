@@ -1,0 +1,38 @@
+@startuml
+
+package ui.view {
+    +class StartView {
+        -titleCredit: Text
+        -titleCatan: Text
+        -tagline: Text
+        -startGameButton: Button
+        -settingsButton: Button
+        +StartView()
+        -createTitle() -> VBox
+        -createButtons() -> VBox
+    }
+}
+
+package javafx {
+
+    +class StackPane {
+    }
+
+    +class VBox {
+    }
+
+    +class Text {
+    }
+
+    +class Button {
+    }
+
+}
+
+' named JavaFX UI classes
+StartView --|> StackPane
+StartView --> VBox
+StartView --> Text
+StartView --> Button
+
+@enduml
