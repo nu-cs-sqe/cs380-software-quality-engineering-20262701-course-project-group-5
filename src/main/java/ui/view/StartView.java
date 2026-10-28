@@ -46,7 +46,7 @@ public class StartView extends StackPane {
         VBox titleBox = new VBox(titleBoxSpacing);
         titleBox.setAlignment(Pos.TOP_CENTER);
 
-        titleCredit = new Text("KLAUS TEUBER's");
+        titleCredit = new Text("KLAUS TEUBER'S");
         titleCredit.getStyleClass().add("title-credit");
 
         titleCatan = new Text("CATAN");

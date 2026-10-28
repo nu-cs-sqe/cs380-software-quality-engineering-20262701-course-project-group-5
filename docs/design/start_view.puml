@@ -2,13 +2,9 @@
 
 package ui.view {
     +class StartView {
-    ' need to change to fit Catan
         -titleCredit: Text
         -titleCatan: Text
         -tagline: Text
-        -subTitleCardGame: Text
-        -subLine1: Text
-        -subLine2: Text
         -startGameButton: Button
         -settingsButton: Button
         +StartView()
