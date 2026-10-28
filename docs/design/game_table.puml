@@ -114,6 +114,8 @@ package board {
         -edges : Set<Edge>
         -hexes : Set<Hex>
         +produceResourcesForToken(tokenValue : int) : void
+        +addPieceAtLocation(piece : Piece, location : Location) : void
+        +removePieceFromLocation(pieceData : PieceData, location : Location) : void
     }
 
     +abstract class Hex {
@@ -121,12 +123,13 @@ package board {
         -vertices : Set<Vertex>
         -edges : Set<Edge>
         -canProduce : boolean
+        -products : ResourceProducts
         -occupyingPieces : List<Piece>
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce() : void
         +produceResources() : void
-        -sendResourcesToPieces(stacks : List<ResourceStack>) : void
+        -sendResourcesToPieces(products : ResourceProducts) : void
     }
 
     +class HillsHex {
@@ -167,7 +170,7 @@ package board {
     +class Vertex {
         -point : Point
         +getPoint() : Point
-        +produceResources(stacksPerSource : List<List<ResourceStack>>) : void
+        +produceResources(products : ResourceProducts) : void
     }
 
     +class Edge {
@@ -196,7 +199,7 @@ package piece {
     }
 
     +abstract class Building {
-        +produceResources(stacksPerSource : List<List<ResourceStack>>) : void
+        +produceResources(products : ResourceProducts) : void
     }
 
     +class PieceData {
@@ -205,13 +208,13 @@ package piece {
     }
 
     +class Settlement {
-        +produceResources(stacksPerSource : List<List<ResourceStack>>) : void
+        +produceResources(products : ResourceProducts) : void
         +placeEffect() : void
         +removeEffect() : void
     }
 
     +class City {
-        +produceResources(stacksPerSource : List<List<ResourceStack>>) : void
+        +produceResources(products : ResourceProducts) : void
         +placeEffect() : void
         +removeEffect() : void
     }
@@ -253,10 +256,7 @@ package resource {
     +abstract class ResourceStack {
         -size : int
         +ResourceStack(initialSize : int)
-        +increase(amount : int) : void
         +getSize() : int
-        +decrease(amount : int) : void
-        +combineWith(otherStack : ResourceStack) : void
     }
 
     +class BrickResourceStack {
@@ -278,6 +278,14 @@ package resource {
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
         +removeResources(stack : ResourceStack) : void
+    }
+
+    +class ResourceProducts {
+        -tier1Products : List<ResourceStack>
+        -tier2Products : List<ResourceStack>
+        +ResourceProducts(tier1Products : List<ResourceStack>, tier2Products : List<ResourceStack>)
+        +getTier1Products() : List<ResourceStack>
+        +getTier2Products() : List<ResourceStack>
     }
 
 }
@@ -335,6 +343,9 @@ ResourceInventory ..> ResourceStack
 GameBoard --> Hex
 GameBoard --> Vertex
 GameBoard --> Edge
+GameBoard ..> Location
+GameBoard ..> Piece
+GameBoard ..> PieceData
 
 Hex --> Piece
 Hex --> Vertex
@@ -343,7 +354,7 @@ Hex --> Edge
 Edge --> Vertex
 Edge ..> PieceData
 
-Hex --> ResourceStack
+Hex --> ResourceProducts
 HillsHex --|> Hex
 ForestHex --|> Hex
 MountainsHex --|> Hex
@@ -359,6 +370,7 @@ Vertex --|> Location
 Edge --> Piece
 Edge --> Point
 Edge --|> Location
+Vertex ..> ResourceProducts
 
 Harbor --> ResourceStack
 
@@ -386,11 +398,16 @@ OreResourceStack --|> ResourceStack
 GrainResourceStack --|> ResourceStack
 WoolResourceStack --|> ResourceStack
 
+ResourceProducts --> ResourceStack
+
 Piece --> ResourceInventory
 Piece --> PieceInventory
 Piece ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
+Building ..> ResourceProducts
+Settlement ..> ResourceProducts
+City ..> ResourceProducts
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
