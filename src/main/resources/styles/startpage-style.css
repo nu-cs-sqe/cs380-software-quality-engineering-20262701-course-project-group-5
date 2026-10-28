@@ -33,3 +33,7 @@
     -fx-background-color: #7A1317;
     -fx-translate-y: 1px;
 }
+
+.btn:pressed {
+    -fx-translate-y: 3px;
+}
