@@ -38,6 +38,8 @@ package ui {
         -{final} dice : Dice
         -{final} bank : Bank
         -{final} players : List<GamePlayer>
+        -{final} placementHelper : PlacementHelper
+        -{final} tradeHelper : TradeHelper
         -activePlayer : GamePlayer
         -phase : GamePhase
         +GameTableController(Set<PlayerData>, board : GameBoard, dice : Dice, bank : Bank)
@@ -57,6 +59,22 @@ package ui {
         -{final} players : Set<PlayerData>
         …
         +GameTableView(Set<PlayerData>)
+        +update() : void
+        …()
+    }
+
+    +class TradeController {
+        -{final} view : TradeView
+        -{final} players : List<GamePlayer>
+        -{final} tradeHelper : TradeHelper
+        +update() : void
+        -updateView() : void
+        -routeUserInput() : void
+    }
+
+    +class TradeView {
+        -{final} players : Set<PlayerData>
+        …
         +update() : void
         …()
     }
@@ -107,13 +125,18 @@ package player {
         -{final} armySizeTracker : ScoreTracker
         -{final} inventory : PlayerInventory
         -{final} placementHelper : PlacementHelper
+        -{final} tradeHelper : TradeHelper
         -awards : List<Award>
-        +Player(color : Color, placementHelper : PlacementHelper)
+        +Player(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
         +getInventory() : PlayerInventory
         +rollDice(dice : Dice) : void
         +play(item : Playable) : void
         +buy(item : Buyable) : void
+        +getValidPlacements(piece : Piece) : List<Location>
         +place(piece : Piece, location : Location) : void
+        +proposePlayerTrade(otherPlayer : Color, trade : TradeOffer) : void
+        +acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer) : void
+        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void
     }
 
     +class PlayerInventory {
@@ -131,22 +154,30 @@ package player {
         +removeDevelopment(development : Development) : void
     }
 
-    class PlacementHelper {
-        -{final} color : Color
+}
+
+package trade {
+
+    class TradeHelper {
         -{final} board : GameBoard
-        -{final} gamePhaseHolder : GamePhaseHolder
-        +PlacementHelper(color : Color)
-        +getValidBuildingSpots() : List<Vertex>
-        +getValidRoadSpots() : List<Edge>
-        ' build
-        +place(piece : Piece, location : Location) : void
-        ' checks for validity, ties to highlighting
-        -isValidBuildingSpot(vertex : Vertex) : boolean
-        -isValidRoadSpot(edge : Edge) : boolean
-        -isFarEnoughFromBuildings(vertex : Vertex) : boolean
-        -isVertexConnectedToOwnRoad(Color, vertex : Vertex) : boolean
-        -isEdgeConnectedToOwnPieces(Color, edge : Edge) : boolean
-        -touchesSetupSettlement(Color, edge : Edge) : boolean
+        -{final} activeTradeOffers : Set<TradeOffer>
+        +getActiveTradeOffers() : Set<TradeOffer>
+        +conductTrade(trade : TradeOffer) : void
+        +refuseTrade(trade : Trade) : void
+        -isValidTrade(trade : TradeOffer) : boolean
+        -isValidPlayerTrade(trade : TradeOffer) : boolean
+        -isValidBankTrade(trade : TradeOffer) : boolean
+    }
+
+    class TradeOffer {
+        -{final} requestedResources : List<ResourceStack>
+        -{final} offeredResources : List<ResourceStack>
+        -{final} proposer : ResourceInventory
+        -{final} receiver : ResourceInventory
+        -accepted : boolean
+        +TradeOffer(proposer : ResourceInventory, receiver : ResourceInventory, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
+        +getRequestedResources() : List<ResourceStack>
+        +getOfferedResources() : List<ResourceStack>
     }
 
 }
@@ -160,6 +191,23 @@ package board {
         +produceResourcesForToken(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
+    }
+
+    class PlacementHelper {
+        -{final} board : GameBoard
+        -{final} gamePhaseHolder : GamePhaseHolder
+        +PlacementHelper()
+        +getValidBuildingSpots() : List<Vertex>
+        +getValidRoadSpots() : List<Edge>
+        ' build
+        +place(piece : Piece, location : Location) : void
+        ' checks for validity, ties to highlighting
+        -isValidBuildingSpot(vertex : Vertex) : boolean
+        -isValidRoadSpot(edge : Edge) : boolean
+        -isFarEnoughFromBuildings(vertex : Vertex) : boolean
+        -isVertexConnectedToOwnRoad(color : Color, vertex : Vertex) : boolean
+        -isEdgeConnectedToOwnPieces(color : Color, edge : Edge) : boolean
+        -touchesSetupSettlement(color : Color, edge : Edge) : boolean
     }
 
     +abstract class Hex {
@@ -365,15 +413,29 @@ GameTableController --> GameTableView
 GameTableController ..|> Observer
 GameTableController ..|> GamePhaseHolder
 GameTableView ..|> Observer
+TradeController --> TradeView
+TradeController ..|> Observer
+TradeView ..|> Observer
 
 GameTableController --> GamePlayer
 GameTableController --> GameBoard
 GameTableController --> Bank
 GameTableController --> Dice
 GameTableController --> GamePhase
-GameTableController ..> PlacementHelper
+GameTableController --> PlacementHelper
 GameTableController ..> PlayerData
 GameTableView --> PlayerData
+
+TradeController ..> PlayerData
+TradeController --> GamePlayer
+TradeController --> TradeHelper
+TradeView --> PlayerData
+
+TradeHelper --> ResourceStack
+TradeHelper --> GameBoard
+TradeHelper --> TradeOffer
+TradeOffer --> ResourceStack
+TradeOffer --> ResourceInventory
 
 GameBoard --|> Observed
 Dice --|> Observed
@@ -385,6 +447,7 @@ GamePlayer --|> Observed
 GamePlayer --> ScoreTracker
 GamePlayer --> PlayerInventory
 GamePlayer ..> Piece
+GamePlayer ..> Dice
 GamePlayer --> Color
 GamePlayer --> Award
 GamePlayer ..> ResourceStack
