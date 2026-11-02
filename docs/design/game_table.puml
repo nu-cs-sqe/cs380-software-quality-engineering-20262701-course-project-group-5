@@ -351,6 +351,7 @@ package resource {
         -size : int
         +ResourceStack(initialSize : int)
         +getSize() : int
+        +equals(stack : ResourceStack) : boolean
     }
 
     +class BrickResourceStack {
