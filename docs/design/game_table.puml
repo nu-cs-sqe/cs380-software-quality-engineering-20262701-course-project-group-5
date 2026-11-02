@@ -216,6 +216,7 @@ package board {
         -canProduce : boolean
         -products : ResourceProducts
         -occupyingPieces : List<Piece>
+        +Hex(vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce() : void
@@ -260,12 +261,14 @@ package board {
 
     +class Vertex {
         -point : Point
+        +Vertex(endpoint : Point)
         +getPoint() : Point
         +produceResources(products : ResourceProducts) : void
     }
 
     +class Edge {
         -endpoints : Set<Point>
+        +Edge(endpoint1 : Point, endpoint2 : Point)
         +getEndpoints() : Pair<Point, Point>
     }
 
