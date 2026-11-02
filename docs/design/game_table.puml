@@ -41,7 +41,8 @@ package ui {
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
         -activePlayer : GamePlayer
-        -phase : GamePhase
+        -gamePhase : GamePhase
+        -turnPhase : TurnPhase
         +GameTableController(Set<PlayerData>, board : GameBoard, dice : Dice, bank : Bank)
         +update() : void
         -updateView() : void
@@ -86,6 +87,11 @@ package domain {
     +enum GamePhase {
         SETUP,
         REGULAR
+    }
+
+    +enum TurnPhase {
+        PRODUCTION,
+        ACTION
     }
 
     +interface GamePhaseHolder {
@@ -417,6 +423,7 @@ GameTableController --> GameBoard
 GameTableController --> Bank
 GameTableController --> Dice
 GameTableController --> GamePhase
+GameTableController --> TurnPhase
 GameTableController --> PlacementHelper
 GameTableController ..> PlayerData
 GameTableView --> PlayerData
