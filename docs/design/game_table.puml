@@ -196,7 +196,6 @@ package board {
     class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
-        +PlacementHelper()
         +getValidBuildingSpots() : List<Vertex>
         +getValidRoadSpots() : List<Edge>
         ' build
@@ -286,9 +285,6 @@ package piece {
         #ownerPieces : PieceInventory
         +Piece(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
         +abstract getPieceData() : PieceData
-        +getBuildCost() : List<ResourceStack>
-        +placeEffect() : void
-        +removeEffect() : void
     }
 
     +abstract class Building {
@@ -302,19 +298,13 @@ package piece {
 
     +class Settlement {
         +produceResources(products : ResourceProducts) : void
-        +placeEffect() : void
-        +removeEffect() : void
     }
 
     +class City {
         +produceResources(products : ResourceProducts) : void
-        +placeEffect() : void
-        +removeEffect() : void
     }
 
     +class Road {
-        +placeEffect() : void
-        +removeEffect() : void
     }
 
     +class Robber {
