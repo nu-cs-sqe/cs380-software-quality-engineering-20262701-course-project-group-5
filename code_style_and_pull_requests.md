@@ -12,7 +12,7 @@ this will be loosely based on the code review rules I (Anthony) had at my co-op 
     6. commits generally should be limited in scope to 1 source file + corresponding tests file
 2. PR contents
     1. Descriptive title, and should be similar to its corresponding issue
-        1. For a canned format you could use "Resolve \<issue title\>"
+        1. For a canned format you could use "TYPE: \<short description\>". See https://github.com/py-pdf/pypdf/pulls for examples
     2.  at least one issue must be associated with each pull request
         4. Can use "closing patterns". In the PR description write "Closes \<insert link to issue here\>" to automatically close an issue upon merging the PR 
     3. Any new/updated design decisions should be documented and a rationale should be given
