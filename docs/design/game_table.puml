@@ -127,7 +127,7 @@ package player {
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
         -awards : List<Award>
-        +Player(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
+        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
         +getInventory() : PlayerInventory
         +rollDice(dice : Dice) : void
         +play(item : Playable) : void
