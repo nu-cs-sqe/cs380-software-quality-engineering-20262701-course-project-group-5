@@ -19,6 +19,7 @@ this will be loosely based on the code review rules I (Anthony) had at my co-op 
         1. e.g. changing function signature
 3. Reviewers
     1. I think one is enough, for big decisions we should have 2 though
+    2. PR author should randomly pick a reviewer with a random number generator to distribute workload evenly
 4. Review comments
     1. Each reviewer should comment with clarifying questions and proposed changes (if any), highlighting specific lines of code when needed
     2. PR author should reply to each comment.
