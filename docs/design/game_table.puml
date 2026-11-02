@@ -23,11 +23,6 @@ package mvc_util {
     ORANGE
 }
 
-+class PlayerData {
-    +{final} color : Color
-    +{final} name : String
-}
-
 package game_table {
 
 package ui {
@@ -160,6 +155,11 @@ package player {
         +addDevelopment(development : Development) : void
         +hasDevelopment(development : Development) : boolean
         +removeDevelopment(development : Development) : void
+    }
+
+    +class PlayerData {
+        +{final} color : Color
+        +{final} name : String
     }
 
 }
