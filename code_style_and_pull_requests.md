@@ -28,11 +28,11 @@ this will be loosely based on the code review rules I (Anthony) had at my co-op 
 5. Merging Checks:
     1. All review comments are resolved
     2. All test cases/other CI components pass
+6. Branch names:
+    1. use format `feature/feature-area/feature-name` for new features, and `bugfix/description` for bug fixes. See: https://learn.microsoft.com/en-us/azure/devops/repos/git/git-branching-guidance?view=azure-devops
 
 
 ## Other code style things
 
 1. I guess we can just use the google one: https://google.github.io/styleguide/javaguide.html
-2. Branch names: should be name-description
-    1. eg: anthony-add-linter-dependencies
-3. Run all linters before each commit
+2. Run all linters before each commit
