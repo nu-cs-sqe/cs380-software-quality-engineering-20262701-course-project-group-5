@@ -31,7 +31,7 @@ TODO:
 
 # Week 5 (10/26/2026-11/01/2026)
 **Planning and Progress Tracking**:
-1. Xavier, Hayley, Anthony, Breanna: Reviewed and finalized board design ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/18))
+1. Xavier, Hayley, Anthony, Breanna: Reviewed and finalized board design, merged PR ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/18))
 2. Anthony: Merged assets PR ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/21))
 3. Breanna: Contacted Daniel on behalf of the team
 4. Xavier, Hayley, Anthony, Breanna: Split up BVA for board setup
