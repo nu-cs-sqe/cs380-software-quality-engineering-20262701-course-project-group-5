@@ -111,6 +111,7 @@ package domain {
 
     +class ScoreTracker {
         -score : int
+        +ScoreTracker(startingScore : int)
         +getScore() : int
         +addScore(score : int) : void
         +removeScore(score : int) : void
