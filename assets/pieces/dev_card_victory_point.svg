@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="dev_card_victory_point.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.75811588"
+     inkscape:cx="396.3774"
+     inkscape:cy="561.25984"
+     inkscape:window-width="1920"
+     inkscape:window-height="1111"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="93.653229"
+       y="50.124263"
+       width="593.5768"
+       height="139.82031"
+       id="rect2" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffcc00;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect1"
+       width="210.09871"
+       height="296.302"
+       x="0.3490012"
+       y="1.0470035" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text1"
+       style="font-size:74.6667px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect2);fill:#000080;stroke-width:1.00157;paint-order:markers fill stroke"><tspan
+         x="93.652344"
+         y="118.06238"
+         id="tspan1">VICTORY POINT</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.1111px;writing-mode:lr-tb;direction:ltr;fill:#000080;stroke-width:0.264999;paint-order:markers fill stroke"
+       x="40.833138"
+       y="52.001175"
+       id="text3"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="font-size:14.1111px;stroke-width:0.265"
+         x="40.833138"
+         y="52.001175">+1 victory point</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:14.1111px;stroke-width:0.265"
+         x="40.833138"
+         y="69.64006"
+         id="tspan4">hide until you win</tspan></text>
+    <ellipse
+       style="fill:#0000ff;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path4"
+       cx="108.19037"
+       cy="164.90305"
+       rx="49.907169"
+       ry="49.732666" />
+    <ellipse
+       style="fill:#00ffff;stroke-width:0.365179;paint-order:markers fill stroke"
+       id="path5"
+       cx="108.36487"
+       cy="157.39954"
+       rx="24.604582"
+       ry="41.880142" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path6"
+       cx="70.498238"
+       cy="135.58696"
+       rx="8.3760281"
+       ry="9.2485313" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path7"
+       cx="60.726204"
+       cy="160.88954"
+       rx="6.9800234"
+       ry="8.7250299" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path8"
+       cx="63.692711"
+       cy="192.12514"
+       rx="8.2015276"
+       ry="7.5035253" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path9"
+       cx="145.53349"
+       cy="133.84195"
+       rx="6.282021"
+       ry="6.4565215" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path10"
+       cx="155.82903"
+       cy="160.36603"
+       rx="6.4565215"
+       ry="7.5035253" />
+    <ellipse
+       style="fill:#ffe680;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path11"
+       cx="153.21152"
+       cy="193.69565"
+       rx="8.3760281"
+       ry="7.3290243" />
+    <text
+       xml:space="preserve"
+       style="font-size:43.045px;writing-mode:lr-tb;direction:ltr;fill:#000080;stroke-width:0.224545;paint-order:markers fill stroke"
+       x="106.69781"
+       y="145.79169"
+       id="text11"
+       transform="scale(0.84734245,1.1801604)"><tspan
+         sodipodi:role="line"
+         id="tspan11"
+         style="font-size:43.045px;fill:#000080;stroke-width:0.224546"
+         x="106.69781"
+         y="145.79169">+1</tspan></text>
+    <ellipse
+       style="fill:#00ffff;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path12"
+       cx="104.00235"
+       cy="105.39835"
+       rx="48.162159"
+       ry="8.3760281" />
+    <ellipse
+       style="fill:#ffcc00;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path13"
+       cx="104.00234"
+       cy="103.82784"
+       rx="45.021149"
+       ry="4.0135136" />
+  </g>
+</svg>

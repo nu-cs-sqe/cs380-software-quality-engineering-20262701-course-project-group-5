@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="city_orange.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.75811588"
+     inkscape:cx="124.65113"
+     inkscape:cy="470.24473"
+     inkscape:window-width="1920"
+     inkscape:window-height="1111"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ff6600;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect1"
+       width="194.39366"
+       height="97.720329"
+       x="8.7250299"
+       y="154.25853" />
+    <rect
+       style="fill:#ff6600;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect2"
+       width="102.25734"
+       height="82.71328"
+       x="9.0740299"
+       y="91.438301" />
+    <path
+       sodipodi:type="star"
+       style="fill:#ff6600;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="path2"
+       inkscape:flatsided="false"
+       sodipodi:sides="3"
+       sodipodi:cx="50.256168"
+       sodipodi:cy="25.477085"
+       sodipodi:r1="71.296249"
+       sodipodi:r2="35.648125"
+       sodipodi:arg1="0.52278909"
+       sodipodi:arg2="1.5699866"
+       inkscape:rounded="3.1225023e-17"
+       inkscape:randomized="0"
+       d="m 112.02938,61.075205 -61.744346,0.04999 -61.744345,0.04999 L 19.369564,7.6780266 50.198441,-45.819141 81.113907,7.6280306 Z"
+       inkscape:transform-center-x="-0.024376788"
+       inkscape:transform-center-y="-11.412664"
+       transform="matrix(0.84456013,0,0,0.64119474,17.762831,54.407088)" />
+    <rect
+       style="fill:#ff6600;stroke-width:0.264999;paint-order:markers fill stroke"
+       id="rect3"
+       width="1.7450058"
+       height="21.28907"
+       x="75.035255"
+       y="127.73443" />
+  </g>
+</svg>
