@@ -291,14 +291,14 @@ package piece {
 
     +abstract class Piece {
         -data : PieceData
-        #bankResources : ResourceInventory
-        #ownerResources : ResourceInventory
-        #ownerPieces : PieceInventory
-        +Piece(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
+        +Piece(data : PieceData)
         +abstract getPieceData() : PieceData
     }
 
     +abstract class Building {
+        #bankResources : ResourceInventory
+        #ownerResources : ResourceInventory
+        +Building(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
         +produceResources(products : ResourceProducts) : void
     }
 
@@ -308,12 +308,16 @@ package piece {
     }
 
     +class Settlement {
+        -ownerVictoryPointsTracker : ScoreTracker
+        +Settlement(ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
     }
 
     +class City {
+        -ownerVictoryPointsTracker : ScoreTracker
+        +City(ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
@@ -535,9 +539,8 @@ WoolResourceStack --|> ResourceStack
 
 ResourceProducts --> ResourceStack
 
-Piece --> ResourceInventory
-Piece --> PieceInventory
-Piece ..> ResourceStack
+Building --> ResourceInventory
+Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
 Building ..> ResourceProducts
@@ -546,7 +549,6 @@ City ..> ResourceProducts
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
-Road --> ScoreTracker
 
 PieceData --> Color
 
