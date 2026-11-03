@@ -352,6 +352,7 @@ package resource {
         +ResourceStack(initialSize : int)
         +getSize() : int
         +equals(stack : ResourceStack) : boolean
+        +hashCode() : int
     }
 
     +class BrickResourceStack {
