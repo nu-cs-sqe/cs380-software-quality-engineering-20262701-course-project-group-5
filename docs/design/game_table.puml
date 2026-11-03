@@ -309,13 +309,19 @@ package piece {
 
     +class Settlement {
         +produceResources(products : ResourceProducts) : void
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class City {
         +produceResources(products : ResourceProducts) : void
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class Road {
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class Robber {
@@ -389,6 +395,8 @@ package resource {
 package development {
 
     +abstract class Development {
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
 }
