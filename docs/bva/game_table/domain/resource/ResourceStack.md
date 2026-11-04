@@ -1,25 +1,30 @@
-# `public abstract class ResourceStack`
+# Class ResourceStack
+Classpath: catan.game_table.domain.resource.ResourceStack 
 
-A holder for a specified number of Catan resources of a type (Brick, Lumber, Ore, etc.) encoded by corresponding subclasses.
+Direct known subclasses: `BrickResourceStack`, `LumberResourceStack`, `OreResourceStack`, `GrainResourceStack`, `WoolResourceStack`
 
-## `public static combine(ResourceStack stack1, ResourceStack stack2)`
+## `public abstract class ResourceStack`
+
+A holder for a specified number of resources of a type (Brick, Lumber, Ore, etc.) encoded by corresponding subclasses.
+
+### `public static ResourceStack combine(ResourceStack stack1, ResourceStack stack2)`
 Returns a new `ResourceStack` with the sum of the sizes of `stack1` and `stack2`. Throws an `IllegalArgumentException` if `stack1` and `stack2` are not the same type.
 
-## `public ResourceStack(int size)`
-Constructs a `ResourceStack` with the given `size`.
+### `public ResourceStack(int size)`
+Initializes a `ResourceStack` with the given `size`.
 
-## `public int getSize()`
-Returns the size of the `ResourceStack`.
+### `public final int getSize()`
+Returns the size of this `ResourceStack`.
 
-## `@Override public boolean equals(Object o)`
+### `@Override public boolean equals(Object o)`
 Returns `true` if the size and type of this `ResourceStack` is equal to the size and type of `o`.
 
-## `@Override public int hashCode()`
-Returns an integer dependent on size and the concrete subclass of this `ResourceStack`. If two `ResourceStack` instances have the same type and size, then their hash codes will be equal.
+### `@Override public int hashCode()`
+Returns an integer dependent on the size and the concrete subclass of this `ResourceStack`. If two `ResourceStack` instances have the same type and size, then their hash codes will be equal.
 
-## BVA
+## Boundary-Value Analysis
 
-### Method under test: `public static combine(ResourceStack stack1, ResourceStack stack2) throws IllegalArgumentException`
+### Test: `public static ResourceStack combine(ResourceStack stack1, ResourceStack stack2)`
 
 |             | State of the System                                                                           | Expected output                                                          | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------|
@@ -28,7 +33,7 @@ Returns an integer dependent on size and the concrete subclass of this `Resource
 | Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
 
 
-### Method under test: `public boolean equals(Object o)`
+### Test: `public boolean equals(Object o)`
 
 |             | State of the System                                                                           | Expected output | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------|
@@ -38,7 +43,7 @@ Returns an integer dependent on size and the concrete subclass of this `Resource
 | Test Case 4 | Let this be a `BrickResourceStack` with size `1`, input a `LumberResourceStack` with size `1` | false           | :x:          |
 | Test Case 5 | Let this be a `BrickResourceStack` with size `1`, input `this`                                | true            | :x:          |
 
-### Method under test: `public int hashCode()`
+### Test: `public int hashCode()`
 
 |             | State of the System                                        | Expected output      | Implemented? |
 |-------------|------------------------------------------------------------|----------------------|--------------|
