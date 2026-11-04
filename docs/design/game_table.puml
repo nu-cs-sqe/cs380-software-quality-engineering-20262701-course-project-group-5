@@ -362,7 +362,7 @@ package resource {
         +{static} combine(stack1 : ResourceStack, stack2 : ResourceStack) : ResourceStack
         +ResourceStack(size : int)
         +getSize() : int
-        +equals(stack : ResourceStack) : boolean
+        +equals(o : Object) : boolean
         +hashCode() : int
     }
 
