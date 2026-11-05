@@ -292,7 +292,7 @@ package piece {
     +abstract class Piece {
         -data : PieceData
         +Piece(data : PieceData)
-        +abstract getPieceData() : PieceData
+        +getPieceData() : PieceData
     }
 
     +abstract class Building {
