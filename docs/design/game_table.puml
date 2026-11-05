@@ -310,7 +310,7 @@ package piece {
 
     +class Settlement {
         -ownerVictoryPointsTracker : ScoreTracker
-        +Settlement(ownerVictoryPointsTracker : ScoreTracker)
+        +Settlement(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
@@ -318,7 +318,7 @@ package piece {
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
-        +City(ownerVictoryPointsTracker : ScoreTracker)
+        +City(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
