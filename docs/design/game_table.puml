@@ -293,6 +293,7 @@ package piece {
         -data : PieceData
         +Piece(data : PieceData)
         +getPieceData() : PieceData
+        +onPlaceEffect() : void
     }
 
     +abstract class Building {
