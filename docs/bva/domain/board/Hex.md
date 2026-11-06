@@ -93,19 +93,21 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| state: `tokenValue` | `int` |
+| none; state: `tokenValue`, kind of hex (token-bearing, desert or ocean) | `int` |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | `tokenValue` | Interval `[2, 12]` (excluding 7 on producing hexes) |
+| hex kind | Cases (token-bearing hex, non-producing hex) |
 | returned value (output) | Interval `[2, 12]`, or 0 on non-producing hexes |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `tokenValue` | 2, 12 (1, 13 and 7 on a producing hex can't be set), 0 (desert and ocean) | 
-| returned value (output) | same as `tokenValue` |
+| `tokenValue` | 2 (LOW), 12 (HIGH) |
+| hex kind | token-bearing hex, non-producing hex (desert or ocean) |
+| returned value (output) | same as `tokenValue` (0 for desert and ocean; 1, 13 and 7 on a producing hex can't be set) |
 
 **Step 4: Each choice**
 
