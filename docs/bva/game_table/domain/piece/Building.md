@@ -14,6 +14,6 @@ Constructs a Building object with set `PieceData` and access to the `ResourceInv
 
 ### `public produce(products:ResourceProduct)`
 
-Given a `product` updates a `ResourceStack` list of either tier1 or tier2 products, the amount by which and product type depending on the inheriting class.
+Given a `products` updates a `ResourceStack` list of either tier1 or tier2 products, the amount by which and product type depending on the inheriting class.
 
 ## Boundary-Value Analysis
