@@ -59,3 +59,4 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 | Test Case 8  | `vertices` has 7 elements              | `IllegalArgumentException` | :x:          |
 | Test Case 9  | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
 | Test Case 10 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
+
