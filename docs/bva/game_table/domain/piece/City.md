@@ -12,7 +12,7 @@ Constructs a `City` object with set `PieceData` and access to the `ResourceInven
 
 ### `public produceResources(products : ResourceProducts)`
 
-Given a `products` increments a `ResourceStack` list of either `tier1` or `tier2` products by two.
+Updates the `bankResources` and `ownerResources` `ResourceInventory`s by two based on the given `products`.
 
 ### `public onBoughtEffect()`
 

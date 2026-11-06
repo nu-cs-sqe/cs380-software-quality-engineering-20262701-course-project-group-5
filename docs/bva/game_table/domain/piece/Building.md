@@ -14,6 +14,6 @@ Constructs a `Building` object with set `PieceData` and access to the `ResourceI
 
 ### `public produce(products : ResourceProducts)`
 
-Given a `products` updates a `ResourceStack` list of either `tier1` or `tier2` products, the amount by which and product type depending on the inheriting class.
+Updates the `bankResources` and `ownerResources` `ResourceInventory`s based on the given `products`. The amount updated by and product type depend on the inheriting class.
 
 ## Boundary-Value Analysis

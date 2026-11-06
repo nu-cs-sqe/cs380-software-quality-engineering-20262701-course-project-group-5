@@ -12,7 +12,7 @@ Constructs a Settlement object with set `PieceData` and access to the `ResourceI
 
 ### `public produceResources(products : ResourceProducts)`
 
-Given a `products` increments a `ResourceStack` list of tier1 products by one.
+Updates the `bankResources` and `ownerResources` `ResourceInventory`s by one based on the given `products`.
 
 ### `public onBoughtEffect()`
 
