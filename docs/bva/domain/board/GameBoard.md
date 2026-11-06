@@ -28,10 +28,13 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 |---|---|
 | `tokenValue` | Interval `[2, 12]` |
 | `hexes` | Collection |
-| hexes matching the token | Searching |
+| hexes matching the token | Collection (subset of `hexes`) |
 | matching hex `canProduce` | Boolean |
 | outcome (output) | Cases |
 | number of hexes that produce (output) | Count |
+
+**Operations:**
+Appending a single element (to the location's pieces)
 
 **Step 3: Concrete values**
 | Variable | Values |
@@ -75,6 +78,9 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 | outcome (output) | Cases |
 | pieces at location after the call (output) | Count |
 
+**Operations:**
+Appending a single element (to the location's pieces)
+
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
@@ -116,11 +122,15 @@ All combinations of piece type x location type. Each choice for everything else.
 |---|---|
 | `pieceData` | Pointer |
 | `location` | Pointer, on-board Boolean |
-| location's pieces | Collection, Deleting |
-| pieces matching `pieceData` | Searching |
+| location's pieces | Collection |
+| pieces matching `pieceData` | Collection (subset of the location's pieces) |
 | `pieceData` vs a stored piece's data | Pair of References (object equality) |
 | outcome (output) | Cases |
 | pieces at location after the call (output) | Count |
+
+**Operations:**
+Searching for the pieces matching `pieceData`.
+Deleting elements from any position (from the location's pieces).
 
 **Step 3: Concrete values**
 | Variable | Values |
