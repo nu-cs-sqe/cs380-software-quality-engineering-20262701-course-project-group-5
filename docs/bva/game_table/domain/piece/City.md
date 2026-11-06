@@ -4,7 +4,7 @@ Classpath: catan.game_table.domain.piece.City
 
 ## `class City extends Building`
 
-A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. Can produce two `ResourceProduct` that is `tier1` or `tier2` of the `ResourceStack` type of `Hex` the `City` is placed on.
+A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. Can produce two `ResourceProducts` that is `tier1` or `tier2` of the `ResourceStack` type of `Hex` the `City` is placed on.
 
 ### `public City(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)`
 

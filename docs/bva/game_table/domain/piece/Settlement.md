@@ -4,7 +4,7 @@ Classpath: catan.game_table.domain.piece.Settlement
 
 ## `class Settlement extends Building`
 
-A subclass of Building that costs a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one to build. Can produce two `ResourceProduct` that is `tier1` of the `ResourceStack` type of `Hex` the City is placed on.
+A subclass of Building that costs a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one to build. Can produce two `ResourceProducts` that is `tier1` of the `ResourceStack` type of `Hex` the City is placed on.
 
 ### `public Settlement(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)`
 
