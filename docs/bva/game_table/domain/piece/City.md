@@ -20,6 +20,6 @@ Decrements the Resources of the Player purchasing the City by its cost.
 
 ### `public getCost()`
 
-Accessor for the cost of a Road in terms of Resources, in this case a `GrainResourceStack` of size two and `OreResourceStack` of size three
+Accessor for the cost of a City in terms of Resources, in this case a `GrainResourceStack` of size two and `OreResourceStack` of size three
 
 ## Boundary-Value Analysis
