@@ -21,3 +21,41 @@ Sets the `canProduce` flag to the given value. `produceResources()` only runs wh
 
 ### `public void produceResources()`
 If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwise does nothing. A `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Resource subclasses (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`) override this to produce their specific resource.
+
+### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `vertices` | Pointer, Collection (fixed size 6) |
+| `edges` | Pointer, Collection (fixed size 6) |
+| `products` | Pointer |
+| outcome (output) | Cases |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `vertices` | null, empty, exactly one, 5, 6, 7 |
+| `edges` | null, empty, exactly one, 5, 6, 7 |
+| `products` | null, real object |
+| outcome (output) | hex created, IllegalArgumentException |
+
+**Step 4: Each choice**
+
+|              | Input                                  | Expected output            | Implemented? |
+|--------------|----------------------------------------|----------------------------|--------------|
+| Test Case 1  | 6 vertices, 6 edges, valid products    | hex created                | :x:          |
+| Test Case 2  | `vertices` is `null`                   | `IllegalArgumentException` | :x:          |
+| Test Case 3  | `edges` is `null`                      | `IllegalArgumentException` | :x:          |
+| Test Case 4  | `products` is `null`                   | `IllegalArgumentException` | :x:          |
+| Test Case 5  | `vertices` empty, valid others         | `IllegalArgumentException` | :x:          |
+| Test Case 6  | `vertices` has 1 element               | `IllegalArgumentException` | :x:          |
+| Test Case 7  | `vertices` has 5 elements              | `IllegalArgumentException` | :x:          |
+| Test Case 8  | `vertices` has 7 elements              | `IllegalArgumentException` | :x:          |
+| Test Case 9  | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
+| Test Case 10 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
