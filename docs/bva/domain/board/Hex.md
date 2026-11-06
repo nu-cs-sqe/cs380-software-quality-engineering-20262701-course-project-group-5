@@ -116,3 +116,39 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 | Test Case 1 | `ForestHex` with token `2`  | `2`             | :x:          |
 | Test Case 2 | `ForestHex` with token `12` | `12`            | :x:          |
 | Test Case 4 | `DesertHex`                 | `0`             | :x:          |
+
+### Test: `public void setCanProduce(boolean canProduce)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| `canProduce : boolean`; state: current flag, concrete class of the hex the method is called on | No return value. The flag holds the new value (always false on `DesertHex` and `OceanHex`). |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `canProduce` | Boolean |
+| current flag | Boolean |
+| concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
+| flag after the call (output) | Boolean |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `canProduce` | true, false |
+| current flag | true, false |
+| concrete class | `ForestHex` (chosen arbitrarily), `DesertHex`, `OceanHex` |
+| flag after the call (output) | true, false |
+
+**Step 4: All combinations** of `canProduce` x current flag for `ForestHex` Each choice for the other classes.
+
+|             | Input                                      | Expected output                              | Implemented? |
+|-------------|--------------------------------------------|----------------------------------------------|--------------|
+| Test Case 1 | `ForestHex` with flag true, input `false`  | `canProduce()` false                         | :x:          |
+| Test Case 2 | `ForestHex` with flag false, input `true`  | `canProduce()` true                          | :x:          |
+| Test Case 3 | `ForestHex` with flag true, input `true`   | `canProduce()` true                          | :x:          |
+| Test Case 4 | `ForestHex` with flag false, input `false` | `canProduce()` false                         | :x:          |
+| Test Case 5 | `DesertHex` with flag true, input `false`  | `canProduce()` false                         | :x:          |
+| Test Case 6 | `DesertHex` with flag false, input `true`  | `canProduce()` false (desert never produces) | :x:          |
+| Test Case 7 | `OceanHex` with flag true, input `false`   | `canProduce()` false                         | :x:          |
+| Test Case 8 | `OceanHex` with flag false, input `true`   | `canProduce()` false (ocean never produces)  | :x:          |
