@@ -4,6 +4,10 @@ Classpath: catan.game_table.domain.piece.Piece
 
 ## `abstract class Piece`
 
+General form of a piece that could be bought or placed on the board, at their base level all pieces are defined by type and color
+
+Direct known subclasses: `Building`, `Harbor`, `Road`, `Robber`
+
 ### `public Piece(data:PieceData)`
 
 Constructs a Piece object using PieceData comprised of a type and color.
