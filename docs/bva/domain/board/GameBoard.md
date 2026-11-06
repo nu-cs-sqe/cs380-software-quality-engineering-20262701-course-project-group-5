@@ -45,19 +45,19 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 
 **Step 4: Each choice** 
 
-| | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case 1 | Board with more than one hex, input `1` | `IllegalArgumentException` | :x: |
-| Test Case 2 | Board with more than one hex, input `13` | `IllegalArgumentException` | :x: |
-| Test Case 3 | More than one hex, only the first hex has token `2`, input `2` | only the first hex produces | :x: |
-| Test Case 4 | More than one hex, only the last hex has token `12`, input `12` | only the last hex produces | :x: |
-| Test Case 5 | More than one hex, input `7` | no hex produces | :x: |
-| Test Case 6 | More than one hex, none has token `6`, input `6` | no hex produces | :x: |
-| Test Case 7 | Board with exactly two hexes, both with token `8`, input `8` | both hexes produce | :x: |
-| Test Case 8 | One hex with token `8` and `canProduce` false, input `8` | hex does not produce | :x: |
-| Test Case 9 | Board with no hexes, input `6` | nothing happens, no exception | :x: |
-| Test Case 10 | Board with exactly one hex, token `8`, `canProduce` true, input `8` | that hex produces | :x: |
-| Test Case 11 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes produce | :x: |
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`      | :x:          |
+| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`      | :x:          |
+| Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex produces     | :x:          |
+| Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex produces      | :x:          |
+| Test Case 5  | More than one hex, input `7`                                                                                   | no hex produces                 | :x:          |
+| Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex produces                 | :x:          |
+| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes produce              | :x:          |
+| Test Case 8  | One hex with token `8` and `canProduce` false, input `8`                                                       | hex does not produce            | :x:          |
+| Test Case 9  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception   | :x:          |
+| Test Case 10 | Board with exactly one hex, token `8`, `canProduce` true, input `8`                                            | that hex produces               | :x:          |
+| Test Case 11 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes produce | :x:          |
 
 ### Test: `public void addPieceAtLocation(Piece piece, Location location)`
 
@@ -87,19 +87,19 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 **Step 4** 
 All combinations of piece type x location type. Each choice for everything else.
 
-| | Input | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case 1 | `piece` is `null`, valid empty `Vertex` | `IllegalArgumentException` | :x: |
-| Test Case 2 | valid `Settlement`, `location` is `null` | `IllegalArgumentException` | :x: |
-| Test Case 3 | valid `Settlement`, `Vertex` not on this board | `IllegalArgumentException` | :x: |
-| Test Case 4 | `Settlement`, empty `Vertex` on board | vertex holds exactly that piece | :x: |
-| Test Case 5 | `Settlement`, `Edge` on board | `IllegalArgumentException` | :x: |
-| Test Case 6 | `City`, empty `Vertex` on board | vertex holds exactly that piece | :x: |
-| Test Case 7 | `City`, `Edge` on board | `IllegalArgumentException` | :x: |
-| Test Case 8 | `Road`, `Vertex` on board | `IllegalArgumentException` | :x: |
-| Test Case 9 | `Road`, empty `Edge` on board | edge holds exactly that piece | :x: |
-| Test Case 10 | `Harbor`, empty `Vertex` on board | vertex holds exactly that piece (assumed) | :x: |
-| Test Case 11 | `Harbor`, `Edge` on board | `IllegalArgumentException` (assumed) | :x: |
-| Test Case 12 | `Robber`, `Vertex` on board | `IllegalArgumentException` (assumed: the robber sits on a `Hex`, which is not a `Location`) | :x: |
-| Test Case 13 | `Robber`, `Edge` on board | `IllegalArgumentException` (assumed, same reason) | :x: |
-| Test Case 14 | `Harbor`, `Vertex` already holding one `Settlement` | vertex holds both pieces (assumed) | :x: |
+|              | Input                                               | Expected output                                                                             | Implemented? |
+|--------------|-----------------------------------------------------|---------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | `piece` is `null`, valid empty `Vertex`             | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 2  | valid `Settlement`, `location` is `null`            | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 3  | valid `Settlement`, `Vertex` not on this board      | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 4  | `Settlement`, empty `Vertex` on board               | vertex holds exactly that piece                                                             | :x:          |
+| Test Case 5  | `Settlement`, `Edge` on board                       | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 6  | `City`, empty `Vertex` on board                     | vertex holds exactly that piece                                                             | :x:          |
+| Test Case 7  | `City`, `Edge` on board                             | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 8  | `Road`, `Vertex` on board                           | `IllegalArgumentException`                                                                  | :x:          |
+| Test Case 9  | `Road`, empty `Edge` on board                       | edge holds exactly that piece                                                               | :x:          |
+| Test Case 10 | `Harbor`, empty `Vertex` on board                   | vertex holds exactly that piece (assumed)                                                   | :x:          |
+| Test Case 11 | `Harbor`, `Edge` on board                           | `IllegalArgumentException` (assumed)                                                        | :x:          |
+| Test Case 12 | `Robber`, `Vertex` on board                         | `IllegalArgumentException` (assumed: the robber sits on a `Hex`, which is not a `Location`) | :x:          |
+| Test Case 13 | `Robber`, `Edge` on board                           | `IllegalArgumentException` (assumed, same reason)                                           | :x:          |
+| Test Case 14 | `Harbor`, `Vertex` already holding one `Settlement` | vertex holds both pieces (assumed)                                                          | :x:          |
