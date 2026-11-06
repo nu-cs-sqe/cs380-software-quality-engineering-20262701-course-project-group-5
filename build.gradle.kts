@@ -1,7 +1,5 @@
 import com.github.spotbugs.snom.Confidence
 import com.github.spotbugs.snom.Effort
-import javax.xml.parsers.DocumentBuilderFactory
-import org.w3c.dom.Element
 
 plugins {
     id("java")
@@ -110,8 +108,8 @@ tasks.jacocoTestReport {
 }
 
 pitest {
-    targetClasses = setOf("ui.*") //by default "${project.group}.*"
-    targetTests = setOf("ui.*")
+    targetClasses = setOf("domain.*") //by default "${project.group}.*"
+    targetTests = setOf("domain.*")
     junit5PluginVersion = "1.2.1"
     pitestVersion = "1.15.0" //not needed when a default PIT version should be used
 
@@ -125,63 +123,3 @@ pitest {
     fileExtensionsToFilter.addAll("xml")
     exportLineCoverage = true
 }
-
-// JVM internal class name: package path with "/", inner classes use "$"
-val badgeClass = "Code/CheckOrders"
-val badgeMethod = "checkSupport"
-val badgeMethodDesc: String? = null   // e.g. "(I)Z" if the method is overloaded
-
-val complexityBadge by tasks.registering {
-    group = "verification"
-    description = "Writes a shields.io JSON badge with the missed complexity of one method as grading aid"
-    dependsOn(tasks.jacocoTestReport)
-
-    val reportFile = layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml")
-    val outFile = layout.buildDirectory.file("badges/complexity.json")
-    inputs.file(reportFile)
-    outputs.file(outFile)
-
-    doLast {
-        val factory = DocumentBuilderFactory.newInstance().apply {
-            isValidating = false
-            // JaCoCo's XML has a DOCTYPE pointing at report.dtd; don't try to fetch it
-            setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-        }
-        val doc = factory.newDocumentBuilder().parse(reportFile.get().asFile)
-
-        var missed = -1
-        var covered = -1
-        val classes = doc.getElementsByTagName("class")
-        for (i in 0 until classes.length) {
-            val cls = classes.item(i) as Element
-            if (cls.getAttribute("name") != badgeClass) continue
-            val methods = cls.getElementsByTagName("method")
-            for (j in 0 until methods.length) {
-                val m = methods.item(j) as Element
-                if (m.getAttribute("name") != badgeMethod) continue
-                if (badgeMethodDesc != null && m.getAttribute("desc") != badgeMethodDesc) continue
-                val counters = m.getElementsByTagName("counter")
-                for (k in 0 until counters.length) {
-                    val c = counters.item(k) as Element
-                    if (c.getAttribute("type") == "COMPLEXITY") {
-                        missed = c.getAttribute("missed").toInt()
-                        covered = c.getAttribute("covered").toInt()
-                    }
-                }
-            }
-        }
-        if (missed < 0) throw GradleException("Method $badgeClass.$badgeMethod not found in JaCoCo report")
-
-        val total = missed + covered
-        val color = when {
-            missed == 0 -> "brightgreen"
-            missed * 4 <= total -> "yellow"
-            missed * 2 <= total -> "orange"
-            else -> "red"
-        }
-        val json = """{"schemaVersion":1,"label":"$badgeMethod missed complexity","message":"$missed / $total","color":"$color"}"""
-        outFile.get().asFile.apply { parentFile.mkdirs(); writeText(json) }
-        println("Badge: $json")
-    }
-}
-
