@@ -60,3 +60,30 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 | Test Case 9  | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
 | Test Case 10 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
 
+
+### Test: `public boolean canProduce()`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| state: `canProduce` flag | `boolean` |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `canProduce` flag | Boolean |
+| returned value (output) | Boolean |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `canProduce` flag | true, false |
+| returned value (output) | true, false |
+
+**Step 4: Each choice**
+
+|             | Input                        | Expected output | Implemented? |
+|-------------|------------------------------|-----------------|--------------|
+| Test Case 1 | `ForestHex` just constructed | true            | :x:          |
+| Test Case 2 | `DesertHex` just constructed | false           | :x:          |
+
