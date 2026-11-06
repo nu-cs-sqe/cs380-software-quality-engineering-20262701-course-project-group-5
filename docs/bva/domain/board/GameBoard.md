@@ -142,7 +142,7 @@ Deleting elements from any position (from the location's pieces).
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `pieceData`, `location` | null, true object; location not on board |
+| `pieceData`, `location` | null, real object; location not on board |
 | pieces at location | empty (nothing to delete), exactly one, more than one |
 | pieces matching `pieceData` | no match, exactly one match in first position, exactly one match in last position, more than one match |
 | `pieceData` vs a stored piece's data | same object, different object with equal contents |
