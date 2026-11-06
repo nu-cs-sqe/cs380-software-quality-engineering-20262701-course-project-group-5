@@ -152,3 +152,55 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 | Test Case 6 | `DesertHex` with flag false, input `true`  | `canProduce()` false (desert never produces) | :x:          |
 | Test Case 7 | `OceanHex` with flag true, input `false`   | `canProduce()` false                         | :x:          |
 | Test Case 8 | `OceanHex` with flag false, input `true`   | `canProduce()` false (ocean never produces)  | :x:          |
+
+### Test: `public void produceResources()`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| state: `canProduce`, `occupyingPieces`, `products`, concrete class of the hex | No return value. Outcome is one of: no resources change, Settlement owner receives tier-1 products, City owner receives tier-1 and tier-2 products. Also how many pieces are paid. |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `canProduce` | Boolean |
+| `occupyingPieces` | Collection |
+| piece type | Cases |
+| `products` | Collection of tier-1 and tier-2 stacks |
+| concrete class | Cases (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex`) |
+| outcome (output) | Cases |
+| pieces paid (output) | Count |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `canProduce` | true, false |
+| `occupyingPieces` | empty, exactly one, more than one, 6 (maximum number of buildings bc 6 vertices) |
+| piece type | Settlement, City, at least one of each together |
+| `products` | tier 1 and tier 2 each non-empty |
+| concrete class | `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex` |
+| outcome (output) | no change, tier-1 only (Settlement), tier-1 and tier-2 (City) |
+| pieces paid (output) | 0, 1, more than one, 6 |
+
+**Step 4: Each choice** for the pieces. All combinations of `canProduce` x `occupyingPieces` size. A Settlement receives size 1 and a City receives size 2.
+
+|              | Input                                                                                                       | Expected output                                                                                    | Implemented? |
+|--------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | `canProduce` true, no occupying pieces                                                                      | no resources change, 0 pieces paid                                                                 | :x:          |
+| Test Case 2  | `canProduce` true, one `Settlement`                                                                         | owner gains tier-1 products only, 1 piece paid                                                     | :x:          |
+| Test Case 3  | `canProduce` true, one `City`                                                                               | owner gains tier-1 and tier-2 products, 1 piece paid                                               | :x:          |
+| Test Case 4  | `canProduce` true, 3 pieces: two `Settlement` and one `City`                                                | Settlement owners gain tier-1 products, City owner gains tier-1 and tier-2 products, 3 pieces paid | :x:          |
+| Test Case 5  | `canProduce` true, 6 occupying pieces                                                                       | all 6 owners gain resources, 6 pieces paid                                                         | :x:          |
+| Test Case 6  | `canProduce` false, one `Settlement`                                                                        | no resources change, 0 pieces paid                                                                 | :x:          |
+| Test Case 7  | `canProduce` false, no pieces                                                                               | no resources change, no exception, 0 pieces paid                                                   | :x:          |
+| Test Case 8  | `HillsHex` with tier 1 and tier 2 each `[BrickResourceStack size 1]`, `canProduce` true, one `Settlement`   | owner gains `BrickResourceStack` with size `1`, 1 piece paid (same for through TC 17)              | :x:          |
+| Test Case 9  | same `HillsHex`, one `City`                                                                                 | owner gains `BrickResourceStack` with size `2`                                                     | :x:          |
+| Test Case 10 | `ForestHex` with tier 1 and tier 2 each `[LumberResourceStack size 1]`, `canProduce` true, one `Settlement` | owner gains `LumberResourceStack` with size `1`                                                    | :x:          |
+| Test Case 11 | same `ForestHex`, one `City`                                                                                | owner gains `LumberResourceStack` with size `2`                                                    | :x:          |
+| Test Case 12 | `MountainsHex` with tier 1 and tier 2 each `[OreResourceStack size 1]`, `canProduce` true, one `Settlement` | owner gains `OreResourceStack` with size `1`                                                       | :x:          |
+| Test Case 13 | same `MountainsHex`, one `City`                                                                             | owner gains `OreResourceStack` with size `2`                                                       | :x:          |
+| Test Case 14 | `FieldsHex` with tier 1 and tier 2 each `[GrainResourceStack size 1]`, `canProduce` true, one `Settlement`  | owner gains `GrainResourceStack` with size `1`                                                     | :x:          |
+| Test Case 15 | same `FieldsHex`, one `City`                                                                                | owner gains `GrainResourceStack` with size `2`                                                     | :x:          |
+| Test Case 16 | `PastureHex` with tier 1 and tier 2 each `[WoolResourceStack size 1]`, `canProduce` true, one `Settlement`  | owner gains `WoolResourceStack` with size `1`                                                      | :x:          |
+| Test Case 17 | same `PastureHex`, one `City`                                                                               | owner gains `WoolResourceStack` with size `2`                                                      | :x:          |
+| Test Case 18 | `DesertHex` or `OceanHex` with one `Settlement` occupying                                                   | no resources change, 0 pieces paid                                                                 | :x:          |
