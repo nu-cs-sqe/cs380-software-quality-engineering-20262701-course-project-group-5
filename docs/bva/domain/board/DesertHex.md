@@ -10,6 +10,4 @@ Always leaves `canProduce` false. Overrides `Hex.setCanProduce`.
 
 ## Boundary-Value Analysis
 
-N/A
-
 See `Hex`.
