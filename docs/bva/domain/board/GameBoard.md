@@ -38,7 +38,7 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 |---|---|
 | `tokenValue` | 1, 2, 7 (special case), 12, 13 |
 | `hexes` | empty, exactly one, more than one, maximum (25 hexes: 19 land hexes plus 6 `OceanHex` frame pieces) |
-| search | not found, exactly one match (first position), exactly one match (last position), exactly two matches (the maximum since no token appears on more than two hexes) |
+| hexes matching the token | not found, exactly one match (first position), exactly one match (last position), exactly two matches (the maximum since no token appears on more than two hexes) |
 | `canProduce` | true, false |
 | outcome (output) | IllegalArgumentException; valid, nothing produces; valid, production happens |
 | hexes that produce (output) | 0, 1, 2 (maximum) |
@@ -64,7 +64,7 @@ Removes the piece with matching `pieceData` from `location`. Throws `IllegalArgu
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `piece : Piece`, `location : Location`; state: location's pieces | none (`void`). Outcome is one of: `IllegalArgumentException`; piece stored in the location (observers notified). Another output would be how many pieces the location holds afterward (I included this but not sure)? |
+| `piece : Piece`, `location : Location`; state: location's pieces | No return value. Outcome is one of: `IllegalArgumentException`, piece stored in the location (observers notified). Another output would be how many pieces the location holds afterward (I included this but not sure)? |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -103,3 +103,46 @@ All combinations of piece type x location type. Each choice for everything else.
 | Test Case 12 | `Robber`, `Vertex` on board                         | `IllegalArgumentException` (assumed: the robber sits on a `Hex`, which is not a `Location`) | :x:          |
 | Test Case 13 | `Robber`, `Edge` on board                           | `IllegalArgumentException` (assumed, same reason)                                           | :x:          |
 | Test Case 14 | `Harbor`, `Vertex` already holding one `Settlement` | vertex holds both pieces (assumed)                                                          | :x:          |
+
+### Test: `public void removePieceFromLocation(PieceData pieceData, Location location)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| `pieceData : PieceData`, `location : Location`; state: location's pieces | No return value. Outcome is one of: `IllegalArgumentException`, no change (nothing matched), matching piece removed (observers notified). Also how many pieces remain at the location |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `pieceData` | Pointer |
+| `location` | Pointer, on-board Boolean |
+| location's pieces | Collection, Deleting |
+| pieces matching `pieceData` | Searching |
+| `pieceData` vs a stored piece's data | Pair of References (object equality) |
+| outcome (output) | Cases |
+| pieces at location after the call (output) | Count |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `pieceData`, `location` | null, true object; location not on board |
+| pieces at location | empty (nothing to delete), exactly one, more than one |
+| pieces matching `pieceData` | no match, exactly one match in first position, exactly one match in last position, more than one match |
+| `pieceData` vs a stored piece's data | same object, different object with equal contents |
+| outcome (output) | exception, no change, piece removed |
+| pieces at location after the call (output) | 0, 1 |
+
+**Step 4: Each choice.**
+
+|              | Input                                                                                 | Expected output                                                 | Implemented? |
+|--------------|---------------------------------------------------------------------------------------|-----------------------------------------------------------------|--------------|
+| Test Case 1  | `pieceData` is `null`, valid `Vertex`                                                 | `IllegalArgumentException`                                      | :x:          |
+| Test Case 2  | valid `pieceData`, `location` is `null`                                               | `IllegalArgumentException`                                      | :x:          |
+| Test Case 3  | valid `pieceData`, `Vertex` not on this board                                         | `IllegalArgumentException`                                      | :x:          |
+| Test Case 4  | `Vertex` with no pieces                                                               | no change, no exception                                         | :x:          |
+| Test Case 5  | `Vertex` with exactly one piece, its own `pieceData`                                  | vertex is empty                                                 | :x:          |
+| Test Case 6  | `Vertex` with two pieces, `pieceData` matches the first only                          | only the second remains                                         | :x:          |
+| Test Case 7  | `Vertex` with two pieces, `pieceData` matches the last only                           | only the first remains                                          | :x:          |
+| Test Case 8  | `Vertex` with one piece, `pieceData` matches none                                     | no change                                                       | :x:          |
+| Test Case 9  | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | piece removed                                                   | :x:          |
+| Test Case 10 | `Vertex` with two pieces whose `PieceData` are equal, input that data                 | exactly one piece is removed (the first), one remains (assumed) | :x:          |
