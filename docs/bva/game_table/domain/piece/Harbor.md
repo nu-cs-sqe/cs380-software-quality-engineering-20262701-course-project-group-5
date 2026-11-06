@@ -1,6 +1,6 @@
 # Class Harbor
 
-Classpath: catan.game_table.domain.piece.Piece
+Classpath: catan.game_table.domain.piece.Harbor
 
 ## `class Harbor extends Piece`
 
