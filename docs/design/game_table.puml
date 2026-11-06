@@ -360,8 +360,9 @@ package resource {
 
     +abstract class ResourceStack {
         -size : int
-        +{static} combine(stack1 : ResourceStack, stack2 : ResourceStack) : ResourceStack
         +ResourceStack(size : int)
+        +withAdditionOf(otherStack : ResourceStack) : ResourceStack
+        +withRemovalOf(otherStack : ResourceStack) : ResourceStack
         +getSize() : int
         +equals(o : Object) : boolean
         +hashCode() : int
