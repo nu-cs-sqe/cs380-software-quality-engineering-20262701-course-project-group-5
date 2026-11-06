@@ -87,3 +87,30 @@ If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwis
 | Test Case 1 | `ForestHex` just constructed | true            | :x:          |
 | Test Case 2 | `DesertHex` just constructed | false           | :x:          |
 
+
+### Test: `public int getTokenValue()`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| state: `tokenValue` | `int` |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `tokenValue` | Interval `[2, 12]` (excluding 7 on producing hexes) |
+| returned value (output) | Interval `[2, 12]`, or 0 on non-producing hexes |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `tokenValue` | 2, 12 (1, 13 and 7 on a producing hex can't be set), 0 (desert and ocean) | 
+| returned value (output) | same as `tokenValue` |
+
+**Step 4: Each choice**
+
+|             | Input                       | Expected output | Implemented? |
+|-------------|-----------------------------|-----------------|--------------|
+| Test Case 1 | `ForestHex` with token `2`  | `2`             | :x:          |
+| Test Case 2 | `ForestHex` with token `12` | `12`            | :x:          |
+| Test Case 4 | `DesertHex`                 | `0`             | :x:          |
