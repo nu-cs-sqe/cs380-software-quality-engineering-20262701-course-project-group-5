@@ -291,14 +291,15 @@ package piece {
 
     +abstract class Piece {
         -data : PieceData
-        #bankResources : ResourceInventory
-        #ownerResources : ResourceInventory
-        #ownerPieces : PieceInventory
-        +Piece(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
-        +abstract getPieceData() : PieceData
+        +Piece(data : PieceData)
+        +getPieceData() : PieceData
+        +onPlaceEffect() : void
     }
 
     +abstract class Building {
+        #bankResources : ResourceInventory
+        #ownerResources : ResourceInventory
+        +Building(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
         +produceResources(products : ResourceProducts) : void
     }
 
@@ -308,14 +309,24 @@ package piece {
     }
 
     +class Settlement {
+        -ownerVictoryPointsTracker : ScoreTracker
+        +Settlement(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class City {
+        -ownerVictoryPointsTracker : ScoreTracker
+        +City(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class Road {
+        +onBoughtEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
     +class Robber {
@@ -349,9 +360,12 @@ package resource {
 
     +abstract class ResourceStack {
         -size : int
-        +ResourceStack(initialSize : int)
+        +ResourceStack(size : int)
+        +withAdditionOf(otherStack : ResourceStack) : ResourceStack
+        +withRemovalOf(otherStack : ResourceStack) : ResourceStack
         +getSize() : int
-        +equals(stack : ResourceStack) : boolean
+        +equals(o : Object) : boolean
+        +hashCode() : int
     }
 
     +class BrickResourceStack {
@@ -388,6 +402,8 @@ package resource {
 package development {
 
     +abstract class Development {
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
     }
 
 }
@@ -526,9 +542,8 @@ WoolResourceStack --|> ResourceStack
 
 ResourceProducts --> ResourceStack
 
-Piece --> ResourceInventory
-Piece --> PieceInventory
-Piece ..> ResourceStack
+Building --> ResourceInventory
+Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
 Building ..> ResourceProducts
@@ -537,7 +552,6 @@ City ..> ResourceProducts
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
-Road --> ScoreTracker
 
 PieceData --> Color
 
