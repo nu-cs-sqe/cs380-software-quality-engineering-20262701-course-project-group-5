@@ -223,13 +223,11 @@ package board {
         -edges : Set<Edge>
         -canProduce : boolean
         -products : ResourceProducts
-        -occupyingPieces : List<Piece>
         +Hex(vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce() : void
         +produceResources() : void
-        -sendResourcesToPieces(products : ResourceProducts) : void
     }
 
     +class HillsHex {
@@ -261,7 +259,7 @@ package board {
     }
 
     +abstract class Location {
-        -pieces : List<Piece>
+        #pieces : List<Piece>
         +getPieceData() : List<PieceData>
         +addPiece(piece : Piece)) : void
         +removePieceWithData(data : PieceData) : void
@@ -492,6 +490,7 @@ GameBoard ..> PieceData
 Hex --> Piece
 Hex --> Vertex
 Hex --> Edge
+Hex --|> Location
 
 Edge --> Vertex
 Edge ..> PieceData
