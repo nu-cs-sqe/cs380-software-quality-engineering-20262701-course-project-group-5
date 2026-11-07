@@ -133,8 +133,6 @@ Equality comparisons
 | Test Case 13 | `piece`: City, internal list of pieces: {City} | true | :x: |
 | Test Case 14 | `piece`: Road, internal list of pieces: {City} | false | :x: |
 
-
-
 ### Method under test: `removePiece(piece : Piece)`
 
 **Step 1: Inputs / outputs**
@@ -152,7 +150,7 @@ Equality comparisons
 
 
 **Operations:**
-Equality comparisons
+Equality comparisons, Removing a single element
 
 **Step 3: Concrete values**
 | Variable | Values |
@@ -174,3 +172,144 @@ Equality comparisons
 | Test Case 7| `piece`: Road, internal list of pieces: {City} | internal list of pieces: {City} | :x: |
 | Test Case 8 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :x: |
 | Test Case 9 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :x: |
+
+### Method under test: `addResources(stack : ResourceStack)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`stack: ResourceStack`, state: list of resources | state: list of resources |
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`stack`|Pointer, Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
+|interal list of resources|Collection|
+|Output| internal list of resources |
+
+
+**Operations:**
+Appending a single element if no element of that type already exists
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`stack`|WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with size 1|
+|internal list of pieces| empty list, list with one element, list with one of each ownable type of piece |
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | internal list of resources: {LumberResourceStack{size:1}} | :x: |
+| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | internal list of resources: {OreResourceStack{size:1}} | :x: |
+| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | internal list of resources: {WoolResourceStack{size:1}} | :x: |
+| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | internal list of resources: {BrickResourceStack{size:1}} | :x: |
+| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | internal list of resources: {GrainResourceStack{size:1}} | :x: |
+| Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | internal list of resources: {LumberResourceStack{size:2}} | :x: |
+| Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | internal list of resources: {WoolResourceStack{size:2}} | :x: |
+| Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | internal list of resources: {OreResourceStack{size:2}} | :x: |
+| Test Case 9 | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}} | internal list of resources: {BrickResourceStack{size:2}} | :x: |
+| Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}} | internal list of resources: {GrainResourceStack{size:2}} | :x: |
+| Test Case 11 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}, OreResourceStack{size:1}, WoolResourceStack{size:1}, LumberResourceStack{size:1}, BrickResourceStack{size:1}} | internal list of resources: {GrainResourceStack{size:2}, OreResourceStack{size:1}, WoolResourceStack{size:1}, LumberResourceStack{size:1}, BrickResourceStack{size:1}} | :x: |
+
+
+
+
+### Method under test: `hasResources(stack : ResourceStack)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`stack: ResourceStack`, state: list of resources| hasResources: boolean|
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`stack`|Pointer, Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
+|interal list of resources|Collection|
+|Output| boolean |
+
+
+**Operations:**
+Equality comparisons
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`stack`| WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX}||
+|internal list of resources| empty list, list with one element {repeat for each type}|
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | false | :x: |
+| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | false | :x: |
+| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | false | :x: |
+| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | false | :x: |
+| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | false| :x: |
+| Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | true | :x: |
+| Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | true | :x: |
+| Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | true | :x: |
+| Test Case 9 | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}} | true | :x: |
+| Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}} | true | :x: |
+| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}} | false | :x: |
+| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}} | false | :x: |
+| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}} | false | :x: |
+| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | false | :x: |
+| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | false | :x: |
+| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | false | :x: |
+
+
+
+### Method under test: `removeResources(stack : ResourceStack)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`stack: ResourceStack`, state: list of resources | Case {state: list of resources, `IllegalStateException`} |
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`stack`|Pointer, Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
+|interal list of resources|Collection|
+|Output| Case(void, `IllegalStateException`) |
+
+
+**Operations:**
+Removing one element from a list
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`stack`| WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX}||
+|internal list of resources| empty list, list with one element {repeat for each type}|
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")`| :x: |
+| Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | internal list of resources: empty list | :x: |
+| Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | internal list of resources: empty list | :x: |
+| Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | internal list of resources: empty list | :x: |
+| Test Case 9 | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}} | internal list of resources: empty list | :x: |
+| Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}} | internal list of resources: empty list | :x: |
+| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
