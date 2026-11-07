@@ -19,3 +19,5 @@ Checks if `piece` is in a given `PlayerInventory`.
 Removes `piece` from a given `PlayerInventory`. If the piece is not present in the `PlayerInventory` throws a `NotEnoughInventoryException`.
 
 ## Boundary-Value Analysis
+
+N/A for this class.

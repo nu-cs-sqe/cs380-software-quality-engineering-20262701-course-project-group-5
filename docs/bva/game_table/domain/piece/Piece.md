@@ -22,3 +22,4 @@ Called when a `Piece` is place on the `GameBoard` by a `GamePlayer`. Empty metho
 
 ## Boundary-Value Analysis
 
+N/A for this class.

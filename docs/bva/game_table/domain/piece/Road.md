@@ -15,3 +15,4 @@ Decrements the `ResourceStack`s of the `GamePlayer` purchasing the `Road` by its
 Accessor for the cost of a `Road` in terms of `ResourceStack`s, in this case one `BrickResourceStack` and `WoodResourceStack`.
 
 ## Boundary-Value Analysis
+

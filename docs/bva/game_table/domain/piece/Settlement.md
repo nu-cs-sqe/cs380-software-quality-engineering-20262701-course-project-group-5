@@ -16,10 +16,38 @@ Updates the `bankResources` and `ownerResources` `ResourceInventory`s by one bas
 
 ### `public void onBoughtEffect()`
 
-Decrements the Resources of the Player purchasing the Settlement by its cost.
+Decrements the Resources of the Player purchasing the Settlement by its cost and increments the Banks Resources.
 
 ### `public List<ResourceStack> getCost()`
 
 Accessor for the cost of a Settlement in terms of Resources, in this case a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one.
 
 ## Boundary-Value Analysis
+
+### Method under test: `produce(products : ResourceProducts)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`products : ResourceProducts`| No concrete outputs, only updates to state: `bankResources`, state: `ownerResources`. Inventories should update by one tier 1 product.|
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `products` | Cases: only `tier1Products` list that can hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+|`bankResources`| Collection |
+|`ownerResources`| Collection |
+| Output | void |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `products` | `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+| `bankResources` | list of one, list of size greater than one, list of nineteen (max number of resource cards for a given type) |
+| `ownerResources` | list of one, list of size greater than one, list of nineteen (max number of resource cards for a given type |
+
+**Step 4: Each choice**
+|              | Input | Expected output | Implemented? |
+|--------------|----------------------------------------|----------------------------|--------------|
+| Test Case 1 | `products` stack type: `WoolResourceStack`, `bankResources` = {}, `ownerResources` = {} |  | :x: |
+| Test Case 2 |  |  | :x: |
