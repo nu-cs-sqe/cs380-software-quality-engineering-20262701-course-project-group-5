@@ -204,8 +204,8 @@ package board {
     class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
-        +getValidBuildingSpots() : List<Vertex>
-        +getValidRoadSpots() : List<Edge>
+        +getValidBuildingSpots(color : Color) : List<Vertex>
+        +getValidRoadSpots(color : Color) : List<Edge>
         ' build
         +place(piece : Piece, location : Location) : void
         ' checks for validity, ties to highlighting
