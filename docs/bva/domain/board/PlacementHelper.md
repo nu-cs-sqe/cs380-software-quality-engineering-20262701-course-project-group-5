@@ -131,18 +131,18 @@ Own refers to the active player's color. I use Red for the active player and Blu
 
 **Step 4: All combinations** of piece type (Settlement, City, Road) x location type (Vertex, Edge). Each choice for everything else.
 
-|              | Input                                                                            | Expected output            | Implemented? |
-|--------------|----------------------------------------------------------------------------------|----------------------------|--------------|
-| Test Case 1  | `piece` is `null`, valid vertex                                                  | `IllegalArgumentException` | :x:          |
-| Test Case 2  | valid `Settlement`, `location` is `null`                                         | `IllegalArgumentException` | :x:          |
-| Test Case 3  | `Settlement`, first vertex of `getValidBuildingSpots()`                          | piece placed there         | :x:          |
-| Test Case 4  | `Settlement`, last vertex of `getValidBuildingSpots()`                           | piece placed there         | :x:          |
-| Test Case 5  | `Settlement`, vertex adjacent to an existing building                            | `IllegalArgumentException` | :x:          |
-| Test Case 6  | `Settlement`, an `Edge`                                                          | `IllegalArgumentException` | :x:          |
-| Test Case 7  | `City`, vertex holding the active player's own `Settlement`                      | piece placed there         | :x:          |
-| Test Case 8  | `City`, an empty `Vertex`                                                        | `IllegalArgumentException` | :x:          |
-| Test Case 9  | `City`, an `Edge`                                                                | `IllegalArgumentException` | :x:          |
-| Test Case 10 | `Road`, a valid edge that is neither first nor last in `getValidBuildingSpots()` | piece placed there         | :x:          |
-| Test Case 11 | `Road`, an occupied edge                                                         | `IllegalArgumentException` | :x:          |
-| Test Case 12 | `Road`, a `Vertex`                                                               | `IllegalArgumentException` | :x:          |
-| Test Case 13 | `City`, vertex holding a `BLUE` `Settlement`                                     | `IllegalArgumentException` | :x:          |
+|              | Input                                                                        | Expected output            | Implemented? |
+|--------------|------------------------------------------------------------------------------|----------------------------|--------------|
+| Test Case 1  | `piece` is `null`, valid vertex                                              | `IllegalArgumentException` | :x:          |
+| Test Case 2  | valid `Settlement`, `location` is `null`                                     | `IllegalArgumentException` | :x:          |
+| Test Case 3  | `Settlement`, first vertex of `getValidBuildingSpots()`                      | piece placed there         | :x:          |
+| Test Case 4  | `Settlement`, last vertex of `getValidBuildingSpots()`                       | piece placed there         | :x:          |
+| Test Case 5  | `Settlement`, vertex adjacent to an existing building                        | `IllegalArgumentException` | :x:          |
+| Test Case 6  | `Settlement`, an `Edge`                                                      | `IllegalArgumentException` | :x:          |
+| Test Case 7  | `City`, vertex holding the active player's own `Settlement`                  | piece placed there         | :x:          |
+| Test Case 8  | `City`, an empty `Vertex`                                                    | `IllegalArgumentException` | :x:          |
+| Test Case 9  | `City`, an `Edge`                                                            | `IllegalArgumentException` | :x:          |
+| Test Case 10 | `Road`, a valid edge that is neither first nor last in `getValidRoadSpots()` | piece placed there         | :x:          |
+| Test Case 11 | `Road`, an occupied edge                                                     | `IllegalArgumentException` | :x:          |
+| Test Case 12 | `Road`, a `Vertex`                                                           | `IllegalArgumentException` | :x:          |
+| Test Case 13 | `City`, vertex holding a `BLUE` `Settlement`                                 | `IllegalArgumentException` | :x:          |
