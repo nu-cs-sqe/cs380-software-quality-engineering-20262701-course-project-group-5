@@ -3,9 +3,9 @@ Classpath: catan.game_table.domain.board.Hex
 
 Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex`
 
-## `public abstract class Hex`
+## `public abstract class Hex extends Location`
 
-A terrain tile with a token number, six vertices, six edges, and a set of resource products. Distributes its products to the pieces occupying it when produced.
+A terrain tile with a token number, six vertices, six edges, and a set of resource products. Distributes its products to the pieces occupying it when produced, and can hold the Robber (through `Location`).
 
 ### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 Initializes a `Hex`. Throws `IllegalArgumentException` if any argument is `null` or if `vertices` or `edges` does not contain exactly 6 elements (this might need to change for the OceanHex?).
@@ -20,7 +20,7 @@ Returns the token number of this hex.
 Sets the `canProduce` flag to the given value. `produceResources()` only runs when the flag is true. Assumes the boolean parameter (missing from diagram). `DesertHex` and `OceanHex` override it.
 
 ### `public void produceResources()`
-If `canProduce()`, passes `products` to each of its vertices, and the buildings there distribute resources. Otherwise does nothing. A `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Resource subclasses (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`) override this to produce their specific resource.
+If `canProduce()`, passes `products` to each of its vertices, and the `Settlement` or `City` on each vertex gives its owner resources: a `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Otherwise does nothing.
 
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
@@ -185,7 +185,7 @@ Inherited methods: see `Location`.
 | outcome (output) | no change, tier-1 only (Settlement), tier-1 and tier-2 (City) |
 | pieces paid (output) | 0, 1, more than one, 6 |
 
-**Step 4: All combinations** of `canProduce` x buildings on the hex's vertices. Each choice for the piece type, the concrete class and the outputs. Test Cases 1 to 7, 20 and 21 use a `HillsHex` with tier 1 and tier 2 each `[BrickResourceStack size 1]`.
+**Step 4: All combinations** of `canProduce` x buildings on the hex's vertices (empty, exactly one, more than one, 6). Each choice for the piece type, the concrete class and the outputs. Test Cases 1 to 7, 20 and 21 use a `HillsHex` with tier 1 and tier 2 each `[BrickResourceStack size 1]`, so a Settlement receives size 1 and a City receives size 2 (tier 1 plus tier 2).
 
 |              | Input                                                                                                       | Expected output                                                                                    | Implemented? |
 |--------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
