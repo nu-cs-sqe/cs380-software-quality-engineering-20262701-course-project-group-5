@@ -7,6 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+
 public class StartView extends StackPane {
 
     private Text titleCredit;
