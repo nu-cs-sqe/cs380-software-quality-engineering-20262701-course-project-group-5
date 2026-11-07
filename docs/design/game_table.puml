@@ -261,7 +261,7 @@ package board {
     }
 
     +abstract class Location {
-        -pieces : List<Piece>
+        #pieces : List<Piece>
         +getPieceData() : List<PieceData>
         +addPiece(piece : Piece)) : void
         +removePieceWithData(data : PieceData) : void
