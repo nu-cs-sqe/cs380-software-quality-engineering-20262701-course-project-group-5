@@ -32,6 +32,7 @@ Accessor for the cost of a `Road` in terms of `ResourceStack`s, in this case one
 
 **Step 3: Concrete values**
 | Variable | Values |
+|---|---|
 | `bankResources` | zero, one, greater than one, eighteen (max number of resource cards for a given type minus one) |
 | `ownerResources` | one, greater than one, nineteen (max number of resource cards for a given type) |
 
