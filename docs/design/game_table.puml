@@ -226,7 +226,7 @@ package board {
         +Hex(vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
-        +setCanProduce() : void
+        +setCanProduce(canProduce : boolean) : void
         +produceResources() : void
     }
 
@@ -281,6 +281,8 @@ package board {
     +class Point {
         +{final} x : int
         +{final} y : int
+        +equals(o : Object) : boolean
+        +hashCode() : int
     }
 
 }
@@ -304,6 +306,8 @@ package piece {
     +class PieceData {
         +{final} type : String
         +{final} color : Color
+        +equals(o : Object) : boolean
+        +hashCode() : int
     }
 
     +class Settlement {
