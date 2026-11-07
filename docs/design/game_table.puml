@@ -309,7 +309,6 @@ package piece {
 
     +abstract class Building {
         #bankResources : ResourceInventory
-        #ownerResources : ResourceInventory
         +Building(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
         +produceResources(products : ResourceProducts) : void
     }
@@ -474,6 +473,8 @@ Dice --|> Observed
 Bank --|> Observed
 
 Bank ..|> ResourceInventory
+Bank --> Color
+Bank --> ResourceInventory
 
 GamePlayer --|> Observed
 GamePlayer --> ScoreTracker
