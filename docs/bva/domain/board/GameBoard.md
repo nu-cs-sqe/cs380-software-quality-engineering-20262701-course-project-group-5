@@ -41,7 +41,7 @@ Appending a single element (to the location's pieces)
 |---|---|
 | `tokenValue` | 1, 2, 7 (special case), 12, 13 |
 | `hexes` | empty, exactly one, more than one, maximum (25 hexes: 19 land hexes plus 6 `OceanHex` frame pieces) |
-| hexes matching the token | not found, exactly one match (first position), exactly one match (last position), exactly two matches (the maximum since no token appears on more than two hexes) |
+| hexes matching the token | not found, exaclty one match, exactly one match (first position), exactly one match (last position), exactly two matches (the maximum since no token appears on more than two hexes) |
 | `canProduce` | true, false |
 | outcome (output) | IllegalArgumentException; valid, nothing produces; valid, production happens |
 | hexes that produce (output) | 0, 1, 2 (maximum) |
@@ -61,6 +61,7 @@ Appending a single element (to the location's pieces)
 | Test Case 9  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception   | :x:          |
 | Test Case 10 | Board with exactly one hex, token `8`, `canProduce` true, input `8`                                            | that hex produces               | :x:          |
 | Test Case 11 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes produce | :x:          |
+| Test Case 12 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex produces          | :x:          |
 
 ### Test: `public void addPieceAtLocation(Piece piece, Location location)`
 
@@ -144,7 +145,7 @@ Deleting elements from any position (from the location's pieces).
 |---|---|
 | `pieceData`, `location` | null, real object; location not on board |
 | pieces at location | empty (nothing to delete), exactly one, more than one |
-| pieces matching `pieceData` | no match, exactly one match in first position, exactly one match in last position, more than one match |
+| pieces matching `pieceData` | no match, exactly one match, exactly one match in first position, exactly one match in last position, more than one match |
 | `pieceData` vs a stored piece's data | same object, different object with equal contents |
 | outcome (output) | exception, no change, piece removed |
 | pieces at location after the call (output) | 0, 1 |
