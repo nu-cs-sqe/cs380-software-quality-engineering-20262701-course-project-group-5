@@ -226,7 +226,7 @@ package board {
         +Hex(vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
-        +setCanProduce() : void
+        +setCanProduce(canProduce : boolean) : void
         +produceResources() : void
     }
 
