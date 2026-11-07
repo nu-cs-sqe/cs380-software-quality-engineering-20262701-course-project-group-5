@@ -122,9 +122,6 @@ All combinations of piece type (5) x location type (Vertex, Edge, Hex). Each cho
 | Test Case 22 | `Harbor`, `Hex` on board                              | `IllegalArgumentException`                                                    | :x:          |
 | Test Case 23 | `Robber`, empty `Hex` on board                        | hex holds exactly that piece                                                  | :x:          |
 
-*note: does placing a City on a Vertex that holds the player's own Settlement go through addPieceAtLocation, or does the game remove the Settlement first? If upgrades call this function, fix TC 16.
-
-
 ### Test: `public void removePieceFromLocation(PieceData pieceData, Location location)`
 
 **Step 1: Inputs / outputs**
