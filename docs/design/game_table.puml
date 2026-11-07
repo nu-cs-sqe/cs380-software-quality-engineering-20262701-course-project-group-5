@@ -229,7 +229,6 @@ package board {
         +getTokenValue() : int
         +setCanProduce() : void
         +produceResources() : void
-        -sendResourcesToPieces(products : ResourceProducts) : void
     }
 
     +class HillsHex {
