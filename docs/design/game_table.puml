@@ -223,7 +223,6 @@ package board {
         -edges : Set<Edge>
         -canProduce : boolean
         -products : ResourceProducts
-        -occupyingPieces : List<Piece>
         +Hex(vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
@@ -491,6 +490,7 @@ GameBoard ..> PieceData
 Hex --> Piece
 Hex --> Vertex
 Hex --> Edge
+Hex --|> Location
 
 Edge --> Vertex
 Edge ..> PieceData
