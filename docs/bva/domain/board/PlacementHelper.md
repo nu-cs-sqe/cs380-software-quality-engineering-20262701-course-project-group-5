@@ -22,7 +22,7 @@ Own refers to the active player's color. I use Red for the active player and Blu
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| state: `gamePhase`, distance from each vertex to the nearest building (0 means the vertex itself is occupied), who owns that building, and the roads touching each vertex (how many are the active player's, and who owns them) | `List<Vertex>`. The tests check which vertices are returned as well as its size: empty, exactly one element, more than one element, maximum. |
+| state: `gamePhase`, distance from each vertex to the nearest building (0 means the vertex itself is occupied), who owns that building, and the roads touching each vertex (how many are the active player's, and who owns them) | `List<Vertex>`. The tests check which vertices are returned: empty, exactly one element, more than one element, maximum. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -42,7 +42,7 @@ Own refers to the active player's color. I use Red for the active player and Blu
 | owner of the nearest building | own, other color |
 | own roads touching vertex | 0, 1, more than one |
 | owner of a road touching vertex | own, other color |
-| returned list (output) | empty, exactly one element, more than one element, maximum (54 vertices on an empty board) |
+| returned list (output) | empty, exactly one element, more than one element, maximum (54 vertices in SETUP on an empty board) |
 
 **Step 4: All combinations** of `gamePhase` x own roads touching vertex since road rule only applies in REGULAR phase. Each choice for all else.
 
@@ -60,3 +60,44 @@ Own refers to the active player's color. I use Red for the active player and Blu
 | Test Case 10 | REGULAR, `RED` settlement S with `RED` roads S to V1 and V1 to V2, no other buildings | exactly `[V2]` (V1 is too close to S)                                                              | :x:          |
 | Test Case 11 | SETUP, one `RED` road between A and B, no buildings                                   | all 54 vertices (a road is not required in SETUP)                                                  | :x:          |
 | Test Case 12 | SETUP, `RED` roads A to B and B to C, no buildings                                    | all 54 vertices, B appearing once                                                                  | :x:          |
+
+### Test: `public List<Edge> getValidRoadSpots()`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| state: `gamePhase`, whether each edge is occupied, the pieces touching each edge (how many are the active player's, and who owns them), the settlement just placed in SETUP | `List<Edge>`. The tests check which edges are returned: empty, exactly one element, more than one element. |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `gamePhase` | Cases (SETUP, REGULAR) |
+| own pieces touching edge | Count |
+| owner of a piece touching edge | Cases (own, other color) |
+| edge occupied | Boolean |
+| edge touches the just-placed settlement (SETUP) | Boolean |
+| returned list (output) | Collection |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `gamePhase` | SETUP, REGULAR |
+| own pieces touching edge | 0, 1, more than one (a building at one end plus a road at the other) |
+| owner of a piece touching edge | own, other color |
+| edge occupied | true, false |
+| edge touches the just-placed settlement | true, false |
+| returned list (output) | empty, exactly one element, more than one element, maximum (3 in SETUP since a vertex has 3 max edges) |
+
+**Step 4: All combinations** of `gamePhase` x own pieces touching edge since the rules differ by phase, except SETUP with "more than one" (only the just-placed settlement matters in SETUP). Each choice for the rest.
+
+|             | Input                                                                                     | Expected output                                                                                 | Implemented? |
+|-------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | SETUP, one RED settlement just placed on a vertex with 3 adjacent edges                   | exactly the settlement's 3 adjacent edges                                                       | :x:          |
+| Test Case 2 | SETUP, two `RED` settlements, only the second is "just placed"                            | only the edges adjacent to the second settlement                                                | :x:          |
+| Test Case 3 | SETUP, no settlement placed                                                               | empty list                                                                                      | :x:          |
+| Test Case 4 | REGULAR, `RED` owns no pieces                                                             | empty list                                                                                      | :x:          |
+| Test Case 5 | REGULAR, one `RED` settlement, no roads, all adjacent edges free                          | exactly the edges adjacent to the settlement                                                    | :x:          |
+| Test Case 6 | REGULAR, a `RED` settlement at one end of a free edge E and a `RED` road at E's other end | E is in the list once                                                                           | :x:          |
+| Test Case 7 | REGULAR, every edge adjacent to `RED`'s pieces is already occupied                        | empty list                                                                                      | :x:          |
+| Test Case 8 | REGULAR, one `RED` settlement and one `BLUE` settlement far apart, all edges free         | exactly the edges adjacent to the `RED` settlement (the `BLUE` settlement's edges are excluded) | :x:          |
+| Test Case 9 | REGULAR, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :x:          |
