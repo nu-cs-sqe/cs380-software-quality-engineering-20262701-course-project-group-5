@@ -20,7 +20,7 @@ Returns the token number of this hex.
 Sets the `canProduce` flag to the given value. `produceResources()` only runs when the flag is true. Assumes the boolean parameter (missing from diagram). `DesertHex` and `OceanHex` override it.
 
 ### `public void produceResources()`
-If `canProduce()`, sends `products` to each piece in `occupyingPieces`. Otherwise does nothing. A `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Resource subclasses (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`) override this to produce their specific resource.
+If `canProduce()`, passes `products` to each of its vertices, and the buildings there distribute resources. Otherwise does nothing. A `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Resource subclasses (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`) override this to produce their specific resource.
 
 ### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 
