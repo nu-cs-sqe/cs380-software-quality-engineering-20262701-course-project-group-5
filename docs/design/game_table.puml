@@ -282,7 +282,7 @@ package board {
     +class Edge {
         -endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
-        +getEndpoints() : Pair<Point, Point>
+        +getEndpoints() : Set<Point>
     }
 
     +class Point {
