@@ -113,7 +113,7 @@ Own refers to the active player's color. I use Red for the active player and Blu
 | Variable | Type |
 |---|---|
 | `piece` | Pointer, Cases (Settlement, City, Road) |
-| `location` | Pointer, Cases (Vertex, Edge) |
+| `location` | Pointer, Cases (Vertex, Edge, Hex) |
 | valid-spot list | Collection |
 | owner of the `Settlement` at `location` (when placing a City) | Cases (own, other color) |
 | outcome (output) | Cases |
@@ -124,12 +124,13 @@ Own refers to the active player's color. I use Red for the active player and Blu
 | Variable | Values |
 |---|---|
 | `piece` | null, true object; Settlement, City, Road |
-| `location` | null, true object; Vertex, Edge |
+| `location` | null, true object; Vertex, Edge, Hex |
 | valid-spot list | `location` not found, exactly one match, exactly one match in first position, exactly one match in last position |
 | owner of the `Settlement` at `location` (when placing a City) | own, other color |
 | outcome (output) | IllegalArgumentException, piece placed |
 
-**Step 4: All combinations** of piece type (Settlement, City, Road) x location type (Vertex, Edge). Each choice for everything else.
+**Step 4**
+All combinations of piece type (Settlement, City, Road) x location type (Vertex, Edge, Hex).
 
 |              | Input                                                                        | Expected output            | Implemented? |
 |--------------|------------------------------------------------------------------------------|----------------------------|--------------|
@@ -146,3 +147,6 @@ Own refers to the active player's color. I use Red for the active player and Blu
 | Test Case 11 | `Road`, an occupied edge                                                     | `IllegalArgumentException` | :x:          |
 | Test Case 12 | `Road`, a `Vertex`                                                           | `IllegalArgumentException` | :x:          |
 | Test Case 13 | `City`, vertex holding a `BLUE` `Settlement`                                 | `IllegalArgumentException` | :x:          |
+| Test Case 14 | `Settlement`, a `Hex`                                                        | `IllegalArgumentException` | :x:          |
+| Test Case 15 | `City`, a `Hex`                                                              | `IllegalArgumentException` | :x:          |
+| Test Case 16 | `Road`, a `Hex`                                                              | `IllegalArgumentException` | :x:          |
