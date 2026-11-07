@@ -18,7 +18,7 @@ An accessor for the data field of piece which is a `PieceData` object.
 
 ### `public onPlaceEffect()`
 
-Modifies the Victory Points a player has in relation to how much, if anything the `Piece` is worth.
+Called when a `Piece` is place on the `GameBoard` by a `GamePlayer`. Empty method defined by inheriting class.
 
 ## Boundary-Value Analysis
 
