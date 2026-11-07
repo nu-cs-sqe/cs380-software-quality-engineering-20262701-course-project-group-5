@@ -22,6 +22,9 @@ Sets the `canProduce` flag to the given value. `produceResources()` only runs wh
 ### `public void produceResources()`
 If `canProduce()`, passes `products` to each of its vertices, and the buildings there distribute resources. Otherwise does nothing. A `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Resource subclasses (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`) override this to produce their specific resource.
 
+## Boundary-Value Analysis
+Inherited methods: see `Location`.
+
 ### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 
 **Step 1: Inputs / outputs**
