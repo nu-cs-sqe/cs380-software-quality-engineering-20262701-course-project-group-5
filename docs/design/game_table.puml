@@ -79,6 +79,13 @@ package ui {
 
 package domain {
 
+package exception {
+
++exception NotEnoughInventoryException
++exception InvalidPlacementException
+
+}
+
     +enum GamePhase {
         SETUP,
         REGULAR
@@ -563,5 +570,9 @@ Development ..|> Buyable
 
 LongestRoadAward ..|> Award
 LargestArmyAward ..|> Award
+
+ResourceInventory ..> NotEnoughInventoryException
+PieceInventory ..> NotEnoughInventoryException
+PlacementHelper ..> InvalidPlacementException
 
 @enduml
