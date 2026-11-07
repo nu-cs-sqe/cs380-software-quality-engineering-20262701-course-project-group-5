@@ -53,7 +53,7 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 | Test Case 2 | `products` stack type: `GrainResourceStack`, `bankResources` = {GrainResourceStack{2}}, `ownerResources` = {GrainResourceStack{1}} | `bankResources` = {GrainResourceStack{1}}, `ownerResources` = {GrainResourceStack{2}} | :x: |
 | Test Case 3 | `products` stack type: `OreResourceStack`, `bankResources` = {OreResourceStack{5}}, `ownerResources` = {OreResourceStack{2}} | `bankResources` = {OreResourceStack{4}}, `ownerResources` = {OreResourceStack{3}} | :x: |
 | Test Case 4 | `products` stack type: `LumberResourceStack`, `bankResources` = {LumberResourceStack{19}}, `ownerResources` = {LumberResourceStack{0}} | `bankResources` = {LumberResourceStack{18}}, `ownerResources` = {LumberResourceStack{1}} | :x: |
-| Test Case 4 | `products` stack type: `BrickResourceStack`, `bankResources` = {BrickResourceStack{1}}, `ownerResources` = {BrickResourceStack{18}} | `bankResources` = {BrickResourceStack{0}}, `ownerResources` = {BrickResourceStack{19}} | :x: |
+| Test Case 5 | `products` stack type: `BrickResourceStack`, `bankResources` = {BrickResourceStack{1}}, `ownerResources` = {BrickResourceStack{18}} | `bankResources` = {BrickResourceStack{0}}, `ownerResources` = {BrickResourceStack{19}} | :x: |
 
 
 ### Method under test: `onBoughtEffect()`
