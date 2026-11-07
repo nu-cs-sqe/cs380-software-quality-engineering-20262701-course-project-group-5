@@ -12,7 +12,7 @@ Direct known subclasses: `City`, `Settlement`
 
 Constructs a `Building` object with set `PieceData` and access to the `ResourceInventory`s of a `Bank` and `GamePlayer`. 
 
-### `public produce(products : ResourceProducts)`
+### `public void produce(products : ResourceProducts)`
 
 Updates the `bankResources` and `ownerResources` `ResourceInventory`s based on the given `products`. The amount updated by and product type depend on the inheriting class.
 

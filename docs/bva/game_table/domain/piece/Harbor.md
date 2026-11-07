@@ -14,7 +14,7 @@ Constructs an unclaimed `Harbor` piece, ie a `GamePlayer` cannot trade with it.
 
 Constructs a claimed `Harbor` piece, that a given `GamePlayer` can trade with through making an offer of a `ResourceStack`.
 
-### `public getInputTrade()`
+### `public ResourceStack getInputTrade()`
 
 Accessor for the `inputTrade` field to see the `ResourceStack` that was offered.
 

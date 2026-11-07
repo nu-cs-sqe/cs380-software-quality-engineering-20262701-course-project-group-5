@@ -12,11 +12,11 @@ Direct known subclasses: `Building`, `Harbor`, `Road`, `Robber`
 
 Constructs a `Piece` object using `PieceData` comprised of a `type` and `color`.
 
-### `public getPieceData(data : PieceData)`
+### `public PieceDate getPieceData(data : PieceData)`
 
 An accessor for the data field of piece which is a `PieceData` object.
 
-### `public onPlaceEffect()`
+### `public void onPlaceEffect()`
 
 Called when a `Piece` is place on the `GameBoard` by a `GamePlayer`. Empty method defined by inheriting class.
 
