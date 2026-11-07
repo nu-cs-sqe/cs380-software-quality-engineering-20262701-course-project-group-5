@@ -313,3 +313,123 @@ Removing one element from a list
 | Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
 | Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
 | Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+
+
+### Method under test: `addDevelopment(development : Development)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`dev: Development`, state: list of dev cards| state: list of dev cards|
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`dev`|Pointer, Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
+|interal list of dev cards|Collection|
+
+
+
+**Operations:**
+Adding one element
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+|internal list of dev cards | empty list, list with one element|
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `dev`: Knight, internal list: empty | internal list: {Knight}| :x: |
+| Test Case 2 | `dev`: RoadBuilder, internal list: empty | internal list: {RoadBuilder}| :x: |
+| Test Case 3 | `dev`: VictoryPoint, internal list: empty | internal list: {VictoryPoint}| :x: |
+| Test Case 4 | `dev`: Monopoly, internal list: empty | internal list: {Monopoly}| :x: |
+| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | internal list: {YearOfPlenty}| :x: |
+| Test Case 6 | `dev`: YearOfPlenty, internal list: {Knight} | internal list: {Knight, YearOfPlenty}| :x: |
+
+
+### Method under test: `hasDevelopment(development : Development)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`dev: Development`, state: list of dev cards| hadDev: boolean|
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`dev`|Pointer, Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
+|interal list of dev cards|Collection|
+
+
+
+**Operations:**
+Adding one element
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+|internal list of dev cards | empty list, list with one element (repeat for each type)|
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `dev`: Knight, internal list: empty | false | :x: |
+| Test Case 2 | `dev`: RoadBuilder, internal list: empty | false| :x: |
+| Test Case 3 | `dev`: VictoryPoint, internal list: empty | false | :x: |
+| Test Case 4 | `dev`: Monopoly, internal list: empty | false | :x: |
+| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | false | :x: |
+| Test Case 6 | `dev`: Knight, internal list: {Knight}  | true | :x: |
+| Test Case 7 | `dev`: RoadBuilder, internal list: {RoadBuilder}  | true | :x: |
+| Test Case 8 | `dev`: VictoryPoint, internal list: {VictoryPoint}  | true | :x: |
+| Test Case 9 | `dev`: Monopoly, internal list: {Monopoly}  | true | :x: |
+| Test Case 10 | `dev`: YearOfPlenty, internal list: {YearOfPlenty}  | true | :x: |
+| Test Case 11 | `dev`: YearOfPlenty, internal list: {RoadBuilder}  | false | :x: |
+
+
+### Method under test: `removeDevelopment(development : Development)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|`dev: Development`, state: list of dev cards | Case (state: list of dev cards, `IllegalStateException`)|
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|`dev`|Pointer, Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
+|interal list of dev cards|Collection|
+
+
+
+**Operations:**
+Adding one element
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+|internal list of dev cards | empty list, list with one element|
+
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | `dev`: doesn't matter, internal list: empty | `IllegalStateException` | :x: |
+| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `IllegalStateException` | :x: |
+| Test Case 3 | `dev`: VictoryPoint, internal list: {VictoryPoint} | internal list: empty | :x: |
+| Test Case 4 | `dev`: Knight, internal list: {Knight} | internal list: empty | :x: |
+| Test Case 5 | `dev`: RoadBuilder, internal list: {RoadBuilder} | internal list: empty | :x: |
+| Test Case 6 | `dev`: Monopoly, internal list: {Monopoly} | internal list: empty | :x: |
+| Test Case 7 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | internal list: empty | :x: |
