@@ -8,11 +8,11 @@ A subclass of `Piece` that a `GamePlayer` can trade with in preset ratios of `Re
 
 ### `public Harbor()`
 
-Constructs an unclaimed `Harbor` piece, ie a `GamePlayer` cannot trade with it. 
+Constructs a `Harbor` piece with the default 3:1 trader ratio. 
 
 ### `public Harbor(inputTrade : ResourceStack)`
 
-Constructs a claimed `Harbor` piece, that a given `GamePlayer` can trade with through making an offer of a `ResourceStack`.
+Constructs `Harbor` piece with an `inputTrade` that allows for a trade of ratio 2:1.
 
 ### `public ResourceStack getInputTrade()`
 
