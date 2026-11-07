@@ -185,9 +185,6 @@ none
 
 ### Method under test: `place(piece : Piece, location : Location)`
 
-this is more of an integration test IMO, not really unit testable other than
-"doesn't crash"
-
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
@@ -224,3 +221,120 @@ none
 | Test Case 5 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
 | Test Case 6 | piece: road, min locations occupied, location: not adjacent to player settlement | `IllegalStateException`| :x: |
 | Test Case 7 | piece: road, max locations occupied| `IllegalStateException`| :x: |
+
+
+
+### Method under test: `proposePlayerTrade(otherPlayer : Color, trade : TradeOffer)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|OtherPlayer, TradeOffer, current player | state of trader helper |
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|OtherPlayer|pointer Color|
+|TradeOffer| pointer to trade offer which has {2x inventory, 2x collection of resourceStack}|
+|location| pointer to Location|
+|Current player| gamePlayer |
+|state of helper / output| collection of trade offers // IllegalArgumentException|
+
+**Operations:**
+Adding element to list
+
+**Step 3: Concrete values**
+| Variable | Values |
+|other Player | Red, Blue, White , Orange , None |
+|state of trade helper| empty list, list with one offer|
+|TradeOffer| Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing|
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | current player: Blue, otherPlayer: Blue| `IllegalArgumentException(cannot go to same player)`|:x:|
+| Test Case 2 | current Player: Blue, otherPlayer: None| `IllegalArgumentException(trade must go to someone)`|:x:|
+| Test Case 3| current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
+| Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
+
+
+
+### Method under test: `acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|proposingPlayer, TradeOffer, current player, inventories of both players| state of trader helper |
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|proposing|pointer Color|
+|TradeOffer| pointer to trade offer which has {2x inventory, 2x collection of resourceStack}|
+|location| pointer to Location|
+|Current player| gamePlayer |
+|state of helper / output| collection of trade offers // IllegalArgumentException|
+| inventories of each player| pointer to Inventory which has 3 collections of devCards, Resources, Pieces|
+
+**Operations:**
+Removing element from list
+
+**Step 3: Concrete values**
+| Variable | Values |
+|other Player | Red, Blue, White , Orange , None |
+|state of trade helper| empty list, list with one offer|
+|TradeOffer| Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing|
+|inventories| have enough resources, or don't|
+|Trade Offer manager| trade offer exists, it doesn't exist|
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 1 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log| TradeHelper offer log is empty| :x: |
+| Test Case 2 | current player: Blue, otherPlayer: Blue| `IllegalArgumentException(cannot go to same player)`|:x:|
+| Test Case 3 | current Player: Blue, otherPlayer: None| `IllegalArgumentException(trade must go to someone)`|:x:|
+| Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
+| Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log| `IllegalStateException(not enough resources for that trade)`| :x: |
+
+
+
+
+
+### Method under test: `tradeWithBank(give : ResourceStack, receive : ResourceStack)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+|give, receive, PlayerInventory, bankInventory|state of PlayerInventory, bankInventory|
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+|give| pointer to OreStack/LumberStack/WoolStack/BrickStack/GrainStack|
+|receive| pointer to OreStack/LumberStack/WoolStack/BrickStack/GrainStack|
+|player inventory|  pointer to collections of resource stacks |
+|bank inventory|  pointer to collections of resource stacks |
+
+
+**Operations:**
+none
+
+**Step 3: Concrete values**
+| Variable | Values |
+|give | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick}|
+|recieve | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick}|
+|player inventory | empty, has enough for a 4-1 trade of ore to brick|
+|bank inventory| empty, enough for the trade to happen|
+
+**Step 4: Each choice** 
+
+|              | Inputs                                                                                                         | Expected output                 | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
+| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `IllegalStateException(needs to be 4 to 1)` | :x: |
+| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool |  player inventory{-4 Ore, +1 wool}, bank inventory{+4 ore, -1 wool} | :x: |
+| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `IllegalStateException(needs to be 4 to 1)` | :x: |
