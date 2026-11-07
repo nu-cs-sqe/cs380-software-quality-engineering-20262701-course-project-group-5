@@ -96,7 +96,7 @@ package domain {
     +class Bank {
         -resourceStacks : List<ResourceStack>
         -developments : List<Development>
-        +Bank(startingResources : List<ResourceStack>)
+        +Bank(startingResources : List<ResourceStack>, startingDevelopments : List<Development>)
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
         +removeResources(stack : ResourceStack) : void
