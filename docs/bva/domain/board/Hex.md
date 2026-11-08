@@ -5,10 +5,10 @@ Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `
 
 ## `public abstract class Hex extends Location`
 
-A terrain tile with a token number, six vertices, six edges, and a set of resource products. Distributes its products to the pieces occupying it when produced, and can hold the Robber (through `Location`).
+A terrain tile with a token number, six vertices, six edges, and a set of resource products. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
 
-### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
-Initializes a `Hex`. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex).
+### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
+Initializes a `Hex` with the given token number. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
 
 ### `public boolean canProduce()`
 Returns whether this hex currently produces resources (false while the robber sits on it, or for desert and ocean).
@@ -20,24 +20,26 @@ Returns the token number of this hex.
 Sets the `canProduce` flag to the given value. `produceResources()` only runs when the flag is true. Assumes the boolean parameter (missing from diagram). `DesertHex` and `OceanHex` override it.
 
 ### `public void produceResources()`
-If `canProduce()`, passes `products` to each of its vertices, and the `Settlement` or `City` on each vertex gives its owner resources: a `Settlement` takes the tier-1 products and a `City` takes the tier-1 and tier-2 products. Otherwise does nothing.
+If `canProduce()`, calls `Vertex.produceResources()` on each of its 6 vertices, passing `products`. Otherwise does nothing.
 
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
-### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
+### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
+| `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts`, `tokenValue : int` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | `vertices` | Collection (fixed size 6) |
 | `edges` | Collection (fixed size 6) |
+| edges' endpoints vs `vertices` | Collection built with references (the structure must be circular) |
 | `products` | Cases (a valid `ResourceProducts`) |
+| `tokenValue` | Cases (a valid token; the boundary values are tested through `getTokenValue()`) |
 | outcome (output) | Cases |
 
 **Step 3: Concrete values**
@@ -45,20 +47,25 @@ Inherited methods: see `Location`.
 |---|---|
 | `vertices` | empty, exactly one, 5, 6, 7 |
 | `edges` | empty, exactly one, 5, 6, 7 |
+| edges' endpoints vs `vertices` | one closed ring through all 6 vertices; circular but split into two rings; not circular (open chain); an endpoint that is not in `vertices` |
 | `products` | a valid `ResourceProducts` |
+| `tokenValue` | a valid token |
 | outcome (output) | hex created, IllegalArgumentException |
 
 **Step 4: Each choice**
 
-|             | Input                                  | Expected output            | Implemented? |
-|-------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1 | 6 vertices, 6 edges, valid products    | hex created                | :x:          |
-| Test Case 2 | `vertices` empty, valid others         | `IllegalArgumentException` | :x:          |
-| Test Case 3 | `vertices` has 1 element               | `IllegalArgumentException` | :x:          |
-| Test Case 4 | `vertices` has 5 elements              | `IllegalArgumentException` | :x:          |
-| Test Case 5 | `vertices` has 7 elements              | `IllegalArgumentException` | :x:          |
-| Test Case 6 | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
-| Test Case 7 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
+|              | Input                                                                               | Expected output            | Implemented? |
+|--------------|-------------------------------------------------------------------------------------|----------------------------|--------------|
+| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token  | hex created                | :x:          |
+| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :x:          |
+| Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :x:          |
+| Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :x:          |
+| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :x:          |
+| Test Case 6  | `edges` has 5 elements                                                              | `IllegalArgumentException` | :x:          |
+| Test Case 7  | `edges` has 7 elements                                                              | `IllegalArgumentException` | :x:          |
+| Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :x:          |
+| Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :x:          |
+| Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :x:          |
 
 
 ### Test: `public boolean canProduce()`
@@ -157,55 +164,38 @@ Inherited methods: see `Location`.
 
 ### Test: `public void produceResources()`
 
+`Hex` only passes its products to its vertices.
+
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| state: `canProduce`, buildings on the hex's vertices, `products`, concrete class of the hex | No return value. Outcome is one of: no resources change, Settlement owner receives tier-1 products, City owner receives tier-1 and tier-2 products. Also how many pieces are paid. |
+| state: `canProduce`, the hex's 6 vertices, `products`, concrete class of the hex | No return value. Outcome is one of: `Vertex.produceResources()` is called on all 6 vertices with `products`, no vertex is called. Also how many vertices are called. |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | `canProduce` | Boolean |
-| buildings on the hex's vertices | Collection |
-| piece type | Cases |
-| `products` | Collection of tier-1 and tier-2 stacks |
-| concrete class | Cases (`HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex`) |
+| the hex's vertices | Collection (fixed size 6) |
+| `products` | Cases (a valid `ResourceProducts`) |
+| concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
 | outcome (output) | Cases |
-| pieces paid (output) | Count |
+| vertices called (output) | Count |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
 | `canProduce` | true, false |
-| buildings on the hex's vertices | empty, exactly one, more than one, 6 (maximum number of buildings bc 6 vertices) |
-| piece type | Settlement, City, at least one of each together |
-| `products` | tier 1 and tier 2 each non-empty |
-| concrete class | `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex` |
-| outcome (output) | no change, tier-1 only (Settlement), tier-1 and tier-2 (City) |
-| pieces paid (output) | 0, 1, more than one, 6 |
+| the hex's vertices | 6 |
+| `products` | a valid `ResourceProducts` |
+| concrete class | `ForestHex` (chosen arbitrarily), `DesertHex`, `OceanHex` |
+| outcome (output) | all 6 vertices called with `products`, no vertex called |
+| vertices called (output) | 0, 6 (maximum) |
 
-**Step 4: All combinations** of `canProduce` x buildings on the hex's vertices (empty, exactly one, more than one, 6). Each choice for the piece type, the concrete class and the outputs. Test Cases 1 to 7, 20 and 21 use a `HillsHex` with tier 1 and tier 2 each `[BrickResourceStack size 1]`, so a Settlement receives size 1 and a City receives size 2 (tier 1 plus tier 2).
+**Step 4: All combinations** of `canProduce` for `ForestHex`. Each choice for the other classes.
 
-|              | Input                                                                                                       | Expected output                                                                                    | Implemented? |
-|--------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | `canProduce` true, no buildings on the hex's vertices                                                       | no resources change, 0 pieces paid                                                                 | :x:          |
-| Test Case 2  | `canProduce` true, one `Settlement` on one of the hex's vertices                                            | owner gains tier-1 products only, 1 piece paid                                                     | :x:          |
-| Test Case 3  | `canProduce` true, one `City` on one of the hex's vertices                                                  | owner gains tier-1 and tier-2 products, 1 piece paid                                               | :x:          |
-| Test Case 4  | `canProduce` true, buildings on 3 of the hex's vertices: two `Settlement` and one `City`                    | Settlement owners gain tier-1 products, City owner gains tier-1 and tier-2 products, 3 pieces paid | :x:          |
-| Test Case 5  | `canProduce` true, a `Settlement` on each of the hex's 6 vertices                                           | each owner gains tier-1 products, 6 pieces paid                                                    | :x:          |
-| Test Case 6  | `canProduce` false, one `Settlement` on one of the hex's vertices                                           | no resources change, 0 pieces paid                                                                 | :x:          |
-| Test Case 7  | `canProduce` false, no buildings on the hex's vertices                                                      | no resources change, no exception, 0 pieces paid                                                   | :x:          |
-| Test Case 8  | `HillsHex` with tier 1 and tier 2 each `[BrickResourceStack size 1]`, `canProduce` true, one `Settlement`   | owner gains `BrickResourceStack` with size `1`, 1 piece paid                                       | :x:          |
-| Test Case 9  | same `HillsHex`, one `City`                                                                                 | owner gains `BrickResourceStack` with size `2`, 1 piece paid                                       | :x:          |
-| Test Case 10 | `ForestHex` with tier 1 and tier 2 each `[LumberResourceStack size 1]`, `canProduce` true, one `Settlement` | owner gains `LumberResourceStack` with size `1`, 1 piece paid                                      | :x:          |
-| Test Case 11 | same `ForestHex`, one `City`                                                                                | owner gains `LumberResourceStack` with size `2`, 1 piece paid                                      | :x:          |
-| Test Case 12 | `MountainsHex` with tier 1 and tier 2 each `[OreResourceStack size 1]`, `canProduce` true, one `Settlement` | owner gains `OreResourceStack` with size `1`, 1 piece paid                                         | :x:          |
-| Test Case 13 | same `MountainsHex`, one `City`                                                                             | owner gains `OreResourceStack` with size `2`, 1 piece paid                                         | :x:          |
-| Test Case 14 | `FieldsHex` with tier 1 and tier 2 each `[GrainResourceStack size 1]`, `canProduce` true, one `Settlement`  | owner gains `GrainResourceStack` with size `1`, 1 piece paid                                       | :x:          |
-| Test Case 15 | same `FieldsHex`, one `City`                                                                                | owner gains `GrainResourceStack` with size `2`, 1 piece paid                                       | :x:          |
-| Test Case 16 | `PastureHex` with tier 1 and tier 2 each `[WoolResourceStack size 1]`, `canProduce` true, one `Settlement`  | owner gains `WoolResourceStack` with size `1`, 1 piece paid                                        | :x:          |
-| Test Case 17 | same `PastureHex`, one `City`                                                                               | owner gains `WoolResourceStack` with size `2`, 1 piece paid                                        | :x:          |
-| Test Case 18 | `DesertHex`, one `Settlement` on one of its vertices                                                        | no resources change, 0 pieces paid                                                                 | :x:          |
-| Test Case 19 | `OceanHex`, one `Settlement` on one of its vertices                                                         | no resources change, 0 pieces paid                                                                 | :x:          |
-| Test Case 20 | `canProduce` false, buildings on 3 of the hex's vertices: two `Settlement` and one `City`                   | no resources change, 0 pieces paid                                                                 | :x:          |
-| Test Case 21 | `canProduce` false, a `Settlement` on each of the hex's 6 vertices                                          | no resources change, 0 pieces paid                                                                 | :x:          |
+|             | Input                               | Expected output                                                                       | Implemented? |
+|-------------|-------------------------------------|---------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | `ForestHex` with `canProduce` true  | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :x:          |
+| Test Case 2 | `ForestHex` with `canProduce` false | no vertex is called                                                                   | :x:          |
+| Test Case 3 | `DesertHex`                         | no vertex is called                                                                   | :x:          |
+| Test Case 4 | `OceanHex`                          | no vertex is called                                                                   | :x:          |
