@@ -77,7 +77,7 @@ Inherited methods: see `Location`.
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `canProduce` flag | true, false |
+| `canProduce` flag (need both ocean and desert hexes) | true, false |
 | returned value (output) | true, false |
 
 **Step 4: Each choice**
@@ -86,6 +86,7 @@ Inherited methods: see `Location`.
 |-------------|------------------------------|-----------------|--------------|
 | Test Case 1 | `ForestHex` just constructed | true            | :x:          |
 | Test Case 2 | `DesertHex` just constructed | false           | :x:          |
+| Test Case 3 | `OceanHex` just constructed  | false           | :x:          |
 
 
 ### Test: `public int getTokenValue()`
