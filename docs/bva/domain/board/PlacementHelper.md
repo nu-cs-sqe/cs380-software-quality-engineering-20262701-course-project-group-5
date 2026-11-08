@@ -18,6 +18,8 @@ A `City` is valid only on a vertex holding the active player's own `Settlement`.
 
 Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpots` (the active player's color). I use Red for active player's color and Blue for an opponent (arbitrary).
 
+*TODO: getValidHexSpot(Piece piece) for the robber probably
+
 ### Test: `public List<Vertex> getValidBuildingSpots(Color color)`
 
 **Step 1: Inputs / outputs**
