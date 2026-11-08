@@ -172,3 +172,4 @@ All combinations of piece type (Settlement, City, Road, Harbor, Robber) x locati
 | Test Case 25 | `Robber`, a `Vertex`                                                         | `IllegalPlacementException` "Cannot place %s at %s: location does not fit a %s"            | :x:          |
 | Test Case 26 | `Robber`, an `Edge`                                                          | `IllegalPlacementException` "Cannot place %s at %s: location does not fit a %s"            | :x:          |
 | Test Case 27 | `Robber`, a `Hex`                                                            | piece placed there                                                                         | :x:          |
+| Test Case 27 | `Robber`, a `Hex` already holding a `Robber`                                 | `IllegalPlacementException` "Cannot place %s at %s: location already holds a %s"           | :x:          |
