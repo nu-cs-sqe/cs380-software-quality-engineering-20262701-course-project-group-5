@@ -8,7 +8,7 @@ Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `
 A terrain tile with a token number, six vertices, six edges, and a set of resource products. Distributes its products to the pieces occupying it when produced, and can hold the Robber (through `Location`).
 
 ### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
-Initializes a `Hex`. Throws `IllegalArgumentException` if any argument is `null` or if `vertices` or `edges` does not contain exactly 6 elements (this might need to change for the OceanHex?).
+Initializes a `Hex`. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex).
 
 ### `public boolean canProduce()`
 Returns whether this hex currently produces resources (false while the robber sits on it, or for desert and ocean).
@@ -25,6 +25,8 @@ If `canProduce()`, passes `products` to each of its vertices, and the `Settlemen
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
+`Hex` is only called with non-null arguments. Null cases are not tested here.
+
 ### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 
 **Step 1: Inputs / outputs**
@@ -35,33 +37,30 @@ Inherited methods: see `Location`.
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `vertices` | Pointer, Collection (fixed size 6) |
-| `edges` | Pointer, Collection (fixed size 6) |
-| `products` | Pointer |
+| `vertices` | Collection (fixed size 6) |
+| `edges` | Collection (fixed size 6) |
+| `products` | Cases (a valid `ResourceProducts`) |
 | outcome (output) | Cases |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `vertices` | null, empty, exactly one, 5, 6, 7 |
-| `edges` | null, empty, exactly one, 5, 6, 7 |
-| `products` | null, real object |
+| `vertices` | empty, exactly one, 5, 6, 7 |
+| `edges` | empty, exactly one, 5, 6, 7 |
+| `products` | a valid `ResourceProducts` |
 | outcome (output) | hex created, IllegalArgumentException |
 
 **Step 4: Each choice**
 
-|              | Input                                  | Expected output            | Implemented? |
-|--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1  | 6 vertices, 6 edges, valid products    | hex created                | :x:          |
-| Test Case 2  | `vertices` is `null`                   | `IllegalArgumentException` | :x:          |
-| Test Case 3  | `edges` is `null`                      | `IllegalArgumentException` | :x:          |
-| Test Case 4  | `products` is `null`                   | `IllegalArgumentException` | :x:          |
-| Test Case 5  | `vertices` empty, valid others         | `IllegalArgumentException` | :x:          |
-| Test Case 6  | `vertices` has 1 element               | `IllegalArgumentException` | :x:          |
-| Test Case 7  | `vertices` has 5 elements              | `IllegalArgumentException` | :x:          |
-| Test Case 8  | `vertices` has 7 elements              | `IllegalArgumentException` | :x:          |
-| Test Case 9  | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
-| Test Case 10 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
+|             | Input                                  | Expected output            | Implemented? |
+|-------------|----------------------------------------|----------------------------|--------------|
+| Test Case 1 | 6 vertices, 6 edges, valid products    | hex created                | :x:          |
+| Test Case 2 | `vertices` empty, valid others         | `IllegalArgumentException` | :x:          |
+| Test Case 3 | `vertices` has 1 element               | `IllegalArgumentException` | :x:          |
+| Test Case 4 | `vertices` has 5 elements              | `IllegalArgumentException` | :x:          |
+| Test Case 5 | `vertices` has 7 elements              | `IllegalArgumentException` | :x:          |
+| Test Case 6 | `edges` has 5 elements                 | `IllegalArgumentException` | :x:          |
+| Test Case 7 | `edges` has 7 elements                 | `IllegalArgumentException` | :x:          |
 
 
 ### Test: `public boolean canProduce()`
