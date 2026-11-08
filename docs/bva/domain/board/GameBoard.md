@@ -23,7 +23,7 @@ Removes the piece with matching `pieceData` from `location`. No operation happen
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `tokenValue : int`; state: `hexes`, each hex's token and `canProduce` | No return value. Outcome is one of: `IllegalArgumentException`; valid call where no hex produces; valid call where one or more hexes produce. |
+| `tokenValue : int`; state: `hexes` and each hex's token | No return value. Outcome is one of: `IllegalArgumentException`; valid call where no hex is asked to produce; valid call where one or more hexes are asked to produce. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -31,9 +31,8 @@ Removes the piece with matching `pieceData` from `location`. No operation happen
 | `tokenValue` | Interval `[2, 12]` |
 | `hexes` | Collection |
 | hexes matching the token | Collection (subset of `hexes`) |
-| matching hex `canProduce` | Boolean |
 | outcome (output) | Cases |
-| number of hexes that produce (output) | Count |
+| number of hexes asked to produce (output) | Count |
 
 **Operations:**
 Searching (for the hexes matching the token)
@@ -44,26 +43,24 @@ Searching (for the hexes matching the token)
 | `tokenValue` | 1, 2, 7 (special case), 12, 13 |
 | `hexes` | empty, exactly one, more than one, maximum (25 hexes: 19 land hexes plus 6 `OceanHex` frame pieces) |
 | hexes matching the token | not found, exactly one match, exactly one match (first position), exactly one match (last position), exactly two matches (the maximum since no token appears on more than two hexes) |
-| `canProduce` | true, false |
-| outcome (output) | IllegalArgumentException; valid, nothing produces; valid, production happens |
-| hexes that produce (output) | 0, 1, 2 (maximum) |
+| outcome (output) | IllegalArgumentException; valid, no hex asked to produce; valid, hexes asked to produce |
+| hexes asked to produce (output) | 0, 1, 2 (maximum) |
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`      | :x:          |
-| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`      | :x:          |
-| Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex produces     | :x:          |
-| Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex produces      | :x:          |
-| Test Case 5  | More than one hex, input `7`                                                                                   | no hex produces                 | :x:          |
-| Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex produces                 | :x:          |
-| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes produce              | :x:          |
-| Test Case 8  | One hex with token `8` and `canProduce` false, input `8`                                                       | hex does not produce            | :x:          |
-| Test Case 9  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception   | :x:          |
-| Test Case 10 | Board with exactly one hex, token `8`, `canProduce` true, input `8`                                            | that hex produces               | :x:          |
-| Test Case 11 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes produce | :x:          |
-| Test Case 12 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex produces          | :x:          |
+|              | Inputs                                                                                                         | Expected output                              | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------|----------------------------------------------|--------------|
+| Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`                   | :x:          |
+| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`                   | :x:          |
+| Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex is asked to produce       | :x:          |
+| Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex is asked to produce        | :x:          |
+| Test Case 5  | More than one hex, input `7`                                                                                   | no hex is asked to produce                   | :x:          |
+| Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex is asked to produce                   | :x:          |
+| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes are asked to produce              | :x:          |
+| Test Case 8  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception                | :x:          |
+| Test Case 9  | Board with exactly one hex, token `8`, input `8`                                                               | that hex is asked to produce                 | :x:          |
+| Test Case 10 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes are asked to produce | :x:          |
+| Test Case 11 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex is asked to produce            | :x:          |
 
 ### Test: `public void addPieceAtLocation(Piece piece, Location location)`
 
