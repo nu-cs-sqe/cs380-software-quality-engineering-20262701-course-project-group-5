@@ -25,8 +25,6 @@ If `canProduce()`, passes `products` to each of its vertices, and the `Settlemen
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
-`Hex` is only called with non-null arguments. Null cases are not tested here.
-
 ### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 
 **Step 1: Inputs / outputs**
@@ -108,7 +106,7 @@ Inherited methods: see `Location`.
 | Variable | Values |
 |---|---|
 | `tokenValue` | 2 (LOW), 12 (HIGH) |
-| hex kind | token-bearing hex, non-producing hex (desert or ocean) |
+| hex kind | token-bearing hex, non-producing hex (desert and ocean) |
 | returned value (output) | same as `tokenValue` (0 for desert and ocean; 1, 13 and 7 on a producing hex can't be set) |
 
 **Step 4: Each choice**
@@ -117,6 +115,7 @@ Inherited methods: see `Location`.
 |-------------|-----------------------------|-----------------|--------------|
 | Test Case 1 | `ForestHex` with token `2`  | `2`             | :x:          |
 | Test Case 2 | `ForestHex` with token `12` | `12`            | :x:          |
+| Test Case 3 | `OceanHex`                  | `0`             | :x:          |
 | Test Case 4 | `DesertHex`                 | `0`             | :x:          |
 
 ### Test: `public void setCanProduce(boolean canProduce)`
