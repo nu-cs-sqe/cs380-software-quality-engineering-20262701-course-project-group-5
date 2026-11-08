@@ -32,6 +32,7 @@ package ui {
         -{final} board : GameBoard
         -{final} dice : Dice
         -{final} bank : Bank
+        -{final} bankResourceDistributor : BankResourceDistributor
         -{final} players : List<GamePlayer>
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
@@ -100,17 +101,6 @@ package exception {
         +getGamePhase() : GamePhase
     }
 
-    +class Bank {
-        -resourceStacks : List<ResourceStack>
-        -developments : List<Development>
-        +Bank(startingResources : List<ResourceStack>, startingDevelopments : List<Development>)
-        +addResources(stack : ResourceStack) : void
-        +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) : void
-        +hasDevelopmentsRemaining() : boolean
-        +removeDevelopment() : void
-    }
-
     +class Dice {
         -lastDiceRoll : int
         +Dice(randomSource : Random)
@@ -125,6 +115,31 @@ package exception {
         +addScore(score : int) : void
         +removeScore(score : int) : void
     }
+
+package bank {
+
+    +class Bank {
+        -resourceStacks : List<ResourceStack>
+        -developments : List<Development>
+        +Bank(startingResources : List<ResourceStack>, startingDevelopments : List<Development>)
+        +addResources(stack : ResourceStack) : void
+        +hasResources(stack : ResourceStack) : boolean
+        +removeResources(stack : ResourceStack) : void
+        +hasDevelopmentsRemaining() : boolean
+        +removeDevelopment() : void
+    }
+
+    +class BankResourceDistributor {
+        -playerInventories : Map<Color, ResourceInventory>
+        -bankInventory : ResourceInventory
+        -resourcesToDistribute : Map<Color, List<ResourceStack>
+        +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
+        +produceResources(color : Color, products : ResourceProducts) : void
+        +finalizeProduction() : void
+        +abortProduction() : void
+    }
+
+}
 
 package player {
 
@@ -304,8 +319,8 @@ package piece {
     }
 
     +abstract class Building {
-        #bankResources : ResourceInventory
-        +Building(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)
+        -bankResourceDistributor : BankResourceDistributor
+        +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
         +produceResources(products : ResourceProducts) : void
     }
 
@@ -318,7 +333,7 @@ package piece {
 
     +class Settlement {
         -ownerVictoryPointsTracker : ScoreTracker
-        +Settlement(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
+        +Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
@@ -326,7 +341,7 @@ package piece {
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
-        +City(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)
+        +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
         +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
@@ -446,6 +461,7 @@ TradeView ..|> Observer
 GameTableController --> GamePlayer
 GameTableController --> GameBoard
 GameTableController --> Bank
+GameTableController --> BankResourceDistributor
 GameTableController --> Dice
 GameTableController --> GamePhase
 GameTableController --> TurnPhase
@@ -469,8 +485,9 @@ Dice --|> Observed
 Bank --|> Observed
 
 Bank ..|> ResourceInventory
-Bank --> Color
-Bank --> ResourceInventory
+BankResourceDistributor --|> Observed
+BankResourceDistributor --> Color
+BankResourceDistributor --> ResourceInventory
 
 GamePlayer --|> Observed
 GamePlayer --> ScoreTracker
@@ -553,7 +570,7 @@ WoolResourceStack --|> ResourceStack
 
 ResourceProducts --> ResourceStack
 
-Building --> ResourceInventory
+Building --> BankResourceDistributor
 Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
