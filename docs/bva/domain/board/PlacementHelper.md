@@ -4,6 +4,8 @@ Classpath: catan.game_table.domain.board.PlacementHelper
 ## `class PlacementHelper`
 Package-private helper that decides where pieces may legally be placed and performs placement on the `GameBoard`.
 
+### TODO: getValidHexSpot(Piece piece) for the robber probably
+
 ### `public List<Vertex> getValidBuildingSpots(Color color)`
 Returns vertices where the player with `color` may place a building. A vertex is valid if it is unoccupied and no adjacent vertex has a building (using the distance rule). In `REGULAR` phase it must also connect to one of that player's own roads. In `SETUP` phase no road is required.
 
@@ -17,8 +19,6 @@ A `City` is valid only on a vertex holding the active player's own `Settlement`.
 ## Boundary-Value Analysis
 
 Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpots` (the active player's color). I use Red for active player's color and Blue for an opponent (arbitrary).
-
-*TODO: getValidHexSpot(Piece piece) for the robber probably
 
 ### Test: `public List<Vertex> getValidBuildingSpots(Color color)`
 
