@@ -18,31 +18,6 @@ Calls `Building.produceResources()` on the building at this vertex, passing `pro
 
 Inherited methods: see `Location`.
 
-### Test: `public Point getPoint()`
-
-**Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
-| none; state: the vertex's point | `Point` |
-
-**Step 2: Data types**
-| Variable | Type |
-|---|---|
-| point | Cases (a valid `Point`) |
-| returned value (output) | Cases (a valid `Point`) |
-
-**Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| point | a valid `Point` |
-| returned value (output) | a valid `Point` |
-
-**Step 4: Each choice**
-
-|             | Input                           | Expected output         | Implemented? |
-|-------------|---------------------------------|-------------------------|--------------|
-| Test Case 1 | vertex built from `Point(3, 4)` | the same `Point` object | :x:          |
-
 ### Test: `public void produceResources(ResourceProducts products)`
 
 `Vertex` only passes `products` to its building. What the building does with them (including sending them on to the `Bank`) is tested in `Building`, `Settlement` and `City`.
