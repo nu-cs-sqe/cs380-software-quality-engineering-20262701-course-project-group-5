@@ -14,7 +14,7 @@ Returns the `PieceData` of each piece at this location, in the order added. Retu
 Adds `piece` to the end of this location's pieces. It does not check whether the placement is valid.
 
 ### `public void removePieceWithData(PieceData data)`
-Removes the first piece whose data equals `data`. Does nothing if none match.
+Removes the first piece whose data equals `data`, meaning the same `type` and the same `color`. Does nothing if none match.
 
 ## Boundary-Value Analysis
 
@@ -103,7 +103,7 @@ Removes the first piece whose data equals `data`. Does nothing if none match.
 |---|---|
 | `data` | a valid `PieceData` |
 | pieces at location | empty (nothing to delete), exactly one, more than one |
-| pieces matching `data` | no match, exactly one match, exactly one match in first position, exactly one match in last position (more than one match can't be set: a location never holds two pieces of the same kind) |
+| pieces matching `data` | no match, no match (same `type`, different `color`), exactly one match, exactly one match in first position, exactly one match in last position |
 | `data` vs a stored piece's data | same object, different object with equal contents |
 | outcome (output) | no change, piece removed |
 | pieces at location after the call (output) | 0, 1, 2 |
@@ -119,3 +119,4 @@ Removes the first piece whose data equals `data`. Does nothing if none match.
 | Test Case 5 | `Edge` with a `Road` then a `Harbor`, `data` matches neither                  | no change, both remain           | :x:          |
 | Test Case 6 | one piece, a different `PieceData` object with equal `type` and `color`       | piece removed, location is empty | :x:          |
 | Test Case 7 | `Hex` with the `Robber`, `data` is the Robber's data                          | hex is empty                     | :x:          |
+| Test Case 8 | `Edge` with one `Road`, `data` has the same `type` but a different `color`    | no change, the `Road` remains    | :x:          |
