@@ -128,6 +128,8 @@ package bank {
         +removeResources(stack : ResourceStack) : void
         +hasDevelopmentsRemaining() : boolean
         +removeDevelopment() : void
+        +getResourceCount(Class<ResourceStack> resourceStackClass) : int
+        +getDevelopmentCount() : int
     }
 
     +class BankResourceDistributor {
