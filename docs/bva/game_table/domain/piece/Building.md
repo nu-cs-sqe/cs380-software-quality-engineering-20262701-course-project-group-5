@@ -8,12 +8,12 @@ General form of a building that `GamePlayer`s can buy and place to produce a `Re
 
 Direct known subclasses: `City`, `Settlement`
 
-### `public Building(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory)`
+### `public Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)`
 
-Constructs a `Building` object with set `PieceData` and access to the `ResourceInventory`s of a `Bank` and `GamePlayer`. 
+Constructs a `Building` object with set `PieceData` and access to the `BankResourceDistributor`. 
 
 ### `public void produce(products : ResourceProducts)`
 
-Updates the `bankResources` and `ownerResources` `ResourceInventory`s based on the given `products`. The amount updated by and product type depend on the inheriting class.
+Given `products` checks with the `BankResourceDistributor` to try and produce resources. The amount updated by and product type depend on the inheriting class.
 
 ## Boundary-Value Analysis
