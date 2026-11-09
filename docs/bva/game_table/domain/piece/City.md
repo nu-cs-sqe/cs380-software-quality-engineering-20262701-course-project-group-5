@@ -16,7 +16,7 @@ Given `products` calls the `bankResourceDistributor` to attempt to increase the 
 
 ### `public void onBoughtEffect()`
 
-Decrements the `ResourceStacks` of the Player purchasing the City by its cost through the `bankResourceDistributor`.
+Decrements the `ResourceStacks` of the Player purchasing the City by its cost increments the Banks Resources through the `bankResourceDistributor`.
 
 ### `public List<ResourceStack> getCost()`
 

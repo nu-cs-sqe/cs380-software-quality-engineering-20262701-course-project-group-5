@@ -6,17 +6,17 @@ Classpath: catan.game_table.domain.piece.Settlement
 
 A subclass of Building that costs a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `ResourceProducts` that is `tier1` of the `ResourceStack` type of the triggered `Hex`.
 
-### `public Settlement(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)`
+### `public Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)`
 
-Constructs a Settlement object with set `PieceData` and access to the `ResourceInventory`s of a bank and Player, and access to the `ScoreTracker` of the Player that owns it.
+Constructs a Settlement object with set `PieceData`, access to the `BankResourceDistributor`, and access to the `ScoreTracker` of the `GamePlayer` that owns it.
 
 ### `public void produceResources(products : ResourceProducts)`
 
-Updates the `bankResources` and `ownerResources` `ResourceInventory`s by one based on the given `products`.
+Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the Settlement by one.
 
 ### `public void onBoughtEffect()`
 
-Decrements the Resources of the Player purchasing the Settlement by its cost and increments the Banks Resources.
+Decrements the Resources of the Player purchasing the Settlement by its cost and increments the Banks Resources through the `bankResourceDistributor`.
 
 ### `public List<ResourceStack> getCost()`
 
