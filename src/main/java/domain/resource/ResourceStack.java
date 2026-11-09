@@ -1,4 +1,4 @@
 package domain.resource;
 
-public class ResourceStack {
+public abstract class ResourceStack {
 }
