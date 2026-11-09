@@ -64,12 +64,11 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| point vs another point | same object, different object with equal x and y |
-| returned value (output) | same value, same value |
+| point vs another point | different object with equal x and y |
+| returned value (output) | same value |
 
 **Step 4: Each choice**
 
 |             | Input                                         | Expected output                  | Implemented? |
 |-------------|-----------------------------------------------|----------------------------------|--------------|
-| Test Case 1 | `Point(1, 2)`, `hashCode()` called twice      | the same value both times        | :x:          |
-| Test Case 2 | `Point(1, 2)` and a different `Point(1, 2)`   | the same hash code for both      | :x:          |
+| Test Case 1 | `Point(1, 2)` and a different `Point(1, 2)`   | the same hash code for both      | :x:          |
