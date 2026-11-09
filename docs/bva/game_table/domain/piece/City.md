@@ -6,17 +6,17 @@ Classpath: catan.game_table.domain.piece.City
 
 A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `tier1` and `tier2` `ResourceProducts` of the `ResourceStack` type of triggerred `Hex`.
 
-### `public City(data : PieceData, bankInventory : ResourceInventory, ownerInventory : ResourceInventory, ownerVictoryPointsTracker : ScoreTracker)`
+### `public City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)`
 
-Constructs a `City` object with set `PieceData` and access to the `ResourceInventory`s of a bank and `GamePlayer`, and access to the `ScoreTracker` of the `GamePlayer` that owns it.
+Constructs a `City` object with set `PieceData`, access to the `BankResourceDistributor`, and access to the `ScoreTracker` of the `GamePlayer` that owns it.
 
 ### `public void produceResources(products : ResourceProducts)`
 
-Updates the `bankResources` and `ownerResources` `ResourceInventory`s by two based on the given `products`.
+Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the City by two.
 
 ### `public void onBoughtEffect()`
 
-Decrements the `ResourceStacks` of the Player purchasing the City by its cost.
+Decrements the `ResourceStacks` of the Player purchasing the City by its cost through the `bankResourceDistributor`.
 
 ### `public List<ResourceStack> getCost()`
 
