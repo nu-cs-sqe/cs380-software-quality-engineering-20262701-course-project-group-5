@@ -15,14 +15,6 @@ package mvc_util {
 
 }
 
-+enum Color {
-    NONE,
-    RED,
-    BLUE,
-    WHITE,
-    ORANGE
-}
-
 package game_table {
 
 package ui {
@@ -36,6 +28,7 @@ package ui {
         -{final} players : List<GamePlayer>
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
+        -{final} purchaseHelper : PurchaseHelper
         -activePlayer : GamePlayer
         -gamePhase : GamePhase
         -turnPhase : TurnPhase
@@ -79,6 +72,14 @@ package ui {
 }
 
 package domain {
+
++enum Color {
+    NONE,
+    RED,
+    BLUE,
+    WHITE,
+    ORANGE
+}
 
 package exception {
 
@@ -130,13 +131,25 @@ package bank {
     }
 
     +class BankResourceDistributor {
-        -playerInventories : Map<Color, ResourceInventory>
-        -bankInventory : ResourceInventory
+        -{final} playerInventories : Map<Color, ResourceInventory>
+        -{final} bankInventory : ResourceInventory
         -resourcesToDistribute : Map<Color, List<ResourceStack>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
         +produceResources(color : Color, products : ResourceProducts) : void
         +finalizeProduction() : void
         +abortProduction() : void
+    }
+
+    +class PurchaseHelper {
+        -{final} playerInventories : Map<Color, PlayerInventory>
+        -bank : Bank
+        +PurchaseHelper(bank : Bank, playerInventories : Map<Color, PlayerInventory>)
+        +buy(player : Color, item : Buyable) : void
+        -canBuy(player : Color, item : Buyable) : boolean
+    }
+
+    +interface Buyable {
+        +getCost() : List<ResourceStack>
     }
 
 }
@@ -151,6 +164,7 @@ package player {
         -{final} inventory : PlayerInventory
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
+        -{final} purchaseHelper : PurchaseHelper
         -awards : List<Award>
         +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
         +getInventory() : PlayerInventory
@@ -188,7 +202,7 @@ package player {
 
 package trade {
 
-    class TradeHelper {
+    +class TradeHelper {
         -{final} board : GameBoard
         -{final} activeTradeOffers : Set<TradeOffer>
         +getActiveTradeOffers() : Set<TradeOffer>
@@ -199,7 +213,7 @@ package trade {
         -isValidBankTrade(trade : TradeOffer) : boolean
     }
 
-    class TradeOffer {
+    +class TradeOffer {
         -{final} requestedResources : List<ResourceStack>
         -{final} offeredResources : List<ResourceStack>
         -{final} proposer : ResourceInventory
@@ -335,7 +349,6 @@ package piece {
         -ownerVictoryPointsTracker : ScoreTracker
         +Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
-        +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
     }
 
@@ -343,12 +356,10 @@ package piece {
         -ownerVictoryPointsTracker : ScoreTracker
         +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : ResourceProducts) : void
-        +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
     }
 
     +class Road {
-        +onBoughtEffect() : void
         +getCost() : List<ResourceStack>
     }
 
@@ -369,11 +380,6 @@ package piece {
     }
 
 }
-
-    +interface Buyable {
-        +getCost() : List<ResourceStack>
-        +onBoughtEffect() : void
-    }
 
     +interface Playable {
         +onPlayEffect() : void
@@ -466,6 +472,7 @@ GameTableController --> Dice
 GameTableController --> GamePhase
 GameTableController --> TurnPhase
 GameTableController --> PlacementHelper
+GameTableController --> PurchaseHelper
 GameTableController ..> PlayerData
 GameTableView --> PlayerData
 
@@ -489,15 +496,26 @@ BankResourceDistributor --|> Observed
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
 
+PurchaseHelper -u-> PlayerInventory
+PurchaseHelper --> Bank
+PurchaseHelper --> Color
+PurchaseHelper ..> Buyable
+
+Buyable ..> ResourceStack
+
 GamePlayer --|> Observed
 GamePlayer --> ScoreTracker
 GamePlayer --> PlayerInventory
 GamePlayer ..> Piece
+GamePlayer ..> Buyable
+GamePlayer ..> Playable
 GamePlayer ..> Dice
 GamePlayer --> Color
 GamePlayer --> Award
 GamePlayer ..> ResourceStack
 GamePlayer --> PlacementHelper
+GamePlayer ..> TradeOffer
+GamePlayer --> PurchaseHelper
 
 PlacementHelper --> Color
 PlacementHelper --> GameBoard
