@@ -6,6 +6,8 @@ Classpath: catan.game_table.domain.piece.PieceData
 
 A holder for a `Piece` objects color and type data, the former referencing an Enum and the latter being a string.
 
-## Boundary-Value Analysis
+### `public boolean equals(o : Object)`
 
-The Class features no methods to analyze, only static fields. Color is pulled from an Enum of size 5 containing values None, Red, Blue, White, and Orange. Type refers to the class type of the object which must be a class that extends Piece.
+### `public int hashCode()`
+
+## Boundary-Value Analysis
