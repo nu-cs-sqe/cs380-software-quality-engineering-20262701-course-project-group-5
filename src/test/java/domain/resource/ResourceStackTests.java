@@ -9,11 +9,11 @@ public class ResourceStackTests {
         BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
         BrickResourceStack nearMaxStack = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
-        stackOfOneBrick.combine(nearMaxStack);
+        BrickResourceStack maxStack = stackOfOneBrick.combine(nearMaxStack, stackOfOneBrick);
 
         int expected = Integer.MAX_VALUE;
 
-        int actual = stackOfOneBrick.getSize;
+        int actual = maxStack.getSize();
 
         assertTrue(expected, actual);
     }
