@@ -3,7 +3,7 @@ package domain.resource;
 import java.util.Objects;
 
 public abstract class ResourceStack {
-    private int size;
+    private final int size;
 
     public ResourceStack(int size){
         this.size = size;
@@ -23,7 +23,7 @@ public abstract class ResourceStack {
         if (o == null){
             return false;
         }
-        
+
         if ( this.getClass().equals(o.getClass()) ){
             ResourceStack otherStack = (ResourceStack) o;
             if (this.size == otherStack.size){
