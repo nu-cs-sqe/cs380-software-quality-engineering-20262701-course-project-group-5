@@ -17,3 +17,5 @@ Constructs a `Building` object with set `PieceData` and access to the `BankResou
 Given `products` checks with the `BankResourceDistributor` to try and produce resources. The amount updated by and product type depend on the inheriting class.
 
 ## Boundary-Value Analysis
+
+N/A for this class.
