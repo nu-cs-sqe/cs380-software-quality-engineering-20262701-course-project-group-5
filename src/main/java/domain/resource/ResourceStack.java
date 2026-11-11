@@ -29,11 +29,17 @@ public abstract class ResourceStack {
         return false;
     }
 
-    public static BrickResourceStack combine (BrickResourceStack stack1, BrickResourceStack stack2) throws IllegalArgumentException{
+    public static ResourceStack combine (ResourceStack stack1, ResourceStack stack2) throws IllegalArgumentException{
         if (! (stack1.getClass().equals(stack2.getClass())) ){
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", stack1.getClass(), stack2.getClass()) );
         }
         int totalSize = stack1.getSize() + stack2.getSize();
-        return new BrickResourceStack(totalSize);
+        Class<?> stackClass = stack1.getClass();
+        if (stackClass.equals(BrickResourceStack.class)){
+            return new BrickResourceStack(totalSize);
+        }
+        else{
+            throw new IllegalArgumentException(String.format("First ResourceStack type %s is not recognized", stackClass) );
+        }
     }
 }
