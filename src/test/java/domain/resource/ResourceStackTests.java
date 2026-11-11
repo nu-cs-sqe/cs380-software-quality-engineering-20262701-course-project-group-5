@@ -68,6 +68,13 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Equals_StackOfOne_WithThis_ReturnsTrue(){
+        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
+
+        assertTrue(firstStackOfOne.equals(this));
+    }
+
+    @Test
     public void Hash_StackOfOne_WithStackOfOne_ProducesSameHashCode(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
