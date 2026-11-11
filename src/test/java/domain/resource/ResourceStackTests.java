@@ -12,7 +12,7 @@ public class ResourceStackTests {
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
         BrickResourceStack stackOfNearMax = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
-        BrickResourceStack maxStack = ResourceStack.combine(stackOfNearMax, stackOfOne);
+        ResourceStack maxStack = ResourceStack.combine(stackOfNearMax, stackOfOne);
 
         int expected = Integer.MAX_VALUE;
 
@@ -26,7 +26,7 @@ public class ResourceStackTests {
         BrickResourceStack firstStackOfEmpty = new BrickResourceStack(0);
         BrickResourceStack secondStackOfEmpty = new BrickResourceStack(0);
 
-        BrickResourceStack maxStack = ResourceStack.combine(firstStackOfEmpty, secondStackOfEmpty);
+        ResourceStack maxStack = ResourceStack.combine(firstStackOfEmpty, secondStackOfEmpty);
 
         int expected = 0;
 
