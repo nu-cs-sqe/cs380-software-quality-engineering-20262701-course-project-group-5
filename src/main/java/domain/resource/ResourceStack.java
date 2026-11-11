@@ -20,6 +20,10 @@ public abstract class ResourceStack {
 
     @Override
     public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+        
         if ( this.getClass().equals(o.getClass()) ){
             ResourceStack otherStack = (ResourceStack) o;
             if (this.size == otherStack.size){
