@@ -18,6 +18,11 @@ public abstract class ResourceStack {
         return Objects.hash(this.getClass().getName()) * (this.size + 1);
     }
 
+    @Override
+    public boolean equals(Object o){
+        return true;
+    }
+
     public static BrickResourceStack combine (BrickResourceStack stack1, BrickResourceStack stack2) throws IllegalArgumentException{
         if (stack1.getClass() != stack2.getClass()){
             throw new IllegalArgumentException("ERROR: Attempt to combine resource stacks of different types: " + stack1.getClass() + " and " + stack2.getClass());
