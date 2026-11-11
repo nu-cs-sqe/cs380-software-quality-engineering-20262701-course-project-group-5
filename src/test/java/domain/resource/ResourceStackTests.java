@@ -82,7 +82,7 @@ public class ResourceStackTests {
     public void Equals_StackOfOne_WithThis_ReturnsTrue(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
 
-        assertTrue(firstStackOfOne.equals(this));
+        assertTrue(firstStackOfOne.equals(firstStackOfOne));
     }
 
     @Test
