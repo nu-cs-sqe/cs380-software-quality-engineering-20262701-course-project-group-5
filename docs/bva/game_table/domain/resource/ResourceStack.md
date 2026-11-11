@@ -47,4 +47,4 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 |             | State of the System                                        | Expected output      | Implemented? |
 |-------------|------------------------------------------------------------|----------------------|--------------|
-| Test Case 1 | Two different `BrickResourceStack` instances with size `1` | same value from each | :x:          |
+| Test Case 1 | Two different `BrickResourceStack` instances with size `1` | same value from each | :white_check_mark: |

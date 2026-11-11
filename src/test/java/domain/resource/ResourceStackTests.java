@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResourceStackTests {
     @Test
-    public void Combine_EmptyStack_WithNearMaxStack_ProducesMaxStack(){
+    public void Combine_StackOfOne_WithNearMaxStack_ProducesMaxStack(){
         BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
         BrickResourceStack nearMaxStack = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
@@ -22,15 +22,26 @@ public class ResourceStackTests {
 
     @Test
     public void Combine_EmptyStack_WithEmptyStack_ProducesEmptyStack(){
-        BrickResourceStack emptyStackOne = new BrickResourceStack(0);
-        BrickResourceStack emptyStackTwo = new BrickResourceStack(0);
+        BrickResourceStack firstStackOfEmpty = new BrickResourceStack(0);
+        BrickResourceStack secondStackOfEmpty = new BrickResourceStack(0);
 
-        BrickResourceStack maxStack = ResourceStack.combine(emptyStackOne, emptyStackTwo);
+        BrickResourceStack maxStack = ResourceStack.combine(firstStackOfEmpty, secondStackOfEmpty);
 
         int expected = 0;
 
         int actual = maxStack.getSize();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Hash_StackOfOne_WithStackOfOne_ProducesSameHashCode(){
+        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
+        BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
+
+        int firstHash = firstStackOfOne.hashCode();
+        int secondHash = secondStackOfOne.hashCode();
+
+        assertEquals(firstHash, secondHash);
     }
 }
