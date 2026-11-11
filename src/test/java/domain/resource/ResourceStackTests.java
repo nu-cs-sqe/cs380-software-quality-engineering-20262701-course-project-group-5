@@ -11,7 +11,7 @@ public class ResourceStackTests {
         BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
         BrickResourceStack nearMaxStack = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
-        BrickResourceStack maxStack = stackOfOneBrick.combine(nearMaxStack, stackOfOneBrick);
+        BrickResourceStack maxStack = ResourceStack.combine(nearMaxStack, stackOfOneBrick);
 
         int expected = Integer.MAX_VALUE;
 
