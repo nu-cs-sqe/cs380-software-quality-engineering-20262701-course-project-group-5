@@ -20,7 +20,13 @@ public abstract class ResourceStack {
 
     @Override
     public boolean equals(Object o){
-        return true;
+        if ( this.getClass().equals(o.getClass()) ){
+            ResourceStack otherStack = (ResourceStack) o;
+            if (this.size == otherStack.size){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static BrickResourceStack combine (BrickResourceStack stack1, BrickResourceStack stack2) throws IllegalArgumentException{
