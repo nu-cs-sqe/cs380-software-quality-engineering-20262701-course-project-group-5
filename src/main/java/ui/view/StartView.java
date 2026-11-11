@@ -61,7 +61,6 @@ public class StartView extends StackPane {
         return titleBox;
     }
 
-
     private VBox createButtons() {
         VBox buttonBox = new VBox(buttonBoxSpacing);
         buttonBox.setAlignment(Pos.BOTTOM_CENTER);

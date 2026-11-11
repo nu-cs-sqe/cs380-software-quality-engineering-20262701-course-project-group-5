@@ -10,12 +10,13 @@ import ui.view.StartView;
 
 public class Main extends Application {
     private static final int containerWidth = 800;
-    private static final int containerHeight = 640;
+    private static final int containerHeight = 600;
 
     @Override
     public void start(Stage stage) {
         Scene scene = new Scene(new StartView(), containerWidth, containerHeight);
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 
