@@ -1,5 +1,7 @@
 package domain.resource;
 
+import java.util.Objects;
+
 public abstract class ResourceStack {
     private int size;
 
@@ -9,6 +11,11 @@ public abstract class ResourceStack {
 
     public final int getSize(){
         return size;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.getClass().getName()) * (this.size + 1);
     }
 
     public static BrickResourceStack combine (BrickResourceStack stack1, BrickResourceStack stack2) throws IllegalArgumentException{
