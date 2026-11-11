@@ -54,21 +54,21 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 
 **Step 4: All combinations** of `gamePhase` x own roads touching vertex since road rule only applies in REGULAR phase. Each choice for all else.
 
-|              | Input                                                                                                    | Expected output                                                                                    | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | SETUP, called with `RED`, empty board                                                                    | all 54 vertices                                                                                    | :x:          |
-| Test Case 2  | REGULAR, called with `RED`, empty board, no roads                                                        | empty list                                                                                         | :x:          |
-| Test Case 3  | SETUP, called with `RED`, a `RED` settlement on vertex V                                                 | every vertex except V (distance 0) and V's neighbors (distance 1); vertices at distance 2 included | :x:          |
-| Test Case 4  | REGULAR, called with `RED`, one `RED` road between vertices A and B, no buildings anywhere               | exactly `[A, B]`                                                                                   | :x:          |
-| Test Case 5  | REGULAR, called with `RED`, one `RED` road between A and B, a `BLUE` settlement on A                     | empty list (A is occupied, B is distance 1 from the settlement)                                    | :x:          |
-| Test Case 6  | REGULAR, called with `RED`, two separate `RED` roads A to B and C to D, no buildings, far apart          | exactly `[A, B, C, D]`, no duplicates                                                              | :x:          |
-| Test Case 7  | REGULAR, called with `RED`, `RED` roads A to B and B to C, no buildings                                  | exactly `[A, B, C]`, with B appearing once                                                         | :x:          |
-| Test Case 8  | SETUP, called with `RED`, every vertex is occupied or next to a building                                 | empty list                                                                                         | :x:          |
-| Test Case 9  | REGULAR, called with `RED`, one `BLUE` road between A and B, `RED` has no roads, no buildings            | empty list (only own roads count)                                                                  | :x:          |
-| Test Case 10 | REGULAR, called with `RED`, `RED` settlement S with `RED` roads S to V1 and V1 to V2, no other buildings | exactly `[V2]` (V1 is too close to S)                                                              | :x:          |
-| Test Case 11 | SETUP, called with `RED`, one `RED` road between A and B, no buildings                                   | all 54 vertices (a road is not required in SETUP)                                                  | :x:          |
-| Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all 54 vertices, B appearing once                                                                  | :x:          |
-| Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :x:          |
+|              | Input                                                                                 | Expected output                                                                                    | Implemented? |
+|--------------|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | SETUP, called with `RED`, empty board                                                 | all 54 vertices                                                                                    | :x:          |
+| Test Case 2  | REGULAR, empty board, no roads                                                        | empty list                                                                                         | :x:          |
+| Test Case 3  | SETUP, a `RED` settlement on vertex V                                                 | every vertex except V (distance 0) and V's neighbors (distance 1); vertices at distance 2 included | :x:          |
+| Test Case 4  | REGULAR, one `RED` road between vertices A and B, no buildings anywhere               | exactly `[A, B]`                                                                                   | :x:          |
+| Test Case 5  | REGULAR, one `RED` road between A and B, a `BLUE` settlement on A                     | empty list (A is occupied, B is distance 1 from the settlement)                                    | :x:          |
+| Test Case 6  | REGULAR, two separate `RED` roads A to B and C to D, no buildings, far apart          | exactly `[A, B, C, D]`, no duplicates                                                              | :x:          |
+| Test Case 7  | REGULAR, `RED` roads A to B and B to C, no buildings                                  | exactly `[A, B, C]`, with B appearing once                                                         | :x:          |
+| Test Case 8  | SETUP, every vertex is occupied or next to a building                                 | empty list                                                                                         | :x:          |
+| Test Case 9  | REGULAR, one `BLUE` road between A and B, `RED` has no roads, no buildings            | empty list (only own roads count)                                                                  | :x:          |
+| Test Case 10 | REGULAR, `RED` settlement S with `RED` roads S to V1 and V1 to V2, no other buildings | exactly `[V2]` (V1 is too close to S)                                                              | :x:          |
+| Test Case 11 | SETUP, one `RED` road between A and B, no buildings                                   | all 54 vertices (a road is not required in SETUP)                                                  | :x:          |
+| Test Case 12 | SETUP, `RED` roads A to B and B to C, no buildings                                    | all 54 vertices, B appearing once                                                                  | :x:          |
+| Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere   | exactly `[A, B]` (own means the color passed in)                                                   | :x:          |
 
 ### Test: `public List<Edge> getValidRoadSpots(Color color)`
 
@@ -101,18 +101,18 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 
 **Step 4: All combinations** of `gamePhase` x own pieces touching edge since the rules differ by phase, except SETUP with "more than one" (only the just-placed settlement matters in SETUP). Each choice for the rest.
 
-|              | Input                                                                                                        | Expected output                                                                                 | Implemented? |
-|--------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | SETUP, called with `RED`, one `RED` settlement just placed on a vertex with 3 adjacent edges                 | exactly the settlement's 3 adjacent edges                                                       | :x:          |
-| Test Case 2  | SETUP, called with `RED`, two `RED` settlements, only the second is "just placed"                            | only the edges adjacent to the second settlement                                                | :x:          |
-| Test Case 3  | SETUP, called with `RED`, no settlement placed                                                               | empty list                                                                                      | :x:          |
-| Test Case 4  | REGULAR, called with `RED`, `RED` owns no pieces                                                             | empty list                                                                                      | :x:          |
-| Test Case 5  | REGULAR, called with `RED`, one `RED` settlement, no roads, all adjacent edges free                          | exactly the edges adjacent to the settlement                                                    | :x:          |
-| Test Case 6  | REGULAR, called with `RED`, a `RED` settlement at one end of a free edge E and a `RED` road at E's other end | E is in the list once                                                                           | :x:          |
-| Test Case 7  | REGULAR, called with `RED`, every edge adjacent to `RED`'s pieces is already occupied                        | empty list                                                                                      | :x:          |
-| Test Case 8  | REGULAR, called with `RED`, one `RED` settlement and one `BLUE` settlement far apart, all edges free         | exactly the edges adjacent to the `RED` settlement (the `BLUE` settlement's edges are excluded) | :x:          |
-| Test Case 9  | REGULAR, called with `RED`, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :x:          |
-| Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free                                  | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :x:          |
+|              | Input                                                                                     | Expected output                                                                                 | Implemented? |
+|--------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | SETUP, one `RED` settlement just placed on a vertex with 3 adjacent edges                 | exactly the settlement's 3 adjacent edges                                                       | :x:          |
+| Test Case 2  | SETUP, two `RED` settlements, only the second is "just placed"                            | only the edges adjacent to the second settlement                                                | :x:          |
+| Test Case 3  | SETUP, no settlement placed                                                               | empty list                                                                                      | :x:          |
+| Test Case 4  | REGULAR, `RED` owns no pieces                                                             | empty list                                                                                      | :x:          |
+| Test Case 5  | REGULAR, one `RED` settlement, no roads, all adjacent edges free                          | exactly the edges adjacent to the settlement                                                    | :x:          |
+| Test Case 6  | REGULAR, a `RED` settlement at one end of a free edge E and a `RED` road at E's other end | E is in the list once                                                                           | :x:          |
+| Test Case 7  | REGULAR, every edge adjacent to `RED`'s pieces is already occupied                        | empty list                                                                                      | :x:          |
+| Test Case 8  | REGULAR, one `RED` settlement and one `BLUE` settlement far apart, all edges free         | exactly the edges adjacent to the `RED` settlement (the `BLUE` settlement's edges are excluded) | :x:          |
+| Test Case 9  | REGULAR, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :x:          |
+| Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free               | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :x:          |
 
 ### Test: `public void place(Piece piece, Location location)`
 
