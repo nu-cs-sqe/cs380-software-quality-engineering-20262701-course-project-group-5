@@ -52,6 +52,14 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Equals_StackOfOneBrick_WithStackOfOneLumber_ReturnsFalse(){
+        BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
+        LumberResourceStack stackOfOneLumber = new LumberResourceStack(1);
+
+        assertFalse(stackOfOneBrick.equals(stackOfOneLumber));
+    }
+
+    @Test
     public void Hash_StackOfOne_WithStackOfOne_ProducesSameHashCode(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
