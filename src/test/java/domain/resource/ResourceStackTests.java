@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ResourceStackTests {
     @Test
@@ -40,6 +41,14 @@ public class ResourceStackTests {
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
 
         assertTrue(firstStackOfOne.equals(secondStackOfOne));
+    }
+
+    @Test
+    public void Equals_StackOfOne_WithStackOfTwo_ReturnsFalse(){
+        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
+        BrickResourceStack secondStackOfOne = new BrickResourceStack(2);
+
+        assertFalse(firstStackOfOne.equals(secondStackOfOne));
     }
 
     @Test
