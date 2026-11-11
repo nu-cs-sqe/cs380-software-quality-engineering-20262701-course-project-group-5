@@ -37,7 +37,7 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 |             | State of the System                                                                           | Expected output | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------|
-| Test Case 1 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `1`  | true            | :x:          |
+| Test Case 1 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `1`  | true            | :white_check_mark: |
 | Test Case 2 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `2`  | false           | :x:          |
 | Test Case 3 | Let this be a `LumberResourceStack` with size `1`, input a `BrickResourceStack` with size `1` | false           | :x:          |
 | Test Case 4 | Let this be a `BrickResourceStack` with size `1`, input a `LumberResourceStack` with size `1` | false           | :x:          |

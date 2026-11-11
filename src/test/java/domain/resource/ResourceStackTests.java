@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ResourceStackTests {
     @Test
     public void Combine_StackOfOne_WithNearMaxStack_ProducesMaxStack(){
-        BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
-        BrickResourceStack nearMaxStack = new BrickResourceStack(Integer.MAX_VALUE - 1);
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+        BrickResourceStack stackOfNearMax = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
-        BrickResourceStack maxStack = ResourceStack.combine(nearMaxStack, stackOfOneBrick);
+        BrickResourceStack maxStack = ResourceStack.combine(stackOfNearMax, stackOfOne);
 
         int expected = Integer.MAX_VALUE;
 
@@ -32,6 +32,14 @@ public class ResourceStackTests {
         int actual = maxStack.getSize();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue(){
+        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
+        BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
+
+        assertTrue(firstStackOfOne.equals(secondStackOfOne));
     }
 
     @Test
