@@ -12,7 +12,7 @@ Constructs a `City` object with set `PieceData`, access to the `BankResourceDist
 
 ### `public void produceResources(products : ResourceProducts)`
 
-Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the City by two and decrease `BankResources` by two.
+Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the City by two and decrease `BankResources` by two. If `Bank` does not have enough resources to produce for all player, nothing will be produced.
 
 ### `public List<ResourceStack> getCost()`
 
@@ -49,4 +49,5 @@ Accessor for the cost of a City in terms of `ResourcesStack`s, in this case a `G
 | Test Case 2 | `products` stack type: `GrainResourceStack`, `bankResources` = {GrainResourceStack{3}}, `PlayerInventory` = {GrainResourceStack{5}} | `bankResources` = {GrainResourceStack{1}}, `PlayerInventory` = {GrainResourceStack{7}} | :x: |
 | Test Case 3 | `products` stack type: `OreResourceStack`, `bankResources` = {OreResourceStack{19}}, `PlayerInventory` = {OreResourceStack{0}} | `bankResources` = {OreResourceStack{17}}, `PlayerInventory` = {OreResourceStack{2}} | :x: |
 | Test Case 4 | `products` stack type: `LumberResourceStack`, `bankResources` = {LumberResourceStack{6}}, `PlayerInventory` = {LumberResourceStack{4}} | `bankResources` = {LumberResourceStack{4}}, `PlayerInventory` = {LumberResourceStack{6}} | :x: |
-| Test Case 4 | `products` stack type: `BrickResourceStack`, `bankResources` = {BrickResourceStack{7}}, `PlayerInventory` = {BrickResourceStack{1}} | `bankResources` = {BrickResourceStack{5}}, `PlayerInventory` = {BrickResourceStack{3}} | :x: |
+| Test Case 5 | `products` stack type: `BrickResourceStack`, `bankResources` = {BrickResourceStack{7}}, `PlayerInventory` = {BrickResourceStack{1}} | `bankResources` = {BrickResourceStack{5}}, `PlayerInventory` = {BrickResourceStack{3}} | :x: |
+| Test Case 6 | `products` stack type: `WoolResourceStack`, `bankResources` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{3}} | `bankResources` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{3}} | :x: |

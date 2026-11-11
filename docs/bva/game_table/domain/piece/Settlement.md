@@ -12,7 +12,7 @@ Constructs a Settlement object with set `PieceData`, access to the `BankResource
 
 ### `public void produceResources(products : ResourceProducts)`
 
-Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the Settlement by one and decrease `bankResource` by the same amount.
+Given `products` calls the `bankResourceDistributor` to attempt to increase the amount of the given `products` in the `PlayerInventory` of the player that owns the Settlement by one and decrease `bankResource` by the same amount. If `Bank` does not have enough resources to produce for all player, nothing will be produced.
 
 ### `public List<ResourceStack> getCost()`
 
@@ -50,3 +50,4 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 | Test Case 3 | `products` stack type: `OreResourceStack`, `bankResources` = {OreResourceStack{5}}, `PlayerInventory` = {OreResourceStack{2}} | `bankResources` = {OreResourceStack{4}}, `PlayerInventory` = {OreResourceStack{3}} | :x: |
 | Test Case 4 | `products` stack type: `LumberResourceStack`, `bankResources` = {LumberResourceStack{19}}, `PlayerInventory` = {LumberResourceStack{0}} | `bankResources` = {LumberResourceStack{18}}, `PlayerInventory` = {LumberResourceStack{1}} | :x: |
 | Test Case 5 | `products` stack type: `BrickResourceStack`, `bankResources` = {BrickResourceStack{1}}, `PlayerInventory` = {BrickResourceStack{18}} | `bankResources` = {BrickResourceStack{0}}, `PlayerInventory` = {BrickResourceStack{19}} | :x: |
+| Test Case 6 | `products` stack type: `WoolResourceStack`, `bankResources` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{2}} | `bankResources` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{2}} | :x: |
