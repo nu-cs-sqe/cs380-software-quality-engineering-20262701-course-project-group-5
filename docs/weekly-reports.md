@@ -40,11 +40,21 @@ TODO:
 - onboard Daniel
 - additional in-person meeting this week to confirm TDD process (if needed)
 
-# One section per week until the last week of class (the week before the Finals week)
 
-
-# Week X (XX/XX/2026-XX/XX/2026) TEMPLATE (You can change the format to whatever the team likes better)
+# Week 6 (11/02/2026-11/09/2026)
 **Planning and Progress Tracking**:
-1. [done] Person: Task (Links to PR)
-2. [not started] Person: Task (Links to PR)
-3. [80% done] Person: Task (Links to PR)
+1. Xavier, Hayley, Anthony, Breanna, Daniel: Reviewed board design for refactoring 
+2. [in review] Anthony: Performed BVA on the Player package: ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/51))
+3. [in review] Breanna: Performed BVA on the Board package: ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/49))
+4. [in progress] Hayley: Performed BVA on the Piece package: ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/50))
+5. [in review] Hayley: UI Static Page implementation: ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/50))
+6. [merged] Xavier: Performed BVA on the Resource package
+7. [in review] Xavier: Implemented board design refactor based on team discussions: ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/56))
+
+TODO:
+- Anyone: debug linter setup
+- Anthony Finalize Player BVA
+- Breanna: Finalize Board BVA
+- Daniel: Begin TDD on Resource package
+- Hayley: Finish Piece BVA in light of design refactor
+- Tentative TODOs: Following BVA completion, begin TDD on all relevant packages
