@@ -34,7 +34,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -45,7 +45,7 @@ javafx {
 }
 
 tasks.compileJava {
-    options.release = 11
+    options.release = 21
 }
 
 tasks.test {
@@ -66,6 +66,8 @@ tasks.withType<Checkstyle>().configureEach {
 
 checkstyle{
     isIgnoreFailures = false
+    toolVersion = "14.4.0"
+    configFile = file("${project.projectDir}/config/checkstyle/checkstyle.xml")
 }
 
 spotbugs {
