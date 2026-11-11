@@ -101,8 +101,8 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 
 **Step 4: All combinations** of `gamePhase` x own pieces touching edge since the rules differ by phase, except SETUP with "more than one" (only the just-placed settlement matters in SETUP). Each choice for the rest.
 
-|              | Input                                                                                     | Expected output                                                                                 | Implemented? |
-|--------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------|
+|              | Input                                                                                                        | Expected output                                                                                 | Implemented? |
+|--------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------|
 | Test Case 1  | SETUP, called with `RED`, one `RED` settlement just placed on a vertex with 3 adjacent edges                 | exactly the settlement's 3 adjacent edges                                                       | :x:          |
 | Test Case 2  | SETUP, called with `RED`, two `RED` settlements, only the second is "just placed"                            | only the edges adjacent to the second settlement                                                | :x:          |
 | Test Case 3  | SETUP, called with `RED`, no settlement placed                                                               | empty list                                                                                      | :x:          |
@@ -112,7 +112,7 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 | Test Case 7  | REGULAR, called with `RED`, every edge adjacent to `RED`'s pieces is already occupied                        | empty list                                                                                      | :x:          |
 | Test Case 8  | REGULAR, called with `RED`, one `RED` settlement and one `BLUE` settlement far apart, all edges free         | exactly the edges adjacent to the `RED` settlement (the `BLUE` settlement's edges are excluded) | :x:          |
 | Test Case 9  | REGULAR, called with `RED`, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :x:          |
-| Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free               | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :x:          |
+| Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free                                  | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :x:          |
 
 ### Test: `public void place(Piece piece, Location location)`
 
