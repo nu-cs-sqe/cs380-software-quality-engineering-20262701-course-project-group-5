@@ -38,25 +38,8 @@ public abstract class ResourceStack {
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", stack1.getClass(), stack2.getClass()) );
         }
         int totalSize = stack1.getSize() + stack2.getSize();
-        return MakeNewStackOfSameType(stack1, totalSize);
+        return stack1.MakeNewStackOfSameType(totalSize);
     }
 
-    private static ResourceStack MakeNewStackOfSameType(ResourceStack stack1, int size){
-        Class<?> stackClass = stack1.getClass();
-        if (stackClass.equals(BrickResourceStack.class)){
-            return new BrickResourceStack(size);
-        }
-        else if (stackClass.equals(GrainResourceStack.class)){
-            return new GrainResourceStack(size);
-        }
-        else if (stackClass.equals(LumberResourceStack.class)){
-            return new LumberResourceStack(size);
-        }
-        else if (stackClass.equals(OreResourceStack.class)){
-            return new OreResourceStack(size);
-        }
-        else{
-            return new WoolResourceStack(size);
-        }
-    }
+    protected abstract ResourceStack MakeNewStackOfSameType(int size);
 }

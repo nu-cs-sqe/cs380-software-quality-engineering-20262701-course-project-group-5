@@ -4,4 +4,9 @@ public class BrickResourceStack extends ResourceStack {
     public BrickResourceStack(int size){
         super(size);
     }
+
+    @Override
+    protected ResourceStack MakeNewStackOfSameType(int size) {
+        return new BrickResourceStack(size);
+    }
 }
