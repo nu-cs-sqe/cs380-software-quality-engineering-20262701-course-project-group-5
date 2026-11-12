@@ -34,7 +34,7 @@ public abstract class ResourceStack {
     }
 
     public static ResourceStack combine (ResourceStack stack1, ResourceStack stack2) throws IllegalArgumentException{
-        if (! (stack1.getClass().equals(stack2.getClass())) ){
+        if (!(stack1.getClass().equals(stack2.getClass()))){
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", stack1.getClass(), stack2.getClass()) );
         }
         int totalSize = stack1.getSize() + stack2.getSize();
