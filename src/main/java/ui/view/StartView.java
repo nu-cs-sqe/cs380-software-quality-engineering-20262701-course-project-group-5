@@ -6,6 +6,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.util.ResourceBundle;
+
 /**
  * Builds Panes for Catan starting page and formats them in a Container.
  */
@@ -56,13 +58,13 @@ public class StartView extends StackPane {
     VBox titleBox = new VBox(titleBoxSpacing);
     titleBox.setAlignment(Pos.TOP_CENTER);
 
-    titleCredit = new Text("KLAUS TEUBER'S");
+    titleCredit = new Text();
     titleCredit.getStyleClass().add("title-credit");
 
-    titleCatan = new Text("CATAN");
+    titleCatan = new Text();
     titleCatan.getStyleClass().add("title-catan");
 
-    tagLine = new Text("SETTLE BUILD TRADE");
+    tagLine = new Text();
     tagLine.getStyleClass().add("title-credit");
 
     titleBox.getChildren().addAll(titleCredit, titleCatan, tagLine);
@@ -92,5 +94,19 @@ public class StartView extends StackPane {
             startGameButton, settingsButton
     );
     return buttonBox;
+  }
+
+  /**
+   * Populates text visible in container based
+   * on pre-written messages.
+   * {@param bundle file contain text for each
+   *                Text instance in views}
+   */
+  public void updateDisplay(ResourceBundle bundle) {
+    this.titleCredit.setText(bundle.getString("startView.title.Credit"));
+    this.titleCatan.setText(bundle.getString("startView.title.Catan"));
+    this.tagLine.setText(bundle.getString("startView.tagLine"));
+    this.startGameButton.setText(bundle.getString("startView.startGameButton"));
+    this.settingsButton.setText(bundle.getString("startView.settingsButton"));
   }
 }
