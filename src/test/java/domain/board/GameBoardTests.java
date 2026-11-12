@@ -1,5 +1,7 @@
 package domain.board;
 
+import domain.piece.Settlement;
+import mvc_util.Observer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameBoardTests {
+
+    // produceResourcesForToken tests
 
     @Test
     void ProduceResourcesForToken_OnBoardWithoutHexes_DoesNothing() {
@@ -170,5 +174,32 @@ class GameBoardTests {
         EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
         EasyMock.replay(hex);
         return hex;
+    }
+
+    // addPieceAtLocation tests
+
+    @Test
+    void AddPieceAtLocation_SettlementOnEmptyVertex_VertexAddsPieceAndObserversNotified() {
+        Settlement settlement = EasyMock.createMock(Settlement.class);
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        vertex.addPiece(settlement);
+        EasyMock.expectLastCall();
+        Observer observer = observerExpectingOneUpdate();
+        EasyMock.replay(settlement, vertex);
+        GameBoard board = boardOf();
+
+        board.addObserver(observer);
+
+        board.addPieceAtLocation(settlement, vertex);
+
+        EasyMock.verify(vertex, observer);
+    }
+
+    private static Observer observerExpectingOneUpdate() {
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall();
+        EasyMock.replay(observer);
+        return observer;
     }
 }

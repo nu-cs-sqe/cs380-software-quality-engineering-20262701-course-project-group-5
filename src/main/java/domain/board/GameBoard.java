@@ -1,8 +1,11 @@
 package domain.board;
 
+import domain.piece.Piece;
+import mvc_util.Observed;
+
 import java.util.Set;
 
-public class GameBoard {
+public class GameBoard extends Observed {
     private final Set<Hex> hexes;
     private static final int MIN_TOKEN_VALUE = 2;
     private static final int MAX_TOKEN_VALUE = 12;
@@ -26,5 +29,10 @@ public class GameBoard {
                     "Token value %d is outside the valid range [%d, %d]",
                     tokenValue, MIN_TOKEN_VALUE, MAX_TOKEN_VALUE));
         }
+    }
+
+    public void addPieceAtLocation(Piece piece, Location location) {
+        location.addPiece(piece);
+        notifyObservers();
     }
 }
