@@ -1,12 +1,11 @@
 package ui.view;
 
+import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import java.util.ResourceBundle;
 
 /**
  * Builds Panes for Catan starting page and formats them in a Container.
