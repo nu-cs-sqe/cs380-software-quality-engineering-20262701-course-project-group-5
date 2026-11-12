@@ -8,22 +8,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class GameBoardTests {
+class GameBoardTests {
+
     @Test
     void ProduceResourcesForToken_OnBoardWithoutHexes_DoesNothing() {
-        GameBoard board = new GameBoard(new LinkedHashSet<>());
+        GameBoard board = boardOf();
 
         assertDoesNotThrow(() -> board.produceResourcesForToken(6));
     }
 
     @Test
     void ProduceResourcesForToken_OnBoardWithOneMatchingHex_AsksThatHexToProduce() {
-        Hex hex = EasyMock.createMock(Hex.class);
-        hex.produceResources();
-        EasyMock.expectLastCall();
-        EasyMock.expect(hex.getTokenValue()).andStubReturn(8);
-        EasyMock.replay(hex);
-        GameBoard board = new GameBoard(new LinkedHashSet<>(List.of(hex)));
+        Hex hex = hexExpectedToProduce(8);
+        GameBoard board = boardOf(hex);
 
         board.produceResourcesForToken(8);
 
@@ -32,19 +29,33 @@ public class GameBoardTests {
 
     @Test
     void ProduceResourcesForToken_WhenNoHexMatches_NoHexProduces() {
-        Hex first = EasyMock.createMock(Hex.class);
-        EasyMock.expect(first.getTokenValue()).andStubReturn(3);
-        EasyMock.replay(first);
-        Hex second = EasyMock.createMock(Hex.class);
-        EasyMock.expect(second.getTokenValue()).andStubReturn(4);
-        EasyMock.replay(second);
-        Hex third = EasyMock.createMock(Hex.class);
-        EasyMock.expect(third.getTokenValue()).andStubReturn(9);
-        EasyMock.replay(third);
-        GameBoard board = new GameBoard(new LinkedHashSet<>(List.of(first, second, third)));
+        Hex first = hexNotExpectedToProduce(3);
+        Hex second = hexNotExpectedToProduce(4);
+        Hex third = hexNotExpectedToProduce(9);
+        GameBoard board = boardOf(first, second, third);
 
         board.produceResourcesForToken(6);
 
         EasyMock.verify(first, second, third);
+    }
+
+    private static GameBoard boardOf(Hex... hexes) {
+        return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
+    }
+
+    private static Hex hexExpectedToProduce(int tokenValue) {
+        Hex hex = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
+        hex.produceResources();
+        EasyMock.expectLastCall();
+        EasyMock.replay(hex);
+        return hex;
+    }
+
+    private static Hex hexNotExpectedToProduce(int tokenValue) {
+        Hex hex = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
+        EasyMock.replay(hex);
+        return hex;
     }
 }
