@@ -39,6 +39,18 @@ class GameBoardTests {
         EasyMock.verify(first, second, third);
     }
 
+    @Test
+    void ProduceResourcesForToken_WhenOnlyFirstHexMatches_OnlyFirstHexProduces() {
+        Hex first = hexExpectedToProduce(2);
+        Hex second = hexNotExpectedToProduce(5);
+        Hex third = hexNotExpectedToProduce(9);
+        GameBoard board = boardOf(first, second, third);
+
+        board.produceResourcesForToken(2);
+
+        EasyMock.verify(first, second, third);
+    }
+
     private static GameBoard boardOf(Hex... hexes) {
         return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
     }
