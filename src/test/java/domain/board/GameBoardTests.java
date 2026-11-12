@@ -1,9 +1,6 @@
 package domain.board;
 
-import domain.piece.City;
-import domain.piece.Piece;
-import domain.piece.Road;
-import domain.piece.Settlement;
+import domain.piece.*;
 import mvc_util.Observer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -207,7 +204,7 @@ class GameBoardTests {
     }
 
     @Test
-    void AddPieceAtLocation_CityOnEmptyVertex_VertexIsToldToAddIt() {
+    void AddPieceAtLocation_CityOnEmptyVertex_VertexAddsIt() {
         City city = EasyMock.createMock(City.class);
         Vertex vertex = EasyMock.createMock(Vertex.class);
         assertLocationIsToldToAdd(city, vertex);
@@ -218,6 +215,13 @@ class GameBoardTests {
         Road road = EasyMock.createMock(Road.class);
         Edge edge = EasyMock.createMock(Edge.class);
         assertLocationIsToldToAdd(road, edge);
+    }
+
+    @Test
+    void AddPieceAtLocation_HarborOnEmptyEdge_EdgeAddsIt() {
+        Harbor harbor = EasyMock.createMock(Harbor.class);
+        Edge edge = EasyMock.createMock(Edge.class);
+        assertLocationIsToldToAdd(harbor, edge);
     }
 
     private static void assertLocationIsToldToAdd(Piece piece, Location location) {
