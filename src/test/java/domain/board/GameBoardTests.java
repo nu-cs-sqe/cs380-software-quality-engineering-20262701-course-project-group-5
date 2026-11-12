@@ -277,5 +277,4 @@ class GameBoardTests {
 
         EasyMock.verify(location, observer);
     }
-
 }
