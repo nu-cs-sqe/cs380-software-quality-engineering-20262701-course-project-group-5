@@ -10,7 +10,7 @@ public class GameBoard {
     }
 
     public void produceResourcesForToken(int tokenValue) {
-        if (tokenValue == 1) {
+        if (tokenValue == 1 || tokenValue == 13) {
             throw new IllegalArgumentException();
         }
         for (Hex hex : hexes) {

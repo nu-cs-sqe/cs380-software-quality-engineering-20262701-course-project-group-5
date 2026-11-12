@@ -51,7 +51,7 @@ Searching (for the hexes matching the token)
 |              | Inputs                                                                                                         | Expected output                              | Implemented?       |
 |--------------|----------------------------------------------------------------------------------------------------------------|----------------------------------------------|--------------------|
 | Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`                   | :white_check_mark: |
-| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`                   | :x:                |
+| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`                   | :white_check_mark: |
 | Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex is asked to produce       | :white_check_mark: |
 | Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex is asked to produce        | :white_check_mark: |
 | Test Case 5  | More than one hex, input `7`                                                                                   | no hex is asked to produce                   | :x:                |

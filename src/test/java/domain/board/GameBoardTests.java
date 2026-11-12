@@ -97,6 +97,15 @@ class GameBoardTests {
         assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(1));
     }
 
+    @Test
+    void ProduceResourcesForToken_AboveMaximumTokenValue_ThrowsIllegalArgumentException() {
+        Hex first = hexNotExpectedToProduce(3);
+        Hex second = hexNotExpectedToProduce(4);
+        GameBoard board = boardOf(first, second);
+
+        assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(13));
+    }
+
     private static GameBoard boardOf(Hex... hexes) {
         return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
     }
