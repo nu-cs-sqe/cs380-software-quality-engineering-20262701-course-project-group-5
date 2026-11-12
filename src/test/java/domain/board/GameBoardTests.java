@@ -275,7 +275,7 @@ class GameBoardTests {
     private static void assertPieceIsRemovedAndObserversNotified(Location location, PieceData data) {
         EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(true);
         location.removePieceWithData(data);
-        EasyMock.expectLastCall().once();
+        EasyMock.expectLastCall();
         EasyMock.replay(location);
         Observer observer = observerExpectingOneUpdate();
         GameBoard board = boardOf();
@@ -295,7 +295,7 @@ class GameBoardTests {
     private static void assertLocationIsToldToRemove(Location location, PieceData data) {
         EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(true);
         location.removePieceWithData(data);
-        EasyMock.expectLastCall().once();
+        EasyMock.expectLastCall();
         EasyMock.replay(location);
 
         boardOf().removePieceFromLocation(data, location);
@@ -336,7 +336,7 @@ class GameBoardTests {
         EasyMock.expect(edge.holdsPieceWithData(ROAD_DATA)).andStubReturn(true);
         EasyMock.expect(edge.holdsPieceWithData(HARBOR_DATA)).andStubReturn(true);
         edge.removePieceWithData(ROAD_DATA);
-        EasyMock.expectLastCall().once();
+        EasyMock.expectLastCall();
         EasyMock.replay(edge);
 
         boardOf().removePieceFromLocation(ROAD_DATA, edge);
@@ -350,12 +350,27 @@ class GameBoardTests {
         EasyMock.expect(edge.holdsPieceWithData(ROAD_DATA)).andStubReturn(true);
         EasyMock.expect(edge.holdsPieceWithData(HARBOR_DATA)).andStubReturn(true);
         edge.removePieceWithData(HARBOR_DATA);
-        EasyMock.expectLastCall().once();
+        EasyMock.expectLastCall();
         EasyMock.replay(edge);
 
         boardOf().removePieceFromLocation(HARBOR_DATA, edge);
 
         EasyMock.verify(edge);
+    }
+
+    private static final String SETTLEMENT_TYPE = "settlement";
+
+    @Test
+    void RemovePieceFromLocation_WithEqualButDistinctPieceData_VertexRemovesIt() {
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertex.holdsPieceWithData(SETTLEMENT_DATA)).andStubReturn(true);
+        vertex.removePieceWithData(SETTLEMENT_DATA);
+        EasyMock.expectLastCall();
+        EasyMock.replay(vertex);
+
+        boardOf().removePieceFromLocation(new PieceData(SETTLEMENT_TYPE), vertex);
+
+        EasyMock.verify(vertex);
     }
 
 }

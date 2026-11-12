@@ -141,6 +141,6 @@ Deleting elements from any position (from the location's pieces).
 | Test Case 3 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Road` only (first)     | edge to told to remove `Road`                           | :white_check_mark: |
 | Test Case 4 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Harbor` only (last)    | edge to told to remove `Harbor`                         | :white_check_mark: |
 | Test Case 5 | `Vertex` with one piece, `pieceData` matches none                                     | no change                                               | :white_check_mark: |
-| Test Case 6 | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | vertex is told to remove that piee                      | :x:                |
+| Test Case 6 | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | vertex is told to remove that piece                     | :white_check_mark: |
 | Test Case 7 | `Edge` with exactly one `Road`, its own `pieceData`                                   | edge is told to remove that piece                       | :white_check_mark: |
 | Test Case 8 | `Hex` with the `Robber`, its own `pieceData`                                          | hex is told to remove that piece                        | :white_check_mark: |
