@@ -343,4 +343,19 @@ class GameBoardTests {
 
         EasyMock.verify(edge);
     }
+
+    @Test
+    void RemovePieceFromLocation_RoadThenHarborOnEdge_RemovingHarborRemovesOnlyHarbor() {
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.holdsPieceWithData(ROAD_DATA)).andStubReturn(true);
+        EasyMock.expect(edge.holdsPieceWithData(HARBOR_DATA)).andStubReturn(true);
+        edge.removePieceWithData(HARBOR_DATA);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(edge);
+
+        boardOf().removePieceFromLocation(HARBOR_DATA, edge);
+
+        EasyMock.verify(edge);
+    }
+
 }
