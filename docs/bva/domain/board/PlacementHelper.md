@@ -9,10 +9,10 @@ Initializes a PlacementHelper for `board` and with access to the `GamePhase` pro
 
 ### TODO: getValidHexSpot(Piece piece) for the robber probably
 
-### `public List<Vertex> getValidBuildingSpots(Color color)`
+### `public Set<Point> getValidBuildingSpots(Color color)`
 Returns vertices where the player with `color` may place a building. A vertex is valid if it is unoccupied and no adjacent vertex has a building (using the distance rule). In `REGULAR` phase it must also connect to one of that player's own roads. In `SETUP` phase no road is required.
 
-### `public List<Edge> getValidRoadSpots(Color color)`
+### `public Set<Set<Point>> getValidRoadSpots(Color color)`
 Returns unoccupied edges where the player with `color` may place a road. In `REGULAR` phase the edge must connect to that player's own pieces. In `SETUP` phase the edge must touch the settlement just placed.
 
 ### `public void place(Piece piece, Location location) throws InvalidPlacementException`
