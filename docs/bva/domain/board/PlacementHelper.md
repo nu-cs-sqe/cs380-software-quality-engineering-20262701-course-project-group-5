@@ -1,8 +1,11 @@
 # Class PlacementHelper
 Classpath: catan.game_table.domain.board.PlacementHelper
 
-## `class PlacementHelper`
-Package-private helper that decides where pieces may legally be placed and performs placement on the `GameBoard`.
+## `public class PlacementHelper`
+Helper that decides where pieces may legally be placed and performs placement on the `GameBoard`.
+
+### `public PlacementHelper(GameBoard board, GamePhaseHolder gamePhaseHolder)`
+Initializes a PlacementHelper for `board` and with access to the `GamePhase` provided by `gamePhaseHolder`.
 
 ### TODO: getValidHexSpot(Piece piece) for the robber probably
 
