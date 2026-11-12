@@ -231,6 +231,22 @@ class GameBoardTests {
         assertLocationIsToldToAdd(robber, hex);
     }
 
+    @Test
+    void AddPieceAtLocation_HarborOnEdgeHoldingRoad_EdgeAddsBoth() {
+        Road road = EasyMock.createMock(Road.class);
+        Harbor harbor = EasyMock.createMock(Harbor.class);
+        Edge edge = EasyMock.createStrictMock(Edge.class); // checks both calls and their order
+        edge.addPiece(road);
+        edge.addPiece(harbor);
+        EasyMock.replay(road, harbor, edge);
+        GameBoard board = boardOf();
+
+        board.addPieceAtLocation(road, edge);
+        board.addPieceAtLocation(harbor, edge);
+
+        EasyMock.verify(edge);
+    }
+
     private static void assertLocationIsToldToAdd(Piece piece, Location location) {
         location.addPiece(piece);
         EasyMock.expectLastCall();
