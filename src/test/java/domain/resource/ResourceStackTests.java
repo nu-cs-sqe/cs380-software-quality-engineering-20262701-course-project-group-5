@@ -61,10 +61,10 @@ public class ResourceStackTests {
 
     @Test
     public void Equals_StackOfOne_WithStackOfTwo_ReturnsFalse(){
-        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
-        BrickResourceStack secondStackOfOne = new BrickResourceStack(2);
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+        BrickResourceStack stackOfTwo = new BrickResourceStack(2);
 
-        assertFalse(firstStackOfOne.equals(secondStackOfOne));
+        assertFalse(stackOfOne.equals(stackOfTwo));
     }
 
     @Test
