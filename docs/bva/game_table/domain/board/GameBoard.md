@@ -60,7 +60,7 @@ Searching (for the hexes matching the token)
 | Test Case 8  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception                | :white_check_mark: |
 | Test Case 9  | Board with exactly one hex, token `8`, input `8`                                                               | that hex is asked to produce                 | :white_check_mark: |
 | Test Case 10 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes are asked to produce | :x:                |
-| Test Case 11 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex is asked to produce            | :x:                |
+| Test Case 11 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex is asked to produce            | :white_check_mark: |
 
 ### Test: `public void addPieceAtLocation(Piece piece, Location location)`
 
