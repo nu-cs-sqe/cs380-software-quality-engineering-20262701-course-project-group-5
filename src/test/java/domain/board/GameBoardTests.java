@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameBoardTests {
 
@@ -85,6 +86,15 @@ class GameBoardTests {
         board.produceResourcesForToken(8);
 
         EasyMock.verify(firstEight, other, secondEight);
+    }
+
+    @Test
+    void ProduceResourcesForToken_BelowMinimumTokenValue_ThrowsIllegalArgumentException() {
+        Hex first = hexNotExpectedToProduce(3);
+        Hex second = hexNotExpectedToProduce(4);
+        GameBoard board = boardOf(first, second);
+
+        assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(1));
     }
 
     private static GameBoard boardOf(Hex... hexes) {

@@ -10,6 +10,9 @@ public class GameBoard {
     }
 
     public void produceResourcesForToken(int tokenValue) {
+        if (tokenValue == 1) {
+            throw new IllegalArgumentException();
+        }
         for (Hex hex : hexes) {
             if (hex.getTokenValue() == tokenValue) {
                 hex.produceResources();
