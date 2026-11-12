@@ -3,6 +3,7 @@ package domain.board;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -115,6 +116,40 @@ class GameBoardTests {
         board.produceResourcesForToken(7);
 
         EasyMock.verify(first, second);
+    }
+
+    private static final int NO_TOKEN = 0;
+    private static final int ROLLED_TOKEN = 8;
+    private static final int OCEAN_HEX_COUNT = 6;
+    private static final int[] LAND_HEX_TOKENS = {
+            2, 3, 3, 4, 4, 5, 5, 6, 6,
+            NO_TOKEN, // desert
+            8, 8, 9, 9, 10, 10, 11, 11, 12
+    };
+
+    @Test
+    void ProduceResourcesForToken_OnFullBoardWithTwoHexesOfTokenEight_ExactlyThoseProduce() {
+        List<Hex> hexes = fullBoardHexes();
+        GameBoard board = boardOf(hexes.toArray(new Hex[0]));
+
+        board.produceResourcesForToken(ROLLED_TOKEN);
+
+        EasyMock.verify(hexes.toArray());
+    }
+
+    private static List<Hex> fullBoardHexes() {
+        List<Hex> hexes = new ArrayList<>();
+        for (int token : LAND_HEX_TOKENS) {
+            if (token == ROLLED_TOKEN) {
+                hexes.add(hexExpectedToProduce(token));
+            } else {
+                hexes.add(hexNotExpectedToProduce(token));
+            }
+        }
+        for (int i = 0; i < OCEAN_HEX_COUNT; i++) {
+            hexes.add(hexNotExpectedToProduce(NO_TOKEN));
+        }
+        return hexes;
     }
 
     private static GameBoard boardOf(Hex... hexes) {
