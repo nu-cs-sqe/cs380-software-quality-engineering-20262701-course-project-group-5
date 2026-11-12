@@ -106,6 +106,17 @@ class GameBoardTests {
         assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(13));
     }
 
+    @Test
+    void ProduceResourcesForToken_WithRobberValueSeven_NoHexProduces() {
+        Hex first = hexNotExpectedToProduce(6);
+        Hex second = hexNotExpectedToProduce(8);
+        GameBoard board = boardOf(first, second);
+
+        board.produceResourcesForToken(7);
+
+        EasyMock.verify(first, second);
+    }
+
     private static GameBoard boardOf(Hex... hexes) {
         return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
     }
