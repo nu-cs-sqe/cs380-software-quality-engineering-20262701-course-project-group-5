@@ -1,4 +1,4 @@
-package mvc_util;
+package catan.mvc_util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package domain.board;
+package catan.game_table.domain.board;
 
 public class Edge extends Location {
 }

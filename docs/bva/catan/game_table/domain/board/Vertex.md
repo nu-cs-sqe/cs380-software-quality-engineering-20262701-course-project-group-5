@@ -1,5 +1,5 @@
 # Class Vertex
-Classpath: catan.game_table.domain.board.Vertex
+Classpath: catan.game_table.catan.game_table.board.domain.Vertex
 
 ## `public class Vertex extends Location`
 

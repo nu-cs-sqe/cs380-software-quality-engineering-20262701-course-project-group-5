@@ -1,5 +1,5 @@
 # Class Edge
-Classpath: catan.game_table.domain.board.Edge
+Classpath: catan.game_table.catan.game_table.board.domain.Edge
 
 ## `public class Edge extends Location`
 

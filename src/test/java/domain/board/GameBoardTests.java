@@ -1,7 +1,8 @@
 package domain.board;
 
-import domain.piece.*;
-import mvc_util.Observer;
+import catan.game_table.domain.board.*;
+import catan.game_table.domain.piece.*;
+import catan.mvc_util.Observer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 

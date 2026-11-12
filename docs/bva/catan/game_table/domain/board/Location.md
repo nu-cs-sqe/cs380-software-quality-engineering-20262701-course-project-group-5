@@ -1,5 +1,5 @@
 # Class Location
-Classpath: catan.game_table.domain.board.Location
+Classpath: catan.game_table.catan.game_table.board.domain.Location
 
 Direct known subclasses: `Vertex`, `Edge`, `Hex`
 

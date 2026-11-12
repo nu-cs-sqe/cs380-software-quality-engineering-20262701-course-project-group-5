@@ -1,8 +1,8 @@
-package domain.board;
+package catan.game_table.domain.board;
 
-import domain.piece.Piece;
-import domain.piece.PieceData;
-import mvc_util.Observed;
+import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.PieceData;
+import catan.mvc_util.Observed;
 
 import java.util.Set;
 

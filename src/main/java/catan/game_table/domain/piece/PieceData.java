@@ -1,4 +1,4 @@
-package domain.piece;
+package catan.game_table.domain.piece;
 
 import java.util.Objects;
 

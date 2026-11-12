@@ -1,5 +1,5 @@
 # Class Hex
-Classpath: catan.game_table.domain.board.Hex
+Classpath: catan.game_table.catan.game_table.board.domain.Hex
 
 Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex`
 

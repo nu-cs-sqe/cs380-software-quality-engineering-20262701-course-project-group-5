@@ -1,7 +1,7 @@
-package domain.board;
+package catan.game_table.domain.board;
 
-import domain.piece.Piece;
-import domain.piece.PieceData;
+import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.PieceData;
 
 public abstract class Location {
     public void addPiece(Piece piece){

@@ -1,4 +1,4 @@
-package mvc_util;
+package catan.mvc_util;
 
 public interface Observer {
     void update();
