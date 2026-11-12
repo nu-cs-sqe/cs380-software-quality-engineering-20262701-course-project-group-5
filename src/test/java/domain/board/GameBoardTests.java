@@ -2,6 +2,7 @@ package domain.board;
 
 import domain.piece.City;
 import domain.piece.Piece;
+import domain.piece.Road;
 import domain.piece.Settlement;
 import mvc_util.Observer;
 import org.easymock.EasyMock;
@@ -206,16 +207,27 @@ class GameBoardTests {
     }
 
     @Test
-    void AddPieceAtLocation_CityOnEmptyVertex_VertexAddsPiece() {
+    void AddPieceAtLocation_CityOnEmptyVertex_VertexIsToldToAddIt() {
         City city = EasyMock.createMock(City.class);
         Vertex vertex = EasyMock.createMock(Vertex.class);
-        vertex.addPiece(city);
+        assertLocationIsToldToAdd(city, vertex);
+    }
+
+    @Test
+    void AddPieceAtLocation_RoadOnEmptyEdge_EdgeAddsIt() {
+        Road road = EasyMock.createMock(Road.class);
+        Edge edge = EasyMock.createMock(Edge.class);
+        assertLocationIsToldToAdd(road, edge);
+    }
+
+    private static void assertLocationIsToldToAdd(Piece piece, Location location) {
+        location.addPiece(piece);
         EasyMock.expectLastCall();
-        EasyMock.replay(city, vertex);
+        EasyMock.replay(piece, location);
 
-        boardOf().addPieceAtLocation(city, vertex);
+        boardOf().addPieceAtLocation(piece, location);
 
-        EasyMock.verify(vertex);
+        EasyMock.verify(location);
     }
 
 }
