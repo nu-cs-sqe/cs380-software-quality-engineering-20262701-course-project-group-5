@@ -12,7 +12,7 @@ public class GameBoard extends Observed {
     private static final int MAX_TOKEN_VALUE = 12;
 
     public GameBoard(Set<Hex> hexes) {
-        this.hexes = hexes;
+        this.hexes = Set.copyOf(hexes);
     }
 
     public void produceResourcesForToken(int tokenValue) {
