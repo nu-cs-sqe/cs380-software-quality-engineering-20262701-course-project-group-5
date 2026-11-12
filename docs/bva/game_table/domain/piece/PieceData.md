@@ -16,25 +16,25 @@ Returns an integer based on the color and the subclass of a given `Piece`. If tw
 
 ## Boundary-Value Analysis
 
-### Method under test: `equals(o : Object)`
+### Method under test: `equals(object : Object)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `o : Object` | Whether or not the `PieceData` of a `Piece` is equal to a given object |
+| `object : Object` | Whether or not the `PieceData` of a `Piece` is equal to a given object |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `o` colors | Cases |
-| `o` types | Cases |
+| `object` colors | Cases |
+| `object` types | Cases |
 | Output | Boolean |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `o` colors | Cases: Blue, Orange, Red, White |
-| `o` types | Cases: `Building` (`City` and `Settlement` subclasses), `Harbor`, `Road`, `Robber` |
+| `object` colors | Cases: Blue, Orange, Red, White |
+| `object` types | Cases: `Building` (`City` and `Settlement` subclasses), `Harbor`, `Road`, `Robber` |
 | Output | True, False |
 
 **Step 4: Each choice**
