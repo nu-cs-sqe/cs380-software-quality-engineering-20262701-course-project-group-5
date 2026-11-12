@@ -5,7 +5,7 @@ import java.util.Objects;
 public abstract class ResourceStack {
     private final int size;
 
-    public ResourceStack(int size){
+    protected ResourceStack(int size){
         this.size = size;
     }
 
