@@ -257,4 +257,7 @@ class GameBoardTests {
         EasyMock.verify(location);
     }
 
+    // removePieceFromLocation tests
+
+
 }

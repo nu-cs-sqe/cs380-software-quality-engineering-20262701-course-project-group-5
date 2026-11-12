@@ -90,14 +90,14 @@ Appending a single element (to the location's pieces)
 
 **Step 4: Each choice**
 
-|             | Input                                       | Expected output                                     | Implemented?       |
-|-------------|---------------------------------------------|-----------------------------------------------------|--------------------|
-| Test Case 1 | `Settlement`, empty `Vertex`                | vertex holds exactly that piece, observers notified | :white_check_mark: |
-| Test Case 2 | `City`, empty `Vertex`                      | vertex holds exactly that piece                     | :white_check_mark: |
-| Test Case 3 | `Road`, empty `Edge`                        | edge holds exactly that piece                       | :white_check_mark: |
-| Test Case 4 | `Harbor`, empty `Edge`                      | edge holds exactly that piece                       | :white_check_mark: |
-| Test Case 5 | `Robber`, empty `Hex`                       | hex holds exactly that piece                        | :white_check_mark: |
-| Test Case 6 | `Harbor`, `Edge` already holding one `Road` | edge holds both pieces                              | :white_check_mark: |
+|             | Input                                       | Expected output                                                               | Implemented?       |
+|-------------|---------------------------------------------|-------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | `Settlement`, empty `Vertex`                | vertex holds exactly that piece, observers notified (this applies for all TC) | :white_check_mark: |
+| Test Case 2 | `City`, empty `Vertex`                      | vertex holds exactly that piece                                               | :white_check_mark: |
+| Test Case 3 | `Road`, empty `Edge`                        | edge holds exactly that piece                                                 | :white_check_mark: |
+| Test Case 4 | `Harbor`, empty `Edge`                      | edge holds exactly that piece                                                 | :white_check_mark: |
+| Test Case 5 | `Robber`, empty `Hex`                       | hex holds exactly that piece                                                  | :white_check_mark: |
+| Test Case 6 | `Harbor`, `Edge` already holding one `Road` | edge holds both pieces                                                        | :white_check_mark: |
 
 ### Test: `public void removePieceFromLocation(PieceData pieceData, Location location)`
 
@@ -134,13 +134,13 @@ Deleting elements from any position (from the location's pieces).
 
 **Step 4: Each choice.**
 
-|             | Input                                                                                 | Expected output                  | Implemented? |
-|-------------|---------------------------------------------------------------------------------------|----------------------------------|--------------|
-| Test Case 1 | `Vertex` with no pieces                                                               | no change, no exception          | :x:          |
-| Test Case 2 | `Vertex` with exactly one piece, its own `pieceData`                                  | vertex is empty                  | :x:          |
-| Test Case 3 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Road` only (first)     | only the `Harbor` remains        | :x:          |
-| Test Case 4 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Harbor` only (last)    | only the `Road` remains          | :x:          |
-| Test Case 5 | `Vertex` with one piece, `pieceData` matches none                                     | no change                        | :x:          |
-| Test Case 6 | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | piece removed                    | :x:          |
-| Test Case 7 | `Edge` with exactly one `Road`, its own `pieceData`                                   | edge is empty                    | :x:          |
-| Test Case 8 | `Hex` with the `Robber`, its own `pieceData`                                          | hex is empty                     | :x:          |
+|             | Input                                                                                 | Expected output                                                       | Implemented? |
+|-------------|---------------------------------------------------------------------------------------|-----------------------------------------------------------------------|--------------|
+| Test Case 1 | `Vertex` with no pieces                                                               | no change, no exception, observers notified (this applies for all TC) | :x:          |
+| Test Case 2 | `Vertex` with exactly one piece, its own `pieceData`                                  | vertex is empty                                                       | :x:          |
+| Test Case 3 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Road` only (first)     | only the `Harbor` remains                                             | :x:          |
+| Test Case 4 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Harbor` only (last)    | only the `Road` remains                                               | :x:          |
+| Test Case 5 | `Vertex` with one piece, `pieceData` matches none                                     | no change                                                             | :x:          |
+| Test Case 6 | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | piece removed                                                         | :x:          |
+| Test Case 7 | `Edge` with exactly one `Road`, its own `pieceData`                                   | edge is empty                                                         | :x:          |
+| Test Case 8 | `Hex` with the `Robber`, its own `pieceData`                                          | hex is empty                                                          | :x:          |
