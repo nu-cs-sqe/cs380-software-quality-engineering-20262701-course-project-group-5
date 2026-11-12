@@ -237,7 +237,7 @@ package board {
         +produceResourcesForToken(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
-        +getAllPoints() : List<Point>
+        +getAllPoints() : Set<Point>
     }
 
     +class PlacementHelper {
