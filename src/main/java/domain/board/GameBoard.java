@@ -11,7 +11,9 @@ public class GameBoard {
 
     public void produceResourcesForToken(int tokenValue) {
         for (Hex hex : hexes) {
-            hex.produceResources();
+            if (hex.getTokenValue() == tokenValue) {
+                hex.produceResources();
+            }
         }
     }
 }
