@@ -38,6 +38,9 @@ public class GameBoard extends Observed {
     }
 
     public void removePieceFromLocation(PieceData pieceData, Location location) {
+        if (!location.holdsPieceWithData(pieceData)) {
+            return;
+        }
         location.removePieceWithData(pieceData);
         notifyObservers();
     }

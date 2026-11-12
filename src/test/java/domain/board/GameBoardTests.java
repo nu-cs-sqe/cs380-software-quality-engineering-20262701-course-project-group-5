@@ -266,6 +266,7 @@ class GameBoardTests {
     }
 
     private static void assertPieceIsRemovedAndObserversNotified(Location location, PieceData data) {
+        EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(true);
         location.removePieceWithData(data);
         EasyMock.expectLastCall().once();
         EasyMock.replay(location);
@@ -285,6 +286,7 @@ class GameBoardTests {
     }
 
     private static void assertLocationIsToldToRemove(Location location, PieceData data) {
+        EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(true);
         location.removePieceWithData(data);
         EasyMock.expectLastCall().once();
         EasyMock.replay(location);
@@ -298,5 +300,20 @@ class GameBoardTests {
     void RemovePieceFromLocation_RobberOnHex_HexRemovesIt() {
         assertLocationIsToldToRemove(
                 EasyMock.createMock(Hex.class), new PieceData("robber"));
+    }
+
+    @Test
+    void RemovePieceFromLocation_OnVertexWithNoPieces_NothingIsRemoved() {
+        assertNothingRemoved(
+                EasyMock.createMock(Vertex.class), new PieceData("settlement"));
+    }
+
+    private static void assertNothingRemoved(Location location, PieceData data) {
+        EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(false);
+        EasyMock.replay(location);
+
+        boardOf().removePieceFromLocation(data, location);
+
+        EasyMock.verify(location);
     }
 }

@@ -8,4 +8,7 @@ public abstract class Location {
     }
     public void removePieceWithData(PieceData data) {
     }
+    public boolean holdsPieceWithData(PieceData data) {
+        return false;
+    }
 }

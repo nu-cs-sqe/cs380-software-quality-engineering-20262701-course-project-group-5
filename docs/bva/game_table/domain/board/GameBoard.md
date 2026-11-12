@@ -136,7 +136,7 @@ Deleting elements from any position (from the location's pieces).
 
 |             | Input                                                                                 | Expected output                                         | Implemented?       |
 |-------------|---------------------------------------------------------------------------------------|---------------------------------------------------------|--------------------|
-| Test Case 1 | `Vertex` with no pieces                                                               | no change, no exception                                 | :x:                |
+| Test Case 1 | `Vertex` with no pieces                                                               | no change, no exception                                 | :white_check_mark: |
 | Test Case 2 | `Vertex` with exactly one piece, its own `pieceData`                                  | vertex is told to remove that piece, observers notified | :white_check_mark: |
 | Test Case 3 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Road` only (first)     | edge to told to remove `Road`                           | :x:                |
 | Test Case 4 | `Edge` with a `Road` then a `Harbor`, `pieceData` matches the `Harbor` only (last)    | edge to told to remove `Harbor`                         | :x:                |
