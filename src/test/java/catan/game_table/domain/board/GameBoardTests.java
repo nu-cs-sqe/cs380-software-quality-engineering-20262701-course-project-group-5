@@ -1,4 +1,4 @@
-package domain.board;
+package catan.game_table.domain.board;
 
 import catan.game_table.domain.board.*;
 import catan.game_table.domain.piece.*;
