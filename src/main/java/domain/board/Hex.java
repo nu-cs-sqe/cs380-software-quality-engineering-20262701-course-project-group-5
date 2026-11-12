@@ -1,6 +1,6 @@
 package domain.board;
 
-public abstract class Hex {
+public abstract class Hex extends Location {
     public abstract void produceResources();
     public abstract int getTokenValue();
 }

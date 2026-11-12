@@ -96,7 +96,7 @@ Appending a single element (to the location's pieces)
 | Test Case 2 | `City`, empty `Vertex`                      | vertex holds exactly that piece                     | :white_check_mark: |
 | Test Case 3 | `Road`, empty `Edge`                        | edge holds exactly that piece                       | :white_check_mark: |
 | Test Case 4 | `Harbor`, empty `Edge`                      | edge holds exactly that piece                       | :white_check_mark: |
-| Test Case 5 | `Robber`, empty `Hex`                       | hex holds exactly that piece                        | :x:                |
+| Test Case 5 | `Robber`, empty `Hex`                       | hex holds exactly that piece                        | :white_check_mark: |
 | Test Case 6 | `Harbor`, `Edge` already holding one `Road` | edge holds both pieces                              | :x:                |
 
 ### Test: `public void removePieceFromLocation(PieceData pieceData, Location location)`

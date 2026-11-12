@@ -224,6 +224,13 @@ class GameBoardTests {
         assertLocationIsToldToAdd(harbor, edge);
     }
 
+    @Test
+    void AddPieceAtLocation_RobberOnEmptyHex_HexAddsIt() {
+        Robber robber = EasyMock.createMock(Robber.class);
+        Hex hex = EasyMock.createMock(Hex.class);
+        assertLocationIsToldToAdd(robber, hex);
+    }
+
     private static void assertLocationIsToldToAdd(Piece piece, Location location) {
         location.addPiece(piece);
         EasyMock.expectLastCall();
