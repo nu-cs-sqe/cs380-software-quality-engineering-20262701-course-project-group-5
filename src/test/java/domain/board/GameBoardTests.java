@@ -316,4 +316,10 @@ class GameBoardTests {
 
         EasyMock.verify(location);
     }
+
+    @Test
+    void RemovePieceFromLocation_WhenPieceDataMatchesNone_NothingIsRemoved() {
+        assertNothingRemoved(
+                EasyMock.createMock(Vertex.class), new PieceData("road"));
+    }
 }
