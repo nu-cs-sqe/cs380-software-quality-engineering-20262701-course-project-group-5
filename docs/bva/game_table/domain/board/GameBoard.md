@@ -48,19 +48,19 @@ Searching (for the hexes matching the token)
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                         | Expected output                              | Implemented?       |
-|--------------|----------------------------------------------------------------------------------------------------------------|----------------------------------------------|--------------------|
-| Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`                   | :white_check_mark: |
-| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`                   | :white_check_mark: |
-| Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex is asked to produce       | :white_check_mark: |
-| Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex is asked to produce        | :white_check_mark: |
-| Test Case 5  | More than one hex, input `7`                                                                                   | no hex is asked to produce                   | :white_check_mark: |
-| Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex is asked to produce                   | :white_check_mark: |
-| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes are asked to produce              | :white_check_mark: |
-| Test Case 8  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception                | :white_check_mark: |
-| Test Case 9  | Board with exactly one hex, token `8`, input `8`                                                               | that hex is asked to produce                 | :white_check_mark: |
-| Test Case 10 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes are asked to produce | :white_check_mark: |
-| Test Case 11 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex is asked to produce            | :white_check_mark: |
+|              | Inputs                                                                                                         | Expected output                                                                 | Implemented?       |
+|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------------|
+| Test Case 1  | Board with more than one hex, input `1`                                                                        | `IllegalArgumentException`: "Token value %d is outside the valid range [2, 12]" | :white_check_mark: |
+| Test Case 2  | Board with more than one hex, input `13`                                                                       | `IllegalArgumentException`: "Token value %d is outside the valid range [2, 12]" | :white_check_mark: |
+| Test Case 3  | More than one hex, only the first hex has token `2`, input `2`                                                 | only the first hex is asked to produce                                          | :white_check_mark: |
+| Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex is asked to produce                                           | :white_check_mark: |
+| Test Case 5  | More than one hex, input `7`                                                                                   | no hex is asked to produce                                                      | :white_check_mark: |
+| Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex is asked to produce                                                      | :white_check_mark: |
+| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes are asked to produce                                                 | :white_check_mark: |
+| Test Case 8  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception                                                   | :white_check_mark: |
+| Test Case 9  | Board with exactly one hex, token `8`, input `8`                                                               | that hex is asked to produce                                                    | :white_check_mark: |
+| Test Case 10 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes are asked to produce                                    | :white_check_mark: |
+| Test Case 11 | More than one hex, only a hex in the middle (neither first nor last) has token `5`, input `5`                  | only that hex is asked to produce                                               | :white_check_mark: |
 
 ### Test: `public void addPieceAtLocation(Piece piece, Location location)`
 
