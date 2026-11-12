@@ -15,7 +15,7 @@ public abstract class ResourceStack {
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.getClass().getName()) * (this.size + 1);
+        return Objects.hash(getClass(), size);
     }
 
     @Override
