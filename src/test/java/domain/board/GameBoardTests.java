@@ -1,5 +1,7 @@
 package domain.board;
 
+import domain.piece.City;
+import domain.piece.Piece;
 import domain.piece.Settlement;
 import mvc_util.Observer;
 import org.easymock.EasyMock;
@@ -202,4 +204,18 @@ class GameBoardTests {
         EasyMock.replay(observer);
         return observer;
     }
+
+    @Test
+    void AddPieceAtLocation_CityOnEmptyVertex_VertexAddsPiece() {
+        City city = EasyMock.createMock(City.class);
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        vertex.addPiece(city);
+        EasyMock.expectLastCall();
+        EasyMock.replay(city, vertex);
+
+        boardOf().addPieceAtLocation(city, vertex);
+
+        EasyMock.verify(vertex);
+    }
+
 }
