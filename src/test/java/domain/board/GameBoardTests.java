@@ -277,4 +277,20 @@ class GameBoardTests {
 
         EasyMock.verify(location, observer);
     }
+
+    @Test
+    void RemovePieceFromLocation_OnlyRoadOnEdge_EdgeRemovesIt() {
+        assertLocationIsToldToRemove(
+                EasyMock.createMock(Edge.class), new PieceData("road"));
+    }
+
+    private static void assertLocationIsToldToRemove(Location location, PieceData data) {
+        location.removePieceWithData(data);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(location);
+
+        boardOf().removePieceFromLocation(data, location);
+
+        EasyMock.verify(location);
+    }
 }
