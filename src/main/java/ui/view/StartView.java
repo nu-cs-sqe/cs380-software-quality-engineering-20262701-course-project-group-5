@@ -19,10 +19,10 @@ public class StartView extends StackPane {
   private Button settingsButton;
 
   private static final int containerWidth = 500;
-  private static final int buttonBoxWidth = 200;
+  private static final int buttonBoxWidth = 300;
   private static final int containerSpacing = 350;
   private static final int titleBoxSpacing = -5;
-  private static final int buttonBoxSpacing = 20;
+  private static final int buttonBoxSpacing = 30;
 
   /**
    * Constructs a StartView instance out of Panes
