@@ -81,11 +81,11 @@ public class StartView extends StackPane {
     buttonBox.setAlignment(Pos.BOTTOM_CENTER);
     buttonBox.setMaxWidth(buttonBoxWidth);
 
-    startGameButton = new Button("START");
+    startGameButton = new Button();
     startGameButton.getStyleClass().add("btn");
     startGameButton.setMaxWidth(Double.MAX_VALUE);
 
-    settingsButton = new Button("SETTINGS");
+    settingsButton = new Button();
     settingsButton.getStyleClass().add("btn");
     settingsButton.setMaxWidth(Double.MAX_VALUE);
 
