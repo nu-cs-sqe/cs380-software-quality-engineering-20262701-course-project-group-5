@@ -1,6 +1,7 @@
 package domain.board;
 
 import domain.piece.Piece;
+import domain.piece.PieceData;
 import mvc_util.Observed;
 
 import java.util.Set;
@@ -33,6 +34,11 @@ public class GameBoard extends Observed {
 
     public void addPieceAtLocation(Piece piece, Location location) {
         location.addPiece(piece);
+        notifyObservers();
+    }
+
+    public void removePieceFromLocation(PieceData pieceData, Location location) {
+        location.removePieceWithData(pieceData);
         notifyObservers();
     }
 }

@@ -258,6 +258,23 @@ class GameBoardTests {
     }
 
     // removePieceFromLocation tests
+    @Test
+    void RemovePieceFromLocation_OnlyPieceOnVertex_VertexRemovesItAndObserversNotified() {
+        assertPieceIsRemovedAndObserversNotified(
+                EasyMock.createMock(Vertex.class), new PieceData("settlement"));
+    }
 
+    private static void assertPieceIsRemovedAndObserversNotified(Location location, PieceData data) {
+        location.removePieceWithData(data);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(location);
+        Observer observer = observerExpectingOneUpdate();
+        GameBoard board = boardOf();
+        board.addObserver(observer);
+
+        board.removePieceFromLocation(data, location);
+
+        EasyMock.verify(location, observer);
+    }
 
 }
