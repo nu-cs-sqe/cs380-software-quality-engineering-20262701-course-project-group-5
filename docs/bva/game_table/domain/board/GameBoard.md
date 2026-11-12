@@ -56,7 +56,7 @@ Searching (for the hexes matching the token)
 | Test Case 4  | More than one hex, only the last hex has token `12`, input `12`                                                | only the last hex is asked to produce        | :white_check_mark: |
 | Test Case 5  | More than one hex, input `7`                                                                                   | no hex is asked to produce                   | :x:                |
 | Test Case 6  | More than one hex, none has token `6`, input `6`                                                               | no hex is asked to produce                   | :white_check_mark: |
-| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes are asked to produce              | :x:                |
+| Test Case 7  | Board with exactly two hexes, both with token `8`, input `8`                                                   | both hexes are asked to produce              | :white_check_mark: |
 | Test Case 8  | Board with no hexes, input `6`                                                                                 | nothing happens, no exception                | :white_check_mark: |
 | Test Case 9  | Board with exactly one hex, token `8`, input `8`                                                               | that hex is asked to produce                 | :white_check_mark: |
 | Test Case 10 | Standard board with the maximum 25 hexes (19 land plus 6 `OceanHex`), two land hexes with token `8`, input `8` | exactly those two hexes are asked to produce | :x:                |

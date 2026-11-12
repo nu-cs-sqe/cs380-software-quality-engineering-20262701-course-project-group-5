@@ -75,6 +75,18 @@ class GameBoardTests {
         EasyMock.verify(first, second, third);
     }
 
+    @Test
+    void ProduceResourcesForToken_WhenTwoHexesShareTheToken_BothProduce() {
+        Hex firstEight = hexExpectedToProduce(8);
+        Hex other = hexNotExpectedToProduce(3);
+        Hex secondEight = hexExpectedToProduce(8);
+        GameBoard board = boardOf(firstEight, other, secondEight);
+
+        board.produceResourcesForToken(8);
+
+        EasyMock.verify(firstEight, other, secondEight);
+    }
+
     private static GameBoard boardOf(Hex... hexes) {
         return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
     }
