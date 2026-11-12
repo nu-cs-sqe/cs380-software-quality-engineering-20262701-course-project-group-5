@@ -15,7 +15,7 @@ public class PieceData {
         if (this == other) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(other instanceof PieceData)) {
             return false;
         }
         PieceData otherOne = (PieceData) other;
