@@ -293,4 +293,10 @@ class GameBoardTests {
 
         EasyMock.verify(location);
     }
+
+    @Test
+    void RemovePieceFromLocation_RobberOnHex_HexRemovesIt() {
+        assertLocationIsToldToRemove(
+                EasyMock.createMock(Hex.class), new PieceData("robber"));
+    }
 }
