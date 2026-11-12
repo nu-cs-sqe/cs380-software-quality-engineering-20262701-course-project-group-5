@@ -242,6 +242,7 @@ package board {
     class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
+        +PlacementHelper(board : GameBoard, gamePhaseHolder : GamePhaseHolder)
         +getValidBuildingSpots(color : Color) : List<Vertex>
         +getValidRoadSpots(color : Color) : List<Edge>
         ' build
