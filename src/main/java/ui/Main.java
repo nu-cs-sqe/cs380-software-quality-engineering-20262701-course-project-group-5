@@ -1,30 +1,42 @@
 package ui;
 
-
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import ui.view.StartView;
 
-
-
+/**
+ * Creates primary UI application that controls Player's view of the game.
+ */
 public class Main extends Application {
-    @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
-        String stylePath = "/styles/setupstyle.css";
-        scene.getStylesheets().add(
-                getClass().getResource(stylePath).toExternalForm()
-        );
-        stage.setScene(scene);
-        stage.show();
-    }
+  private static final int containerWidth = 800;
+  private static final int containerHeight = 600;
+  private static final String BUNDLE_NAME = "message";
+  private static final Locale ENGLISH = Locale.ENGLISH;
 
-    public static void main(String[] args) {
-        launch();
-    }
+  /**
+   * Creates and formats the primary container Players see with
+   * a set of views.
+   * {@param stage Primary container different views are populated in}
+   */
+  @Override
+  public void start(Stage stage) {
+    StartView startView = new StartView();
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, ENGLISH);
+    startView.updateDisplay(resourceBundle);
+    Scene scene = new Scene(startView, containerWidth, containerHeight);
+    stage.setScene(scene);
+    stage.setFullScreen(true);
+    stage.show();
+  }
+
+  /**
+   * Launches populated application.
+   * {@param args Unused}
+   */
+  public static void main(String[] args) {
+    launch();
+  }
 }
