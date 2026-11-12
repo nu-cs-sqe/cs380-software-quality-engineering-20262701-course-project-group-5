@@ -6,7 +6,7 @@ public class LumberResourceStack extends ResourceStack {
     }
 
     @Override
-    protected ResourceStack MakeNewStackOfSameType(int size) {
+    protected ResourceStack makeNewStackOfSameType(int size) {
         return new LumberResourceStack(size);
     }
 }

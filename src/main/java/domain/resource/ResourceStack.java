@@ -38,8 +38,8 @@ public abstract class ResourceStack {
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", stack1.getClass(), stack2.getClass()) );
         }
         int totalSize = stack1.getSize() + stack2.getSize();
-        return stack1.MakeNewStackOfSameType(totalSize);
+        return stack1.makeNewStackOfSameType(totalSize);
     }
 
-    protected abstract ResourceStack MakeNewStackOfSameType(int size);
+    protected abstract ResourceStack makeNewStackOfSameType(int size);
 }

@@ -6,7 +6,7 @@ public class GrainResourceStack extends  ResourceStack {
     }
 
     @Override
-    protected ResourceStack MakeNewStackOfSameType(int size) {
+    protected ResourceStack makeNewStackOfSameType(int size) {
         return new GrainResourceStack(size);
     }
 }
