@@ -237,14 +237,15 @@ package board {
         +produceResourcesForToken(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
+        +getAllPoints() : List<Point>
     }
 
     +class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
         +PlacementHelper(board : GameBoard, gamePhaseHolder : GamePhaseHolder)
-        +getValidBuildingSpots(color : Color) : List<Vertex>
-        +getValidRoadSpots(color : Color) : List<Edge>
+        +getValidBuildingSpots(color : Color) : Set<Point>
+        +getValidRoadSpots(color : Color) : Set<Set<Point>>
         ' build
         +place(piece : Piece, location : Location) : void
         ' checks for validity, ties to highlighting
@@ -527,6 +528,7 @@ PlacementHelper ..> GamePhase
 PlacementHelper ..> Location
 PlacementHelper ..> Vertex
 PlacementHelper ..> Edge
+PlacementHelper ..> Point
 
 ResourceInventory ..> ResourceStack
 
@@ -536,6 +538,7 @@ GameBoard --> Edge
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
+GameBoard ..> Point
 
 Hex --> Piece
 Hex --> Vertex
