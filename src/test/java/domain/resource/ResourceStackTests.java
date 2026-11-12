@@ -42,7 +42,7 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Combine_EmptyStackLumber_WithEmptyStackBrick_ProducesEmptyStack(){
+    public void Combine_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
         LumberResourceStack stackOfEmptyLumber = new LumberResourceStack(0);
         BrickResourceStack stackOfEmptyBrick = new BrickResourceStack(0);
 
