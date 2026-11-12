@@ -259,10 +259,17 @@ class GameBoardTests {
 
     // removePieceFromLocation tests
 
+    private static final PieceData SETTLEMENT_DATA = new PieceData("settlement");
+    private static final PieceData ROAD_DATA = new PieceData("road");
+    private static final PieceData HARBOR_DATA = new PieceData("harbor");
+    private static final PieceData ROBBER_DATA = new PieceData("robber");
+
+
+
     @Test
     void RemovePieceFromLocation_OnlyPieceOnVertex_VertexRemovesItAndObserversNotified() {
         assertPieceIsRemovedAndObserversNotified(
-                EasyMock.createMock(Vertex.class), new PieceData("settlement"));
+                EasyMock.createMock(Vertex.class), SETTLEMENT_DATA);
     }
 
     private static void assertPieceIsRemovedAndObserversNotified(Location location, PieceData data) {
@@ -282,7 +289,7 @@ class GameBoardTests {
     @Test
     void RemovePieceFromLocation_OnlyRoadOnEdge_EdgeRemovesIt() {
         assertLocationIsToldToRemove(
-                EasyMock.createMock(Edge.class), new PieceData("road"));
+                EasyMock.createMock(Edge.class), ROAD_DATA);
     }
 
     private static void assertLocationIsToldToRemove(Location location, PieceData data) {
@@ -299,13 +306,13 @@ class GameBoardTests {
     @Test
     void RemovePieceFromLocation_RobberOnHex_HexRemovesIt() {
         assertLocationIsToldToRemove(
-                EasyMock.createMock(Hex.class), new PieceData("robber"));
+                EasyMock.createMock(Hex.class), ROBBER_DATA);
     }
 
     @Test
     void RemovePieceFromLocation_OnVertexWithNoPieces_NothingIsRemoved() {
         assertNothingRemoved(
-                EasyMock.createMock(Vertex.class), new PieceData("settlement"));
+                EasyMock.createMock(Vertex.class), SETTLEMENT_DATA);
     }
 
     private static void assertNothingRemoved(Location location, PieceData data) {
@@ -320,6 +327,20 @@ class GameBoardTests {
     @Test
     void RemovePieceFromLocation_WhenPieceDataMatchesNone_NothingIsRemoved() {
         assertNothingRemoved(
-                EasyMock.createMock(Vertex.class), new PieceData("road"));
+                EasyMock.createMock(Vertex.class), ROAD_DATA);
+    }
+
+    @Test
+    void RemovePieceFromLocation_RoadThenHarborOnEdge_RemovingRoadRemovesOnlyRoad() {
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.holdsPieceWithData(ROAD_DATA)).andStubReturn(true);
+        EasyMock.expect(edge.holdsPieceWithData(HARBOR_DATA)).andStubReturn(true);
+        edge.removePieceWithData(ROAD_DATA);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(edge);
+
+        boardOf().removePieceFromLocation(ROAD_DATA, edge);
+
+        EasyMock.verify(edge);
     }
 }
