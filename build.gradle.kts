@@ -24,7 +24,7 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-suite")
 
     // https://mvnrepository.com/artifact/org.easymock/easymock
-    testImplementation("org.easymock:easymock:3.1")
+    testImplementation("org.easymock:easymock:5.4.0")
 
     // cucumber
     testImplementation(platform("io.cucumber:cucumber-bom:7.20.1"))
