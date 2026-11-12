@@ -110,8 +110,8 @@ tasks.jacocoTestReport {
 }
 
 pitest {
-    targetClasses = setOf("domain.*") //by default "${project.group}.*"
-    targetTests = setOf("domain.*")
+    targetClasses = setOf("catan.game_table.domain.*")
+    targetTests = setOf("catan.game_table.domain.*")
     junit5PluginVersion = "1.2.1"
     pitestVersion = "1.15.0" //not needed when a default PIT version should be used
 
