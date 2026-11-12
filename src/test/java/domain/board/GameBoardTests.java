@@ -258,6 +258,7 @@ class GameBoardTests {
     }
 
     // removePieceFromLocation tests
+
     @Test
     void RemovePieceFromLocation_OnlyPieceOnVertex_VertexRemovesItAndObserversNotified() {
         assertPieceIsRemovedAndObserversNotified(
