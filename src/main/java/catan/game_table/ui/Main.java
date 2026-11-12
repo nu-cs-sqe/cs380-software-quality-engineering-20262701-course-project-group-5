@@ -1,4 +1,4 @@
-package ui;
+package catan.game_table.ui;
 
 
 import javafx.application.Application;
