@@ -1,4 +1,4 @@
-package domain.resource;
+package catan.game_table.domain.resource;
 
 public class BrickResourceStack extends ResourceStack {
     public BrickResourceStack(int size){

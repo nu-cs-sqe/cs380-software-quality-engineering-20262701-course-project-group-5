@@ -1,4 +1,4 @@
-package domain.resource;
+package catan.game_table.domain.resource;
 
 import org.junit.jupiter.api.Test;
 
@@ -97,6 +97,16 @@ public class ResourceStackTests {
         assertEquals(expected, actual);
 
         assertInstanceOf(BrickResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Subtract_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
+        LumberResourceStack stackOfEmptyLumber = new LumberResourceStack(0);
+        BrickResourceStack stackOfEmptyBrick = new BrickResourceStack(0);
+
+        Exception combineException = assertThrows(IllegalArgumentException.class, () -> stackOfEmptyLumber.subtract(stackOfEmptyBrick));
+
+        assertTrue(combineException.getMessage().contains("Incompatible ResourceStack types: LumberResourceStack and BrickResourceStack"));
     }
 
     @Test

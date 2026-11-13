@@ -1,5 +1,5 @@
 # Class ResourceProducts
-Classpath: catan.game_table.domain.resource.ResourceProducts
+Classpath: catan.game_table.catan.game_table.domain.resource.ResourceProducts
 
 ## `public class ResourceProducts`
 

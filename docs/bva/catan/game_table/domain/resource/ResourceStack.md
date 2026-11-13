@@ -1,5 +1,5 @@
 # Class ResourceStack
-Classpath: catan.game_table.domain.resource.ResourceStack 
+Classpath: catan.game_table.catan.game_table.domain.resource.ResourceStack 
 
 Direct known subclasses: `BrickResourceStack`, `LumberResourceStack`, `OreResourceStack`, `GrainResourceStack`, `WoolResourceStack`
 

@@ -1,5 +1,5 @@
 # Class OreResourceStack
-Classpath: catan.game_table.domain.resource.OreResourceStack
+Classpath: catan.game_table.catan.game_table.domain.resource.OreResourceStack
 
 ## `public class OreResourceStack extends ResourceStack`
 

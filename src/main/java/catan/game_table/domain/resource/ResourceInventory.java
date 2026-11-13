@@ -1,4 +1,4 @@
-package domain.resource;
+package catan.game_table.domain.resource;
 
 public interface ResourceInventory {
     public void addResources(ResourceStack stack);

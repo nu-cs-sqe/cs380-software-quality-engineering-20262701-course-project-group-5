@@ -1,4 +1,4 @@
-package domain.resource;
+package catan.game_table.domain.resource;
 
 import java.util.Objects;
 
