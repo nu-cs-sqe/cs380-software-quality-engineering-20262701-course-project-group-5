@@ -235,6 +235,15 @@ class HexTests {
         assertFalse(hex.canProduce());
     }
 
+    @Test
+    void SetCanProduce_OnDesertHexWithFlagFalseAndInputTrue_ReturnsFalse() {
+        Hex hex = new DesertHex(sixVertices(), ring());
+
+        hex.setCanProduce(true);
+
+        assertFalse(hex.canProduce());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

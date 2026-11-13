@@ -14,4 +14,9 @@ public class DesertHex extends Hex {
         super(NO_TOKEN, vertices, edges, NO_PRODUCTS);
         canProduce = false;
     }
+
+    @Override
+    public void setCanProduce(boolean canProduce) {
+        super.setCanProduce(false);
+    }
 }
