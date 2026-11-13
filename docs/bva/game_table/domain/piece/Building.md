@@ -14,7 +14,7 @@ Constructs a `Building` object with set `PieceData` and access to the `BankResou
 
 ### `public void produce(products : ResourceProducts)`
 
-Given `products` checks with the `BankResourceDistributor` to try and produce resources. The amount updated by and product type depend on the inheriting class.
+Checks with the `BankResourceDistributor` to try and produce resources via `BankResourceDistributor#produceResources()` with that given `products` and the color of the `Building` as parameters. The amount updated by and product type depend on the inheriting class.
 
 ## Boundary-Value Analysis
 
