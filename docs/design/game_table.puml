@@ -421,11 +421,11 @@ package resource {
     }
 
     +class ResourceProducts {
-        -tier1Products : List<ResourceStack>
-        -tier2Products : List<ResourceStack>
-        +ResourceProducts(tier1Products : List<ResourceStack>, tier2Products : List<ResourceStack>)
-        +getTier1Products() : List<ResourceStack>
-        +getTier2Products() : List<ResourceStack>
+        -baseProducts : List<ResourceStack>
+        -cityBonusProducts : List<ResourceStack>
+        +ResourceProducts(baseProducts : List<ResourceStack>, cityBonusProducts : List<ResourceStack>)
+        +getBaseProducts() : List<ResourceStack>
+        +getCityBonusProducts() : List<ResourceStack>
     }
 
 }
