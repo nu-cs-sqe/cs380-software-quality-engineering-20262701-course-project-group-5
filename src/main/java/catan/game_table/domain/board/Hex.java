@@ -13,6 +13,8 @@ public abstract class Hex extends Location {
     private static final int SIDE_COUNT = 6;
     private static final int EDGES_PER_CORNER = 2;
     private final int tokenValue;
+    private final Set<Vertex> vertices;
+    private final ResourceProducts products;
     protected boolean canProduce = true;
 
     public Hex(
@@ -22,6 +24,8 @@ public abstract class Hex extends Location {
             ResourceProducts products) {
         requireClosedRing(vertices, edges);
         this.tokenValue = tokenValue;
+        this.vertices = vertices;
+        this.products = products;
     }
 
     public boolean canProduce() {
@@ -34,6 +38,10 @@ public abstract class Hex extends Location {
 
     public void setCanProduce(boolean canProduce) {
         this.canProduce = canProduce;
+    }
+
+    public void produceResources() {
+        vertices.forEach(vertex -> vertex.produceResources(products));
     }
 
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {

@@ -1,6 +1,7 @@
 package catan.game_table.domain.board;
 
 import catan.game_table.domain.resource.ResourceProducts;
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashSet;
@@ -260,6 +261,27 @@ class HexTests {
         hex.setCanProduce(true);
 
         assertFalse(hex.canProduce());
+    }
+
+    @Test
+    void ProduceResources_OnProducingFieldsHex_EachVertexProducesOnceWithProducts() {
+        List<Vertex> vertices = CORNERS.stream()
+                .map(HexTests::vertexExpectedToProduce)
+                .toList();
+        Hex hex = new FieldsHex(TOKEN_VALUE, new LinkedHashSet<>(vertices), ring(), PRODUCTS);
+
+        hex.produceResources();
+
+        EasyMock.verify(vertices.toArray());
+    }
+
+    private static Vertex vertexExpectedToProduce(Point point) {
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertex.getPoint()).andStubReturn(point);
+        vertex.produceResources(PRODUCTS);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(vertex);
+        return vertex;
     }
 
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
