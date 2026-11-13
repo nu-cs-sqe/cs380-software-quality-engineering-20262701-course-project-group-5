@@ -18,11 +18,6 @@ public class GameBoard extends Observed {
     private final Set<Edge> edges;
     private final Map<Vertex, Set<Vertex>> neighbors = new HashMap<>();
 
-    //once we build real boards, this will be cleaned up. For now, this is the bare-minimum code.
-    public GameBoard(Set<Hex> hexes) {
-        this(hexes, Set.of(), Set.of());
-    }
-
     public GameBoard(Set<Hex> hexes, Set<Vertex> vertices, Set<Edge> edges) {
         this.hexes = Set.copyOf(hexes);
         this.vertices = Set.copyOf(vertices);

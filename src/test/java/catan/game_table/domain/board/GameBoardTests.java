@@ -158,7 +158,10 @@ class GameBoardTests {
     }
 
     private static GameBoard boardOf(Hex... hexes) {
-        return new GameBoard(new LinkedHashSet<>(List.of(hexes)));
+        return new GameBoard(
+                new LinkedHashSet<>(List.of(hexes)),
+                Set.of(),
+                Set.of());
     }
 
     private static Hex hexExpectedToProduce(int tokenValue) {
