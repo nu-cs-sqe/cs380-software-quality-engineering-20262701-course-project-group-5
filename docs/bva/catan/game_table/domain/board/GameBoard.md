@@ -189,9 +189,9 @@ Appending a single element (to a vertex's neighbor set)
 
 **Step 4: Each choice**
 
-|             | Inputs                                                                                                                    | Expected output                                            | Implemented? |
-|-------------|---------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|--------------|
-| Test Case 1 | Empty `vertices`, empty `edges`                                                                                           | no exception                                               | :x:          |
-| Test Case 2 | One hex ring `A-B`, `B-C`, `C-D`, `D-E`, `E-F`, `F-A`, vertices given in the order `A`..`F`; query `A`, then `F`          | `A` has `{B, F}` and `F` has `{E, A}`                      | :x:          |
-| Test Case 3 | The ring above plus a second hex sharing `C-D`: `D-G`, `G-H`, `H-I`, `I-J`, `J-C`; vertices `J`..`A`; query `C`, then `D` | `C` has `{B, D, J}` and `D` has `{C, E, G}`                | :x:          |
-| Test Case 4 | All 54 land vertices and 72 land edges of a standard board                                                                | 36 vertices have exactly 3 neighbors and 18 have exactly 2 | :x:          |
+|             | Inputs                                                                                                                    | Expected output                                            | Implemented?       |
+|-------------|---------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|--------------------|
+| Test Case 1 | Empty `vertices`, empty `edges`                                                                                           | no exception                                               | :white_check_mark: |
+| Test Case 2 | One hex ring `A-B`, `B-C`, `C-D`, `D-E`, `E-F`, `F-A`, vertices given in the order `A`..`F`; query `A`, then `F`          | `A` has `{B, F}` and `F` has `{E, A}`                      | :white_check_mark: |
+| Test Case 3 | The ring above plus a second hex sharing `C-D`: `D-G`, `G-H`, `H-I`, `I-J`, `J-C`; vertices `J`..`A`; query `C`, then `D` | `C` has `{B, D, J}` and `D` has `{C, E, G}`                | :x:                |
+| Test Case 4 | All 54 land vertices and 72 land edges of a standard board                                                                | 36 vertices have exactly 3 neighbors and 18 have exactly 2 | :x:                |

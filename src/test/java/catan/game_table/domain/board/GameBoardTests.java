@@ -11,8 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameBoardTests {
 
@@ -384,6 +383,53 @@ class GameBoardTests {
 
     private static GameBoard boardWith(Set<Vertex> vertices, Set<Edge> edges) {
         return new GameBoard(Set.of(), vertices, edges);
+    }
+
+    private static final Point A = new Point(0, 0);
+    private static final Point B = new Point(1, 0);
+    private static final Point C = new Point(2, 0);
+    private static final Point D = new Point(3, 0);
+    private static final Point E = new Point(4, 0);
+    private static final Point F = new Point(5, 0);
+    private static final Point G = new Point(6, 0);
+    private static final Point H = new Point(7, 0);
+    private static final Point I = new Point(8, 0);
+    private static final Point J = new Point(9, 0);
+
+    @Test
+    void CreateNeighbors_OnSingleHexRing_EachCornerHasItsTwoNeighbors() {
+        Vertex a = vertexAt(A); Vertex b = vertexAt(B); Vertex c = vertexAt(C);
+        Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
+        GameBoard board = boardWith(
+                orderedSetOf(a, b, c, d, e, f),
+                orderedSetOf(edgeBetween(A, B), edgeBetween(B, C), edgeBetween(C, D),
+                        edgeBetween(D, E), edgeBetween(E, F), edgeBetween(F, A)));
+
+        assertEquals(Set.of(b, f), board.getNeighbors(a));
+        assertEquals(Set.of(e, a), board.getNeighbors(f));
+    }
+
+    private static Vertex vertexAt(Point point) {
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertex.getPoint()).andStubReturn(point);
+        EasyMock.replay(vertex);
+        return vertex;
+    }
+
+    private static Edge edgeBetween(Point first, Point second) {
+        return edgeJoining(Set.of(first, second));
+    }
+
+    private static Edge edgeJoining(Set<Point> endpoints) {
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.getEndpoints()).andStubReturn(endpoints);
+        EasyMock.replay(edge);
+        return edge;
+    }
+
+    @SafeVarargs
+    private static <T> Set<T> orderedSetOf(T... items) {
+        return new LinkedHashSet<>(List.of(items));
     }
 
 }
