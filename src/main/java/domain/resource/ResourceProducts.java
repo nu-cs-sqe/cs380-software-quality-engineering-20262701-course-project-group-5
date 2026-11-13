@@ -3,19 +3,19 @@ package domain.resource;
 import java.util.List;
 
 public class ResourceProducts {
-    private final List<ResourceStack> tier1Products;
-    private final List<ResourceStack> tier2Products;
+    private final List<ResourceStack> baseProducts;
+    private final List<ResourceStack> cityBonusProducts;
 
-    public ResourceProducts(List<ResourceStack> tier1Products, List<ResourceStack> tier2Products){
-        this.tier1Products = List.copyOf(tier1Products);
-        this.tier2Products = List.copyOf(tier2Products);
+    public ResourceProducts(List<ResourceStack> baseProducts, List<ResourceStack> cityBonusProducts){
+        this.baseProducts = List.copyOf(baseProducts);
+        this.cityBonusProducts = List.copyOf(cityBonusProducts);
     }
 
     public List<ResourceStack> getTier1Products(){
-        return tier1Products;
+        return baseProducts;
     }
 
     public List<ResourceStack> getTier2Products(){
-        return tier2Products;
+        return cityBonusProducts;
     }
 }
