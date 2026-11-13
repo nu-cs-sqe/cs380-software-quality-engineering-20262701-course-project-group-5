@@ -1,5 +1,5 @@
 # Class GameBoard
-Classpath: catan.game_table.catan.game_table.board.domain.GameBoard
+Classpath: catan.game_table.domain.board.GameBoard
 
 ## `public class GameBoard extends Observed`
 
