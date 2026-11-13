@@ -16,7 +16,7 @@ Initializes a `ResourceStack` with the given `size`.
 ### `public final int getSize()`
 Returns the size of this `ResourceStack`.
 
-### `@Override public boolean equals(Object o)`
+### `@Override public boolean equals(Object other)`
 Returns `true` if the size and type of this `ResourceStack` is equal to the size and type of `o`.
 
 ### `@Override public int hashCode()`
@@ -33,7 +33,7 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 | Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
 
 
-### Test: `public boolean equals(Object o)`
+### Test: `public boolean equals(Object other)`
 
 |             | State of the System                                                                           | Expected output | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------|
