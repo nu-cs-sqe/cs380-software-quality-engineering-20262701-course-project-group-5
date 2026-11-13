@@ -11,10 +11,10 @@ A holder for a specified number of resources of a type (Brick, Lumber, Ore, etc.
 Initializes a `ResourceStack` with the given `size`.
 
 ### `public ResourceStack add(ResourceStack otherStack)`
-Returns a new `ResourceStack` with the difference of the size of this minus the size of `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
+Returns a new `ResourceStack` with the sum of the sizes of this and `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
 
 ### `public ResourceStack subtract(ResourceStack otherStack)`
-Returns a new `ResourceStack` with the sum of the sizes of this and `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
+Returns a new `ResourceStack` with the size of `this` minus the size of `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
 
 ### `public final int getSize()`
 Returns the size of this `ResourceStack`.
