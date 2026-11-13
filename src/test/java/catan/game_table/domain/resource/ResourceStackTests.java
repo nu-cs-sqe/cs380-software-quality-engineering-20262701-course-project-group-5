@@ -16,13 +16,9 @@ public class ResourceStackTests {
 
         ResourceStack resultStack = stackOfNearMax.add(stackOfOne);
 
-        int expected = Integer.MAX_VALUE;
+        int expectedSize = Integer.MAX_VALUE;
 
-        int actual = resultStack.getSize();
-
-        assertEquals(expected, actual);
-
-        assertInstanceOf(BrickResourceStack.class, resultStack);
+        assertEquals(new BrickResourceStack(expectedSize), resultStack);
     }
 
     @Test
@@ -32,13 +28,9 @@ public class ResourceStackTests {
 
         ResourceStack resultStack = firstStackOfEmpty.add(secondStackOfEmpty);
 
-        int expected = 0;
+        int expectedSize = 0;
 
-        int actual = resultStack.getSize();
-
-        assertEquals(expected, actual);
-
-        assertInstanceOf(BrickResourceStack.class, resultStack);
+        assertEquals(new BrickResourceStack(expectedSize), resultStack);
     }
 
     @Test
@@ -58,13 +50,9 @@ public class ResourceStackTests {
 
         ResourceStack resultStack = stackOfMax.subtract(stackOfOne);
 
-        int expected = Integer.MAX_VALUE-1;
+        int expectedSize = Integer.MAX_VALUE-1;
 
-        int actual = resultStack.getSize();
-
-        assertEquals(expected, actual);
-
-        assertInstanceOf(BrickResourceStack.class, resultStack);
+        assertEquals(new BrickResourceStack(expectedSize), resultStack);
     }
 
     @Test
@@ -74,13 +62,9 @@ public class ResourceStackTests {
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
-        int expected = 0;
+        int expectedSize = 0;
 
-        int actual = resultStack.getSize();
-
-        assertEquals(expected, actual);
-
-        assertInstanceOf(BrickResourceStack.class, resultStack);
+        assertEquals(new BrickResourceStack(expectedSize), resultStack);
     }
 
     @Test
@@ -90,13 +74,9 @@ public class ResourceStackTests {
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
-        int expected = 0;
+        int expectedSize = 0;
 
-        int actual = resultStack.getSize();
-
-        assertEquals(expected, actual);
-
-        assertInstanceOf(BrickResourceStack.class, resultStack);
+        assertEquals(new BrickResourceStack(expectedSize), resultStack);
     }
 
     @Test
