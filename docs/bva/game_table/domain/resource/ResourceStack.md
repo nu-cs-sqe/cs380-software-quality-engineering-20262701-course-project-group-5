@@ -7,11 +7,14 @@ Direct known subclasses: `BrickResourceStack`, `LumberResourceStack`, `OreResour
 
 A holder for a specified number of resources of a type (Brick, Lumber, Ore, etc.) encoded by corresponding subclasses.
 
-### `public static ResourceStack combine(ResourceStack stack1, ResourceStack stack2)`
-Returns a new `ResourceStack` with the sum of the sizes of `stack1` and `stack2`. Throws an `IllegalArgumentException` if `stack1` and `stack2` are not the same type.
-
 ### `public ResourceStack(int size)`
 Initializes a `ResourceStack` with the given `size`.
+
+### `public ResourceStack add(ResourceStack otherStack)`
+Returns a new `ResourceStack` with the difference of the size of this minus the size of `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
+
+### `public ResourceStack subtract(ResourceStack otherStack)`
+Returns a new `ResourceStack` with the sum of the sizes of this and `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
 
 ### `public final int getSize()`
 Returns the size of this `ResourceStack`.
@@ -24,7 +27,7 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 ## Boundary-Value Analysis
 
-### Test: `public static ResourceStack combine(ResourceStack stack1, ResourceStack stack2)`
+### Test: `public ResourceStack add(ResourceStack otherStack)`
 
 |             | State of the System                                                                           | Expected output                                                          | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------|
@@ -32,6 +35,14 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 | Test Case 2 | `BrickResourceStack` with size `0` and `BrickResourceStack` with size `0`                     | `BrickResourceStack` with size `0`                                       | :x:          |
 | Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
 
+### Test: `public ResourceStack subtract(ResourceStack otherStack)`
+
+|             | State of the System                                                                           | Expected output                                                          | Implemented? |
+|-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------|
+| Test Case 1 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `1`               | `BrickResourceStack` with size `INT_MAX - 1`                             | :x:          |
+| Test Case 2 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `1`                     | `BrickResourceStack` with size `0`                                       | :x:          |
+| Test Case 3 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `INT_MAX`         | `BrickResourceStack` with size `0`                                       | :x:          |
+| Test Case 4 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
 
 ### Test: `public boolean equals(Object other)`
 
