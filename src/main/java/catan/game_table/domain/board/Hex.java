@@ -24,7 +24,7 @@ public abstract class Hex extends Location {
             ResourceProducts products) {
         requireClosedRing(vertices, edges);
         this.tokenValue = tokenValue;
-        this.vertices = vertices;
+        this.vertices = Set.copyOf(vertices);
         this.products = products;
     }
 
