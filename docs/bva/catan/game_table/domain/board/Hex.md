@@ -116,7 +116,7 @@ Inherited methods: see `Location`.
 | Variable | Values |
 |---|---|
 | `tokenValue` | 2 (LOW), 12 (HIGH) |
-| hex kind | token-bearing hex, non-producing hex (desert and ocean) |
+| hex kind | token-bearing hex (`ForestHex`, `HillsHex` as representatives), non-producing hex (desert and ocean) |
 | returned value (output) | same as `tokenValue` (0 for desert and ocean; 1, 13 and 7 on a producing hex can't be set) |
 
 **Step 4: Each choice**
@@ -124,7 +124,7 @@ Inherited methods: see `Location`.
 |             | Input                       | Expected output | Implemented?       |
 |-------------|-----------------------------|-----------------|--------------------|
 | Test Case 1 | `ForestHex` with token `2`  | `2`             | :white_check_mark: |
-| Test Case 2 | `ForestHex` with token `12` | `12`            | :x:                |
+| Test Case 2 | `HillsHex` with token `12`  | `12`            | :x:                |
 | Test Case 3 | `OceanHex`                  | `0`             | :x:                |
 | Test Case 4 | `DesertHex`                 | `0`             | :x:                |
 
@@ -148,21 +148,21 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | true, false |
 | current flag | true, false |
-| concrete class | `ForestHex` (chosen arbitrarily), `DesertHex`, `OceanHex` |
+| concrete class | producing hex representatives: `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`; non-producing hexes: `DesertHex`, `OceanHex` |
 | flag after the call (output) | true, false |
 
-**Step 4: All combinations** of `canProduce` x current flag for `ForestHex` Each choice for the other classes.
+**Step 4: All combinations** of `canProduce` x current flag for shared producing-hex behavior, distributed across representative subclasses. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same setter without overrides; not every combination is repeated for every subclass.
 
-|             | Input                                      | Expected output                              | Implemented? |
-|-------------|--------------------------------------------|----------------------------------------------|--------------|
-| Test Case 1 | `ForestHex` with flag true, input `false`  | `canProduce()` false                         | :x:          |
-| Test Case 2 | `ForestHex` with flag false, input `true`  | `canProduce()` true                          | :x:          |
-| Test Case 3 | `ForestHex` with flag true, input `true`   | `canProduce()` true                          | :x:          |
-| Test Case 4 | `ForestHex` with flag false, input `false` | `canProduce()` false                         | :x:          |
-| Test Case 5 | `DesertHex` with flag false, input `false` | `canProduce()` false                         | :x:          |
-| Test Case 6 | `DesertHex` with flag false, input `true`  | `canProduce()` false (desert never produces) | :x:          |
-| Test Case 7 | `OceanHex` with flag false, input `false`  | `canProduce()` false                         | :x:          |
-| Test Case 8 | `OceanHex` with flag false, input `true`   | `canProduce()` false (ocean never produces)  | :x:          |
+|             | Input                                        | Expected output                              | Implemented? |
+|-------------|----------------------------------------------|----------------------------------------------|--------------|
+| Test Case 1 | `ForestHex` with flag true, input `false`    | `canProduce()` false                         | :x:          |
+| Test Case 2 | `MountainsHex` with flag false, input `true` | `canProduce()` true                          | :x:          |
+| Test Case 3 | `FieldsHex` with flag true, input `true`     | `canProduce()` true                          | :x:          |
+| Test Case 4 | `PastureHex` with flag false, input `false`  | `canProduce()` false                         | :x:          |
+| Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :x:          |
+| Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :x:          |
+| Test Case 7 | `OceanHex` with flag false, input `false`    | `canProduce()` false                         | :x:          |
+| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :x:          |
 
 ### Test: `public void produceResources()`
 
@@ -189,15 +189,15 @@ Inherited methods: see `Location`.
 | `canProduce` | true, false |
 | the hex's vertices | 6 |
 | `products` | a valid `ResourceProducts` |
-| concrete class | `ForestHex` (chosen arbitrarily), `DesertHex`, `OceanHex` |
+| concrete class | producing hex representatives: `FieldsHex`, `PastureHex`; non-producing hexes: `DesertHex`, `OceanHex` |
 | outcome (output) | all 6 vertices called with `products`, no vertex called |
 | vertices called (output) | 0, 6 (maximum) |
 
-**Step 4: All combinations** of `canProduce` for `ForestHex`. Each choice for the other classes.
+**Step 4: Each choice** of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
 
-|             | Input                               | Expected output                                                                       | Implemented? |
-|-------------|-------------------------------------|---------------------------------------------------------------------------------------|--------------|
-| Test Case 1 | `ForestHex` with `canProduce` true  | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :x:          |
-| Test Case 2 | `ForestHex` with `canProduce` false | no vertex is called                                                                   | :x:          |
-| Test Case 3 | `DesertHex`                         | no vertex is called                                                                   | :x:          |
-| Test Case 4 | `OceanHex`                          | no vertex is called                                                                   | :x:          |
+|             | Input                                | Expected output                                                                       | Implemented? |
+|-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | `FieldsHex` with `canProduce` true   | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :x:          |
+| Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :x:          |
+| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :x:          |
+| Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :x:          |
