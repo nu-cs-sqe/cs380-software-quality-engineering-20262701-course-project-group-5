@@ -57,7 +57,7 @@ Inherited methods: see `Location`.
 |              | Input                                                                               | Expected output            | Implemented?       |
 |--------------|-------------------------------------------------------------------------------------|----------------------------|--------------------|
 | Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token  | hex created                | :white_check_mark: |
-| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :x:                |
+| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :x:                |
 | Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :x:                |
 | Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :x:                |

@@ -10,5 +10,8 @@ public abstract class Hex extends Location {
             Set<Vertex> vertices,
             Set<Edge> edges,
             ResourceProducts products) {
+        if (vertices.isEmpty()) {
+            throw new IllegalArgumentException("A hex needs exactly 6 vertices");
+        }
     }
 }

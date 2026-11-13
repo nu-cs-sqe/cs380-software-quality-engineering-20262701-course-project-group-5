@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toCollection;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HexTests {
     private static final int TOKEN_VALUE = 8;
@@ -25,6 +26,12 @@ class HexTests {
     @Test
     void Constructor_WithClosedRingOfSixVertices_CreatesHex() {
         assertDoesNotThrow(() -> forestHex(sixVertices(), ring()));
+    }
+
+    @Test
+    void Constructor_WithNoVertices_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(Set.of(), ring()));
     }
 
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
