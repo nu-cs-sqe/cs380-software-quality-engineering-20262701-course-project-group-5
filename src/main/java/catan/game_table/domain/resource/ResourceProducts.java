@@ -11,11 +11,11 @@ public class ResourceProducts {
         this.cityBonusProducts = List.copyOf(cityBonusProducts);
     }
 
-    public List<ResourceStack> getTier1Products(){
+    public List<ResourceStack> getBaseProducts(){
         return baseProducts;
     }
 
-    public List<ResourceStack> getTier2Products(){
+    public List<ResourceStack> getCityBonusProducts(){
         return cityBonusProducts;
     }
 }
