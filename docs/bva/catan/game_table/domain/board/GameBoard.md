@@ -174,7 +174,7 @@ Deleting elements from any position (from the location's pieces).
 | neighbors of a vertex (output) | Count |
 
 **Operations:**
-Searching (for the vertex at each edge endpoint):
+Searching (for the vertex at each edge endpoint)
 Appending a single element (to a vertex's neighbor set)
 
 **Step 3: Concrete values**

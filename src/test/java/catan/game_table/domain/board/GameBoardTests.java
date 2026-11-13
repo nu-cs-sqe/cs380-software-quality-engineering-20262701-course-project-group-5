@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -372,6 +373,17 @@ class GameBoardTests {
         boardOf().removePieceFromLocation(new PieceData(SETTLEMENT_TYPE), vertex);
 
         EasyMock.verify(vertex);
+    }
+
+    // createNeighbors() tests
+
+    @Test
+    void CreateNeighbors_WithNoVerticesOrEdges_DoesNotThrow() {
+        assertDoesNotThrow(() -> boardWith(Set.of(), Set.of()));
+    }
+
+    private static GameBoard boardWith(Set<Vertex> vertices, Set<Edge> edges) {
+        return new GameBoard(Set.of(), vertices, edges);
     }
 
 }

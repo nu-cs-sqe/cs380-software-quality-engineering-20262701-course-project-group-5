@@ -11,7 +11,12 @@ public class GameBoard extends Observed {
     private static final int MIN_TOKEN_VALUE = 2;
     private static final int MAX_TOKEN_VALUE = 12;
 
+    //once we build real boards, this will be cleaned up. For now, this is the bare-minimum code.
     public GameBoard(Set<Hex> hexes) {
+        this(hexes, Set.of(), Set.of());
+    }
+
+    public GameBoard(Set<Hex> hexes, Set<Vertex> vertices, Set<Edge> edges) {
         this.hexes = Set.copyOf(hexes);
     }
 
