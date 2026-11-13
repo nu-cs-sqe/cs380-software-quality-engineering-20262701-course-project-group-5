@@ -38,7 +38,7 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `products` | `bankInventory` is 0 to start, `bankInventory` is greater than 0 to start |
+| `products` | `bankInventory` for `products` type is 0 to start, `bankInventory` for `products` type is greater than 0 to start |
 | `bankInventory` | zero, one, greater than one, eighteen (max number of resource cards for a given type minus one) |
 | `PlayerInventory` | one, greater than one, nineteen (max number of resource cards for a given type) |
 
