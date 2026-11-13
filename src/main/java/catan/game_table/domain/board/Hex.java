@@ -22,10 +22,19 @@ public abstract class Hex extends Location {
             Set<Vertex> vertices,
             Set<Edge> edges,
             ResourceProducts products) {
-        requireClosedRing(vertices, edges);
+        this(tokenValue, validatedVertices(vertices, edges), products);
+    }
+
+    private Hex(int tokenValue, Set<Vertex> vertices, ResourceProducts products) {
         this.tokenValue = tokenValue;
-        this.vertices = Set.copyOf(vertices);
+        this.vertices = vertices;
         this.products = products;
+    }
+
+    private static Set<Vertex> validatedVertices(Set<Vertex> vertices, Set<Edge> edges) {
+        Set<Vertex> copiedVertices = Set.copyOf(vertices);
+        requireClosedRing(copiedVertices, edges);
+        return copiedVertices;
     }
 
     public boolean canProduce() {
