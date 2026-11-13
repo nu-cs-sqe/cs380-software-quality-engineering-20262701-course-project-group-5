@@ -54,20 +54,20 @@ Inherited methods: see `Location`.
 
 **Step 4: Each choice**
 
-|              | Input                                                                               | Expected output            | Implemented? |
-|--------------|-------------------------------------------------------------------------------------|----------------------------|--------------|
-| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token  | hex created                | :x:          |
-| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :x:          |
-| Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :x:          |
-| Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :x:          |
-| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :x:          |
-| Test Case 6  | `edges` has 5 elements                                                              | `IllegalArgumentException` | :x:          |
-| Test Case 7  | `edges` has 7 elements                                                              | `IllegalArgumentException` | :x:          |
-| Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :x:          |
-| Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :x:          |
-| Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :x:          |
-| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :x:          |
-| Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token          | `IllegalArgumentException` | :x:          |
+|              | Input                                                                               | Expected output            | Implemented?       |
+|--------------|-------------------------------------------------------------------------------------|----------------------------|--------------------|
+| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token  | hex created                | :white_check_mark: |
+| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :x:                |
+| Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :x:                |
+| Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :x:                |
+| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :x:                |
+| Test Case 6  | `edges` has 5 elements                                                              | `IllegalArgumentException` | :x:                |
+| Test Case 7  | `edges` has 7 elements                                                              | `IllegalArgumentException` | :x:                |
+| Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :x:                |
+| Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :x:                |
+| Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :x:                |
+| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :x:                |
+| Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token          | `IllegalArgumentException` | :x:                |
 
 
 ### Test: `public boolean canProduce()`
