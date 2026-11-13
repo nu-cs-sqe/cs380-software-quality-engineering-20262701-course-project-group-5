@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toCollection;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -142,6 +143,13 @@ class HexTests {
         Hex hex = forestHex(sixVertices(), ring());
 
         assertTrue(hex.canProduce());
+    }
+
+    @Test
+    void CanProduce_OnNewDesertHex_ReturnsFalse() {
+        Hex hex = new DesertHex(sixVertices(), ring());
+
+        assertFalse(hex.canProduce());
     }
 
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {

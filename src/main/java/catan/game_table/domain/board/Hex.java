@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toSet;
 public abstract class Hex extends Location {
     private static final int SIDE_COUNT = 6;
     private static final int EDGES_PER_CORNER = 2;
+    protected boolean canProduce = true;
 
     public Hex(
             int tokenValue,
@@ -22,7 +23,7 @@ public abstract class Hex extends Location {
     }
 
     public boolean canProduce() {
-        return true;
+        return canProduce;
     }
 
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {

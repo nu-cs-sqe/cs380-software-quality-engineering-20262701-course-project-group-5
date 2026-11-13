@@ -94,7 +94,7 @@ Inherited methods: see `Location`.
 |             | Input                        | Expected output | Implemented?       |
 |-------------|------------------------------|-----------------|--------------------|
 | Test Case 1 | `ForestHex` just constructed | true            | :white_check_mark: |
-| Test Case 2 | `DesertHex` just constructed | false           | :x:                |
+| Test Case 2 | `DesertHex` just constructed | false           | :white_check_mark: |
 | Test Case 3 | `OceanHex` just constructed  | false           | :x:                |
 
 
