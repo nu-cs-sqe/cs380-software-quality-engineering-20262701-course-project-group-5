@@ -110,6 +110,20 @@ class HexTests {
                 () -> forestHex(sixVertices(), edges));
     }
 
+    @Test
+    void Constructor_WithTwoSeparateTriangles_ThrowsIllegalArgumentException() {
+        Set<Edge> edges = new LinkedHashSet<>(List.of(
+                edge(0, 1),
+                edge(1, 2),
+                edge(2, 0),
+                edge(3, 4),
+                edge(4, 5),
+                edge(5, 3)));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(sixVertices(), edges));
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

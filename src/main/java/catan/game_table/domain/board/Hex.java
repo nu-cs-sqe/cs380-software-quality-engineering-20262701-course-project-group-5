@@ -2,6 +2,9 @@ package catan.game_table.domain.board;
 
 import catan.game_table.domain.resource.ResourceProducts;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -15,10 +18,38 @@ public abstract class Hex extends Location {
             Set<Vertex> vertices,
             Set<Edge> edges,
             ResourceProducts products) {
+        requireClosedRing(vertices, edges);
+    }
+
+    private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {
         requireSideCount(vertices, "vertices");
         requireSideCount(edges, "edges");
         requireEndpointsInVertices(vertices, edges);
         requireTwoEdgesPerCorner(vertices, edges);
+        requireSingleRing(vertices, edges);
+    }
+
+    private static void requireSingleRing(Set<Vertex> vertices, Set<Edge> edges) {
+        Set<Point> visitedPoints = new HashSet<>();
+        Deque<Point> pointsToVisit = new ArrayDeque<>();
+        pointsToVisit.push(vertices.iterator().next().getPoint());
+        while (!pointsToVisit.isEmpty()) {
+            Point currentPoint = pointsToVisit.pop();
+            if (visitedPoints.add(currentPoint)) {
+                addConnectedPoints(currentPoint, edges, pointsToVisit);
+            }
+        }
+        if (visitedPoints.size() != vertices.size()) {
+            throw new IllegalArgumentException("The edges must form one closed ring");
+        }
+    }
+
+    private static void addConnectedPoints(Point currentPoint, Set<Edge> edges, Deque<Point> pointsToVisit) {
+        for (Edge edge : edges) {
+            if (edge.getEndpoints().contains(currentPoint)) {
+                pointsToVisit.addAll(edge.getEndpoints());
+            }
+        }
     }
 
     private static void requireTwoEdgesPerCorner(Set<Vertex> vertices, Set<Edge> edges) {
