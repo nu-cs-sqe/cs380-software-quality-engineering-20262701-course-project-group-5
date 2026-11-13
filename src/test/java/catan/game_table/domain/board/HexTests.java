@@ -181,6 +181,13 @@ class HexTests {
         assertEquals(0, hex.getTokenValue());
     }
 
+    @Test
+    void GetTokenValue_OnDesertHex_ReturnsZero() {
+        Hex hex = new DesertHex(sixVertices(), ring());
+
+        assertEquals(0, hex.getTokenValue());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }
