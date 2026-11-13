@@ -62,6 +62,16 @@ class HexTests {
                 () -> forestHex(vertices, ring()));
     }
 
+    @Test
+    void Constructor_WithFiveEdges_ThrowsIllegalArgumentException() {
+        Set<Edge> edges = ring().stream()
+                .limit(5)
+                .collect(toCollection(LinkedHashSet::new));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(sixVertices(), edges));
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

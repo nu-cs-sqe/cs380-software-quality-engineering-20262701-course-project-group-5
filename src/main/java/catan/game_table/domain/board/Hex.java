@@ -12,8 +12,13 @@ public abstract class Hex extends Location {
             Set<Vertex> vertices,
             Set<Edge> edges,
             ResourceProducts products) {
-        if (vertices.size() != SIDE_COUNT) {
-            throw new IllegalArgumentException("A hex needs exactly " + SIDE_COUNT + " vertices");
+        requireSideCount(vertices, "vertices");
+        requireSideCount(edges, "edges");
+    }
+
+    private static void requireSideCount(Set<?> elements, String name) {
+        if (elements.size() != SIDE_COUNT) {
+            throw new IllegalArgumentException("A hex needs exactly " + SIDE_COUNT + " " + name);
         }
     }
 }
