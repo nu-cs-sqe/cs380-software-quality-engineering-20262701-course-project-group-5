@@ -7,7 +7,7 @@ Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `
 
 A terrain tile with a token number, six vertices, six edges, and a set of resource products. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
 
-### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
+### `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 Initializes a `Hex` with the given token number. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
 
 ### `public boolean canProduce()`
@@ -25,12 +25,12 @@ If `canProduce()`, calls `Vertex.produceResources()` on each of its 6 vertices, 
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
-### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
+### Test: `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts`, `tokenValue : int` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
+| `tokenValue : int`, `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -66,6 +66,8 @@ Inherited methods: see `Location`.
 | Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :x:          |
 | Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :x:          |
 | Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :x:          |
+| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :x:          |
+| Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token          | `IllegalArgumentException` | :x:          |
 
 
 ### Test: `public boolean canProduce()`
@@ -157,9 +159,9 @@ Inherited methods: see `Location`.
 | Test Case 2 | `ForestHex` with flag false, input `true`  | `canProduce()` true                          | :x:          |
 | Test Case 3 | `ForestHex` with flag true, input `true`   | `canProduce()` true                          | :x:          |
 | Test Case 4 | `ForestHex` with flag false, input `false` | `canProduce()` false                         | :x:          |
-| Test Case 5 | `DesertHex` with flag true, input `false`  | `canProduce()` false                         | :x:          |
+| Test Case 5 | `DesertHex` with flag false, input `false` | `canProduce()` false                         | :x:          |
 | Test Case 6 | `DesertHex` with flag false, input `true`  | `canProduce()` false (desert never produces) | :x:          |
-| Test Case 7 | `OceanHex` with flag true, input `false`   | `canProduce()` false                         | :x:          |
+| Test Case 7 | `OceanHex` with flag false, input `false`  | `canProduce()` false                         | :x:          |
 | Test Case 8 | `OceanHex` with flag false, input `true`   | `canProduce()` false (ocean never produces)  | :x:          |
 
 ### Test: `public void produceResources()`
