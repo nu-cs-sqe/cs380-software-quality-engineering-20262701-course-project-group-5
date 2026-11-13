@@ -167,6 +167,13 @@ class HexTests {
         assertEquals(2, hex.getTokenValue());
     }
 
+    @Test
+    void GetTokenValue_OnHillsHexWithTokenTwelve_ReturnsTwelve() {
+        Hex hex = new HillsHex(12, sixVertices(), ring(), PRODUCTS);
+
+        assertEquals(12, hex.getTokenValue());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

@@ -124,7 +124,7 @@ Inherited methods: see `Location`.
 |             | Input                       | Expected output | Implemented?       |
 |-------------|-----------------------------|-----------------|--------------------|
 | Test Case 1 | `ForestHex` with token `2`  | `2`             | :white_check_mark: |
-| Test Case 2 | `HillsHex` with token `12`  | `12`            | :x:                |
+| Test Case 2 | `HillsHex` with token `12`  | `12`            | :white_check_mark: |
 | Test Case 3 | `OceanHex`                  | `0`             | :x:                |
 | Test Case 4 | `DesertHex`                 | `0`             | :x:                |
 
