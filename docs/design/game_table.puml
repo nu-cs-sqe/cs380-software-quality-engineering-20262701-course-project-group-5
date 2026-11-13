@@ -256,71 +256,90 @@ package board {
     }
 
     +abstract class Hex {
+        -{static} {final} SIDE_COUNT : int = 6
+        -{static} {final} EDGES_PER_CORNER : int = 2
         -{final} tokenValue : int
-        -vertices : Set<Vertex>
-        -edges : Set<Edge>
-        -canProduce : boolean
-        -products : ResourceProducts
+        -{final} vertices : Set<Vertex>
+        #canProduce : boolean = true
+        -{final} products : ResourceProducts
         +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
+        -Hex(tokenValue : int, vertices : Set<Vertex>, products : ResourceProducts)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
         +produceResources() : void
+        -{static} validatedVertices(vertices : Set<Vertex>, edges : Set<Edge>) : Set<Vertex>
+        -{static} requireClosedRing(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireSingleRing(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} addConnectedPoints(currentPoint : Point, edges : Set<Edge>, pointsToVisit : Deque<Point>) : void
+        -{static} requireTwoEdgesPerCorner(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireEndpointsInVertices(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireSideCount(elements : Set<?>, name : String) : void
     }
 
     +class HillsHex {
-        +produceResources() : void
+        +HillsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
     }
 
     +class ForestHex {
-        +produceResources() : void
+        +ForestHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
     }
 
     +class MountainsHex {
-        +produceResources() : void
+        +MountainsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
     }
 
     +class FieldsHex {
-        +produceResources() : void
+        +FieldsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
     }
 
     +class PastureHex {
-        +produceResources() : void
+        +PastureHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
     }
 
     +class DesertHex {
-        +setCanProduce() : void
+        -{static} {final} NO_TOKEN : int = 0
+        -{static} {final} NO_PRODUCTS : ResourceProducts
+        +DesertHex(vertices : Set<Vertex>, edges : Set<Edge>)
+        +setCanProduce(canProduce : boolean) : void
     }
 
     +class OceanHex {
-        +setCanProduce() : void
+        -{static} {final} NO_TOKEN : int = 0
+        -{static} {final} NO_PRODUCTS : ResourceProducts
+        +OceanHex(vertices : Set<Vertex>, edges : Set<Edge>)
+        +setCanProduce(canProduce : boolean) : void
     }
 
     +abstract class Location {
         #pieces : List<Piece>
         +getPieceData() : List<PieceData>
-        +addPiece(piece : Piece)) : void
+        +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
     }
 
     +class Vertex {
-        -point : Point
-        +Vertex(endpoint : Point)
+        -{final} point : Point
+        +Vertex(point : Point)
         +getPoint() : Point
         +produceResources(products : ResourceProducts) : void
     }
 
     +class Edge {
-        -endpoints : Set<Point>
-        +Edge(endpoint1 : Point, endpoint2 : Point)
+        -{final} endpoints : Set<Point>
+        +Edge(first : Point, second : Point)
         +getEndpoints() : Set<Point>
     }
 
-    +class Point {
-        +{final} x : int
-        +{final} y : int
+    +class Point <<record>> {
+        -{final} x : int
+        -{final} y : int
+        +Point(x : int, y : int)
+        +x() : int
+        +y() : int
         +equals(o : Object) : boolean
         +hashCode() : int
+        +toString() : String
     }
 
 }
@@ -538,10 +557,10 @@ GameBoard ..> PieceData
 
 Hex --> Piece
 Hex --> Vertex
-Hex --> Edge
+Hex ..> Edge
+Hex ..> Point
 Hex --|> Location
 
-Edge --> Vertex
 Edge ..> PieceData
 
 Hex --> ResourceProducts
