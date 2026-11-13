@@ -23,8 +23,11 @@ public abstract class ResourceStack {
         if (!(other instanceof ResourceStack)){
             return false;
         }
-        ResourceStack otherStack = (ResourceStack) other;
-        return this.size == otherStack.size;
+        if(this.getClass() == other.getClass()){
+            ResourceStack otherStack = (ResourceStack) other;
+            return this.size == otherStack.size;
+        }
+        return false;
     }
 
     public ResourceStack add (ResourceStack otherStack) throws IllegalArgumentException{
