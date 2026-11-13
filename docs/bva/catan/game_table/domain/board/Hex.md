@@ -153,16 +153,16 @@ Inherited methods: see `Location`.
 
 **Step 4: All combinations** of `canProduce` x current flag for shared producing-hex behavior, distributed across representative subclasses. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same setter without overrides; not every combination is repeated for every subclass.
 
-|             | Input                                        | Expected output                              | Implemented? |
-|-------------|----------------------------------------------|----------------------------------------------|--------------|
-| Test Case 1 | `ForestHex` with flag true, input `false`    | `canProduce()` false                         | :x:          |
-| Test Case 2 | `MountainsHex` with flag false, input `true` | `canProduce()` true                          | :x:          |
-| Test Case 3 | `FieldsHex` with flag true, input `true`     | `canProduce()` true                          | :x:          |
-| Test Case 4 | `PastureHex` with flag false, input `false`  | `canProduce()` false                         | :x:          |
-| Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :x:          |
-| Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :x:          |
-| Test Case 7 | `OceanHex` with flag false, input `false`    | `canProduce()` false                         | :x:          |
-| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :x:          |
+|             | Input                                        | Expected output                              | Implemented?       |
+|-------------|----------------------------------------------|----------------------------------------------|--------------------|
+| Test Case 1 | `ForestHex` with flag true, input `false`    | `canProduce()` false                         | :white_check_mark: |
+| Test Case 2 | `MountainsHex` with flag false, input `true` | `canProduce()` true                          | :x:                |
+| Test Case 3 | `FieldsHex` with flag true, input `true`     | `canProduce()` true                          | :x:                |
+| Test Case 4 | `PastureHex` with flag false, input `false`  | `canProduce()` false                         | :x:                |
+| Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :x:                |
+| Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :x:                |
+| Test Case 7 | `OceanHex` with flag false, input `false`    | `canProduce()` false                         | :x:                |
+| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :x:                |
 
 ### Test: `public void produceResources()`
 

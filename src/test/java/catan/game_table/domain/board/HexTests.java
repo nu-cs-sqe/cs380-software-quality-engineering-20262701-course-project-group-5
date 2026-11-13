@@ -188,6 +188,15 @@ class HexTests {
         assertEquals(0, hex.getTokenValue());
     }
 
+    @Test
+    void SetCanProduce_OnForestHexWithFlagTrueAndInputFalse_ReturnsFalse() {
+        Hex hex = forestHex(sixVertices(), ring());
+
+        hex.setCanProduce(false);
+
+        assertFalse(hex.canProduce());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

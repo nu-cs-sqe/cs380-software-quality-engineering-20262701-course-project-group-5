@@ -32,6 +32,10 @@ public abstract class Hex extends Location {
         return tokenValue;
     }
 
+    public void setCanProduce(boolean canProduce) {
+        this.canProduce = canProduce;
+    }
+
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {
         requireSideCount(vertices, "vertices");
         requireSideCount(edges, "edges");
