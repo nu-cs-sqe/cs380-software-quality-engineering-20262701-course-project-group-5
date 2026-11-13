@@ -20,11 +20,11 @@ Roll dice to start a turn.
 
 ### `public play(item : Playable)` : void
 
-Play a development card or other playable if able.
+Play a development card or other playable if able. Can throw `IllegalPlayException`.
 
 ### `public buy(item : Buyable)` : void
 
-Buy a road, settlement, city, or development card from the bank if able.
+Buy a road, settlement, city, or development card from the bank if able. Can Throw `NotEnoughResourcesException`.
 
 ### `public getValidPlacements(piece : Piece)` : List<Location>
 
@@ -32,19 +32,19 @@ Get possible placement locations for a given piece for said player.
 
 ### `public place(piece : Piece, location : Location)` : void
 
-Place the piece at the given location if able.
+Place the piece at the given location if able. Can throw `PlacementException`.
 
 ### `public proposePlayerTrade(otherPlayer : Color, trade : TradeOffer)` : void
 
-Propose a trade deal to another player.
+Propose a trade deal to another player. Can throw `MalformedTradeException`.
 
 ### `public acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer)` : void
 
-Accept a trade deal from another player.
+Accept a trade deal from another player. Can throw `MalformedTradeException`.
 
 ### `public tradeWithBank(give : ResourceStack, receive : ResourceStack)` : void
 
-Trade resources with bank if able.
+Trade resources with bank if able. Can throw `BankTradeException`
 
 
 ## Boundary-Value Analysis
@@ -109,7 +109,7 @@ none
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | playable: Knight, state of board | board with the Robber somewhere else | :x: |
 | Test Case 2 | playable: RoadBuilder, state of board| board with two more roads | :x: |
-| Test Case 3 | playable: Victory point, player on 0 VP| `IllegalStateException` | :x: |
+| Test Case 3 | playable: Victory point, player on 0 VP| `IllegalPlayException` | :x: |
 | Test Case 4 | playable: Victory Point, player on 9 VP | said player wins the game | :x: |
 | Test Case 5 | playable: Monopoly | player gets a bunch of OreResource | :x: |
 | Test Case 6 | playable: YearOfPlenty, player with 0 resources | player resources whose size sum equals 2 | :x: |
@@ -124,7 +124,7 @@ this is more of an integration test IMO, not really unit testable other than
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| item, state of player | state of player, or `IllegalStateExceptioin` |
+| item, state of player | state of player, or `NotEnoughResourcesException` |
 
 
 **Step 2: Data types**
@@ -147,7 +147,7 @@ none
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory | :x: |
 | Test Case 2 | item: Road, state of player: has enough resources | add road to player inventory | :x: |
-| Test Case 3 | item: Road, state of player: doesn't have enough resources | throw `IllegalStateException` | :x: |
+| Test Case 3 | item: Road, state of player: doesn't have enough resources | throw `NotEnoughResourcesException` | :x: |
 
 
 ### Method under test: `getValidPlacements(piece : Piece)`
@@ -223,10 +223,10 @@ none
 | Test Case 2 | piece: City, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff  | board has city at that location | :x: |
 | Test Case 3 | piece: Robber, min locations occupied | board has robber at that location | :x: |
 | Test Case 4 | piece: harbor | `IllegalArgumentException` | :x: |
-|  Test Case 5 | piece: Settlement, max locations occuplied | `IllegalStateException` | :x: |
+| Test Case 5 | piece: Settlement, max locations occuplied | `PlacementException` | :x: |
 | Test Case 6 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
-| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `IllegalStateException`| :x: |
-| Test Case 8 | piece: road, max locations occupied | `IllegalStateException`| :x: |
+| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `PlacementException`| :x: |
+| Test Case 8 | piece: road, max locations occupied | `PlacementException`| :x: |
 
 
 
@@ -260,10 +260,10 @@ Adding element to list
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | current player: Blue, otherPlayer: Blue | `IllegalArgumentException(cannot go to same player)` |:x:|
-| Test Case 2 | current Player: Blue, otherPlayer: None | `IllegalArgumentException(trade must go to someone)` |:x:|
+| Test Case 1 | current player: Blue, otherPlayer: Blue | `MalformedTradeException(cannot go to same player)` |:x:|
+| Test Case 2 | current Player: Blue, otherPlayer: None | `MalformedTradeException(trade must go to someone)` |:x:|
 | Test Case 3 | current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
-| Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
+| Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `MalformedTradeException(trade offer doesn't match players)` | :x: |
 
 
 
@@ -301,10 +301,10 @@ Removing element from list
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 1 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | TradeHelper offer log is empty | :x: |
-| Test Case 2 | current player: Blue, otherPlayer: Blue | `IllegalArgumentException(cannot go to same player)`|:x:|
-| Test Case 3 | current Player: Blue, otherPlayer: None | `IllegalArgumentException(trade must go to someone)`|:x:|
-| Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
-| Test Case 5 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | `IllegalStateException(not enough resources for that trade)` | :x: |
+| Test Case 2 | current player: Blue, otherPlayer: Blue | `MalformedTradeException(cannot go to same player)`|:x:|
+| Test Case 3 | current Player: Blue, otherPlayer: None | `MalformedTradeException(trade must go to someone)`|:x:|
+| Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `MalformedTradeException(trade offer doesn't match players)` | :x: |
+| Test Case 5 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | `MalformedTradeException(not enough resources for that trade)` | :x: |
 
 
 
@@ -341,6 +341,6 @@ none
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `IllegalStateException(needs to be 4 to 1)` | :x: |
+| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `BankTradeException(needs to be 4 to 1)` | :x: |
 | Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool |  player inventory{-4 Ore, +1 wool}, bank inventory{+4 ore, -1 wool} | :x: |
-| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `IllegalStateException(needs to be 4 to 1)` | :x: |
+| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `BankTradeException(needs to be 4 to 1)` | :x: |
