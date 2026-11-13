@@ -10,6 +10,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toCollection;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HexTests {
     private static final int TOKEN_VALUE = 8;
@@ -134,6 +135,13 @@ class HexTests {
     void Constructor_WithOneEdge_ThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> forestHex(sixVertices(), Set.of(edge(0, 1))));
+    }
+
+    @Test
+    void CanProduce_OnNewForestHex_ReturnsTrue() {
+        Hex hex = forestHex(sixVertices(), ring());
+
+        assertTrue(hex.canProduce());
     }
 
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {

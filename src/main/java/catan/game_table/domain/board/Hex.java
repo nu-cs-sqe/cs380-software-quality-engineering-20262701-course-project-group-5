@@ -21,6 +21,10 @@ public abstract class Hex extends Location {
         requireClosedRing(vertices, edges);
     }
 
+    public boolean canProduce() {
+        return true;
+    }
+
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {
         requireSideCount(vertices, "vertices");
         requireSideCount(edges, "edges");

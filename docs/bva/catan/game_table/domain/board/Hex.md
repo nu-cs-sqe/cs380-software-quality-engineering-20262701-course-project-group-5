@@ -91,11 +91,11 @@ Inherited methods: see `Location`.
 
 **Step 4: Each choice**
 
-|             | Input                        | Expected output | Implemented? |
-|-------------|------------------------------|-----------------|--------------|
-| Test Case 1 | `ForestHex` just constructed | true            | :x:          |
-| Test Case 2 | `DesertHex` just constructed | false           | :x:          |
-| Test Case 3 | `OceanHex` just constructed  | false           | :x:          |
+|             | Input                        | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | `ForestHex` just constructed | true            | :white_check_mark: |
+| Test Case 2 | `DesertHex` just constructed | false           | :x:                |
+| Test Case 3 | `OceanHex` just constructed  | false           | :x:                |
 
 
 ### Test: `public int getTokenValue()`
