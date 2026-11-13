@@ -4,7 +4,7 @@ Classpath: catan.game_table.domain.piece.City
 
 ## `class City extends Building`
 
-A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `tier1` and `tier2` `ResourceProducts` of the `ResourceStack` type of triggerred `Hex`.
+A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `baseProducts` and `cityBonusProducts` `ResourceProducts` of the `ResourceStack` type of triggerred `Hex`.
 
 ### `public City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)`
 
@@ -25,12 +25,12 @@ Accessor for the cost of a City in terms of `ResourcesStack`s, in this case a `G
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`products : ResourceProducts`| No concrete outputs, only updates through `bankResourceDistributor` to state: `bankResources`, state: `PlayerInventory` of player owning `City`. Inventories should update by one tier 1 product.|
+|`products : ResourceProducts`| No concrete outputs, only updates through `bankResourceDistributor` to state: `bankResources`, state: `PlayerInventory` of player owning `City`. Inventories should update by two `baseProducts` and `cityBonusProducts` product.|
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `products` | Cases: `tier1Products` and `tier2Products` lists can hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+| `products` | Cases: `baseProducts` and `cityBonusProducts` lists can hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
 |`bankResources`| Count |
 |`PlayerInventory`| Count |
 | Output | void |

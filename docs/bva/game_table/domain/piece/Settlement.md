@@ -4,7 +4,7 @@ Classpath: catan.game_table.domain.piece.Settlement
 
 ## `class Settlement extends Building`
 
-A subclass of Building that costs a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `ResourceProducts` that is `tier1` of the `ResourceStack` type of the triggered `Hex`.
+A subclass of Building that costs a `GrainResourceStack` of size one, `BrickResourceStack` of size one, `LumberResourceStack` of size one, and `WoolResourceStack` of size one to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `ResourceProducts` that is `baseProducts` of the `ResourceStack` type of the triggered `Hex`.
 
 ### `public Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)`
 
@@ -25,12 +25,12 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`products : ResourceProducts`| No concrete outputs, only updates to state: `bankResources`, state: `PlayerInventory` through `bankResourcesDistributor`. Inventories should update by one tier 1 product.|
+|`products : ResourceProducts`| No concrete outputs, only updates to state: `bankResources`, state: `PlayerInventory` through `bankResourcesDistributor`. Inventories should update by one `baseProducts`.|
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `products` | Cases: only `tier1Products` list that can hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+| `products` | Cases:`baseProducts` list can only hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
 |`bankResources`| Count |
 |`ownerResources`| Count |
 | Output | void |
