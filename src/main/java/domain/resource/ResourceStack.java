@@ -19,18 +19,12 @@ public abstract class ResourceStack {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == null){
+    public boolean equals(Object other){
+        if (!(other instanceof ResourceStack)){
             return false;
         }
-
-        if ( this.getClass().equals(o.getClass()) ){
-            ResourceStack otherStack = (ResourceStack) o;
-            if (this.size == otherStack.size){
-                return true;
-            }
-        }
-        return false;
+        ResourceStack otherStack = (ResourceStack) other;
+        return this.size == otherStack.size;
     }
 
     public ResourceStack add (ResourceStack otherStack) throws IllegalArgumentException{
