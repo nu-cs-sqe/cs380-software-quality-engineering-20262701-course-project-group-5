@@ -157,7 +157,7 @@ Inherited methods: see `Location`.
 |-------------|----------------------------------------------|----------------------------------------------|--------------------|
 | Test Case 1 | `ForestHex` with flag true, input `false`    | `canProduce()` false                         | :white_check_mark: |
 | Test Case 2 | `MountainsHex` with flag false, input `true` | `canProduce()` true                          | :white_check_mark: |
-| Test Case 3 | `FieldsHex` with flag true, input `true`     | `canProduce()` true                          | :x:                |
+| Test Case 3 | `FieldsHex` with flag true, input `true`     | `canProduce()` true                          | :white_check_mark: |
 | Test Case 4 | `PastureHex` with flag false, input `false`  | `canProduce()` false                         | :x:                |
 | Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :x:                |
 | Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :x:                |

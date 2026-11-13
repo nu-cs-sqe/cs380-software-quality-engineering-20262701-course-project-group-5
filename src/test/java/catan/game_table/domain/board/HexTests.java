@@ -207,6 +207,15 @@ class HexTests {
         assertTrue(hex.canProduce());
     }
 
+    @Test
+    void SetCanProduce_OnFieldsHexWithFlagTrueAndInputTrue_ReturnsTrue() {
+        Hex hex = new FieldsHex(TOKEN_VALUE, sixVertices(), ring(), PRODUCTS);
+
+        hex.setCanProduce(true);
+
+        assertTrue(hex.canProduce());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }
