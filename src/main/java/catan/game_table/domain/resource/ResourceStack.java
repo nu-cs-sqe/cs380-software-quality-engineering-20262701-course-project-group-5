@@ -30,20 +30,20 @@ public abstract class ResourceStack {
         return false;
     }
 
-    public ResourceStack add(ResourceStack otherStack) throws IllegalArgumentException{
-        if (!(this.getClass().equals(otherStack.getClass()))){
-            throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", this.getClass().getSimpleName(), otherStack.getClass().getSimpleName()));
-        }
-        int totalSize = this.getSize() + otherStack.getSize();
-        return this.makeNewStackOfSameType(totalSize);
+    public ResourceStack add(ResourceStack otherStack){
+        requireSameTypeAs(otherStack);
+        return this.makeNewStackOfSameType(size + otherStack.size);
     }
 
     public ResourceStack subtract(ResourceStack otherStack){
-        if (!(this.getClass().equals(otherStack.getClass()))){
+        requireSameTypeAs(otherStack);
+        return this.makeNewStackOfSameType(size - otherStack.size);
+    }
+
+    private void requireSameTypeAs(ResourceStack otherStack) throws IllegalArgumentException{
+        if (this.getClass() != otherStack.getClass()){
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", this.getClass().getSimpleName(), otherStack.getClass().getSimpleName()));
         }
-        int totalSize = this.getSize() - otherStack.getSize();
-        return this.makeNewStackOfSameType(totalSize);
     }
 
     protected abstract ResourceStack makeNewStackOfSameType(int size);
