@@ -199,5 +199,5 @@ Inherited methods: see `Location`.
 |-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `FieldsHex` with `canProduce` true   | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :white_check_mark: |
 | Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :white_check_mark: |
-| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :x:                |
+| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :white_check_mark: |
 | Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :x:                |

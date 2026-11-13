@@ -288,6 +288,18 @@ class HexTests {
         EasyMock.verify(vertices.toArray());
     }
 
+    @Test
+    void ProduceResources_OnDesertHex_NoVertexProduces() {
+        List<Vertex> vertices = CORNERS.stream()
+                .map(HexTests::vertexNotExpectedToProduce)
+                .toList();
+        Hex hex = new DesertHex(new LinkedHashSet<>(vertices), ring());
+
+        hex.produceResources();
+
+        EasyMock.verify(vertices.toArray());
+    }
+
     private static Vertex vertexNotExpectedToProduce(Point point) {
         Vertex vertex = EasyMock.createMock(Vertex.class);
         EasyMock.expect(vertex.getPoint()).andStubReturn(point);
