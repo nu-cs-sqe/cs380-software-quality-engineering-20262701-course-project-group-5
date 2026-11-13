@@ -30,11 +30,19 @@ public abstract class ResourceStack {
         return false;
     }
 
-    public ResourceStack add (ResourceStack otherStack) throws IllegalArgumentException{
+    public ResourceStack add(ResourceStack otherStack) throws IllegalArgumentException{
         if (!(this.getClass().equals(otherStack.getClass()))){
             throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", this.getClass().getSimpleName(), otherStack.getClass().getSimpleName()));
         }
         int totalSize = this.getSize() + otherStack.getSize();
+        return this.makeNewStackOfSameType(totalSize);
+    }
+
+    public ResourceStack subtract(ResourceStack otherStack){
+        if (!(this.getClass().equals(otherStack.getClass()))){
+            throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", this.getClass().getSimpleName(), otherStack.getClass().getSimpleName()));
+        }
+        int totalSize = this.getSize() - otherStack.getSize();
         return this.makeNewStackOfSameType(totalSize);
     }
 
