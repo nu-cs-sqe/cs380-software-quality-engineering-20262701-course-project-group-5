@@ -195,9 +195,9 @@ Inherited methods: see `Location`.
 
 **Step 4: Each choice** of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
 
-|             | Input                                | Expected output                                                                       | Implemented? |
-|-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------|
+|             | Input                                | Expected output                                                                       | Implemented?       |
+|-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `FieldsHex` with `canProduce` true   | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :white_check_mark: |
-| Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :x:          |
-| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :x:          |
-| Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :x:          |
+| Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :white_check_mark: |
+| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :x:                |
+| Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :x:                |

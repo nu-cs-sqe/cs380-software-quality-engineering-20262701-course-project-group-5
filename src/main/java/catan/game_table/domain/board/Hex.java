@@ -41,7 +41,9 @@ public abstract class Hex extends Location {
     }
 
     public void produceResources() {
-        vertices.forEach(vertex -> vertex.produceResources(products));
+        if (canProduce()) {
+            vertices.forEach(vertex -> vertex.produceResources(products));
+        }
     }
 
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {
