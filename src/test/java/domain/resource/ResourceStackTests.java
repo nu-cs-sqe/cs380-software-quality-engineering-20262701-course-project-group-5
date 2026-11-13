@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class ResourceStackTests {
     @Test
-    public void Combine_StackOfOne_WithNearMaxStack_ProducesMaxStack(){
+    public void Add_StackOfOne_WithNearMaxStack_ProducesMaxStack(){
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
         BrickResourceStack stackOfNearMax = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
-        ResourceStack resultStack = ResourceStack.combine(stackOfNearMax, stackOfOne);
+        ResourceStack resultStack = stackOfNearMax.add(stackOfOne);
 
         int expected = Integer.MAX_VALUE;
 
@@ -26,11 +26,11 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Combine_EmptyStack_WithEmptyStack_ProducesEmptyStack(){
+    public void Add_EmptyStack_WithEmptyStack_ProducesEmptyStack(){
         BrickResourceStack firstStackOfEmpty = new BrickResourceStack(0);
         BrickResourceStack secondStackOfEmpty = new BrickResourceStack(0);
 
-        ResourceStack resultStack = ResourceStack.combine(firstStackOfEmpty, secondStackOfEmpty);
+        ResourceStack resultStack = firstStackOfEmpty.add(secondStackOfEmpty);
 
         int expected = 0;
 
@@ -42,11 +42,11 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Combine_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
+    public void Add_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
         LumberResourceStack stackOfEmptyLumber = new LumberResourceStack(0);
         BrickResourceStack stackOfEmptyBrick = new BrickResourceStack(0);
 
-        Exception combineException = assertThrows(IllegalArgumentException.class, () -> ResourceStack.combine(stackOfEmptyLumber, stackOfEmptyBrick) );
+        Exception combineException = assertThrows(IllegalArgumentException.class, () -> stackOfEmptyLumber.add(stackOfEmptyBrick));
 
         assertTrue(combineException.getMessage().contains("Incompatible ResourceStack types: "));
     }
