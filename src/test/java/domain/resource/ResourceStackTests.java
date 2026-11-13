@@ -52,6 +52,22 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
+        BrickResourceStack stackOfMax = new BrickResourceStack(Integer.MAX_VALUE);
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+
+        ResourceStack resultStack = stackOfMax.add(stackOfOne);
+
+        int expected = Integer.MAX_VALUE-1;
+
+        int actual = resultStack.getSize();
+
+        assertEquals(expected, actual);
+
+        assertInstanceOf(BrickResourceStack.class, resultStack);
+    }
+
+    @Test
     public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
