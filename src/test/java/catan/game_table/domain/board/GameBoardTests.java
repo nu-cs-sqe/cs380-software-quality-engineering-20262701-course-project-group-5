@@ -432,4 +432,21 @@ class GameBoardTests {
         return new LinkedHashSet<>(List.of(items));
     }
 
+    @Test
+    void CreateNeighbors_OnTwoHexesSharingAnEdge_SharedCornersMergeNeighbors() {
+        Vertex a = vertexAt(A); Vertex b = vertexAt(B); Vertex c = vertexAt(C);
+        Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
+        Vertex g = vertexAt(G); Vertex h = vertexAt(H); Vertex i = vertexAt(I);
+        Vertex j = vertexAt(J);
+        GameBoard board = boardWith(
+                orderedSetOf(a, b, c, d, e, f, g, h, i, j),
+                orderedSetOf(edgeBetween(A, B), edgeBetween(B, C), edgeBetween(C, D),
+                        edgeBetween(D, E), edgeBetween(E, F), edgeBetween(F, A),
+                        edgeBetween(D, G), edgeBetween(G, H), edgeBetween(H, I),
+                        edgeBetween(I, J), edgeBetween(J, C)));
+
+        assertEquals(Set.of(b, d, j), board.getNeighbors(c));
+        assertEquals(Set.of(c, e, g), board.getNeighbors(d));
+    }
+
 }
