@@ -397,7 +397,7 @@ class GameBoardTests {
     private static final Point J = new Point(9, 0);
 
     @Test
-    void CreateNeighbors_OnSingleHexRing_EachCornerHasItsTwoNeighbors() {
+    void CreateNeighbors_OnSingleHexRing_EachVertexHasItsTwoNeighbors() {
         Vertex a = vertexAt(A); Vertex b = vertexAt(B); Vertex c = vertexAt(C);
         Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
         GameBoard board = boardWith(
@@ -433,7 +433,7 @@ class GameBoardTests {
     }
 
     @Test
-    void CreateNeighbors_OnTwoHexesSharingAnEdge_SharedCornersMergeNeighbors() {
+    void CreateNeighbors_OnTwoHexesSharingAnEdge_SharedVerticesMergeNeighbors() {
         Vertex a = vertexAt(A); Vertex b = vertexAt(B); Vertex c = vertexAt(C);
         Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
         Vertex g = vertexAt(G); Vertex h = vertexAt(H); Vertex i = vertexAt(I);
@@ -447,6 +447,71 @@ class GameBoardTests {
 
         assertEquals(Set.of(b, d, j), board.getNeighbors(c));
         assertEquals(Set.of(c, e, g), board.getNeighbors(d));
+    }
+
+    private static final int[][] CORNER_OFFSETS = {
+            {0, -2}, {1, -1}, {1, 1},
+            {0, 2}, {-1, 1}, {-1, -1}
+    };
+
+    @Test
+    void CreateNeighbors_OnStandardLandBoard_ThirtySixVerticesHaveThreeNeighborsAndEighteenTwo() {
+        java.util.Map<Point, Vertex> vertices = new java.util.LinkedHashMap<>();
+        Set<Edge> edges = new LinkedHashSet<>();
+
+        for (Set<Point> endpoints : landEndpointPairs()) {
+            for (Point point : endpoints) {
+                vertices.computeIfAbsent(point, GameBoardTests::vertexAt);
+            }
+            edges.add(edgeJoining(endpoints));
+        }
+
+        assertEquals(54, vertices.size());
+        assertEquals(72, edges.size());
+
+        GameBoard board = boardWith(new LinkedHashSet<>(vertices.values()), edges);
+
+        assertEquals(36, cornersWithNeighborCount(board, vertices.values(), 3));
+        assertEquals(18, cornersWithNeighborCount(board, vertices.values(), 2));
+    }
+
+    private static long cornersWithNeighborCount(
+            GameBoard board, java.util.Collection<Vertex> vertices, int count) {
+        return vertices.stream()
+                .filter(vertex -> board.getNeighbors(vertex).size() == count)
+                .count();
+    }
+
+    private static Set<Set<Point>> landEndpointPairs() {
+        int[][] hexCenters = {
+                {-2, -6}, {0, -6}, {2, -6},
+                {-3, -3}, {-1, -3}, {1, -3}, {3, -3},
+                {-4,  0}, {-2,  0}, {0,  0}, {2,  0}, {4,  0},
+                {-3,  3}, {-1,  3}, {1,  3}, {3,  3},
+                {-2,  6}, {0,  6}, {2,  6}
+        };
+
+        Set<Set<Point>> pairs = new LinkedHashSet<>();
+        for (int[] center : hexCenters) {
+            addRingPairs(pairs, cornersOfHexAt(center[0], center[1]));
+        }
+        return pairs;
+    }
+
+    private static List<Point> cornersOfHexAt(int centerX, int centerY) {
+        List<Point> corners = new ArrayList<>();
+        for (int[] offset : CORNER_OFFSETS) {
+            corners.add(new Point(centerX + offset[0], centerY + offset[1]));
+        }
+        return corners;
+    }
+
+    private static void addRingPairs(Set<Set<Point>> pairs, List<Point> corners) {
+        for (int i = 0; i < corners.size(); i++) {
+            Point first = corners.get(i);
+            Point second = corners.get((i + 1) % corners.size());
+            pairs.add(Set.of(first, second));
+        }
     }
 
 }
