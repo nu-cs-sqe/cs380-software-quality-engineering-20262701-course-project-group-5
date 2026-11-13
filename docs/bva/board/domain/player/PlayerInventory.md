@@ -50,15 +50,15 @@ Removes development card from inventory if able, throws `IllegalStateException` 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`piece: Piece`, state: list of pieces| state: list of pieces, IllegalArgumentException if it is a robber or a harbor |
+| `piece: Piece`, state: list of pieces | state: list of pieces, IllegalArgumentException if it is a robber or a harbor |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`piece`| Case Piece is (Settlement, City, Road, Robber, Harbor)|
-|interal list of pieces|Collection|
-|Output|Cases (Void or IllegalArgumentException)|
+| `piece`| Case Piece is (Settlement, City, Road, Robber, Harbor) |
+| interal list of pieces | Collection |
+| Output |Cases (Void or IllegalArgumentException) |
 
 
 **Operations:**
@@ -67,8 +67,8 @@ Appending a single element (to the internal list of pieces)
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`piece`|Settlement, City, Road, Robber, Harbor|
-|internal list of pieces| empty list, list with one element, list with one of each ownable type of piece |
+| `piece` |Settlement, City, Road, Robber, Harbor |
+| internal list of pieces | empty list, list with one element, list with one of each ownable type of piece |
 
 
 **Step 4: Each choice** 
@@ -93,15 +93,15 @@ Appending a single element (to the internal list of pieces)
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`piece: Piece`, state: list of pieces| hasPiece: boolean|
+| `piece: Piece`, state: list of pieces | hasPiece: boolean |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`piece`| Case Piece is (Settlement, City, Road, Robber, Harbor)|
-|interal list of pieces|Collection|
-|Output| boolean |
+| `piece` | Case Piece is (Settlement, City, Road, Robber, Harbor) |
+| interal list of pieces | Collection |
+| Output | boolean |
 
 
 **Operations:**
@@ -110,16 +110,16 @@ Equality comparisons
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`piece`|Settlement, City, Road, Robber, Harbor|
-|internal list of pieces| empty list, list with one element {repeat for each type}, list with two elements|
+| `piece` | Settlement, City, Road, Robber, Harbor |
+| internal list of pieces | empty list, list with one element {repeat for each type}, list with two elements |
 
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :x: |
-| Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :x: |
+| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own a harbor')` | :x: |
+| Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own the robber')` | :x: |
 | Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | false | :x: |
 | Test Case 4 | `piece`: City, internal list of pieces: empty list | false | :x: |
 | Test Case 5 | `piece`: Road, internal list of pieces: empty list | false | :x: |
@@ -140,15 +140,15 @@ Equality comparisons
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`piece: Piece`, state: list of pieces| state: list of pieces or `IllegalStateException`|
+| `piece: Piece`, state: list of pieces | state: list of pieces or `IllegalStateException` |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`piece`| Case Piece is (Settlement, City, Road, Robber, Harbor)|
-|interal list of pieces|Collection|
-|Output| Cases {Void, `IllegalStateException`} |
+| `piece` | Case Piece is (Settlement, City, Road, Robber, Harbor) |
+| interal list of pieces | Collection |
+| Output | Cases {Void, `IllegalStateException`} |
 
 
 **Operations:**
@@ -157,8 +157,8 @@ Equality comparisons, Removing a single element
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`piece`|Settlement, City, Road, Robber, Harbor|
-|internal list of pieces| empty list, list with one element {repeat for each type}, list with two elements|
+| `piece` | Settlement, City, Road, Robber, Harbor |
+| internal list of pieces | empty list, list with one element {repeat for each type}, list with two elements |
 
 
 **Step 4: Each choice** 
@@ -166,12 +166,12 @@ Equality comparisons, Removing a single element
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | `piece`: Road, internal list of pieces: empty list | `IllegalStateException` | :x: |
-| Test Case 2| `piece`: Settlement, internal list of pieces: {Settlement} | internal list of pieces: empty list| :x: |
-| Test Case 3| `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
-| Test Case 4| `piece`: City, internal list of pieces: {City} | internal list of pieces: empty list| :x: |
-| Test Case 5| `piece`: City, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
-| Test Case 6| `piece`: Road, internal list of pieces: {Road} | internal list of pieces: empty list| :x: |
-| Test Case 7| `piece`: Road, internal list of pieces: {City} | internal list of pieces: {City} | :x: |
+| Test Case 2 | `piece`: Settlement, internal list of pieces: {Settlement} | internal list of pieces: empty list| :x: |
+| Test Case 3 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
+| Test Case 4 | `piece`: City, internal list of pieces: {City} | internal list of pieces: empty list| :x: |
+| Test Case 5 | `piece`: City, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
+| Test Case 6 | `piece`: Road, internal list of pieces: {Road} | internal list of pieces: empty list| :x: |
+| Test Case 7 | `piece`: Road, internal list of pieces: {City} | internal list of pieces: {City} | :x: |
 | Test Case 8 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :x: |
 | Test Case 9 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :x: |
 | Test Case 10 | `piece`: Road, internal list of pieces: {City, Road} | internal list of pieces: {City} | :x: |
@@ -183,15 +183,15 @@ Equality comparisons, Removing a single element
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`stack: ResourceStack`, state: list of resources | state: list of resources |
+| `stack: ResourceStack`, state: list of resources | state: list of resources |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`stack`| Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
-|interal list of resources|Collection|
-|Output| internal list of resources |
+| `stack` | Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack) |
+| interal list of resources|Collection |
+| Output | internal list of resources |
 
 
 **Operations:**
@@ -200,8 +200,8 @@ Appending a single element if no element of that type already exists
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`stack`|WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with size 1|
-|internal list of pieces| empty list, list with one element, list with one of each ownable type of piece |
+| `stack`|WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with size 1 |
+| internal list of pieces | empty list, list with one element, list with one of each ownable type of piece |
 
 
 **Step 4: Each choice** 
@@ -228,15 +228,15 @@ Appending a single element if no element of that type already exists
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`stack: ResourceStack`, state: list of resources| hasResources: boolean|
+| `stack: ResourceStack`, state: list of resources | hasResources: boolean |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`stack`| Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
-|interal list of resources|Collection|
-|Output| boolean |
+| `stack`| Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack) |
+| interal list of resources| Collection |
+| Output | boolean |
 
 
 **Operations:**
@@ -245,8 +245,8 @@ Equality comparisons
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`stack`| WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX}||
-|internal list of resources| empty list, list with one element {repeat for each type}, list with two elements|
+| `stack` | WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX} |
+| internal list of resources | empty list, list with one element {repeat for each type}, list with two elements |
 
 
 **Step 4: Each choice** 
@@ -279,15 +279,15 @@ Equality comparisons
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`stack: ResourceStack`, state: list of resources | Case {state: list of resources, `IllegalStateException`} |
+| `stack: ResourceStack`, state: list of resources | Case {state: list of resources, `IllegalStateException`} |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`stack`| Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack)|
-|interal list of resources|Collection|
-|Output| Case(void, `IllegalStateException`) |
+| `stack` | Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack) |
+| interal list of resources | Collection |
+| Output | Case(void, `IllegalStateException`) |
 
 
 **Operations:**
@@ -296,8 +296,8 @@ Removing one element from a list
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`stack`| WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX}||
-|internal list of resources| empty list, list with one element {repeat for each type}, list with two elements|
+| `stack` | WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with sizes {1, INT_MAX} |
+| internal list of resources | empty list, list with one element {repeat for each type}, list with two elements |
 
 
 **Step 4: Each choice** 
@@ -308,7 +308,7 @@ Removing one element from a list
 | Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
 | Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
 | Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")`| :x: |
+| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
 | Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | internal list of resources: empty list | :x: |
@@ -329,14 +329,14 @@ Removing one element from a list
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`dev: Development`, state: list of dev cards| state: list of dev cards|
+| `dev: Development`, state: list of dev cards | state: list of dev cards |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`dev`| Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
-|interal list of dev cards|Collection|
+| `dev` | Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty} |
+| interal list of dev cards | Collection |
 
 
 
@@ -346,21 +346,21 @@ Adding one element
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
-|internal list of dev cards | empty list, list with one element, list with two elements|
+| `dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+| internal list of dev cards | empty list, list with one element, list with two elements |
 
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: Knight, internal list: empty | internal list: {Knight}| :x: |
-| Test Case 2 | `dev`: RoadBuilder, internal list: empty | internal list: {RoadBuilder}| :x: |
-| Test Case 3 | `dev`: VictoryPoint, internal list: empty | internal list: {VictoryPoint}| :x: |
-| Test Case 4 | `dev`: Monopoly, internal list: empty | internal list: {Monopoly}| :x: |
-| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | internal list: {YearOfPlenty}| :x: |
-| Test Case 6 | `dev`: YearOfPlenty, internal list: {Knight} | internal list: {Knight, YearOfPlenty}| :x: |
-| Test Case 7 | `dev`: YearOfPlenty, internal list: {Knight, RoadBuilder} | internal list: {Knight, RoadBuilder, YearOfPlenty}| :x: |
+| Test Case 1 | `dev`: Knight, internal list: empty | internal list: {Knight} | :x: |
+| Test Case 2 | `dev`: RoadBuilder, internal list: empty | internal list: {RoadBuilder} | :x: |
+| Test Case 3 | `dev`: VictoryPoint, internal list: empty | internal list: {VictoryPoint} | :x: |
+| Test Case 4 | `dev`: Monopoly, internal list: empty | internal list: {Monopoly} | :x: |
+| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | internal list: {YearOfPlenty} | :x: |
+| Test Case 6 | `dev`: YearOfPlenty, internal list: {Knight} | internal list: {Knight, YearOfPlenty} | :x: |
+| Test Case 7 | `dev`: YearOfPlenty, internal list: {Knight, RoadBuilder} | internal list: {Knight, RoadBuilder, YearOfPlenty} | :x: |
 
 
 ### Method under test: `hasDevelopment(development : Development)`
@@ -368,14 +368,14 @@ Adding one element
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`dev: Development`, state: list of dev cards| hadDev: boolean|
+| `dev: Development`, state: list of dev cards | hadDev: boolean |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`dev`| Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
-|interal list of dev cards|Collection|
+| `dev` | Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty} |
+| interal list of dev cards | Collection |
 
 
 
@@ -385,8 +385,8 @@ Adding one element
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
-|internal list of dev cards | empty list, list with one element (repeat for each type), list with two elements|
+| `dev` | one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+| internal list of dev cards | empty list, list with one element (repeat for each type), list with two elements |
 
 
 **Step 4: Each choice** 
@@ -398,14 +398,14 @@ Adding one element
 | Test Case 3 | `dev`: VictoryPoint, internal list: empty | false | :x: |
 | Test Case 4 | `dev`: Monopoly, internal list: empty | false | :x: |
 | Test Case 5 | `dev`: YearOfPlenty, internal list: empty | false | :x: |
-| Test Case 6 | `dev`: Knight, internal list: {Knight}  | true | :x: |
-| Test Case 7 | `dev`: RoadBuilder, internal list: {RoadBuilder}  | true | :x: |
-| Test Case 8 | `dev`: VictoryPoint, internal list: {VictoryPoint}  | true | :x: |
+| Test Case 6 | `dev`: Knight, internal list: {Knight} | true | :x: |
+| Test Case 7 | `dev`: RoadBuilder, internal list: {RoadBuilder} | true | :x: |
+| Test Case 8 | `dev`: VictoryPoint, internal list: {VictoryPoint} | true | :x: |
 | Test Case 9 | `dev`: Monopoly, internal list: {Monopoly}  | true | :x: |
-| Test Case 10 | `dev`: YearOfPlenty, internal list: {YearOfPlenty}  | true | :x: |
-| Test Case 11 | `dev`: YearOfPlenty, internal list: {RoadBuilder}  | false | :x: |
-| Test Case 12 | `dev`: YearOfPlenty, internal list: {RoadBuilder, Knight}  | false | :x: |
-| Test Case 13 | `dev`: YearOfPlenty, internal list: {Knight, YearOfPlenty}  | true | :x: |
+| Test Case 10 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | true | :x: |
+| Test Case 11 | `dev`: YearOfPlenty, internal list: {RoadBuilder} | false | :x: |
+| Test Case 12 | `dev`: YearOfPlenty, internal list: {RoadBuilder, Knight} | false | :x: |
+| Test Case 13 | `dev`: YearOfPlenty, internal list: {Knight, YearOfPlenty} | true | :x: |
 
 
 ### Method under test: `removeDevelopment(development : Development)`
@@ -413,14 +413,14 @@ Adding one element
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|`dev: Development`, state: list of dev cards | Case (state: list of dev cards, `IllegalStateException`)|
+| `dev: Development`, state: list of dev cards | Case (state: list of dev cards, `IllegalStateException`) |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|`dev`| Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty}|
-|interal list of dev cards|Collection|
+| `dev` | Development{Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty} |
+| interal list of dev cards| Collection |
 
 
 
@@ -430,8 +430,8 @@ Adding one element
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|`dev`| one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
-|internal list of dev cards | empty list, list with one element, list of two elements|
+| `dev` | one of each card type: Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+| internal list of dev cards | empty list, list with one element, list of two elements |
 
 
 **Step 4: Each choice** 

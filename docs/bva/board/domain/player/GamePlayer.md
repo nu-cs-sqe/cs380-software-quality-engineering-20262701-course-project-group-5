@@ -54,13 +54,13 @@ Trade resources with bank if able.
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|dice| void (I suppose side effects on the dice roll functions)|
+| dice | void (I suppose side effects on the dice roll functions) |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|dice| Dice|
+| dice | Dice |
 
 **Operations:**
 none
@@ -68,14 +68,14 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|dice| Dice{lastDiceRoll:0}, Dice{lastDiceRoll:INT_MAX}|
+|dice| Dice{lastDiceRoll:0}, Dice{lastDiceRoll:INT_MAX} |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1| dice: Dice{lastDiceRoll:0}| state of dice: Dice{lastDiceRoll:4}| :x: |
-| Test Case 1| dice: Dice{lastDiceRoll:INT_MAX}| state of dice: Dice{lastDiceRoll:2}| :x: |
+| Test Case 1 | dice: Dice{lastDiceRoll:0}| state of dice: Dice{lastDiceRoll:4} | :x: |
+| Test Case 1 | dice: Dice{lastDiceRoll:INT_MAX}| state of dice: Dice{lastDiceRoll:2} | :x: |
 
 
 ### Method under test: `play(item : Playable)`
@@ -86,13 +86,13 @@ this is more of an integration test IMO, not really unit testable other than
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|item, state of board, state of player| state of board, state of player|
+| item, state of board, state of player | state of board, state of player |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|item| Playable|
+| item | Playable |
 
 **Operations:**
 none
@@ -100,15 +100,15 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|playable| one of Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty|
-|state of board| robber on a desert square, player on 9 VP, player on 0VP|
+| playable | one of Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
+| state of board | robber on a desert square, player on 9 VP, player on 0VP |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | playable: Knight, state of board | board with the Robber somewhere else | :x: |
-| Test Case 2 | playable: RoadBuilder, state of board| board with two more roads| :x: |
+| Test Case 2 | playable: RoadBuilder, state of board| board with two more roads | :x: |
 | Test Case 3 | playable: Victory point, player on 0 VP| `IllegalStateException` | :x: |
 | Test Case 4 | playable: Victory Point, player on 9 VP | said player wins the game | :x: |
 | Test Case 5 | playable: Monopoly | player gets a bunch of OreResource | :x: |
@@ -124,13 +124,13 @@ this is more of an integration test IMO, not really unit testable other than
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|item, state of player| state of player, or `IllegalStateExceptioin`|
+| item, state of player | state of player, or `IllegalStateExceptioin` |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|item| Buyable|
+| item | Buyable |
 
 **Operations:**
 none
@@ -138,8 +138,8 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|item| case: Development, Road, Settlement, City|
-|state of player| has enough resources for purchase or doesn't|
+| item | case: Development, Road, Settlement, City |
+| state of player | has enough resources for purchase or doesn't |
 
 **Step 4: Each choice** 
 
@@ -158,15 +158,15 @@ this is more of an integration test IMO, not really unit testable other than
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|piece, state of board, state of player| state of board, state of player|
+| piece, state of board, state of player | state of board, state of player |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|piece| Piece(Settlement, City, Road, Robber, Harbor)|
-|state of board| COllections of Points, edges, and hexes|
-|state of player|  player inventory |
+| piece | Piece(Settlement, City, Road, Robber, Harbor) |
+| state of board | COllections of Points, edges, and hexes |
+| state of player |  player inventory |
 
 **Operations:**
 none
@@ -174,18 +174,18 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|piece|  Settlement, City, Road, Robber, Harbor |
-|state of board| robber on a desert square,  robber on a non desert square, player is landlocked on both settlements, player is not landlocked|
+| piece |  Settlement, City, Road, Robber, Harbor |
+| state of board | robber on a desert square,  robber on a non desert square, player is landlocked on both settlements, player is not landlocked |
 | player inventory | 0 resources, enough resources to do the operation in the test case |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1| piece: City, state of board: player is not landlocked, player has resources | locations { # at least one, the board is too hard to vizualize ahead of time lol} | :x: |
-| Test Case 2| piece: settlement, state of board: player is not landlocked, player does not have any settlements left | locations : empty | :x: |
+| Test Case 1 | piece: City, state of board: player is not landlocked, player has resources | locations { # at least one, the board is too hard to vizualize ahead of time lol} | :x: |
+| Test Case 2 | piece: settlement, state of board: player is not landlocked, player does not have any settlements left | locations : empty | :x: |
 | Test Case 3 | piece: Robber, state of board: robber on a desert | state of board: Robber moved to a different spot | :x: |
-| Test Case 4| piece: Harbor| `IllegalArgumentException`| :x: |
+| Test Case 4 | piece: Harbor | `IllegalArgumentException`| :x: |
 
 
 
@@ -194,15 +194,15 @@ none
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|piece, location, state of board, state of player| state of board|
+| piece, location, state of board, state of player | state of board |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|piece| Piece(Settlement, City, Road, Robber, Harbor)|
-|state of board| COllections of Points, edges, and hexes|
-|location|  Location|
+| piece | Piece(Settlement, City, Road, Robber, Harbor) |
+| state of board | Collections of Points, edges, and hexes |
+| location |  Location |
 
 **Operations:**
 none
@@ -210,23 +210,23 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-|piece|  Settlement, City, Road, Robber, Harbor |
-|Location| Location{no pieces}, location {has piece}|
-|state of board| minimum locations occupied (2 points and 2 edges per player), maximum locations occupied, robber on desert, robber not on desert |
+| piece |  Settlement, City, Road, Robber, Harbor |
+| Location | Location{no pieces}, location {has piece} |
+| state of board | minimum locations occupied (2 points and 2 edges per player), maximum locations occupied, robber on desert, robber not on desert |
 | player inventory | 0 resources, enough resources to do the operation in the test case |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1| piece: Settlement, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff | board has settlement at that location | :x: |
-| Test Case 2| piece: City, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff  | board has city at that location | :x: |
-| Test Case 3| piece: Robber, min locations occupied | board has robber at that location | :x: |
-| Test Case 3| piece: harbor | `IllegalArgumentException` | :x: |
-|  Test Case 4 | piece: Settlement, max locations occuplied | `IllegalStateException` | :x: |
-| Test Case 5 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
-| Test Case 6 | piece: road, min locations occupied, location: not adjacent to player settlement | `IllegalStateException`| :x: |
-| Test Case 7 | piece: road, max locations occupied| `IllegalStateException`| :x: |
+| Test Case 1 | piece: Settlement, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff | board has settlement at that location | :x: |
+| Test Case 2 | piece: City, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff  | board has city at that location | :x: |
+| Test Case 3 | piece: Robber, min locations occupied | board has robber at that location | :x: |
+| Test Case 4 | piece: harbor | `IllegalArgumentException` | :x: |
+|  Test Case 5 | piece: Settlement, max locations occuplied | `IllegalStateException` | :x: |
+| Test Case 6 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
+| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `IllegalStateException`| :x: |
+| Test Case 8 | piece: road, max locations occupied | `IllegalStateException`| :x: |
 
 
 
@@ -235,34 +235,34 @@ none
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|OtherPlayer, TradeOffer, current player | state of trader helper |
+| OtherPlayer, TradeOffer, current player | state of trader helper |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|OtherPlayer| Color|
-|TradeOffer|  trade offer which has {2x inventory, 2x collection of resourceStack}|
-|location|  Location|
-|Current player| gamePlayer |
-|state of helper / output| collection of trade offers // IllegalArgumentException|
+| OtherPlayer | Color |
+| TradeOffer |  trade offer which has {2x inventory, 2x collection of resourceStack} |
+| location |  Location |
+| Current player| gamePlayer |
+| state of helper / output | collection of trade offers // IllegalArgumentException |
 
 **Operations:**
 Adding element to list
 
 **Step 3: Concrete values**
 | Variable | Values |
-|other Player | Red, Blue, White , Orange , None |
-|state of trade helper| empty list, list with one offer|
-|TradeOffer| Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing|
+| other Player | Red, Blue, White , Orange , None |
+| state of trade helper | empty list, list with one offer|
+| TradeOffer | Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | current player: Blue, otherPlayer: Blue| `IllegalArgumentException(cannot go to same player)`|:x:|
-| Test Case 2 | current Player: Blue, otherPlayer: None| `IllegalArgumentException(trade must go to someone)`|:x:|
-| Test Case 3| current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
+| Test Case 1 | current player: Blue, otherPlayer: Blue | `IllegalArgumentException(cannot go to same player)` |:x:|
+| Test Case 2 | current Player: Blue, otherPlayer: None | `IllegalArgumentException(trade must go to someone)` |:x:|
+| Test Case 3 | current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
 | Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
 
 
@@ -272,39 +272,39 @@ Adding element to list
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|proposingPlayer, TradeOffer, current player, inventories of both players| state of trader helper |
+| proposingPlayer, TradeOffer, current player, inventories of both players | state of trader helper |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|proposing| Color|
-|TradeOffer|  trade offer which has {2x inventory, 2x collection of resourceStack}|
-|location|  Location|
-|Current player| gamePlayer |
-|state of helper / output| collection of trade offers // IllegalArgumentException|
-| inventories of each player|  Inventory which has 3 collections of devCards, Resources, Pieces|
+| proposing | Color |
+| TradeOffer |  trade offer which has {2x inventory, 2x collection of resourceStack} |
+| location |  Location |
+| Current player | gamePlayer |
+| state of helper / output | collection of trade offers // IllegalArgumentException |
+| inventories of each player |  Inventory which has 3 collections of devCards, Resources, Pieces |
 
 **Operations:**
 Removing element from list
 
 **Step 3: Concrete values**
 | Variable | Values |
-|other Player | Red, Blue, White , Orange , None |
-|state of trade helper| empty list, list with one offer|
-|TradeOffer| Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing|
-|inventories| have enough resources, or don't|
-|Trade Offer manager| trade offer exists, it doesn't exist|
+| other Player | Red, Blue, White , Orange , None |
+| state of trade helper | empty list, list with one offer |
+| TradeOffer | Proposer and receiver inventories match current player and otherPlayer respectively (and also no match), list of requestedResources is empty / has one thing, list of offered resources is empty / has one thing |
+| inventories | have enough resources, or don't |
+| Trade Offer manager | trade offer exists, it doesn't exist |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 1 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log| TradeHelper offer log is empty| :x: |
-| Test Case 2 | current player: Blue, otherPlayer: Blue| `IllegalArgumentException(cannot go to same player)`|:x:|
-| Test Case 3 | current Player: Blue, otherPlayer: None| `IllegalArgumentException(trade must go to someone)`|:x:|
+| Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 1 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | TradeHelper offer log is empty | :x: |
+| Test Case 2 | current player: Blue, otherPlayer: Blue | `IllegalArgumentException(cannot go to same player)`|:x:|
+| Test Case 3 | current Player: Blue, otherPlayer: None | `IllegalArgumentException(trade must go to someone)`|:x:|
 | Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `IllegalStateException(trade offer doesn't match players)` | :x: |
-| Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log| `IllegalStateException(not enough resources for that trade)`| :x: |
+| Test Case 5 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | `IllegalStateException(not enough resources for that trade)` | :x: |
 
 
 
@@ -315,16 +315,16 @@ Removing element from list
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-|give, receive, PlayerInventory, bankInventory|state of PlayerInventory, bankInventory|
+| give, receive, PlayerInventory, bankInventory | state of PlayerInventory, bankInventory |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-|give|  OreStack/LumberStack/WoolStack/BrickStack/GrainStack|
-|receive|  OreStack/LumberStack/WoolStack/BrickStack/GrainStack|
-|player inventory|   collections of resource stacks |
-|bank inventory|   collections of resource stacks |
+| give |  OreStack/LumberStack/WoolStack/BrickStack/GrainStack |
+| receive |  OreStack/LumberStack/WoolStack/BrickStack/GrainStack |
+| player inventory |   collections of resource stacks |
+| bank inventory |   collections of resource stacks |
 
 
 **Operations:**
@@ -332,10 +332,10 @@ none
 
 **Step 3: Concrete values**
 | Variable | Values |
-|give | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick}|
-|recieve | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick}|
-|player inventory | empty, has enough for a 4-1 trade of ore to brick|
-|bank inventory| empty, enough for the trade to happen|
+| give | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
+| recieve | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
+| player inventory | empty, has enough for a 4-1 trade of ore to brick |
+| bank inventory | empty, enough for the trade to happen |
 
 **Step 4: Each choice** 
 
