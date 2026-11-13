@@ -30,7 +30,7 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `products` | Cases:`baseProducts` list can only hold 5 different types of products, `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+| `products` | Cases: Either `Bank` has enough resources to produce the given `product` or it does not. Note that all `Hex` types that can produce behave the same so we will arbitrarily pick to observe pasture hexes that can produce `WoolResourceStack`.|
 |`bankInventory`| Count |
 |`PlayerInventory`| Count |
 | Output | void |
@@ -38,7 +38,7 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `products` | `WoolResourceStack`, `GrainResourceStack`, `OreResourceStack`, `LumberResourceStack`, `BrickResourceStack` |
+| `products` | `bankInventory` is 0 to start, `bankInventory` is greater than 0 to start |
 | `bankInventory` | zero, one, greater than one, eighteen (max number of resource cards for a given type minus one) |
 | `PlayerInventory` | one, greater than one, nineteen (max number of resource cards for a given type) |
 
@@ -46,8 +46,8 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
 | Test Case 1 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{1}}, `PlayerInventory` = {WoolResourceStack{0}} | `bankInventory` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{1}} | :x: |
-| Test Case 2 | `products` stack type: `GrainResourceStack`, `bankInventory` = {GrainResourceStack{2}}, `PlayerInventory` = {GrainResourceStack{1}} | `bankInventory` = {GrainResourceStack{1}}, `PlayerInventory` = {GrainResourceStack{2}} | :x: |
-| Test Case 3 | `products` stack type: `OreResourceStack`, `bankInventory` = {OreResourceStack{5}}, `PlayerInventory` = {OreResourceStack{2}} | `bankInventory` = {OreResourceStack{4}}, `PlayerInventory` = {OreResourceStack{3}} | :x: |
-| Test Case 4 | `products` stack type: `LumberResourceStack`, `bankInventory` = {LumberResourceStack{19}}, `PlayerInventory` = {LumberResourceStack{0}} | `bankInventory` = {LumberResourceStack{18}}, `PlayerInventory` = {LumberResourceStack{1}} | :x: |
-| Test Case 5 | `products` stack type: `BrickResourceStack`, `bankInventory` = {BrickResourceStack{1}}, `PlayerInventory` = {BrickResourceStack{18}} | `bankInventory` = {BrickResourceStack{0}}, `PlayerInventory` = {BrickResourceStack{19}} | :x: |
+| Test Case 2 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{2}}, `PlayerInventory` = {WoolResourceStack{1}} | `bankInventory` = {WoolResourceStack{1}}, `PlayerInventory` = {WoolResourceStack{2}} | :x: |
+| Test Case 3 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{5}}, `PlayerInventory` = {WoolResourceStack{2}} | `bankInventory` = {WoolResourceStack{4}}, `PlayerInventory` = {WoolResourceStack{3}} | :x: |
+| Test Case 4 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{19}}, `PlayerInventory` = {WoolResourceStack{0}} | `bankInventory` = {WoolResourceStack{18}}, `PlayerInventory` = {WoolResourceStack{1}} | :x: |
+| Test Case 5 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{1}}, `PlayerInventory` = {WoolResourceStack{18}} | `bankInventory` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{19}} | :x: |
 | Test Case 6 | `products` stack type: `WoolResourceStack`, `bankInventory` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{2}} | `bankInventory` = {WoolResourceStack{0}}, `PlayerInventory` = {WoolResourceStack{2}} | :x: |
