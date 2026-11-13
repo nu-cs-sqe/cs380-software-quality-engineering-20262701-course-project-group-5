@@ -124,6 +124,12 @@ class HexTests {
                 () -> forestHex(sixVertices(), edges));
     }
 
+    @Test
+    void Constructor_WithNoEdges_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(sixVertices(), Set.of()));
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

@@ -66,7 +66,7 @@ Inherited methods: see `Location`.
 | Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :x:                |
+| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token          | `IllegalArgumentException` | :x:                |
 
 
