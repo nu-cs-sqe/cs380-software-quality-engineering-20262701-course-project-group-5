@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toCollection;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -157,6 +158,13 @@ class HexTests {
         Hex hex = new OceanHex(sixVertices(), ring());
 
         assertFalse(hex.canProduce());
+    }
+
+    @Test
+    void GetTokenValue_OnForestHexWithTokenTwo_ReturnsTwo() {
+        Hex hex = new ForestHex(2, sixVertices(), ring(), PRODUCTS);
+
+        assertEquals(2, hex.getTokenValue());
     }
 
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
