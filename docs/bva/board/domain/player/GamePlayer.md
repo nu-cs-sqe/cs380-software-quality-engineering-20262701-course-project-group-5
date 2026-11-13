@@ -6,7 +6,7 @@ Classpath: catan.game_table.domain.player.GamePlayer
 
 Represents one of the players in the game and stores references to their inventories
 
-### `public GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)`
+### `public GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper, purchaseHelper: PurchaseHelper)`
 
 Constructor for the game player. Initializes color and injects dependencies for the road/building placement helper and the trade manager.
 
@@ -32,19 +32,19 @@ Get possible placement locations for a given piece for said player.
 
 ### `public place(piece : Piece, location : Location)` : void
 
-Place the piece at the given location if able. Can throw `PlacementException`.
+Place the piece at the given location if able. Can throw `InvalidPlacementException`.
 
 ### `public proposePlayerTrade(otherPlayer : Color, trade : TradeOffer)` : void
 
-Propose a trade deal to another player. Can throw `MalformedTradeException`.
+Propose a trade deal to another player. Can throw `InvalidTradeException`.
 
 ### `public acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer)` : void
 
-Accept a trade deal from another player. Can throw `MalformedTradeException`.
+Accept a trade deal from another player. Can throw `InvalidTradeException`.
 
 ### `public tradeWithBank(give : ResourceStack, receive : ResourceStack)` : void
 
-Trade resources with bank if able. Can throw `BankTradeException`
+Trade resources with bank if able. Can throw `InvalidException`
 
 
 ## Boundary-Value Analysis
@@ -80,13 +80,12 @@ none
 
 ### Method under test: `play(item : Playable)`
 
-this is more of an integration test IMO, not really unit testable other than
-"doesn't crash"
+not really unit testable, just check that `Playable#onPlayEffect()` is called
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| item, state of board, state of player | state of board, state of player |
+| item, state of board, state of player | state of item |
 
 
 **Step 2: Data types**
@@ -101,18 +100,17 @@ none
 | Variable | Values |
 |---|---|
 | playable | one of Knight, RoadBuilder, VictoryPoint, Monopoly, YearOfPlenty |
-| state of board | robber on a desert square, player on 9 VP, player on 0VP |
+| state of item | `onPlayeEffect` has been called |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | playable: Knight, state of board | board with the Robber somewhere else | :x: |
-| Test Case 2 | playable: RoadBuilder, state of board| board with two more roads | :x: |
-| Test Case 3 | playable: Victory point, player on 0 VP| `IllegalPlayException` | :x: |
-| Test Case 4 | playable: Victory Point, player on 9 VP | said player wins the game | :x: |
-| Test Case 5 | playable: Monopoly | player gets a bunch of OreResource | :x: |
-| Test Case 6 | playable: YearOfPlenty, player with 0 resources | player resources whose size sum equals 2 | :x: |
+| Test Case 1 | playable: Knight | `onPlayeEffect` has been called | :x: |
+| Test Case 2 | playable: RoadBuilder| `onPlayeEffect` has been called | :x: |
+| Test Case 3 | playable: Victory point | `onPlayeEffect` has been called | :x: |
+| Test Case 4 | playable: Monopoly | `onPlayeEffect` has been called | :x: |
+| Test Case 5 | playable: YearOfPlenty| `onPlayeEffect` has been called | :x: |
 
 
 
@@ -124,7 +122,7 @@ this is more of an integration test IMO, not really unit testable other than
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| item, state of player | state of player, or `NotEnoughResourcesException` |
+| item, state of player | state of player, or `NotEnoughResourcesException`, whether `PurchaseHelper#buy()` has been called |
 
 
 **Step 2: Data types**
@@ -145,8 +143,8 @@ none
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory | :x: |
-| Test Case 2 | item: Road, state of player: has enough resources | add road to player inventory | :x: |
+| Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory, `PurchaseHelper#buy()` has been called | :x: |
+| Test Case 2 | item: Road, state of player: has enough resources | add road to player inventory, `PurchaseHelper#buy()` has been called | :x: |
 | Test Case 3 | item: Road, state of player: doesn't have enough resources | throw `NotEnoughResourcesException` | :x: |
 
 
@@ -223,10 +221,10 @@ none
 | Test Case 2 | piece: City, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff  | board has city at that location | :x: |
 | Test Case 3 | piece: Robber, min locations occupied | board has robber at that location | :x: |
 | Test Case 4 | piece: harbor | `IllegalArgumentException` | :x: |
-| Test Case 5 | piece: Settlement, max locations occuplied | `PlacementException` | :x: |
+| Test Case 5 | piece: Settlement, max locations occuplied | `InvalidPlacementException` | :x: |
 | Test Case 6 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
-| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `PlacementException`| :x: |
-| Test Case 8 | piece: road, max locations occupied | `PlacementException`| :x: |
+| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `InvalidPlacementException`| :x: |
+| Test Case 8 | piece: road, max locations occupied | `InvalidPlacementException`| :x: |
 
 
 
@@ -260,10 +258,10 @@ Adding element to list
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | current player: Blue, otherPlayer: Blue | `MalformedTradeException(cannot go to same player)` |:x:|
-| Test Case 2 | current Player: Blue, otherPlayer: None | `MalformedTradeException(trade must go to someone)` |:x:|
+| Test Case 1 | current player: Blue, otherPlayer: Blue | `InvalidTradeException(cannot go to same player)` |:x:|
+| Test Case 2 | current Player: Blue, otherPlayer: None | `InvalidTradeException(trade must go to someone)` |:x:|
 | Test Case 3 | current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
-| Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `MalformedTradeException(trade offer doesn't match players)` | :x: |
+| Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `InvalidTradeException(trade offer doesn't match players)` | :x: |
 
 
 
@@ -301,10 +299,10 @@ Removing element from list
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | player1 Red (has 1 Ore), player2: Blue (Has 1 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | TradeHelper offer log is empty | :x: |
-| Test Case 2 | current player: Blue, otherPlayer: Blue | `MalformedTradeException(cannot go to same player)`|:x:|
-| Test Case 3 | current Player: Blue, otherPlayer: None | `MalformedTradeException(trade must go to someone)`|:x:|
-| Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `MalformedTradeException(trade offer doesn't match players)` | :x: |
-| Test Case 5 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | `MalformedTradeException(not enough resources for that trade)` | :x: |
+| Test Case 2 | current player: Blue, otherPlayer: Blue | `InvalidTradeException(cannot go to same player)`|:x:|
+| Test Case 3 | current Player: Blue, otherPlayer: None | `InvalidTradeException(trade must go to someone)`|:x:|
+| Test Case 4 | current player blue, other player red, TradeOffer{proposer: white, reciever: none} | `InvalidTradeException(trade offer doesn't match players)` | :x: |
+| Test Case 5 | player1 Red (has 1 Ore), player2: Blue (Has 0 Grain), TradeOffer {1 Ore for 1 Grain}, that offer is in the TradeHelper log | `InvalidTradeException(not enough resources for that trade)` | :x: |
 
 
 
@@ -315,7 +313,7 @@ Removing element from list
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| give, receive, PlayerInventory, bankInventory | state of PlayerInventory, bankInventory |
+| give, receive, PlayerInventory, bankInventory, board state | no exception / `InvalidTradeException` |
 
 
 **Step 2: Data types**
@@ -323,8 +321,8 @@ Removing element from list
 |---|---|
 | give |  OreStack/LumberStack/WoolStack/BrickStack/GrainStack |
 | receive |  OreStack/LumberStack/WoolStack/BrickStack/GrainStack |
-| player inventory |   collections of resource stacks |
-| bank inventory |   collections of resource stacks |
+| player inventory | collections of resource stacks |
+| bank inventory | collections of resource stacks |
 
 
 **Operations:**
@@ -336,11 +334,14 @@ none
 | recieve | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
 | player inventory | empty, has enough for a 4-1 trade of ore to brick |
 | bank inventory | empty, enough for the trade to happen |
+| board state | player controls a harbor or not |
 
 **Step 4: Each choice** 
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `BankTradeException(needs to be 4 to 1)` | :x: |
-| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool |  player inventory{-4 Ore, +1 wool}, bank inventory{+4 ore, -1 wool} | :x: |
-| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `BankTradeException(needs to be 4 to 1)` | :x: |
+| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `InvalidTradeException(needs to be 4 to 1)` | :x: |
+| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool | no exception | :x: |
+| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `InvalidTradeException(needs to be 4 to 1)` | :x: |
+| Test Case 4 | give{Lumber 3}, receive {1 Wool}, player controls a 3->1 harbor | no exception | :x: |
+| Test Case 5 | give{Grain 2}, receive {1 Wool}, player controls a 2 grain->1 harbor | no exception | :x: |

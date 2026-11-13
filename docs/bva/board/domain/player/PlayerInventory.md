@@ -16,7 +16,7 @@ Checks if equivalent piece exists in the inventory.
 
 ### `public removePiece(piece : Piece)` : void
 
-Removes equivalent piece if able, throws `NoSuchElementException` if empty.
+Removes equivalent piece if able, throws `NotEnoughInventoryException` if empty.
 
 ### `public addResources(stack : ResourceStack)` : void
 
@@ -40,7 +40,7 @@ Checks if equivalent development card exists in the inventory.
 
 ### `public removeDevelopment(development : Development)` : void
 
-Removes development card from inventory if able, throws `NoSuchElementException` if empty.
+Removes development card from inventory if able, throws `NotEnoughInventoryException` if empty.
 
 ## Boundary-Value Analysis
 
@@ -140,7 +140,7 @@ Equality comparisons
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `piece: Piece`, state: list of pieces | state: list of pieces or `NoSuchElementException` |
+| `piece: Piece`, state: list of pieces | state: list of pieces or `NotEnoughInventoryException` |
 
 
 **Step 2: Data types**
@@ -148,7 +148,7 @@ Equality comparisons
 |---|---|
 | `piece` | Case Piece is (Settlement, City, Road, Robber, Harbor) |
 | interal list of pieces | Collection |
-| Output | Cases {Void, `NoSuchElementException`} |
+| Output | Cases {Void, `NotEnoughInventoryException`} |
 
 
 **Operations:**
@@ -165,7 +165,7 @@ Equality comparisons, Removing a single element
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Road, internal list of pieces: empty list | `NoSuchElementException` | :x: |
+| Test Case 1 | `piece`: Road, internal list of pieces: empty list | `NotEnoughInventoryException` | :x: |
 | Test Case 2 | `piece`: Settlement, internal list of pieces: {Settlement} | internal list of pieces: empty list| :x: |
 | Test Case 3 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
 | Test Case 4 | `piece`: City, internal list of pieces: {City} | internal list of pieces: empty list| :x: |
@@ -413,7 +413,7 @@ Adding one element
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `dev: Development`, state: list of dev cards | Case (state: list of dev cards, `NoSuchElementException`) |
+| `dev: Development`, state: list of dev cards | Case (state: list of dev cards, `NotEnoughInventoryException`) |
 
 
 **Step 2: Data types**
@@ -438,12 +438,12 @@ Adding one element
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: doesn't matter, internal list: empty | `NoSuchElementException` | :x: |
-| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `NoSuchElementException` | :x: |
+| Test Case 1 | `dev`: doesn't matter, internal list: empty | `NotEnoughInventoryException` | :x: |
+| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `NotEnoughInventoryException` | :x: |
 | Test Case 3 | `dev`: VictoryPoint, internal list: {VictoryPoint} | internal list: empty | :x: |
 | Test Case 4 | `dev`: Knight, internal list: {Knight} | internal list: empty | :x: |
 | Test Case 5 | `dev`: RoadBuilder, internal list: {RoadBuilder} | internal list: empty | :x: |
 | Test Case 6 | `dev`: Monopoly, internal list: {Monopoly} | internal list: empty | :x: |
 | Test Case 7 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | internal list: empty | :x: |
 | Test Case 8 | `dev`: YearOfPlenty, internal list: {YearOfPlenty, Knight} | internal list: {knight} | :x: |
-| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight} | `NoSuchElementException` | :x: |
+| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight} | `NotEnoughInventoryException` | :x: |
