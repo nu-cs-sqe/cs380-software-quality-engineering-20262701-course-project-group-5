@@ -34,6 +34,14 @@ class HexTests {
                 () -> forestHex(Set.of(), ring()));
     }
 
+    @Test
+    void Constructor_WithOneVertex_ThrowsIllegalArgumentException() {
+        Set<Vertex> vertices = Set.of(new Vertex(CORNERS.getFirst()));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(vertices, ring()));
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }
