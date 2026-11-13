@@ -24,7 +24,7 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-suite")
 
     // https://mvnrepository.com/artifact/org.easymock/easymock
-    testImplementation("org.easymock:easymock:3.1")
+    testImplementation("org.easymock:easymock:5.4.0")
 
     // cucumber
     testImplementation(platform("io.cucumber:cucumber-bom:7.20.1"))
@@ -110,8 +110,8 @@ tasks.jacocoTestReport {
 }
 
 pitest {
-    targetClasses = setOf("domain.*") //by default "${project.group}.*"
-    targetTests = setOf("domain.*")
+    targetClasses = setOf("catan.game_table.domain.*")
+    targetTests = setOf("catan.game_table.domain.*")
     junit5PluginVersion = "1.2.1"
     pitestVersion = "1.15.0" //not needed when a default PIT version should be used
 
