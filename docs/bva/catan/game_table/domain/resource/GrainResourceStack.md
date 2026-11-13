@@ -1,5 +1,5 @@
 # Class GrainResourceStack
-Classpath: catan.game_table.catan.game_table.domain.resource.GrainResourceStack
+Classpath: catan.game_table.domain.resource.GrainResourceStack
 
 ## `public class GrainResourceStack extends ResourceStack`
 

@@ -1,5 +1,5 @@
 # Class LumberResourceStack
-Classpath: catan.game_table.catan.game_table.domain.resource.LumberResourceStack
+Classpath: catan.game_table.domain.resource.LumberResourceStack
 
 ## `public class LumberResourceStack extends ResourceStack`
 

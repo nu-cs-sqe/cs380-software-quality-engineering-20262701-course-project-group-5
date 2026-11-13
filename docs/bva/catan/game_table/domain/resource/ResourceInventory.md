@@ -1,5 +1,5 @@
 # Interface ResourceInventory
-Classpath: catan.game_table.catan.game_table.domain.resource.ResourceInventory
+Classpath: catan.game_table.domain.resource.ResourceInventory
 
 All known implementing classes: `Bank`, `PlayerInventory`
 

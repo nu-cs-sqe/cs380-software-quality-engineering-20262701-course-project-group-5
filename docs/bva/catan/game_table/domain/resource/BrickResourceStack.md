@@ -1,5 +1,5 @@
 # Class BrickResourceStack
-Classpath: catan.game_table.catan.game_table.domain.resource.BrickResourceStack
+Classpath: catan.game_table.domain.resource.BrickResourceStack
 
 ## `public class BrickResourceStack extends ResourceStack`
 

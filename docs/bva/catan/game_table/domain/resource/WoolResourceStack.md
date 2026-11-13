@@ -1,5 +1,5 @@
 # Class WoolResourceStack
-Classpath: catan.game_table.catan.game_table.domain.resource.WoolResourceStack
+Classpath: catan.game_table.domain.resource.WoolResourceStack
 
 ## `public class WoolResourceStack extends ResourceStack`
 
