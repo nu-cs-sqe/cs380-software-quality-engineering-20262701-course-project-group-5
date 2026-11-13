@@ -395,7 +395,7 @@ package resource {
         +withAdditionOf(otherStack : ResourceStack) : ResourceStack
         +withRemovalOf(otherStack : ResourceStack) : ResourceStack
         +getSize() : int
-        +equals(o : Object) : boolean
+        +equals(other : Object) : boolean
         +hashCode() : int
     }
 
