@@ -16,7 +16,7 @@ Checks if equivalent piece exists in the inventory.
 
 ### `public removePiece(piece : Piece)` : void
 
-Removes equivalent piece if able, throws `IllegalStateException` if empty.
+Removes equivalent piece if able, throws `NoSuchElementException` if empty.
 
 ### `public addResources(stack : ResourceStack)` : void
 
@@ -28,7 +28,7 @@ Checks if inventory has a greater than or equal resource stack to the one specif
 
 ### `public removeResources(stack : ResourceStack)` : void
 
-Remove resources from inventory if able, throws `IllegalStateException` if empty.
+Remove resources from inventory if able, throws `NotEnoughResourcesException` if empty.
 
 ### `public addDevelopment(development : Development)` : void
 
@@ -40,7 +40,7 @@ Checks if equivalent development card exists in the inventory.
 
 ### `public removeDevelopment(development : Development)` : void
 
-Removes development card from inventory if able, throws `IllegalStateException` if empty.
+Removes development card from inventory if able, throws `NoSuchElementException` if empty.
 
 ## Boundary-Value Analysis
 
@@ -140,7 +140,7 @@ Equality comparisons
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `piece: Piece`, state: list of pieces | state: list of pieces or `IllegalStateException` |
+| `piece: Piece`, state: list of pieces | state: list of pieces or `NoSuchElementException` |
 
 
 **Step 2: Data types**
@@ -148,7 +148,7 @@ Equality comparisons
 |---|---|
 | `piece` | Case Piece is (Settlement, City, Road, Robber, Harbor) |
 | interal list of pieces | Collection |
-| Output | Cases {Void, `IllegalStateException`} |
+| Output | Cases {Void, `NoSuchElementException`} |
 
 
 **Operations:**
@@ -165,7 +165,7 @@ Equality comparisons, Removing a single element
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Road, internal list of pieces: empty list | `IllegalStateException` | :x: |
+| Test Case 1 | `piece`: Road, internal list of pieces: empty list | `NoSuchElementException` | :x: |
 | Test Case 2 | `piece`: Settlement, internal list of pieces: {Settlement} | internal list of pieces: empty list| :x: |
 | Test Case 3 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
 | Test Case 4 | `piece`: City, internal list of pieces: {City} | internal list of pieces: empty list| :x: |
@@ -279,7 +279,7 @@ Equality comparisons
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `stack: ResourceStack`, state: list of resources | Case {state: list of resources, `IllegalStateException`} |
+| `stack: ResourceStack`, state: list of resources | Case {state: list of resources, `NotEnoughResourcesException`} |
 
 
 **Step 2: Data types**
@@ -287,7 +287,7 @@ Equality comparisons
 |---|---|
 | `stack` | Case Piece is (WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack) |
 | interal list of resources | Collection |
-| Output | Case(void, `IllegalStateException`) |
+| Output | Case(void, `NotEnoughResourcesException`) |
 
 
 **Operations:**
@@ -304,24 +304,24 @@ Removing one element from a list
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
 | Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 9 | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}} | internal list of resources: empty list | :x: |
 | Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}} | internal list of resources: empty list | :x: |
-| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
-| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | `IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
+| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
 | Test Case 17 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} | internal list of resources: {OreResourceStack{size:1}} | :x: |
-| Test Case 18 | `stack`: BrickResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} |`IllegalStateException("not enough of that resource type")` | :x: |
+| Test Case 18 | `stack`: BrickResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} |`NotEnoughResourcesException("not enough of that resource type")` | :x: |
 
 
 ### Method under test: `addDevelopment(development : Development)`
@@ -413,7 +413,7 @@ Adding one element
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `dev: Development`, state: list of dev cards | Case (state: list of dev cards, `IllegalStateException`) |
+| `dev: Development`, state: list of dev cards | Case (state: list of dev cards, `NoSuchElementException`) |
 
 
 **Step 2: Data types**
@@ -438,12 +438,12 @@ Adding one element
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: doesn't matter, internal list: empty | `IllegalStateException` | :x: |
-| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `IllegalStateException` | :x: |
+| Test Case 1 | `dev`: doesn't matter, internal list: empty | `NoSuchElementException` | :x: |
+| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `NoSuchElementException` | :x: |
 | Test Case 3 | `dev`: VictoryPoint, internal list: {VictoryPoint} | internal list: empty | :x: |
 | Test Case 4 | `dev`: Knight, internal list: {Knight} | internal list: empty | :x: |
 | Test Case 5 | `dev`: RoadBuilder, internal list: {RoadBuilder} | internal list: empty | :x: |
 | Test Case 6 | `dev`: Monopoly, internal list: {Monopoly} | internal list: empty | :x: |
 | Test Case 7 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | internal list: empty | :x: |
 | Test Case 8 | `dev`: YearOfPlenty, internal list: {YearOfPlenty, Knight} | internal list: {knight} | :x: |
-| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight} | `IllegalStateException` | :x: |
+| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight} | `NoSuchElementException` | :x: |
