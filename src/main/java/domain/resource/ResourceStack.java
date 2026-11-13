@@ -33,12 +33,12 @@ public abstract class ResourceStack {
         return false;
     }
 
-    public static ResourceStack combine (ResourceStack stack1, ResourceStack stack2) throws IllegalArgumentException{
-        if (!(stack1.getClass().equals(stack2.getClass()))){
-            throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", stack1.getClass(), stack2.getClass()) );
+    public ResourceStack add (ResourceStack otherStack) throws IllegalArgumentException{
+        if (!(this.getClass().equals(otherStack.getClass()))){
+            throw new IllegalArgumentException(String.format("Incompatible ResourceStack types: %s and %s", this.getClass().getSimpleName(), otherStack.getClass().getSimpleName()));
         }
-        int totalSize = stack1.getSize() + stack2.getSize();
-        return stack1.makeNewStackOfSameType(totalSize);
+        int totalSize = this.getSize() + otherStack.getSize();
+        return this.makeNewStackOfSameType(totalSize);
     }
 
     protected abstract ResourceStack makeNewStackOfSameType(int size);
