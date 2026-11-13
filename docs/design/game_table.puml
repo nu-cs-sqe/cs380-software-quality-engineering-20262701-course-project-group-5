@@ -392,8 +392,8 @@ package resource {
     +abstract class ResourceStack {
         -size : int
         +ResourceStack(size : int)
-        +withAdditionOf(otherStack : ResourceStack) : ResourceStack
-        +withRemovalOf(otherStack : ResourceStack) : ResourceStack
+        +add(otherStack : ResourceStack) : ResourceStack
+        +subtract(otherStack : ResourceStack) : ResourceStack
         +getSize() : int
         +equals(other : Object) : boolean
         +hashCode() : int
