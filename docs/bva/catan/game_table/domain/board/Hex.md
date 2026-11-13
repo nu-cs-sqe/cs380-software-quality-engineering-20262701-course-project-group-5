@@ -162,7 +162,7 @@ Inherited methods: see `Location`.
 | Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :white_check_mark: |
 | Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :white_check_mark: |
 | Test Case 7 | `OceanHex` with flag false, input `false`    | `canProduce()` false                         | :white_check_mark: |
-| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :x:                |
+| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :white_check_mark: |
 
 ### Test: `public void produceResources()`
 
