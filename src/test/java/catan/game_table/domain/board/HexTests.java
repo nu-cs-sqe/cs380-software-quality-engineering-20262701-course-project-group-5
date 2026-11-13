@@ -53,6 +53,15 @@ class HexTests {
                 () -> forestHex(vertices, ring()));
     }
 
+    @Test
+    void Constructor_WithSevenVertices_ThrowsIllegalArgumentException() {
+        Set<Vertex> vertices = sixVertices();
+        vertices.add(new Vertex(new Point(3, 3)));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(vertices, ring()));
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }

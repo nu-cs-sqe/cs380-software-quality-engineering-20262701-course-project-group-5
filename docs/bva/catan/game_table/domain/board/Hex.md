@@ -60,7 +60,7 @@ Inherited methods: see `Location`.
 | Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :x:                |
+| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 6  | `edges` has 5 elements                                                              | `IllegalArgumentException` | :x:                |
 | Test Case 7  | `edges` has 7 elements                                                              | `IllegalArgumentException` | :x:                |
 | Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :x:                |
