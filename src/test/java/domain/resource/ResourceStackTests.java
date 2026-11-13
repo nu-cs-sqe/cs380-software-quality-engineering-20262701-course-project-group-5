@@ -68,6 +68,22 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Subtract_StackOfOne_WithStackOfOne_ProducesEmptyStack(){
+        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
+        BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
+
+        ResourceStack resultStack = firstStackOfOne.add(secondStackOfOne);
+
+        int expected = 0;
+
+        int actual = resultStack.getSize();
+
+        assertEquals(expected, actual);
+
+        assertInstanceOf(BrickResourceStack.class, resultStack);
+    }
+
+    @Test
     public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
