@@ -48,7 +48,7 @@ public class ResourceStackTests {
 
         Exception combineException = assertThrows(IllegalArgumentException.class, () -> stackOfEmptyLumber.add(stackOfEmptyBrick));
 
-        assertTrue(combineException.getMessage().contains("Incompatible ResourceStack types: "));
+        assertTrue(combineException.getMessage().contains("Incompatible ResourceStack types: LumberResourceStack and BrickResourceStack"));
     }
 
     @Test
