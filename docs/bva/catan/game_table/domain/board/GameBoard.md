@@ -5,6 +5,9 @@ Classpath: catan.game_table.catan.game_table.board.domain.GameBoard
 
 Holds the board graph (`Hex`,`Vertex`,`Edge`) and the pieces placed on it. Notifies observers when it changes.
 
+### `public GameBoard(Set<Hex> hexes, Set<Vertex> vertices, Set<Edge> edges)`
+Initializes the board with the given hexes, vertices and edges, and builds the neighbor map from `edges` by calling `createNeighbors()`.
+
 ### `public void produceResourcesForToken(int tokenValue)`
 Asks every `Hex` whose token equals `tokenValue` to produce resources. Throws `IllegalArgumentException` if `tokenValue` is outside `[2, 12]`. A value of `7` produces nothing.
 
@@ -13,6 +16,12 @@ Adds `piece` to `location` and notifies observers. It does not check whether the
 
 ### `public void removePieceFromLocation(PieceData pieceData, Location location)`
 Removes the piece with matching `pieceData` from `location`. No operation happens if no piece matches.
+
+### `private void createNeighbors()`
+For every `Edge`, finds the two `Vertex` objects at its endpoints and records each as a neighbor of the other. Every vertex has an entry.
+
+### `public Set<Vertex> getNeighbors(Vertex vertex)`
+Returns the vertices joined to `vertex` by exactly one edge. Assumes `vertex` is on this board. Called by `PlacementHelper` for the distance rule and road connectivity.
 
 ## Boundary-Value Analysis
 
@@ -144,3 +153,45 @@ Deleting elements from any position (from the location's pieces).
 | Test Case 6 | `Vertex` with one piece, a different `PieceData` object with equal `type` and `color` | vertex is told to remove that piece                     | :white_check_mark: |
 | Test Case 7 | `Edge` with exactly one `Road`, its own `pieceData`                                   | edge is told to remove that piece                       | :white_check_mark: |
 | Test Case 8 | `Hex` with the `Robber`, its own `pieceData`                                          | hex is told to remove that piece                        | :white_check_mark: |
+
+### Test: `private void createNeighbors()`
+
+`A` to `J` are vertices at distinct points. The board is only called with valid arguments.
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| state: the board's `vertices` and `edges` | No return value. Each vertex's neighbor set holds the vertices joined to it by one edge. Also how many neighbors each vertex has. |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| `vertices` | Collection |
+| `edges` | Collection |
+| `vertices` and `edges` together | Pair of collections |
+| edges and vertices that refer to each other | Collection built with references |
+| edges touching one vertex | Interval `[2, 3]` (every corner is in a hex ring; 3 is the maximum on a hex grid) |
+| neighbors of a vertex (output) | Count |
+
+**Operations:**
+Searching (for the vertex at each edge endpoint):
+Appending a single element (to a vertex's neighbor set)
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| `vertices` | empty, more than one (6, 10), maximum (54: the land vertices of a standard board) |
+| `edges` | empty, more than one (6, 11), maximum (72: the land edges of a standard board) |
+| `vertices` and `edges` together | both empty, both more than one. |
+| edges and vertices that refer to each other | circular (a hex ring) |
+| edges touching one vertex | 2 (minimum), 3 (maximum). |
+| neighbors of a vertex (output) | 2 (minimum), 3 (maximum) |
+
+**Step 4: Each choice**
+
+|             | Inputs                                                                                                                                       | Expected output                                                        | Implemented? |
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------|
+| Test Case 1 | Empty `vertices`, empty `edges`                                                                                                              | no exception                                                           | :x:          |
+| Test Case 2 | One hex ring `A-B`, `B-C`, `C-D`, `D-E`, `E-F`, `F-A`, vertices given in the order `A`..`F`; query `A`, then `F`                             | `A` has `{B, F}` and `F` has `{E, A}`                                  | :x:          |
+| Test Case 3 | The ring above plus a second hex sharing `C-D`: `D-G`, `G-H`, `H-I`, `I-J`, `J-C`; vertices given in the order `J`..`A`; query `C`, then `D` | `C` has `{B, D, J}` and `D` has `{C, E, G}` (sets merged across hexes) | :x:          |
+| Test Case 4 | All 54 land vertices and 72 land edges of a standard board                                                                                   | 36 vertices have exactly 3 neighbors and 18 have exactly 2             | :x:          |
