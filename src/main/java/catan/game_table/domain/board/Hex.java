@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.toSet;
 
 public abstract class Hex extends Location {
     private static final int SIDE_COUNT = 6;
+    private static final int EDGES_PER_CORNER = 2;
 
     public Hex(
             int tokenValue,
@@ -17,6 +18,19 @@ public abstract class Hex extends Location {
         requireSideCount(vertices, "vertices");
         requireSideCount(edges, "edges");
         requireEndpointsInVertices(vertices, edges);
+        requireTwoEdgesPerCorner(vertices, edges);
+    }
+
+    private static void requireTwoEdgesPerCorner(Set<Vertex> vertices, Set<Edge> edges) {
+        for (Vertex vertex : vertices) {
+            long touchingEdges = edges.stream()
+                    .filter(edge -> edge.getEndpoints().contains(vertex.getPoint()))
+                    .count();
+            if (touchingEdges != EDGES_PER_CORNER) {
+                throw new IllegalArgumentException(
+                        "Every corner must touch exactly " + EDGES_PER_CORNER + " edges");
+            }
+        }
     }
 
     private static void requireEndpointsInVertices(Set<Vertex> vertices, Set<Edge> edges) {
