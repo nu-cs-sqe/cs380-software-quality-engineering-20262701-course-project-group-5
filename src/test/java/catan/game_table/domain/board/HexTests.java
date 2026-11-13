@@ -216,6 +216,16 @@ class HexTests {
         assertTrue(hex.canProduce());
     }
 
+    @Test
+    void SetCanProduce_OnPastureHexWithFlagFalseAndInputFalse_ReturnsFalse() {
+        Hex hex = new PastureHex(TOKEN_VALUE, sixVertices(), ring(), PRODUCTS);
+        hex.setCanProduce(false);
+
+        hex.setCanProduce(false);
+
+        assertFalse(hex.canProduce());
+    }
+
     private static Hex forestHex(Set<Vertex> vertices, Set<Edge> edges) {
         return new ForestHex(TOKEN_VALUE, vertices, edges, PRODUCTS);
     }
