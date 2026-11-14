@@ -4,7 +4,7 @@ Classpath: catan.game_table.domain.piece.City
 
 ## `class City extends Building`
 
-A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. When adjacent to a `Hex` that can produce and was triggered by a production roll, produces two `baseProducts` and `cityBonusProducts` `ResourceProducts` of the `ResourceStack` type of triggerred `Hex`.
+A subclass of `Building` that costs a `GrainResourceStack` of size two and `OreResourceStack` of size three to build. When an adjacent `Hex` produces on a roll, it yields `ResourceProducts` of that hex’s resource type: `baseProducts` plus `cityBonusProducts`.
 
 ### `public City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)`
 
