@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PieceDataTests {
     private static final String CITY = "City";
+    private static final String SETTLEMENT = "Settlement";
     @Test
     public void Equals_TwoCity_BothBlue_True() {
         PieceData firstCityData = new PieceData(Color.BLUE, CITY);
@@ -14,4 +15,13 @@ public class PieceDataTests {
 
         assertTrue(firstCityData.equals(secondCityData));
     }
+
+    @Test
+    public void Equals_TwoSettlement_BothOrange_True() {
+        PieceData firstSettlementData = new PieceData(Color.ORANGE, SETTLEMENT);
+        PieceData secondSettlementData = new PieceData(Color.ORANGE, SETTLEMENT);
+
+        assertTrue(firstSettlementData.equals(secondSettlementData));
+    }
+
 }
