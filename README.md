@@ -6,6 +6,7 @@
 - Breanna Lu
 - Hayley McCormack
 - Xavier Khan
+- Daniel Murphy
 
 ## Dependencies
 - JDK 11
