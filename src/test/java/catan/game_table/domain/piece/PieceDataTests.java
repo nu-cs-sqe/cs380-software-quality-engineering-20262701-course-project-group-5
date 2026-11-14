@@ -1,5 +1,9 @@
 package catan.game_table.domain.piece;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class PieceDataTests {
     @Test
     public void Equals_TwoCity_SameColor_True() {
