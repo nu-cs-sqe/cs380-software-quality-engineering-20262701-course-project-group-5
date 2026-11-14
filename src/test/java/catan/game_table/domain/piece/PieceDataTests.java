@@ -9,6 +9,7 @@ public class PieceDataTests {
     private static final String CITY = "City";
     private static final String SETTLEMENT = "Settlement";
     private static final String HARBOR = "Harbor";
+    private static final String ROAD = "Road";
     @Test
     public void Equals_TwoCity_BothBlue_True() {
         PieceData firstCityData = new PieceData(Color.BLUE, CITY);
@@ -31,6 +32,14 @@ public class PieceDataTests {
         PieceData secondHarborData = new PieceData(Color.RED, HARBOR);
 
         assertTrue(firstHarborData.equals(secondHarborData));
+    }
+
+    @Test
+    public void Equals_TwoRoad_BothWhite_True() {
+        PieceData firstRoadData = new PieceData(Color.WHITE, ROAD);
+        PieceData secondRoadData = new PieceData(Color.WHITE, ROAD);
+
+        assertTrue(firstRoadData.equals(secondRoadData));
     }
 
 }
