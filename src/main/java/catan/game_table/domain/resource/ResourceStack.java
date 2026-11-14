@@ -20,7 +20,7 @@ public abstract class ResourceStack {
 
     @Override
     public boolean equals(Object other){
-        if (other == null || other.getClass() != getClass()){
+        if (other == null || other.getClass() != this.getClass()){
             return false;
         }
         return this.size == ((ResourceStack)other).size;
@@ -28,12 +28,12 @@ public abstract class ResourceStack {
 
     public ResourceStack add(ResourceStack otherStack){
         requireSameTypeAs(otherStack);
-        return this.makeNewStackOfSameType(size + otherStack.size);
+        return this.makeNewStackOfSameType(this.size + otherStack.size);
     }
 
     public ResourceStack subtract(ResourceStack otherStack){
         requireSameTypeAs(otherStack);
-        return this.makeNewStackOfSameType(size - otherStack.size);
+        return this.makeNewStackOfSameType(this.size - otherStack.size);
     }
 
     private void requireSameTypeAs(ResourceStack otherStack) throws IllegalArgumentException{
