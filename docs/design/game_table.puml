@@ -231,10 +231,20 @@ package trade {
 package board {
 
     +class GameBoard {
-        -vertices : Set<Vertex>
-        -edges : Set<Edge>
-        -hexes : Set<Hex>
+        -{final} vertices : Set<Vertex>
+        -{final} edges : Set<Edge>
+        -{final} hexes : Set<Hex>
+        -{final} neighbors : Map<Vertex, Set<Vertex>>
+        -{static} {final} MIN_TOKEN_VALUE : int = 2
+        -{static} {final} MAX_TOKEN_VALUE : int = 12
+        +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>)
+        -createNeighbors() : void
+        -indexVerticesByPoint() : Map<Point, Vertex>
+        -linkEndpointsOf(edge : Edge, vertexAt : Map<Point, Vertex>) : void
+        -link(first : Vertex, second : Vertex) : void
+        +getNeighbors(vertex : Vertex) : Set<Vertex>
         +produceResourcesForToken(tokenValue : int) : void
+        -{static} requireValidTokenValue(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
     }
@@ -299,26 +309,30 @@ package board {
     +abstract class Location {
         #pieces : List<Piece>
         +getPieceData() : List<PieceData>
-        +addPiece(piece : Piece)) : void
+        +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
+        +holdsPieceWithData(data : PieceData) : boolean
     }
 
     +class Vertex {
-        -point : Point
+        -{final} point : Point
         +Vertex(endpoint : Point)
         +getPoint() : Point
         +produceResources(products : ResourceProducts) : void
     }
 
     +class Edge {
-        -endpoints : Set<Point>
+        -{final} endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
         +getEndpoints() : Set<Point>
     }
 
-    +class Point {
-        +{final} x : int
-        +{final} y : int
+    +class Point <<record>> {
+        -{final} x : int
+        -{final} y : int
+        +Point(x : int, y : int)
+        +x() : int
+        +y() : int
         +equals(o : Object) : boolean
         +hashCode() : int
     }
@@ -535,13 +549,13 @@ GameBoard --> Edge
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
+GameBoard ..> Point
 
 Hex --> Piece
 Hex --> Vertex
 Hex --> Edge
 Hex --|> Location
 
-Edge --> Vertex
 Edge ..> PieceData
 
 Hex --> ResourceProducts
