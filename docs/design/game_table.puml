@@ -417,7 +417,7 @@ package resource {
     +interface ResourceInventory {
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) : void
+        +removeResources(stack : ResourceStack) throws NotEnoughInventoryException : void
     }
 
     +class ResourceProducts {
