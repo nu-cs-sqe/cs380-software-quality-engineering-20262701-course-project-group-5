@@ -3,10 +3,11 @@ package catan.game_table.domain.piece;
 import catan.game_table.domain.Color;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PieceDataTests {
+
+    // equals()
     private static final String CITY = "City";
     private static final String SETTLEMENT = "Settlement";
     private static final String HARBOR = "Harbor";
@@ -83,5 +84,17 @@ public class PieceDataTests {
         PieceData secondHarborData = new PieceData(Color.BLUE, HARBOR);
 
         assertFalse(firstHarborData.equals(secondHarborData));
+    }
+
+    // hashCode()
+    @Test
+    public void HashCode_RedRoad_RedRoad_True(){
+        PieceData firstRoadData = new PieceData(Color.RED, ROAD);
+        PieceData secondRoadData = new PieceData(Color.RED, ROAD);
+
+        int firstRoadHash = firstRoadData.hashCode();
+        int secondRoadHash = secondRoadData.hashCode();
+
+        assertEquals(firstRoadHash, secondRoadHash);
     }
 }
