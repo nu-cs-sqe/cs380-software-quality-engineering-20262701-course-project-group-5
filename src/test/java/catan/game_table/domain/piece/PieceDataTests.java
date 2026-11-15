@@ -50,4 +50,12 @@ public class PieceDataTests {
 
         assertFalse(firstHarborData.equals(secondHarborData));
     }
+
+    @Test
+    public void Equals_RedSettlement_RedRoad_False() {
+        PieceData settlementData = new PieceData(Color.RED, SETTLEMENT);
+        PieceData roadData = new PieceData(Color.RED, ROAD);
+
+        assertFalse(settlementData.equals(roadData));
+    }
 }
