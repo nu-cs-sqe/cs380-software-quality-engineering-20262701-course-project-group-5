@@ -3,6 +3,7 @@ package catan.game_table.domain.piece;
 import catan.game_table.domain.Color;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PieceDataTests {
@@ -42,4 +43,11 @@ public class PieceDataTests {
         assertTrue(firstRoadData.equals(secondRoadData));
     }
 
+    @Test
+    public void Equals_OrangeHarbor_BlueHarbor_False() {
+        PieceData firstRoadData = new PieceData(Color.ORANGE, HARBOR);
+        PieceData secondRoadData = new PieceData(Color.BLUE, HARBOR);
+
+        assertFalse(firstRoadData.equals(secondRoadData));
+    }
 }
