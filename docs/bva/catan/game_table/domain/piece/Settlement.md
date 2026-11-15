@@ -33,7 +33,6 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 | `products` | Cases: Either `Bank` has enough resources to produce the given `product` or it does not. Note that all `Hex` types that can produce behave the same so we will arbitrarily pick to observe pasture hexes that can produce `WoolResourceStack`.|
 |`bankInventory`| Count |
 |`PlayerInventory`| Count |
-| Output | void |
 
 **Step 3: Concrete values**
 | Variable | Values |
