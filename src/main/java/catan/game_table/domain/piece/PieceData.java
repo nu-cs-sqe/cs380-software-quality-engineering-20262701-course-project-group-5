@@ -18,4 +18,10 @@ public class PieceData {
     PieceData objectData = (PieceData) object;
     return color == objectData.color && type.equals(objectData.type);
   }
+
+  @Override
+  public int hashCode()
+  {
+    return color.hashCode() + type.hashCode();
+  }
 }
