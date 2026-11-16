@@ -17,8 +17,17 @@ public class PlacementHelper {
     }
 
     public Set<Vertex> getValidBuildingSpots(Color color) {
+
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
-        return gameBoard.getLandVertices();
+        Set<Vertex> landVertices = gameBoard.getLandVertices();
+
+        if (gamePhase == GamePhase.SETUP) {
+            return landVertices;
+        }
+        else {
+            return Set.of();
+        }
+
     }
 
 }

@@ -37,6 +37,27 @@ public class PlacementHelperTests {
 
     }
 
+    @Test
+    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndEmptyBoard_ExpectNoVertices() {
+
+        GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+        EasyMock.expect(gameBoard.getLandVertices()).andReturn(landVertices);
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andReturn(GamePhase.REGULAR);
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(Color.RED);
+        Set<Vertex> expectedVertices = new HashSet<>();
+        Set<Point> actualPoints = actualVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
+        Set<Point> expectedPoints = expectedVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
+
+        assertTrue(allPointsEqual(expectedPoints, actualPoints));
+        EasyMock.verify(gameBoard, gamePhaseHolder);
+
+    }
+
     private Set<Vertex> makeLandVerticesSet() {
 
         Set<Vertex> landVertices = new HashSet<>();
