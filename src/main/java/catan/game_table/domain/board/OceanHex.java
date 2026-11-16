@@ -17,6 +17,5 @@ public class OceanHex extends Hex {
 
     @Override
     public void setCanProduce(boolean canProduce) {
-        super.setCanProduce(false);
     }
 }

@@ -17,6 +17,5 @@ public class DesertHex extends Hex {
 
     @Override
     public void setCanProduce(boolean canProduce) {
-        super.setCanProduce(false);
     }
 }
