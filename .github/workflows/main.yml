@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "main" ]
 
-# Grant GitHub Actions only READ access to the repo
+# Publishing has its own job with write access; builds only need read access.
 permissions:
   contents: read
 
@@ -31,4 +31,49 @@ jobs:
           gradle-version: 8.10
 
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ./gradlew build complexityBadge
+
+      - name: Upload complexity badge
+        uses: actions/upload-artifact@v4
+        with:
+          name: complexity-badge
+          path: build/badges/complexity.json
+          if-no-files-found: error
+
+  publish-badge:
+    needs: gradle
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: complexity-badge-publish
+      cancel-in-progress: false
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+        with:
+          path: badge-repo
+      - name: Download complexity badge
+        uses: actions/download-artifact@v4
+        with:
+          name: complexity-badge
+          path: generated-badge
+      - name: Publish badge JSON
+        working-directory: badge-repo
+        run: |
+          if git ls-remote --heads origin badges | grep -q .; then
+            git fetch origin badges
+            git checkout -B badges FETCH_HEAD
+          else
+            git checkout --orphan badges
+            git rm -rf .
+          fi
+          cp ../generated-badge/complexity.json complexity.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add complexity.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update project missed complexity badge"
+            git push origin HEAD:badges
+          fi
