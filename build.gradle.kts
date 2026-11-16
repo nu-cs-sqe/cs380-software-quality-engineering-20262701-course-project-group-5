@@ -114,8 +114,6 @@ val complexityBadge by tasks.registering {
         val factory = DocumentBuilderFactory.newInstance().apply {
             isValidating = false
             setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-            setFeature("http://xml.org/sax/features/external-general-entities", false)
-            setFeature("http://xml.org/sax/features/external-parameter-entities", false)
         }
         val report = factory.newDocumentBuilder().parse(reportFile.get().asFile).documentElement
         // Only use the report-level total: nested counters would double-count classes.
