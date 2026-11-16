@@ -75,5 +75,6 @@ TODO:
 - Anyone: Review Hayley's PieceData TDD
 - All: Decide on Checkstyle warnings or violations
 - Breanna: Review comments by Daniel on GameBoard TDD
+- Breanna: TDD for added "neighbors" functionality in GameBoard
 - Check and merge Breanna's completed TDDs (2 reviews done on each)
 - TDD on remaining packages / classes
