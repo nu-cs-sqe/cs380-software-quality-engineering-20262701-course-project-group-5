@@ -1,4 +1,7 @@
 ![Gradle Build](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/actions/workflows/main.yml/badge.svg)
+
+![Missed complexity](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/raw/badges/complexity.svg)
+
 # Settlers of Catan (by team Toyota Camry)
 
 ## Contributors
