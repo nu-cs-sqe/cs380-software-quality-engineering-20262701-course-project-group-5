@@ -1,4 +1,4 @@
-name: Quality badges
+name: Complexity badge
 on:
   push:
     branches: [ "main" ]
@@ -24,8 +24,8 @@ jobs:
         run: chmod +x ./gradlew
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate badge JSON files
-        run: ./gradlew complexityBadge mutantsKilledBadge
+      - name: Generate badge JSON
+        run: ./gradlew complexityBadge -x pitest
 
       - name: Render badge SVG
         run: |
@@ -35,18 +35,10 @@ jobs:
             --data-urlencode "color=$(jq -r .color build/badges/complexity.json)" \
             -o build/badges/complexity.svg
 
-      - name: Render mutants killed badge SVG
-        run: |
-          curl -fsSL -G "https://img.shields.io/static/v1" \
-            --data-urlencode "label=$(jq -r .label build/badges/mutants-killed.json)" \
-            --data-urlencode "message=$(jq -r .message build/badges/mutants-killed.json)" \
-            --data-urlencode "color=$(jq -r .color build/badges/mutants-killed.json)" \
-            -o build/badges/mutants-killed.svg
-
-      - name: Publish badges to the 'badges' branch
+      - name: Publish badge to the 'badges' branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: badges
           publish_dir: build/badges
-          commit_message: "Update quality badges"
+          commit_message: "Update complexity badge"
