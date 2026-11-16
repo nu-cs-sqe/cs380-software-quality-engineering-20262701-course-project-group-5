@@ -1,7 +1,12 @@
 package catan.game_table.domain.player;
 
-import catan.game_table.domain.development.Knight;
+import catan.game_table.domain.Color;
+import catan.game_table.domain.bank.Buyable;
+import catan.game_table.domain.bank.PurchaseHelper;
+import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
+import catan.game_table.domain.trade.TradeHelper;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +14,7 @@ public class GamePlayerTests {
 
   @Test
   public void play_item_knight() {
-    GamePlayer player = new GamePlayer();
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
     Playable knight = EasyMock.createMock(Knight.class);
 
@@ -21,8 +26,70 @@ public class GamePlayerTests {
     player.play(knight);
 
     EasyMock.verify(knight);
+  }
 
+  @Test
+  public void play_item_monopoly() {
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
+    Playable monopoly = EasyMock.createMock(Monopoly.class);
+
+    // this is how you expect a void method
+    monopoly.onPlayEffect();
+    EasyMock.expectLastCall();
+    EasyMock.replay(monopoly);
+
+    player.play(monopoly);
+
+    EasyMock.verify(monopoly);
+  }
+
+  @Test
+  public void play_item_road_builder() {
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Playable roadbuilder = EasyMock.createMock(RoadBuilder.class);
+
+    // this is how you expect a void method
+    roadbuilder.onPlayEffect();
+    EasyMock.expectLastCall();
+    EasyMock.replay(roadbuilder);
+
+    player.play(roadbuilder);
+
+    EasyMock.verify(roadbuilder);
+  }
+
+  @Test
+  public void play_item_vp() {
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Playable vp = EasyMock.createMock(VictoryPoint.class);
+
+    // this is how you expect a void method
+    vp.onPlayEffect();
+    EasyMock.expectLastCall();
+    EasyMock.replay(vp);
+
+    player.play(vp);
+
+    EasyMock.verify(vp);
+  }
+
+  @Test
+  public void play_item_yop() {
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Playable yop = EasyMock.createMock(YearOfPlenty.class);
+
+    // this is how you expect a void method
+    yop.onPlayEffect();
+    EasyMock.expectLastCall();
+    EasyMock.replay(yop);
+
+    player.play(yop);
+
+    EasyMock.verify(yop);
   }
 
 

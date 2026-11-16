@@ -107,10 +107,10 @@ none
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | playable: Knight | `onPlayeEffect` has been called | :white_check_mark: |
-| Test Case 2 | playable: RoadBuilder| `onPlayeEffect` has been called | :x: |
-| Test Case 3 | playable: Victory point | `onPlayeEffect` has been called | :x: |
-| Test Case 4 | playable: Monopoly | `onPlayeEffect` has been called | :x: |
-| Test Case 5 | playable: YearOfPlenty| `onPlayeEffect` has been called | :x: |
+| Test Case 2 | playable: RoadBuilder| `onPlayeEffect` has been called | :white_check_mark: |
+| Test Case 3 | playable: Victory point | `onPlayeEffect` has been called | :white_check_mark: |
+| Test Case 4 | playable: Monopoly | `onPlayeEffect` has been called | :white_check_mark: |
+| Test Case 5 | playable: YearOfPlenty| `onPlayeEffect` has been called | :white_check_mark: |
 
 
 
