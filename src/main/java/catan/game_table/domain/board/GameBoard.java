@@ -8,4 +8,8 @@ public class GameBoard {
         return null;
     }
 
+    public Set<Edge> getConnectingEdges(Vertex vertex) {
+        return null;
+    }
+
 }

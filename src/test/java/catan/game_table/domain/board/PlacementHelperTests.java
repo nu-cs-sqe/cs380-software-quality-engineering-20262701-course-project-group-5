@@ -7,99 +7,112 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlacementHelperTests {
-
-    private final Set<Vertex> landVertices = makeLandVerticesSet();
 
     @Test
     public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndEmptyBoard_ExpectAllLandVertices() {
 
+        Vertex vertexA = EasyMock.createMock(Vertex.class);
+        Vertex vertexB = EasyMock.createMock(Vertex.class);
+        Vertex vertexC = EasyMock.createMock(Vertex.class);
+        Vertex vertexD = EasyMock.createMock(Vertex.class);
+        Vertex vertexE = EasyMock.createMock(Vertex.class);
+        Vertex vertexF = EasyMock.createMock(Vertex.class);
+        Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
+
         GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+        for (Vertex vertex : landVertices) {
+            EasyMock.expect(vertex.getPieces()).andReturn(List.of());
+            EasyMock.replay(vertex);
+        }
         EasyMock.expect(gameBoard.getLandVertices()).andReturn(landVertices);
+
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andReturn(GamePhase.SETUP);
+
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
         Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(Color.RED);
-        Set<Vertex> expectedVertices = makeLandVerticesSet();
-        Set<Point> actualPoints = actualVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
-        Set<Point> expectedPoints = expectedVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
+        Set<Vertex> expectedVertices = new HashSet<>(landVertices);
 
-        assertTrue(allPointsEqual(expectedPoints, actualPoints));
+        assertEquals(expectedVertices, actualVertices);
+
         EasyMock.verify(gameBoard, gamePhaseHolder);
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.verify(vertex);
+        }
 
     }
 
     @Test
     public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndEmptyBoard_ExpectNoVertices() {
 
+        Vertex vertexA = EasyMock.createMock(Vertex.class);
+        Vertex vertexB = EasyMock.createMock(Vertex.class);
+        Vertex vertexC = EasyMock.createMock(Vertex.class);
+        Vertex vertexD = EasyMock.createMock(Vertex.class);
+        Vertex vertexE = EasyMock.createMock(Vertex.class);
+        Vertex vertexF = EasyMock.createMock(Vertex.class);
+        Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
+
+        Edge edgeAB = EasyMock.createNiceMock(Edge.class);
+        Edge edgeBC = EasyMock.createNiceMock(Edge.class);
+        Edge edgeCD = EasyMock.createNiceMock(Edge.class);
+        Edge edgeDE = EasyMock.createNiceMock(Edge.class);
+        Edge edgeEF = EasyMock.createNiceMock(Edge.class);
+        Edge edgeFA = EasyMock.createNiceMock(Edge.class);
+        Set<Edge> landEdges = Set.of(edgeAB, edgeBC, edgeCD, edgeDE, edgeEF, edgeFA);
+
         GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.expect(vertex.getPieces()).andReturn(List.of());
+            EasyMock.replay(vertex);
+        }
+
+        for (Edge edge : landEdges) {
+            EasyMock.expect(edge.getPieces()).andReturn(List.of());
+            EasyMock.replay(edge);
+        }
+
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexA)).andReturn(Set.of(edgeFA, edgeAB));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexB)).andReturn(Set.of(edgeAB, edgeBC));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexC)).andReturn(Set.of(edgeBC, edgeCD));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexD)).andReturn(Set.of(edgeCD, edgeDE));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexE)).andReturn(Set.of(edgeDE, edgeEF));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexF)).andReturn(Set.of(edgeEF, edgeFA));
+
         EasyMock.expect(gameBoard.getLandVertices()).andReturn(landVertices);
+
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andReturn(GamePhase.REGULAR);
+
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
         Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(Color.RED);
         Set<Vertex> expectedVertices = new HashSet<>();
-        Set<Point> actualPoints = actualVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
-        Set<Point> expectedPoints = expectedVertices.stream().map(Vertex::getPoint).collect(Collectors.toSet());
 
-        assertTrue(allPointsEqual(expectedPoints, actualPoints));
+        assertEquals(expectedVertices, actualVertices);
+
         EasyMock.verify(gameBoard, gamePhaseHolder);
 
-    }
-
-    private Set<Vertex> makeLandVerticesSet() {
-
-        Set<Vertex> landVertices = new HashSet<>();
-
-        for (int j = 0; j < 3; j++) {
-            for (int i = j + 2; i < 13 - j; i++) {
-                Vertex vertex = EasyMock.createMock(Vertex.class);
-                EasyMock.expect(vertex.getPoint()).andStubReturn(new Point(i, -j));
-                EasyMock.replay(vertex);
-                landVertices.add(vertex);
-            }
-            for (int i = j + 2; i < 13 - j; i++) {
-                Vertex vertex = EasyMock.createMock(Vertex.class);
-                EasyMock.expect(vertex.getPoint()).andStubReturn(new Point(i, j + 1));
-                EasyMock.replay(vertex);
-                landVertices.add(vertex);
-            }
+        for (Vertex vertex : landVertices) {
+            EasyMock.verify(vertex);
         }
 
-        return landVertices;
-
-    }
-
-    private boolean pointsEqual(Point p1, Point p2) {
-        return p1.x == p2.x && p1.y == p2.y;
-    }
-
-    private boolean allPointsEqual(Set<Point> set1, Set<Point> set2) {
-
-        if (set1.size() != set2.size()) {
-            return false;
+        for (Edge edge : landEdges) {
+            EasyMock.verify(edge);
         }
-
-        Set<Point> set1Copy = new HashSet<>(set1);
-        Set<Point> set2Copy = new HashSet<>(set2);
-        for (Point p1 : set1Copy) {
-            if (!set2Copy.removeIf(p2 -> pointsEqual(p1, p2))) {
-                return false;
-            }
-        }
-
-        return set2Copy.isEmpty();
 
     }
 
