@@ -5,6 +5,7 @@ import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.Road;
 
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +73,12 @@ public class PlacementHelper {
 
     private boolean edgeHasRoadOfColor(Edge edge, Color color) {
         List<Piece> pieces = edge.getPieces();
-        return false; // TODO
+        for (Piece piece : pieces) {
+            if (piece instanceof Road && piece.getPieceData().getColor() == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
