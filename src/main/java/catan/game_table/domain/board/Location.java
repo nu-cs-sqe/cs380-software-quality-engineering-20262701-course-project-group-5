@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Location {
 
-    public List<Piece> getPieces() {
+    List<Piece> getPieces() {
         return null;
     }
 
