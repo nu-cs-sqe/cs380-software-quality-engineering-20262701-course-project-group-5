@@ -48,7 +48,7 @@ Returns an integer based on the color and the subclass of a given `Piece`. If tw
 | Test Case 6 | Let this be a City owned by White, input a Settlement owned by Red | False | :white_check_mark: |
 | Test Case 7 | Let this be a Road owned by Orange, input a Harbor owned by Blue | False | :white_check_mark: |
 | Test Case 8 | Let this be a Settlement owned by Red, input a Road owned by Red | False | :white_check_mark: |
-| Test Case 9 | Let this be a Harbor owned by Orange, input a Harbor owned by Blue | False | :x: |
+| Test Case 9 | Let this be a Harbor owned by Orange, input a Harbor owned by Blue | False | :white_check_mark: |
 
 
 ### Method under test: `public int hashCode()`
