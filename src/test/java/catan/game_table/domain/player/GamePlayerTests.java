@@ -159,5 +159,23 @@ public class GamePlayerTests {
 
   }
 
+  @Test
+  public void propose_player_trade_to_no_one_unsuccessful() {
+    GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new InvalidTradeException("Trade must go to someone");
+    Exception actual = null;
+    try {
+      player.proposePlayerTrade(Color.None, new TradeOffer());
+    } catch (Exception e) {
+      actual = e;
+    }
+    assertNotNull(actual);
+    assertEquals(expected.getClass(), actual.getClass());
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+
+  }
+
 
 }

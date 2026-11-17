@@ -17,9 +17,11 @@ import catan.game_table.domain.trade.TradeOffer;
 public class GamePlayer {
 
   private PurchaseHelper purchaseHelper;
+  private final Color color;
 
   public GamePlayer(Color color, PlacementHelper placementHelper, TradeHelper tradeHelper, PurchaseHelper purchaseHelper) {
     this.purchaseHelper = purchaseHelper;
+    this.color = color;
   }
 
   /**
@@ -39,6 +41,11 @@ public class GamePlayer {
   }
 
   public void proposePlayerTrade(Color otherPlayer, TradeOffer trade) {
-    throw new InvalidTradeException("Cannot offer to same player as proposed");
+    if (otherPlayer == Color.None) {
+      throw new InvalidTradeException("Trade must go to someone");
+    } else if (this.color == otherPlayer) {
+      throw new InvalidTradeException("Cannot offer to same player as proposed");
+    }
+
   }
 }
