@@ -12,4 +12,8 @@ public class GameBoard {
         return null;
     }
 
+    public Set<Vertex> getNeighboringVertices(Vertex vertex) {
+        return null;
+    }
+
 }

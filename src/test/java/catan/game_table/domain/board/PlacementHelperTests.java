@@ -3,6 +3,8 @@ package catan.game_table.domain.board;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
+import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.Settlement;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -112,6 +114,61 @@ public class PlacementHelperTests {
 
         for (Edge edge : landEdges) {
             EasyMock.verify(edge);
+        }
+
+    }
+
+    @Test
+    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndRedSettlementPlaced_ExpectVerticesTwoAwayFromSettlement() {
+
+        Piece settlement = EasyMock.createMock(Settlement.class);
+
+        Vertex vertexA = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexA.getPieces()).andReturn(List.of(settlement));
+
+        Vertex vertexB = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexB.getPieces()).andReturn(List.of());
+
+        Vertex vertexC = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexC.getPieces()).andReturn(List.of());
+
+        Vertex vertexD = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexD.getPieces()).andReturn(List.of());
+
+        Vertex vertexE = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexE.getPieces()).andReturn(List.of());
+
+        Vertex vertexF = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexF.getPieces()).andReturn(List.of());
+
+        Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
+
+        GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+
+        EasyMock.expect(gameBoard.getNeighboringVertices(vertexA)).andReturn(Set.of(vertexF, vertexB));
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.replay(vertex);
+        }
+
+        EasyMock.expect(gameBoard.getLandVertices()).andReturn(landVertices);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andReturn(GamePhase.SETUP);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(Color.RED);
+        Set<Vertex> expectedVertices = Set.of(vertexC, vertexD, vertexE);
+
+        assertEquals(expectedVertices, actualVertices);
+
+        EasyMock.verify(gameBoard, gamePhaseHolder);
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.verify(vertex);
         }
 
     }

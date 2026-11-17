@@ -3,6 +3,7 @@ package catan.game_table.domain.board;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
+import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
 
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class PlacementHelper {
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
 
-        validVertices.removeIf(this::vertexHasBuildingAlready);
+        validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
 
         if (gamePhase == GamePhase.REGULAR) {
             validVertices.removeIf(vertex -> vertexHasNoRoadsOfColor(vertex, color));
@@ -34,9 +35,29 @@ public class PlacementHelper {
 
     }
 
+    private Set<Vertex> getVerticesInvalidUnderDistanceRule(Set<Vertex> existingVertices) {
+
+        Set<Vertex> verticesInvalidUnderDistanceRule = new HashSet<>();
+
+        for (Vertex vertex : existingVertices) {
+            if (vertexHasBuildingAlready(vertex)) {
+                verticesInvalidUnderDistanceRule.add(vertex);
+                verticesInvalidUnderDistanceRule.addAll(gameBoard.getNeighboringVertices(vertex));
+            }
+        }
+
+        return verticesInvalidUnderDistanceRule;
+
+    }
+
     private boolean vertexHasBuildingAlready(Vertex vertex) {
         List<Piece> pieces = vertex.getPieces();
-        return false; // TODO
+        for (Piece piece : pieces) {
+            if (piece instanceof Building) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean vertexHasNoRoadsOfColor(Vertex vertex, Color color) {
