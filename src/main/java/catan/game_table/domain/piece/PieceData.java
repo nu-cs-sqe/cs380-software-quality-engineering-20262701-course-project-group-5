@@ -12,7 +12,7 @@ public class PieceData {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || object.getClass() != this.getClass()){
+    if (object == null || object.getClass() != this.getClass()) {
       return false;
     }
     PieceData objectData = (PieceData) object;
@@ -20,8 +20,7 @@ public class PieceData {
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     return color.hashCode() + type.hashCode();
   }
 }
