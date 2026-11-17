@@ -6,8 +6,10 @@ import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.PlacementHelper;
 import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
+import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.trade.TradeHelper;
+import catan.game_table.domain.trade.TradeOffer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -137,6 +139,24 @@ public class GamePlayerTests {
     }
     assertNotNull(actual);
     assertEquals(expected.getClass(), actual.getClass());
+  }
+
+  @Test
+  public void propose_player_trade_same_player_unsuccessful() {
+    GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
+    Exception actual = null;
+    try {
+      player.proposePlayerTrade(Color.Blue, new TradeOffer());
+    } catch (Exception e) {
+      actual = e;
+    }
+    assertNotNull(actual);
+    assertEquals(expected.getClass(), actual.getClass());
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+
   }
 
 

@@ -252,7 +252,7 @@ Adding element to list
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | current player: Blue, otherPlayer: Blue | `InvalidTradeException(cannot go to same player)` |:x:|
+| Test Case 1 | current player: Blue, otherPlayer: Blue | `InvalidTradeException(cannot go to same player)` |:white_check_mark:|
 | Test Case 2 | current Player: Blue, otherPlayer: None | `InvalidTradeException(trade must go to someone)` |:x:|
 | Test Case 3 | current Player Blue, otherPlayer Red, TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | TradeHelper offer list: TradeOffer{proposer: blue, receiver: red, requested{Ore:1}, offered{Lumber:1}} | :x: |
 | Test Case 4 | current player blue, other player red, TradeOffe{proposer: white, reciever: none} | `InvalidTradeException(trade offer doesn't match players)` | :x: |

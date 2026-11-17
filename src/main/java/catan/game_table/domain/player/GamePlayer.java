@@ -5,8 +5,10 @@ import catan.game_table.domain.Playable;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.trade.TradeHelper;
+import catan.game_table.domain.trade.TradeOffer;
 
 /**
  * GamePlayer is the model for each individual player.
@@ -34,5 +36,9 @@ public class GamePlayer {
     if (!res) {
       throw new NotEnoughInventoryException();
     }
+  }
+
+  public void proposePlayerTrade(Color otherPlayer, TradeOffer trade) {
+    throw new InvalidTradeException("Cannot offer to same player as proposed");
   }
 }
