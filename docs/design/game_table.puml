@@ -237,24 +237,18 @@ package board {
         +produceResourcesForToken(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
-        +getAllPoints() : Set<Point>
+        +getAllLandVertices() : Set<Vertex>
+        +getNeighboringVertices(vertex : Vertex) : Set<Vertex>
+        +getConnectingEdges(vertex : Vertex) : Set<Edge>
     }
 
     +class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
         +PlacementHelper(board : GameBoard, gamePhaseHolder : GamePhaseHolder)
-        +getValidBuildingSpots(color : Color) : Set<Point>
-        +getValidRoadSpots(color : Color) : Set<Set<Point>>
-        ' build
+        +getValidBuildingSpots(color : Color) : Set<Vertex>
+        +getValidRoadSpots(color : Color) : Set<Edge>
         +place(piece : Piece, location : Location) : void
-        ' checks for validity, ties to highlighting
-        -isValidBuildingSpot(vertex : Vertex) : boolean
-        -isValidRoadSpot(edge : Edge) : boolean
-        -isFarEnoughFromBuildings(vertex : Vertex) : boolean
-        -isVertexConnectedToOwnRoad(color : Color, vertex : Vertex) : boolean
-        -isEdgeConnectedToOwnPieces(color : Color, edge : Edge) : boolean
-        -touchesSetupSettlement(color : Color, edge : Edge) : boolean
     }
 
     +abstract class Hex {
@@ -300,7 +294,7 @@ package board {
 
     +abstract class Location {
         #pieces : List<Piece>
-        +getPieceData() : List<PieceData>
+        +getPieces() : List<Pieces>
         +addPiece(piece : Piece)) : void
         +removePieceWithData(data : PieceData) : void
     }
