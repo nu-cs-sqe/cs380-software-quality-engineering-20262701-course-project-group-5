@@ -1,0 +1,45 @@
+name: Mutants killed badge
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: complexity-badge-publish
+  cancel-in-progress: false
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate mutants killed badge JSON
+        run: ./gradlew mutantsKilledBadge
+
+      - name: Render mutants killed badge SVG
+        run: |
+          curl -fsSL -G "https://img.shields.io/static/v1" \
+            --data-urlencode "label=$(jq -r .label build/badges/mutants-killed.json)" \
+            --data-urlencode "message=$(jq -r .message build/badges/mutants-killed.json)" \
+            --data-urlencode "color=$(jq -r .color build/badges/mutants-killed.json)" \
+            -o build/badges/mutants-killed.svg
+
+      - name: Publish badge to the 'badges' branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: badges
+          publish_dir: build/badges
+          keep_files: true
+          commit_message: "Update mutants killed badge"

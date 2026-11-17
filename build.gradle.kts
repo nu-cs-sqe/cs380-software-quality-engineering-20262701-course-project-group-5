@@ -141,6 +141,44 @@ val complexityBadge by tasks.registering {
     }
 }
 
+val mutantsKilledBadge by tasks.registering {
+    group = "verification"
+    description = "Writes a Shields.io badge for mutants killed in domain code"
+    dependsOn(tasks.pitest)
+
+    val reportFile = layout.buildDirectory.file("reports/pitest/mutations.xml")
+    val outFile = layout.buildDirectory.file("badges/mutants-killed.json")
+    inputs.file(reportFile)
+    outputs.file(outFile)
+
+    doLast {
+        val factory = DocumentBuilderFactory.newInstance().apply {
+            isValidating = false
+            setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        }
+        val doc = factory.newDocumentBuilder().parse(reportFile.get().asFile)
+        val mutations = doc.getElementsByTagName("mutation")
+        val total = mutations.length
+        val killed = (0 until total).count {
+            (mutations.item(it) as Element).getAttribute("status") == "KILLED"
+        }
+        val color = when {
+            total == 0 -> "lightgrey"
+            killed == total -> "brightgreen"
+            killed.toLong() * 4 >= total.toLong() * 3 -> "yellow"
+            killed.toLong() * 2 >= total -> "orange"
+            else -> "red"
+        }
+        val message = if (total == 0) "no mutants" else "$killed / $total"
+        val json = """{"schemaVersion":1,"label":"mutants killed","message":"$message","color":"$color"}"""
+        outFile.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(json)
+        }
+        println("Badge: $json")
+    }
+}
+
 tasks.build {
     dependsOn("pitest")
 }
@@ -160,7 +198,7 @@ pitest {
     pitestVersion = "1.15.0" //not needed when a default PIT version should be used
 
     threads = 4
-    outputFormats = setOf("HTML")
+    outputFormats = setOf("HTML", "XML")
     timestampedReports = false
     testSourceSets.set(listOf(sourceSets.test.get()))
     mainSourceSets.set(listOf(sourceSets.main.get()))
