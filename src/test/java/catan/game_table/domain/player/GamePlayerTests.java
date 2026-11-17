@@ -92,5 +92,21 @@ public class GamePlayerTests {
     EasyMock.verify(yop);
   }
 
+  @Test
+  public void buy_dev_success() {
+
+    PurchaseHelper purchaseHelper = EasyMock.createMock(PurchaseHelper.class);
+    Buyable dev = EasyMock.createMock(Knight.class);
+
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), purchaseHelper);
+
+    EasyMock.expect(purchaseHelper.buy(dev)).andReturn(true);
+    EasyMock.replay(purchaseHelper, dev);
+
+    player.buy(dev);
+    
+    EasyMock.verify(purchaseHelper, dev);
+  }
+
 
 }

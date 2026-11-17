@@ -140,7 +140,7 @@ none
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory, `PurchaseHelper#buy()` has been called | :x: |
+| Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory, `PurchaseHelper#buy()` has been called | :white_check_mark: |
 | Test Case 2 | item: Road, state of player: doesn't have enough resources | throw `NotEnoughResourcesException` | :x: |
 
 
