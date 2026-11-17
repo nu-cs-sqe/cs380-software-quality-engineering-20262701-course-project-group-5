@@ -522,7 +522,6 @@ PlacementHelper ..> GamePhase
 PlacementHelper ..> Location
 PlacementHelper ..> Vertex
 PlacementHelper ..> Edge
-PlacementHelper ..> Point
 
 ResourceInventory ..> ResourceStack
 
