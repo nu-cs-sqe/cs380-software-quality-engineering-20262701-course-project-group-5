@@ -6,9 +6,12 @@ import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.PlacementHelper;
 import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
+import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.trade.TradeHelper;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GamePlayerTests {
 
@@ -103,9 +106,37 @@ public class GamePlayerTests {
     EasyMock.expect(purchaseHelper.buy(dev)).andReturn(true);
     EasyMock.replay(purchaseHelper, dev);
 
-    player.buy(dev);
+    try {
+      player.buy(dev);
+    } catch (NotEnoughInventoryException e) {
+      throw new RuntimeException("Unexpected exception in test");
+    }
+
     
     EasyMock.verify(purchaseHelper, dev);
+  }
+
+  @Test
+  public void buy_dev_failure() {
+
+    PurchaseHelper purchaseHelper = EasyMock.createMock(PurchaseHelper.class);
+    Buyable dev = EasyMock.createMock(Knight.class);
+
+    GamePlayer player = new GamePlayer(Color.None, new PlacementHelper(), new TradeHelper(), purchaseHelper);
+
+    EasyMock.expect(purchaseHelper.buy(dev)).andReturn(false);
+    EasyMock.replay(purchaseHelper, dev);
+
+
+    Exception expected = new NotEnoughInventoryException();
+    Exception actual = null;
+    try {
+      player.buy(dev);
+    } catch (Exception e) {
+      actual = e;
+    }
+    assertNotNull(actual);
+    assertEquals(expected.getClass(), actual.getClass());
   }
 
 

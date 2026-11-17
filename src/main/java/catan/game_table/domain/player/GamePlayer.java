@@ -5,6 +5,7 @@ import catan.game_table.domain.Playable;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.trade.TradeHelper;
 
 /**
@@ -28,7 +29,10 @@ public class GamePlayer {
     item.onPlayEffect();
   }
 
-  public void buy(Buyable item) {
-    this.purchaseHelper.buy(item);
+  public void buy(Buyable item) throws NotEnoughInventoryException {
+    boolean res = this.purchaseHelper.buy(item);
+    if (!res) {
+      throw new NotEnoughInventoryException();
+    }
   }
 }
