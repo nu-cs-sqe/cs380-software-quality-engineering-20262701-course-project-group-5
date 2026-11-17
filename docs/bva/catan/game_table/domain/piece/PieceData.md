@@ -40,8 +40,8 @@ Returns an integer based on the color and the subclass of a given `Piece`. If tw
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1 | Let this be a City owned by Blue, input a City owned by Blue | True | :x: |
-| Test Case 2 | Let this be a Settlement owned by Orange, input a Settlement owned by Orange | True | :x: |
+| Test Case 1 | Let this be a City owned by Blue, input a City owned by Blue | True | :white_check_mark: |
+| Test Case 2 | Let this be a Settlement owned by Orange, input a Settlement owned by Orange | True | :white_check_mark: |
 | Test Case 3 | Let this be a Harbor owned by Red, input a Harbor owned by Red | True | :x: |
 | Test Case 4 | Let this be a Road owned by White, input a Road owned by White | True | :x: |
 | Test Case 5 | Let this be a Robber with No Color, input a Road owned by White | False | :x: |
