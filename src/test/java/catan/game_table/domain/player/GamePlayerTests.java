@@ -8,10 +8,15 @@ import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
+import catan.game_table.domain.resource.ResourceInventory;
+import catan.game_table.domain.resource.ResourceStack;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -148,7 +153,11 @@ public class GamePlayerTests {
     Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
     Exception actual = null;
     try {
-      player.proposePlayerTrade(Color.Blue, new TradeOffer());
+      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+      List<ResourceStack> offered = new ArrayList<>();
+      List<ResourceStack> requested = new ArrayList<>();
+      player.proposePlayerTrade(Color.Blue, new TradeOffer(inv_a, inv_b, requested, offered));
     } catch (Exception e) {
       actual = e;
     }
@@ -166,13 +175,45 @@ public class GamePlayerTests {
     Exception expected = new InvalidTradeException("Trade must go to someone");
     Exception actual = null;
     try {
-      player.proposePlayerTrade(Color.None, new TradeOffer());
+      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+      List<ResourceStack> offered = new ArrayList<>();
+      List<ResourceStack> requested = new ArrayList<>();
+      player.proposePlayerTrade(Color.None, new TradeOffer(inv_a, inv_b, requested, offered));
     } catch (Exception e) {
       actual = e;
     }
     assertNotNull(actual);
     assertEquals(expected.getClass(), actual.getClass());
     assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void propose_player_trade_successful() {
+    TradeHelper trader = EasyMock.createMock(TradeHelper.class);
+    GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), trader, new PurchaseHelper());
+
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = new ArrayList<>();
+    List<ResourceStack> requested = new ArrayList<>();
+    TradeOffer offer = new TradeOffer(inv_a, inv_b, requested, offered);
+
+    trader.addTradeOffer(offer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(trader);
+
+
+    try {
+      player.proposePlayerTrade(Color.Red, offer);
+    } catch (Exception e) {
+      throw new RuntimeException("Unexpected call failure");
+    }
+
+    // I suppose the test is for a call to add the trade offer to the ledger
+    EasyMock.verify(trader);
 
 
   }

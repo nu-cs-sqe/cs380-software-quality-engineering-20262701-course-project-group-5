@@ -16,12 +16,14 @@ import catan.game_table.domain.trade.TradeOffer;
  */
 public class GamePlayer {
 
-  private PurchaseHelper purchaseHelper;
+  private final PurchaseHelper purchaseHelper;
+  private final TradeHelper tradeHelper;
   private final Color color;
 
   public GamePlayer(Color color, PlacementHelper placementHelper, TradeHelper tradeHelper, PurchaseHelper purchaseHelper) {
     this.purchaseHelper = purchaseHelper;
     this.color = color;
+    this.tradeHelper = tradeHelper;
   }
 
   /**
@@ -46,6 +48,8 @@ public class GamePlayer {
     } else if (this.color == otherPlayer) {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
     }
+
+    this.tradeHelper.addTradeOffer(trade);
 
   }
 }
