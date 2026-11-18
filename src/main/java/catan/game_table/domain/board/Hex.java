@@ -57,7 +57,6 @@ public abstract class Hex extends Location {
 
     private static void requireClosedRing(Set<Vertex> vertices, Set<Edge> edges) {
         requireSideCount(vertices, "vertices");
-        requireSideCount(edges, "edges");
         requireEndpointsInVertices(vertices, edges);
         requireTwoEdgesPerCorner(vertices, edges);
         requireSingleRing(vertices, edges);
