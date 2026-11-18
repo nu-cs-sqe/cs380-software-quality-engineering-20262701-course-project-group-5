@@ -25,7 +25,7 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `products : ResourceProducts` | No concrete outputs, but calls `bankResourceDistributor`'s `produce()` to try and increment/decrement respectively `bankInventory` and `PlayerInventory`.|
+| `products : ResourceProducts` | No concrete outputs, but calls `bankResourceDistributor:produceResources()` to try and increment/decrement respectively `bankInventory` and `PlayerInventory`.|
 
 **Step 2: Data types**
 | Variable | Type |
@@ -37,9 +37,9 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 | Variable | Values |
 |---|---|
 | `products` | a valid `ResourceProducts` |
-| Output | Cases: `bankResourceDistributor` `produce()` is called |
+| Output | Cases: `bankResourceDistributor:produceResources()` is called |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1  | `products` is a valid `ResourceProducts`| `bankResourceDistributor` `produce()` is called | :x: |
+| Test Case 1  | `products` is a valid `ResourceProducts`| `bankResourceDistributor:produceResources()` is called | :x: |
