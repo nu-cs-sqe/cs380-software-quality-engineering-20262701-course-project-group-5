@@ -157,28 +157,6 @@ class GameBoardTests {
         return hexes;
     }
 
-    private static GameBoard boardOf(Hex... hexes) {
-        return new GameBoard(
-                new LinkedHashSet<>(List.of(hexes)),
-                Set.of(),
-                Set.of());
-    }
-
-    private static Hex hexExpectedToProduce(int tokenValue) {
-        Hex hex = EasyMock.createMock(Hex.class);
-        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
-        hex.produceResources();
-        EasyMock.expectLastCall();
-        EasyMock.replay(hex);
-        return hex;
-    }
-
-    private static Hex hexNotExpectedToProduce(int tokenValue) {
-        Hex hex = EasyMock.createMock(Hex.class);
-        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
-        EasyMock.replay(hex);
-        return hex;
-    }
 
     // addPieceAtLocation tests
 
