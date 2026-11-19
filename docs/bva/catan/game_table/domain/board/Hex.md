@@ -47,27 +47,28 @@ Inherited methods: see `Location`.
 |---|---|
 | `vertices` | empty, exactly one, 5, 6, 7 |
 | `edges` | empty, exactly one, 5, 6, 7 |
-| edges' endpoints vs `vertices` | one closed ring through all 6 vertices; circular but split into two rings; not circular (open chain); an endpoint that is not in `vertices` |
+| edges' endpoints vs `vertices` | one closed ring through all 6 vertices; one closed ring through 5 vertices with 5 edges (below the required size); circular but split into two rings; not circular (open chain); an endpoint that is not in `vertices` |
 | `products` | a valid `ResourceProducts` |
 | `tokenValue` | a valid token |
 | outcome (output) | hex created, IllegalArgumentException |
 
 **Step 4: Each choice**
 
-|              | Input                                                                               | Expected output            | Implemented?       |
-|--------------|-------------------------------------------------------------------------------------|----------------------------|--------------------|
-| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token  | hex created                | :white_check_mark: |
-| Test Case 2  | `vertices` empty, valid others                                                      | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 3  | `vertices` has 1 element                                                            | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 4  | `vertices` has 5 elements                                                           | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 5  | `vertices` has 7 elements                                                           | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 6  | `edges` has 5 elements                                                              | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 7  | `edges` has 7 elements                                                              | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`             | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)   | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 11 | 6 vertices, no edges, valid products and token                                      | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token          | `IllegalArgumentException` | :white_check_mark: |
+|              | Input                                                                                                 | Expected output            | Implemented?       |
+|--------------|-------------------------------------------------------------------------------------------------------|----------------------------|--------------------|
+| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token                    | hex created                | :white_check_mark: |
+| Test Case 2  | `vertices` empty, valid others                                                                        | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 3  | `vertices` has 1 element                                                                              | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 4  | `vertices` has 5 elements                                                                             | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 5  | `vertices` has 7 elements                                                                             | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 6  | `edges` has 5 elements                                                                                | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 7  | `edges` has 7 elements                                                                                | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 8  | 6 vertices, 6 edges, one edge has an endpoint that is not in `vertices`                               | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 9  | 6 vertices, 6 edges forming two separate triangles (circular but not one hexagon)                     | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 10 | 6 vertices, 6 edges not forming a ring: open chain of 5 edges plus a duplicate edge                   | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 11 | 6 vertices, no edges, valid products and token                                                        | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token                            | `IllegalArgumentException` | :white_check_mark: |
+| Test Case 13 | 5 vertices at distinct points, 5 edges forming one closed ring through them, valid products and token | `IllegalArgumentException` | :x:                |
 
 
 ### Test: `public boolean canProduce()`
