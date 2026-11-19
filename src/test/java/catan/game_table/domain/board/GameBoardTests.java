@@ -19,7 +19,7 @@ class GameBoardTests {
 
     @Test
     void ProduceResourcesForToken_OnBoardWithoutHexes_DoesNothing() {
-        GameBoard board = boardOf();
+        GameBoard board = boardWithHexes();
 
         assertDoesNotThrow(() -> board.produceResourcesForToken(6));
     }
@@ -27,7 +27,7 @@ class GameBoardTests {
     @Test
     void ProduceResourcesForToken_OnBoardWithOneMatchingHex_AsksThatHexToProduce() {
         Hex hex = hexExpectedToProduce(8);
-        GameBoard board = boardOf(hex);
+        GameBoard board = boardWithHexes(hex);
 
         board.produceResourcesForToken(8);
 
@@ -39,7 +39,7 @@ class GameBoardTests {
         Hex first = hexNotExpectedToProduce(3);
         Hex second = hexNotExpectedToProduce(4);
         Hex third = hexNotExpectedToProduce(9);
-        GameBoard board = boardOf(first, second, third);
+        GameBoard board = boardWithHexes(first, second, third);
 
         board.produceResourcesForToken(6);
 
@@ -51,7 +51,7 @@ class GameBoardTests {
         Hex first = hexExpectedToProduce(2);
         Hex second = hexNotExpectedToProduce(5);
         Hex third = hexNotExpectedToProduce(9);
-        GameBoard board = boardOf(first, second, third);
+        GameBoard board = boardWithHexes(first, second, third);
 
         board.produceResourcesForToken(2);
 
@@ -63,7 +63,7 @@ class GameBoardTests {
         Hex first = hexNotExpectedToProduce(5);
         Hex second = hexNotExpectedToProduce(9);
         Hex third = hexExpectedToProduce(12);
-        GameBoard board = boardOf(first, second, third);
+        GameBoard board = boardWithHexes(first, second, third);
 
         board.produceResourcesForToken(12);
 
@@ -75,7 +75,7 @@ class GameBoardTests {
         Hex first = hexNotExpectedToProduce(3);
         Hex second = hexExpectedToProduce(5);
         Hex third = hexNotExpectedToProduce(9);
-        GameBoard board = boardOf(first, second, third);
+        GameBoard board = boardWithHexes(first, second, third);
 
         board.produceResourcesForToken(5);
 
@@ -87,7 +87,7 @@ class GameBoardTests {
         Hex firstEight = hexExpectedToProduce(8);
         Hex other = hexNotExpectedToProduce(3);
         Hex secondEight = hexExpectedToProduce(8);
-        GameBoard board = boardOf(firstEight, other, secondEight);
+        GameBoard board = boardWithHexes(firstEight, other, secondEight);
 
         board.produceResourcesForToken(8);
 
@@ -98,7 +98,7 @@ class GameBoardTests {
     void ProduceResourcesForToken_BelowMinimumTokenValue_ThrowsIllegalArgumentException() {
         Hex first = hexNotExpectedToProduce(3);
         Hex second = hexNotExpectedToProduce(4);
-        GameBoard board = boardOf(first, second);
+        GameBoard board = boardWithHexes(first, second);
 
         assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(1));
     }
@@ -107,7 +107,7 @@ class GameBoardTests {
     void ProduceResourcesForToken_AboveMaximumTokenValue_ThrowsIllegalArgumentException() {
         Hex first = hexNotExpectedToProduce(3);
         Hex second = hexNotExpectedToProduce(4);
-        GameBoard board = boardOf(first, second);
+        GameBoard board = boardWithHexes(first, second);
 
         assertThrows(IllegalArgumentException.class, () -> board.produceResourcesForToken(13));
     }
@@ -116,14 +116,14 @@ class GameBoardTests {
     void ProduceResourcesForToken_WithRobberValueSeven_NoHexProduces() {
         Hex first = hexNotExpectedToProduce(6);
         Hex second = hexNotExpectedToProduce(8);
-        GameBoard board = boardOf(first, second);
+        GameBoard board = boardWithHexes(first, second);
 
         board.produceResourcesForToken(7);
 
         EasyMock.verify(first, second);
     }
 
-    private static GameBoard boardOf(Hex... hexes) {
+    private static GameBoard boardWithHexes(Hex... hexes) {
         return new GameBoard(
                 new LinkedHashSet<>(List.of(hexes)),
                 Set.of(),
@@ -158,7 +158,7 @@ class GameBoardTests {
     @Test
     void ProduceResourcesForToken_OnFullBoardWithTwoHexesOfTokenEight_ExactlyThoseProduce() {
         List<Hex> hexes = fullBoardHexes();
-        GameBoard board = boardOf(hexes.toArray(new Hex[0]));
+        GameBoard board = boardWithHexes(hexes.toArray(new Hex[0]));
 
         board.produceResourcesForToken(ROLLED_TOKEN);
 
@@ -191,7 +191,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         Observer observer = observerExpectingOneUpdate();
         EasyMock.replay(settlement, vertex);
-        GameBoard board = boardOf();
+        GameBoard board = boardWithHexes();
 
         board.addObserver(observer);
 
@@ -244,7 +244,7 @@ class GameBoardTests {
         edge.addPiece(road);
         edge.addPiece(harbor);
         EasyMock.replay(road, harbor, edge);
-        GameBoard board = boardOf();
+        GameBoard board = boardWithHexes();
 
         board.addPieceAtLocation(road, edge);
         board.addPieceAtLocation(harbor, edge);
@@ -257,7 +257,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(piece, location);
 
-        boardOf().addPieceAtLocation(piece, location);
+        boardWithHexes().addPieceAtLocation(piece, location);
 
         EasyMock.verify(location);
     }
@@ -283,7 +283,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(location);
         Observer observer = observerExpectingOneUpdate();
-        GameBoard board = boardOf();
+        GameBoard board = boardWithHexes();
         board.addObserver(observer);
 
         board.removePieceFromLocation(data, location);
@@ -303,7 +303,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(location);
 
-        boardOf().removePieceFromLocation(data, location);
+        boardWithHexes().removePieceFromLocation(data, location);
 
         EasyMock.verify(location);
     }
@@ -324,7 +324,7 @@ class GameBoardTests {
         EasyMock.expect(location.holdsPieceWithData(data)).andStubReturn(false);
         EasyMock.replay(location);
 
-        boardOf().removePieceFromLocation(data, location);
+        boardWithHexes().removePieceFromLocation(data, location);
 
         EasyMock.verify(location);
     }
@@ -344,7 +344,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(edge);
 
-        boardOf().removePieceFromLocation(ROAD_DATA, edge);
+        boardWithHexes().removePieceFromLocation(ROAD_DATA, edge);
 
         EasyMock.verify(edge);
     }
@@ -358,7 +358,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(edge);
 
-        boardOf().removePieceFromLocation(HARBOR_DATA, edge);
+        boardWithHexes().removePieceFromLocation(HARBOR_DATA, edge);
 
         EasyMock.verify(edge);
     }
@@ -373,7 +373,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(vertex);
 
-        boardOf().removePieceFromLocation(new PieceData(SETTLEMENT_TYPE), vertex);
+        boardWithHexes().removePieceFromLocation(new PieceData(SETTLEMENT_TYPE), vertex);
 
         EasyMock.verify(vertex);
     }
@@ -382,10 +382,10 @@ class GameBoardTests {
 
     @Test
     void CreateNeighbors_WithNoVerticesOrEdges_DoesNotThrow() {
-        assertDoesNotThrow(() -> boardWith(Set.of(), Set.of()));
+        assertDoesNotThrow(() -> boardWithVerticesAndEdges(Set.of(), Set.of()));
     }
 
-    private static GameBoard boardWith(Set<Vertex> vertices, Set<Edge> edges) {
+    private static GameBoard boardWithVerticesAndEdges(Set<Vertex> vertices, Set<Edge> edges) {
         return new GameBoard(Set.of(), vertices, edges);
     }
 
@@ -404,7 +404,7 @@ class GameBoardTests {
     void CreateNeighbors_OnSingleHexRing_EachVertexHasItsTwoNeighbors() {
         Vertex a = vertexAt(A); Vertex b = vertexAt(B); Vertex c = vertexAt(C);
         Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
-        GameBoard board = boardWith(
+        GameBoard board = boardWithVerticesAndEdges(
                 orderedSetOf(a, b, c, d, e, f),
                 orderedSetOf(edgeBetween(A, B), edgeBetween(B, C), edgeBetween(C, D),
                         edgeBetween(D, E), edgeBetween(E, F), edgeBetween(F, A)));
@@ -442,7 +442,7 @@ class GameBoardTests {
         Vertex d = vertexAt(D); Vertex e = vertexAt(E); Vertex f = vertexAt(F);
         Vertex g = vertexAt(G); Vertex h = vertexAt(H); Vertex i = vertexAt(I);
         Vertex j = vertexAt(J);
-        GameBoard board = boardWith(
+        GameBoard board = boardWithVerticesAndEdges(
                 orderedSetOf(a, b, c, d, e, f, g, h, i, j),
                 orderedSetOf(edgeBetween(A, B), edgeBetween(B, C), edgeBetween(C, D),
                         edgeBetween(D, E), edgeBetween(E, F), edgeBetween(F, A),
@@ -473,7 +473,7 @@ class GameBoardTests {
         assertEquals(54, vertices.size());
         assertEquals(72, edges.size());
 
-        GameBoard board = boardWith(new LinkedHashSet<>(vertices.values()), edges);
+        GameBoard board = boardWithVerticesAndEdges(new LinkedHashSet<>(vertices.values()), edges);
 
         assertEquals(36, cornersWithNeighborCount(board, vertices.values(), 3));
         assertEquals(18, cornersWithNeighborCount(board, vertices.values(), 2));
