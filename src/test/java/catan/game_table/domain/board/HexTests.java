@@ -303,9 +303,23 @@ class HexTests {
     @Test
     void ProduceResources_OnProducingFieldsHexWithEmptyProducts_EachVertexProducesOnceWithProducts() {
         List<Vertex> vertices = CORNERS.stream()
-                .map(HexTests::vertexExpectedToProduce)
+                .map(point -> vertexExpectedToProduce(point, PRODUCTS))
                 .toList();
         Hex hex = new FieldsHex(TOKEN_VALUE, new LinkedHashSet<>(vertices), ring(), PRODUCTS);
+
+        hex.produceResources();
+
+        EasyMock.verify(vertices.toArray());
+    }
+
+    @Test
+    void ProduceResources_OnProducingFieldsHexWithOneProduct_EachVertexProducesOnceWithProducts() {
+        ResourceStack product = EasyMock.createMock(ResourceStack.class);
+        List<ResourceStack> products = List.of(product);
+        List<Vertex> vertices = CORNERS.stream()
+                .map(point -> vertexExpectedToProduce(point, products))
+                .toList();
+        Hex hex = new FieldsHex(TOKEN_VALUE, new LinkedHashSet<>(vertices), ring(), products);
 
         hex.produceResources();
 
@@ -356,10 +370,10 @@ class HexTests {
         return vertex;
     }
 
-    private static Vertex vertexExpectedToProduce(Point point) {
+    private static Vertex vertexExpectedToProduce(Point point, List<ResourceStack> products) {
         Vertex vertex = EasyMock.createMock(Vertex.class);
         EasyMock.expect(vertex.getPoint()).andStubReturn(point);
-        vertex.produceResources(PRODUCTS);
+        vertex.produceResources(products);
         EasyMock.expectLastCall().once();
         EasyMock.replay(vertex);
         return vertex;
