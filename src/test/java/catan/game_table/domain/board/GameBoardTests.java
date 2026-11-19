@@ -123,6 +123,29 @@ class GameBoardTests {
         EasyMock.verify(first, second);
     }
 
+    private static GameBoard boardOf(Hex... hexes) {
+        return new GameBoard(
+                new LinkedHashSet<>(List.of(hexes)),
+                Set.of(),
+                Set.of());
+    }
+
+    private static Hex hexExpectedToProduce(int tokenValue) {
+        Hex hex = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
+        hex.produceResources();
+        EasyMock.expectLastCall();
+        EasyMock.replay(hex);
+        return hex;
+    }
+
+    private static Hex hexNotExpectedToProduce(int tokenValue) {
+        Hex hex = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex.getTokenValue()).andStubReturn(tokenValue);
+        EasyMock.replay(hex);
+        return hex;
+    }
+    
     private static final int NO_TOKEN = 0;
     private static final int ROLLED_TOKEN = 8;
     private static final int OCEAN_HEX_COUNT = 6;
