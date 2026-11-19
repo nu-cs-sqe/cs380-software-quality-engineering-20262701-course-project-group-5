@@ -32,6 +32,15 @@ class HexTests {
     }
 
     @Test
+    void Constructor_WithClosedRingOfSixVerticesAndOneProduct_CreatesHex() {
+        ResourceStack product = EasyMock.createMock(ResourceStack.class);
+        List<ResourceStack> products = List.of(product);
+
+        assertDoesNotThrow(() ->
+                new ForestHex(TOKEN_VALUE, sixVertices(), ring(), products));
+    }
+
+    @Test
     void Constructor_WithClosedRingOfFiveVertices_ThrowsIllegalArgumentException() {
         Set<Vertex> vertices = CORNERS.stream()
                 .limit(5)
