@@ -137,7 +137,7 @@ package bank {
         -{final} bankInventory : ResourceInventory
         -resourcesToDistribute : Map<Color, List<ResourceStack>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
-        +produceResources(color : Color, products : ResourceProducts) : void
+        +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
         +abortProduction() : void
     }
@@ -270,12 +270,12 @@ package board {
         -vertices : Set<Vertex>
         -edges : Set<Edge>
         -canProduce : boolean
-        -products : ResourceProducts
-        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
+        -products : List<ResourceStack>
+        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
-        +produceResources() : void
+        +produceResources(products : List<ResourceStack>) : void
     }
 
     +class HillsHex {
@@ -318,7 +318,7 @@ package board {
         -{final} point : Point
         +Vertex(endpoint : Point)
         +getPoint() : Point
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products: List<ResourceStack>) : void
     }
 
     +class Edge {
@@ -350,8 +350,9 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
+        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products: List<ResourceStack>) : void
     }
 
     +class PieceData {
@@ -364,14 +365,14 @@ package piece {
     +class Settlement {
         -ownerVictoryPointsTracker : ScoreTracker
         +Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products: List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
         +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products: List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
@@ -431,17 +432,8 @@ package resource {
     +interface ResourceInventory {
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) : void
+        +removeResources(stack : ResourceStack) throws NotEnoughInventoryException : void
     }
-
-    +class ResourceProducts {
-        -baseProducts : List<ResourceStack>
-        -cityBonusProducts : List<ResourceStack>
-        +ResourceProducts(baseProducts : List<ResourceStack>, cityBonusProducts : List<ResourceStack>)
-        +getBaseProducts() : List<ResourceStack>
-        +getCityBonusProducts() : List<ResourceStack>
-    }
-
 }
 
 package development {
@@ -558,7 +550,6 @@ Hex --|> Location
 
 Edge ..> PieceData
 
-Hex --> ResourceProducts
 HillsHex --|> Hex
 ForestHex --|> Hex
 MountainsHex --|> Hex
@@ -574,7 +565,6 @@ Vertex --|> Location
 Edge --> Piece
 Edge --> Point
 Edge --|> Location
-Vertex ..> ResourceProducts
 
 Harbor --> ResourceStack
 
@@ -602,15 +592,10 @@ OreResourceStack --|> ResourceStack
 GrainResourceStack --|> ResourceStack
 WoolResourceStack --|> ResourceStack
 
-ResourceProducts --> ResourceStack
-
 Building --> BankResourceDistributor
 Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
-Building ..> ResourceProducts
-Settlement ..> ResourceProducts
-City ..> ResourceProducts
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
