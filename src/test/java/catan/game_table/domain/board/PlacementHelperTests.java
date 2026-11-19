@@ -660,6 +660,98 @@ public class PlacementHelperTests {
 
     }
 
+    @Test
+    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndRedSettlementPlusTwoLinearRoadsPlaced_ExpectVertexAtEndOfRoads() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.REGULAR;
+
+        Piece settlement = makePieceMock(Settlement.class, playerColor);
+        Piece road1 = makePieceMock(Road.class, playerColor);
+        Piece road2 = makePieceMock(Road.class, playerColor);
+
+        Vertex vertexA = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexA.getPieces()).andReturn(List.of(settlement));
+
+        Vertex vertexB = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexB.getPieces()).andReturn(List.of());
+
+        Vertex vertexC = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexC.getPieces()).andReturn(List.of());
+
+        Vertex vertexD = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexD.getPieces()).andReturn(List.of());
+
+        Vertex vertexE = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexE.getPieces()).andReturn(List.of());
+
+        Vertex vertexF = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexF.getPieces()).andReturn(List.of());
+
+        Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
+
+        Edge edgeAB = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeAB.getPieces()).andReturn(List.of(road1)).anyTimes();
+
+        Edge edgeBC = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeBC.getPieces()).andReturn(List.of(road2)).anyTimes();
+
+        Edge edgeCD = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeCD.getPieces()).andReturn(List.of()).anyTimes();
+
+        Edge edgeDE = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeDE.getPieces()).andReturn(List.of()).anyTimes();
+
+        Edge edgeEF = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeEF.getPieces()).andReturn(List.of()).anyTimes();
+
+        Edge edgeFA = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edgeFA.getPieces()).andReturn(List.of()).anyTimes();
+
+        Set<Edge> landEdges = Set.of(edgeAB, edgeBC, edgeCD, edgeDE, edgeEF, edgeFA);
+
+        GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+
+        EasyMock.expect(gameBoard.getNeighboringVertices(vertexA)).andReturn(Set.of(vertexF, vertexB));
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.replay(vertex);
+        }
+
+        for (Edge edge : landEdges) {
+            EasyMock.replay(edge);
+        }
+
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexC)).andReturn(Set.of(edgeBC, edgeCD));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexD)).andReturn(Set.of(edgeCD, edgeDE));
+        EasyMock.expect(gameBoard.getConnectingEdges(vertexE)).andReturn(Set.of(edgeDE, edgeEF));
+
+        EasyMock.expect(gameBoard.getLandVertices()).andReturn(landVertices);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> expectedVertices = Set.of(vertexC);
+
+        assertEquals(expectedVertices, actualVertices);
+
+        EasyMock.verify(gameBoard, gamePhaseHolder);
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.verify(vertex);
+        }
+
+        for (Edge edge : landEdges) {
+            EasyMock.verify(edge);
+        }
+
+    }
+
     private Piece makePieceMock(Class<? extends Piece> pieceClass, Color color) {
 
         Piece piece = EasyMock.createMock(pieceClass);
