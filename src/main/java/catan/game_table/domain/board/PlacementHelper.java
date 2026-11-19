@@ -43,6 +43,10 @@ public class PlacementHelper {
 
         validEdges.removeIf(edge -> !edgeTouchingSameColorPiece(edge, color));
 
+        if (gamePhase == GamePhase.SETUP) {
+            validEdges.removeIf(edge -> !edgeTouchingJustPlacedBuilding(edge, color));
+        }
+
         return validEdges;
 
     }
@@ -107,6 +111,26 @@ public class PlacementHelper {
         List<Piece> pieces = vertex.getPieces();
         for (Piece piece : pieces) {
             if (piece instanceof Building && piece.getPieceData().getColor() == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean edgeTouchingJustPlacedBuilding(Edge edge, Color color) {
+        Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
+        for (Vertex vertex : endpointVertices) {
+            if (vertexHasBuildingOfColor(vertex, color)) {
+                return !vertexConnectedToRoadOfSameColor(vertex, color);
+            }
+        }
+        return false;
+    }
+
+    private boolean vertexConnectedToRoadOfSameColor(Vertex vertex, Color color) {
+        Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
+        for (Edge edge : connectingEdges) {
+            if (edgeHasRoadOfColor(edge, color)) {
                 return true;
             }
         }
