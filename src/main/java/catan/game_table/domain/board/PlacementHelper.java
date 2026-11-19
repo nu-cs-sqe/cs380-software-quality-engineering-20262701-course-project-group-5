@@ -36,6 +36,17 @@ public class PlacementHelper {
 
     }
 
+    public Set<Edge> getValidRoadSpots(Color color) {
+
+        GamePhase gamePhase = gamePhaseHolder.getGamePhase();
+        Set<Edge> validEdges = new HashSet<>(gameBoard.getLandEdges());
+
+        validEdges.removeIf(edge -> !edgeTouchingSameColorPiece(edge, color));
+
+        return validEdges;
+
+    }
+
     private Set<Vertex> getVerticesInvalidUnderDistanceRule(Set<Vertex> existingVertices) {
 
         Set<Vertex> verticesInvalidUnderDistanceRule = new HashSet<>();
@@ -75,6 +86,27 @@ public class PlacementHelper {
         List<Piece> pieces = edge.getPieces();
         for (Piece piece : pieces) {
             if (piece instanceof Road && piece.getPieceData().getColor() == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean edgeTouchingSameColorPiece(Edge edge, Color color) {
+        Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
+        for (Vertex vertex : endpointVertices) {
+            if (vertexHasBuildingOfColor(vertex, color)) {
+                return true;
+            }
+            // TODO
+        }
+        return false;
+    }
+
+    private boolean vertexHasBuildingOfColor(Vertex vertex, Color color) {
+        List<Piece> pieces = vertex.getPieces();
+        for (Piece piece : pieces) {
+            if (piece instanceof Building && piece.getPieceData().getColor() == color) {
                 return true;
             }
         }

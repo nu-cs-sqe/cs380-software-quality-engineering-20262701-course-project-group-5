@@ -8,11 +8,15 @@ public class GameBoard {
         return null;
     }
 
+    public Set<Edge> getLandEdges() {
+        return null;
+    }
+
     public Set<Edge> getConnectingEdges(Vertex vertex) {
         return null;
     }
 
-    public Set<Vertex> getNeighboringVertices(Vertex vertex) {
+    public Set<Vertex> getNeighboringVertices(Location location) {
         return null;
     }
 
