@@ -118,6 +118,18 @@ class HexTests {
     }
 
     @Test
+    void Constructor_WithDuplicateVertexPointAndMissingEndpoint_ThrowsIllegalArgumentException() {
+        Set<Vertex> vertices = CORNERS.stream()
+                .limit(5)
+                .map(Vertex::new)
+                .collect(toCollection(LinkedHashSet::new));
+        vertices.add(new Vertex(CORNERS.get(4)));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(vertices, ring()));
+    }
+
+    @Test
     void Constructor_WithOpenChainAndDuplicateEdge_ThrowsIllegalArgumentException() {
         Set<Edge> edges = new LinkedHashSet<>(List.of(
                 edge(0, 1),

@@ -70,7 +70,7 @@ Inherited methods: see `Location`.
 | Test Case 11 | 6 vertices, no edges, valid products and token                                                                                                  | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token                                                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 13 | 5 vertices at distinct points, 5 edges forming one closed ring through them, valid products and token                                           | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 14 | 6 vertex objects at 5 distinct points (one duplicated); 6-edge ring through those points and one missing vertex point; valid products and token | `IllegalArgumentException` | :x:                |
+| Test Case 14 | 6 vertex objects at 5 distinct points (one duplicated); 6-edge ring through those points and one missing vertex point; valid products and token | `IllegalArgumentException` | :white_check_mark: |
 
 
 ### Test: `public boolean canProduce()`
