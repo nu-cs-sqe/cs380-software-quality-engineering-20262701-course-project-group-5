@@ -5,10 +5,10 @@ Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `
 
 ## `public abstract class Hex extends Location`
 
-A terrain tile with a token number, six vertices, six edges, and a set of resource products. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
+A terrain tile with a token number, six vertices, six edges, and a list of zero or one resource stack. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
 
-### `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
-Initializes a `Hex` with the given token number. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
+### `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, List<ResourceStack> products)`
+Initializes a `Hex` with the given token number and a products list containing zero or one `ResourceStack` (a caller precondition). Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
 
 ### `public boolean canProduce()`
 Returns whether this hex currently produces resources (false while the robber sits on it, or for desert and ocean).
@@ -25,12 +25,12 @@ If `canProduce()`, calls `Vertex.produceResources()` on each of its 6 vertices, 
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
-### Test: `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products)`
+### Test: `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, List<ResourceStack> products)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `tokenValue : int`, `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
+| `tokenValue : int`, `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : List<ResourceStack>` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -38,7 +38,7 @@ Inherited methods: see `Location`.
 | `vertices` | Collection (fixed size 6) |
 | `edges` | Collection (fixed size 6) |
 | edges' endpoints vs `vertices` | Collection built with references (the structure must be circular) |
-| `products` | Cases (a valid `ResourceProducts`) |
+| `products` | Collection (zero or one `ResourceStack`) |
 | `tokenValue` | Cases (a valid token; the boundary values are tested through `getTokenValue()`) |
 | outcome (output) | Cases |
 
@@ -49,7 +49,7 @@ Inherited methods: see `Location`.
 | vertex coordinates | all distinct; 6 distinct vertex objects representing only 5 distinct points |
 | `edges` | empty, exactly one, 5, 6, 7 |
 | edges' endpoints vs `vertices` | one closed ring through all 6 vertices; one closed ring through 5 vertices with 5 edges (below the required size); circular but split into two rings; not circular (open chain); an endpoint that is not in `vertices` |
-| `products` | a valid `ResourceProducts` |
+| `products` | empty list; list containing exactly one valid `ResourceStack` |
 | `tokenValue` | a valid token |
 | outcome (output) | hex created, IllegalArgumentException |
 
@@ -57,7 +57,7 @@ Inherited methods: see `Location`.
 
 |              | Input                                                                                                                                           | Expected output            | Implemented?       |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|--------------------|
-| Test Case 1  | 6 vertices, 6 edges forming one closed ring through them, valid products and token                                                              | hex created                | :white_check_mark: |
+| Test Case 1  | 6 vertices, 6 edges forming one closed ring, empty products list, valid token | hex created | :x: |
 | Test Case 2  | `vertices` empty, valid others                                                                                                                  | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 3  | `vertices` has 1 element                                                                                                                        | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 4  | `vertices` has 5 elements                                                                                                                       | `IllegalArgumentException` | :white_check_mark: |
@@ -71,7 +71,7 @@ Inherited methods: see `Location`.
 | Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token                                                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 13 | 5 vertices at distinct points, 5 edges forming one closed ring through them, valid products and token                                           | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 14 | 6 vertex objects at 5 distinct points (one duplicated); 6-edge ring through those points and one missing vertex point; valid products and token | `IllegalArgumentException` | :white_check_mark: |
-
+| Test Case 15 | 6 vertices, 6 edges forming one closed ring, products list containing one valid `ResourceStack`, valid token | hex created | :x: |
 
 ### Test: `public boolean canProduce()`
 
@@ -169,7 +169,7 @@ Inherited methods: see `Location`.
 
 ### Test: `public void produceResources()`
 
-`Hex` only passes its products to its vertices.
+`Hex` only passes its products list to its vertices. Callers supply zero or one element; larger lists are outside this contract. Tests verify calls and the list argument, not behavior inside `Vertex`.
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -181,7 +181,7 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | Boolean |
 | the hex's vertices | Collection (fixed size 6) |
-| `products` | Cases (a valid `ResourceProducts`) |
+| `products` | Collection (zero or one `ResourceStack`) |
 | concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
 | outcome (output) | Cases |
 | vertices called (output) | Count |
@@ -191,16 +191,17 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | true, false |
 | the hex's vertices | 6 |
-| `products` | a valid `ResourceProducts` |
+| `products` | empty list; list containing exactly one valid `ResourceStack` |
 | concrete class | producing hex representatives: `FieldsHex`, `PastureHex`; non-producing hexes: `DesertHex`, `OceanHex` |
 | outcome (output) | all 6 vertices called with `products`, no vertex called |
 | vertices called (output) | 0, 6 (maximum) |
 
-**Step 4: Each choice** of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
+**Step 4: Each choice** of products list size (0, 1) with production enabled. Each choice of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
 
 |             | Input                                | Expected output                                                                       | Implemented?       |
 |-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | `FieldsHex` with `canProduce` true   | `Vertex.produceResources()` called once on each of the 6 vertices, passing `products` | :white_check_mark: |
+| Test Case 1 | `FieldsHex` with `canProduce` true, empty products list | `Vertex.produceResources()` called once on each of the 6 vertices, passing the empty list | :x: |
 | Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :white_check_mark: |
 | Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :white_check_mark: |
 | Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :white_check_mark: |
+| Test Case 5 | `FieldsHex` with `canProduce` true, products list containing one valid `ResourceStack` | `Vertex.produceResources()` called once on each of the 6 vertices, passing that list | :x: |
