@@ -70,7 +70,7 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 | Test Case 9  | REGULAR, called with `RED`, one `BLUE` road between A and B, `RED` has no roads, no buildings            | empty list (only own roads count)                                                                  | :white_check_mark: |
 | Test Case 10 | REGULAR, called with `RED`, `RED` settlement S with `RED` roads S to V1 and V1 to V2, no other buildings | exactly `[V2]` (V1 is too close to S)                                                              | :white_check_mark: |
 | Test Case 11 | SETUP, called with `RED`, one `RED` road between A and B, no buildings                                   | all vertices (a road is not required in SETUP)                                                     | :white_check_mark: |
-| Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all 54 vertices, B appearing once                                                                  | :x:                |
+| Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all vertices, B appearing once                                                                     | :white_check_mark: |
 | Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :x:                |
 
 ### Test: `public List<Edge> getValidRoadSpots(Color color)`
