@@ -1,6 +1,6 @@
 package catan.game_table.domain.board;
 
-import catan.game_table.domain.resource.ResourceProducts;
+import catan.game_table.domain.resource.ResourceStack;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HexTests {
     private static final int TOKEN_VALUE = 8;
-    private static final ResourceProducts PRODUCTS =
-            new ResourceProducts(List.of(), List.of());
+    private static final List<ResourceStack> PRODUCTS = List.of();
     private static final List<Point> CORNERS = List.of(
             new Point(1, 0),
             new Point(2, 0),
@@ -28,7 +27,7 @@ class HexTests {
             new Point(0, 1));
 
     @Test
-    void Constructor_WithClosedRingOfSixVertices_CreatesHex() {
+    void Constructor_WithClosedRingOfSixVerticesAndEmptyProducts_CreatesHex() {
         assertDoesNotThrow(() -> forestHex(sixVertices(), ring()));
     }
 
@@ -293,7 +292,7 @@ class HexTests {
     }
 
     @Test
-    void ProduceResources_OnProducingFieldsHex_EachVertexProducesOnceWithProducts() {
+    void ProduceResources_OnProducingFieldsHexWithEmptyProducts_EachVertexProducesOnceWithProducts() {
         List<Vertex> vertices = CORNERS.stream()
                 .map(HexTests::vertexExpectedToProduce)
                 .toList();

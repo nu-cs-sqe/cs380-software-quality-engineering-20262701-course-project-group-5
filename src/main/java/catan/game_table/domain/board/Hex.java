@@ -1,10 +1,11 @@
 package catan.game_table.domain.board;
 
-import catan.game_table.domain.resource.ResourceProducts;
+import catan.game_table.domain.resource.ResourceStack;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -14,18 +15,18 @@ public abstract class Hex extends Location {
     private static final int EDGES_PER_CORNER = 2;
     private final int tokenValue;
     private final Set<Vertex> vertices;
-    private final ResourceProducts products;
+    private final List<ResourceStack> products;
     protected boolean canProduce = true;
 
     public Hex(
             int tokenValue,
             Set<Vertex> vertices,
             Set<Edge> edges,
-            ResourceProducts products) {
+            List<ResourceStack> products) {
         this(tokenValue, validatedVertices(vertices, edges), products);
     }
 
-    private Hex(int tokenValue, Set<Vertex> vertices, ResourceProducts products) {
+    private Hex(int tokenValue, Set<Vertex> vertices, List<ResourceStack> products) {
         this.tokenValue = tokenValue;
         this.vertices = vertices;
         this.products = products;

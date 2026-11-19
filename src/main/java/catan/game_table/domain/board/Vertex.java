@@ -1,6 +1,8 @@
 package catan.game_table.domain.board;
 
-import catan.game_table.domain.resource.ResourceProducts;
+import catan.game_table.domain.resource.ResourceStack;
+
+import java.util.List;
 
 public class Vertex extends Location {
     private final Point point;
@@ -13,6 +15,6 @@ public class Vertex extends Location {
         return point;
     }
 
-    public void produceResources(ResourceProducts products) {
+    public void produceResources(List<ResourceStack> products) {
     }
 }

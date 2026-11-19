@@ -57,7 +57,7 @@ Inherited methods: see `Location`.
 
 |              | Input                                                                                                                                           | Expected output            | Implemented?       |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|--------------------|
-| Test Case 1  | 6 vertices, 6 edges forming one closed ring, empty products list, valid token | hex created | :x: |
+| Test Case 1  | 6 vertices, 6 edges forming one closed ring, empty products list, valid token                                                                   | hex created                | :white_check_mark:                |
 | Test Case 2  | `vertices` empty, valid others                                                                                                                  | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 3  | `vertices` has 1 element                                                                                                                        | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 4  | `vertices` has 5 elements                                                                                                                       | `IllegalArgumentException` | :white_check_mark: |
@@ -71,7 +71,7 @@ Inherited methods: see `Location`.
 | Test Case 12 | 6 vertices, exactly one edge joining two of them, valid products and token                                                                      | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 13 | 5 vertices at distinct points, 5 edges forming one closed ring through them, valid products and token                                           | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 14 | 6 vertex objects at 5 distinct points (one duplicated); 6-edge ring through those points and one missing vertex point; valid products and token | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 15 | 6 vertices, 6 edges forming one closed ring, products list containing one valid `ResourceStack`, valid token | hex created | :x: |
+| Test Case 15 | 6 vertices, 6 edges forming one closed ring, products list containing one valid `ResourceStack`, valid token                                    | hex created                | :x:                |
 
 ### Test: `public boolean canProduce()`
 
@@ -198,10 +198,10 @@ Inherited methods: see `Location`.
 
 **Step 4: Each choice** of products list size (0, 1) with production enabled. Each choice of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
 
-|             | Input                                | Expected output                                                                       | Implemented?       |
-|-------------|--------------------------------------|---------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | `FieldsHex` with `canProduce` true, empty products list | `Vertex.produceResources()` called once on each of the 6 vertices, passing the empty list | :x: |
-| Test Case 2 | `PastureHex` with `canProduce` false | no vertex is called                                                                   | :white_check_mark: |
-| Test Case 3 | `DesertHex`                          | no vertex is called                                                                   | :white_check_mark: |
-| Test Case 4 | `OceanHex`                           | no vertex is called                                                                   | :white_check_mark: |
-| Test Case 5 | `FieldsHex` with `canProduce` true, products list containing one valid `ResourceStack` | `Vertex.produceResources()` called once on each of the 6 vertices, passing that list | :x: |
+|             | Input                                                                                  | Expected output                                                                           | Implemented?       |
+|-------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | `FieldsHex` with `canProduce` true, empty products list                                | `Vertex.produceResources()` called once on each of the 6 vertices, passing the empty list | :white_check_mark: |
+| Test Case 2 | `PastureHex` with `canProduce` false                                                   | no vertex is called                                                                       | :white_check_mark: |
+| Test Case 3 | `DesertHex`                                                                            | no vertex is called                                                                       | :white_check_mark: |
+| Test Case 4 | `OceanHex`                                                                             | no vertex is called                                                                       | :white_check_mark: |
+| Test Case 5 | `FieldsHex` with `canProduce` true, products list containing one valid `ResourceStack` | `Vertex.produceResources()` called once on each of the 6 vertices, passing that list      | :x:                |

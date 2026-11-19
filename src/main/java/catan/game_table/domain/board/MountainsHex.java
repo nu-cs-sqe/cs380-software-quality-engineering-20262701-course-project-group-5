@@ -1,7 +1,8 @@
 package catan.game_table.domain.board;
 
-import catan.game_table.domain.resource.ResourceProducts;
+import catan.game_table.domain.resource.ResourceStack;
 
+import java.util.List;
 import java.util.Set;
 
 public class MountainsHex extends Hex {
@@ -9,7 +10,7 @@ public class MountainsHex extends Hex {
             int tokenValue,
             Set<Vertex> vertices,
             Set<Edge> edges,
-            ResourceProducts products) {
+            List<ResourceStack> products) {
         super(tokenValue, vertices, edges, products);
     }
 }
