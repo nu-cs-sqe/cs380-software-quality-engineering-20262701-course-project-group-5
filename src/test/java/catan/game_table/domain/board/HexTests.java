@@ -33,6 +33,23 @@ class HexTests {
     }
 
     @Test
+    void Constructor_WithClosedRingOfFiveVertices_ThrowsIllegalArgumentException() {
+        Set<Vertex> vertices = CORNERS.stream()
+                .limit(5)
+                .map(Vertex::new)
+                .collect(toCollection(LinkedHashSet::new));
+        Set<Edge> edges = new LinkedHashSet<>(List.of(
+                edge(0, 1),
+                edge(1, 2),
+                edge(2, 3),
+                edge(3, 4),
+                edge(4, 0)));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> forestHex(vertices, edges));
+    }
+
+    @Test
     void Constructor_WithNoVertices_ThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> forestHex(Set.of(), ring()));
