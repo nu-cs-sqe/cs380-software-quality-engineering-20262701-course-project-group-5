@@ -2,6 +2,7 @@ package catan.game_table.domain.board;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EdgeTests {
@@ -19,5 +20,13 @@ class EdgeTests {
         Point second = new Point(1, 1);
 
         assertThrows(IllegalArgumentException.class, () -> new Edge(first, second));
+    }
+
+    @Test
+    void Constructor_WithAdjacentPoints_CreatesEdge() {
+        Point first = new Point(0, 0);
+        Point second = new Point(1, 0);
+
+        assertDoesNotThrow(() -> new Edge(first, second));
     }
 }

@@ -46,5 +46,5 @@ Inherited methods: see `Location`.
 |-------------|----------------------------------|----------------------------|--------------------|
 | Test Case 1 | the same `Point` object for both | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 2 | two `Point(1, 1)` objects        | `IllegalArgumentException` | :white_check_mark: |
-| Test Case 3 | `Point(0, 0)` and `Point(1, 0)`  | edge created               | :x:                |
+| Test Case 3 | `Point(0, 0)` and `Point(1, 0)`  | edge created               | :white_check_mark: |
 | Test Case 4 | `Point(0, 0)` and `Point(5, 5)`  | `IllegalArgumentException` | :x:                |
