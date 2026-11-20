@@ -1,23 +1,23 @@
 # Class Hex
 Classpath: catan.game_table.domain.board.Hex
 
-Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`, `OceanHex`
+Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`, `DesertHex`
 
 ## `public abstract class Hex extends Location`
 
 A terrain tile with a token number, six vertices, six edges, and a list of zero or one resource stack. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
 
 ### `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, List<ResourceStack> products)`
-Initializes a `Hex` with the given token number and a products list containing zero or one `ResourceStack` (a caller precondition). Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
+Initializes a `Hex` with the given token number and a products list containing zero or one `ResourceStack` (a caller precondition). Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements, or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
 
 ### `public boolean canProduce()`
-Returns whether this hex currently produces resources (false while the robber sits on it, or for desert and ocean).
+Returns whether this hex currently produces resources (false while the robber sits on it, or for desert).
 
 ### `public int getTokenValue()`
 Returns the token number of this hex.
 
 ### `public void setCanProduce(boolean canProduce)`
-Sets the `canProduce` flag to the given value. `produceResources()` only runs when the flag is true. Assumes the boolean parameter (missing from diagram). `DesertHex` and `OceanHex` override it.
+Sets the `canProduce` flag to the given value. `produceResources()` only runs when the flag is true. Assumes the boolean parameter (missing from diagram). `DesertHex` overrides it.
 
 ### `public void produceResources()`
 If `canProduce()`, calls `Vertex.produceResources()` on each of its 6 vertices, passing `products`. Otherwise does nothing.
@@ -89,7 +89,7 @@ Inherited methods: see `Location`.
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `canProduce` flag (need both ocean and desert hexes) | true, false |
+| `canProduce` flag (using producing and desert hexes) | true, false |
 | returned value (output) | true, false |
 
 **Step 4: Each choice**
@@ -98,7 +98,6 @@ Inherited methods: see `Location`.
 |-------------|------------------------------|-----------------|--------------------|
 | Test Case 1 | `ForestHex` just constructed | true            | :white_check_mark: |
 | Test Case 2 | `DesertHex` just constructed | false           | :white_check_mark: |
-| Test Case 3 | `OceanHex` just constructed  | false           | :white_check_mark: |
 
 
 ### Test: `public int getTokenValue()`
@@ -106,7 +105,7 @@ Inherited methods: see `Location`.
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| none; state: `tokenValue`, kind of hex (token-bearing, desert or ocean) | `int` |
+| none; state: `tokenValue`, kind of hex (token-bearing, desert) | `int` |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -119,8 +118,8 @@ Inherited methods: see `Location`.
 | Variable | Values |
 |---|---|
 | `tokenValue` | 2 (LOW), 12 (HIGH) |
-| hex kind | token-bearing hex (`ForestHex`, `HillsHex` as representatives), non-producing hex (desert and ocean) |
-| returned value (output) | same as `tokenValue` (0 for desert and ocean; 1, 13 and 7 on a producing hex can't be set) |
+| hex kind | token-bearing hex (`ForestHex`, `HillsHex` as representatives), non-producing hex (desert) |
+| returned value (output) | same as `tokenValue` (0 for desert; 1, 13 and 7 on a producing hex can't be set) |
 
 **Step 4: Each choice**
 
@@ -128,22 +127,21 @@ Inherited methods: see `Location`.
 |-------------|-----------------------------|-----------------|--------------------|
 | Test Case 1 | `ForestHex` with token `2`  | `2`             | :white_check_mark: |
 | Test Case 2 | `HillsHex` with token `12`  | `12`            | :white_check_mark: |
-| Test Case 3 | `OceanHex`                  | `0`             | :white_check_mark: |
-| Test Case 4 | `DesertHex`                 | `0`             | :white_check_mark: |
+| Test Case 3 | `DesertHex`                 | `0`             | :white_check_mark: |
 
 ### Test: `public void setCanProduce(boolean canProduce)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `canProduce : boolean`; state: current flag, concrete class of the hex the method is called on | No return value. The flag holds the new value (always false on `DesertHex` and `OceanHex`). |
+| `canProduce : boolean`; state: current flag, concrete class of the hex the method is called on | No return value. The flag holds the new value (always false on `DesertHex`). |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | `canProduce` | Boolean |
 | current flag | Boolean |
-| concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
+| concrete class | Cases (resource hex, `DesertHex`) |
 | flag after the call (output) | Boolean |
 
 **Step 3: Concrete values**
@@ -151,10 +149,10 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | true, false |
 | current flag | true, false |
-| concrete class | producing hex representatives: `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`; non-producing hexes: `DesertHex`, `OceanHex` |
+| concrete class | producing hex representatives: `ForestHex`, `MountainsHex`, `FieldsHex`, `PastureHex`; non-producing hex: `DesertHex` |
 | flag after the call (output) | true, false |
 
-**Step 4: All combinations** of `canProduce` x current flag for shared producing-hex behavior, distributed across representative subclasses. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same setter without overrides; not every combination is repeated for every subclass.
+**Step 4: All combinations** of `canProduce` x current flag for shared producing-hex behavior, distributed across representative subclasses. Each choice for `DesertHex`. Producing subclasses inherit the same setter without overrides; not every combination is repeated for every subclass.
 
 |             | Input                                        | Expected output                              | Implemented?       |
 |-------------|----------------------------------------------|----------------------------------------------|--------------------|
@@ -164,8 +162,6 @@ Inherited methods: see `Location`.
 | Test Case 4 | `PastureHex` with flag false, input `false`  | `canProduce()` false                         | :white_check_mark: |
 | Test Case 5 | `DesertHex` with flag false, input `false`   | `canProduce()` false                         | :white_check_mark: |
 | Test Case 6 | `DesertHex` with flag false, input `true`    | `canProduce()` false (desert never produces) | :white_check_mark: |
-| Test Case 7 | `OceanHex` with flag false, input `false`    | `canProduce()` false                         | :white_check_mark: |
-| Test Case 8 | `OceanHex` with flag false, input `true`     | `canProduce()` false (ocean never produces)  | :white_check_mark: |
 
 ### Test: `public void produceResources()`
 
@@ -182,7 +178,7 @@ Inherited methods: see `Location`.
 | `canProduce` | Boolean |
 | the hex's vertices | Collection (fixed size 6) |
 | `products` | Collection (zero or one `ResourceStack`) |
-| concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
+| concrete class | Cases (resource hex, `DesertHex`) |
 | outcome (output) | Cases |
 | vertices called (output) | Count |
 
@@ -192,16 +188,15 @@ Inherited methods: see `Location`.
 | `canProduce` | true, false |
 | the hex's vertices | 6 |
 | `products` | empty list; list containing exactly one valid `ResourceStack` |
-| concrete class | producing hex representatives: `FieldsHex`, `PastureHex`; non-producing hexes: `DesertHex`, `OceanHex` |
+| concrete class | producing hex representatives: `FieldsHex`, `PastureHex`; non-producing hex: `DesertHex` |
 | outcome (output) | all 6 vertices called with `products`, no vertex called |
 | vertices called (output) | 0, 6 (maximum) |
 
-**Step 4: Each choice** of products list size (0, 1) with production enabled. Each choice of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex` and `OceanHex`. Producing subclasses inherit the same production method without overrides.
+**Step 4: Each choice** of products list size (0, 1) with production enabled. Each choice of `canProduce` for shared producing-hex behavior, using `FieldsHex` for true and `PastureHex` for false. Each choice for `DesertHex`. Producing subclasses inherit the same production method without overrides.
 
 |             | Input                                                                                  | Expected output                                                                           | Implemented?       |
 |-------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `FieldsHex` with `canProduce` true, empty products list                                | `Vertex.produceResources()` called once on each of the 6 vertices, passing the empty list | :white_check_mark: |
 | Test Case 2 | `PastureHex` with `canProduce` false                                                   | no vertex is called                                                                       | :white_check_mark: |
 | Test Case 3 | `DesertHex`                                                                            | no vertex is called                                                                       | :white_check_mark: |
-| Test Case 4 | `OceanHex`                                                                             | no vertex is called                                                                       | :white_check_mark: |
-| Test Case 5 | `FieldsHex` with `canProduce` true, products list containing one valid `ResourceStack` | `Vertex.produceResources()` called once on each of the 6 vertices, passing that list      | :white_check_mark: |
+| Test Case 4 | `FieldsHex` with `canProduce` true, products list containing one valid `ResourceStack` | `Vertex.produceResources()` called once on each of the 6 vertices, passing that list      | :white_check_mark: |
