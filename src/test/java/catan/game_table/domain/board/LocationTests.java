@@ -173,6 +173,19 @@ public class LocationTests {
         assertEquals(List.of(road), edge.getPieces());
     }
 
+    @Test
+    void RemovePieceWithData_WhenNeitherPieceMatches_LeavesBothPieces() {
+        Edge edge = edgeWithRoadThenHarbor(
+                new PieceData(Color.RED, "road"),
+                new PieceData(Color.NONE, "harbor"));
+        List<Piece> originalPieces = edge.getPieces();
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+
+        edge.removePieceWithData(settlementData);
+
+        assertEquals(originalPieces, edge.getPieces());
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);
