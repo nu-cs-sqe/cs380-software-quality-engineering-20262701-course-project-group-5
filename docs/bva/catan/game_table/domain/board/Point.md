@@ -69,6 +69,6 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 
 **Step 4: Each choice**
 
-|             | Input                                         | Expected output                  | Implemented? |
-|-------------|-----------------------------------------------|----------------------------------|--------------|
-| Test Case 1 | `Point(1, 2)` and a different `Point(1, 2)`   | the same hash code for both      | :x:          |
+|             | Input                                       | Expected output             | Implemented?       |
+|-------------|---------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | `Point(1, 2)` and a different `Point(1, 2)` | the same hash code for both | :white_check_mark: |

@@ -44,4 +44,12 @@ class PointTests {
 
         assertNotEquals("point", point);
     }
+
+    @Test
+    void HashCode_WhenDistinctPointsHaveTheSameCoordinates_ReturnsSameValue() {
+        Point first = new Point(1, 2);
+        Point second = new Point(1, 2);
+
+        assertEquals(first.hashCode(), second.hashCode());
+    }
 }
