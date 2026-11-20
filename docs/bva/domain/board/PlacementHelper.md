@@ -116,6 +116,7 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 | Test Case 8  | REGULAR, called with `RED`, one `RED` settlement and one `BLUE` settlement far apart, all edges free         | exactly the edges adjacent to the `RED` settlement (the `BLUE` settlement's edges are excluded) | :white_check_mark: |
 | Test Case 9  | REGULAR, called with `RED`, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :white_check_mark: |
 | Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free                                  | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :white_check_mark: |
+| Test Case 11 | REGULAR, called with `RED`, one `RED` road adjacent to a `BLUE` settlement                                   | only the free edges not adjacent to the settlement                                              | :x:                |
 
 ### Test: `public void place(Piece piece, Location location)`
 
