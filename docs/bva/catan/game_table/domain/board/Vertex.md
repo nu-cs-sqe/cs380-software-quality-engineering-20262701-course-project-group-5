@@ -12,7 +12,7 @@ Initializes a `Vertex` at `endpoint`.
 Returns this vertex's point.
 
 ### `public void produceResources(List<ResourceStack> products)`
-Calls `Building.produceResources()` on the building at this vertex, passing `products`. Does nothing if there is no building.
+Each producing hex calls this method separately with a list containing one resource stack of size 1. If a building occupies the vertex, `Vertex` passes the list unchanged to `Building.produceResources()` once per call. The building determines the final production quantity. An empty vertex makes no production call.
 
 ## Boundary-Value Analysis
 
@@ -30,7 +30,7 @@ Inherited methods: see `Location`.
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| `products` | Collection of resource stacks |
+| `products` | List containing exactly one resource stack per call |
 | pieces at vertex | Collection |
 | outcome (output) | Cases |
 | buildings called (output) | Cases |
@@ -38,15 +38,15 @@ Inherited methods: see `Location`.
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `products` | a list containing one resource stack |
+| `products` | a list containing one brick stack of size 1 |
 | pieces at vertex | empty, exactly one (a vertex holds at most one building, so more than one can't be set) |
 | outcome (output) | building called with `products`, no call |
 | buildings called (output) | None, Settlement, City |
 
 **Step 4: Each choice**
 
-|             | Input                            | Expected output                                                     | Implemented? |
-|-------------|----------------------------------|---------------------------------------------------------------------|--------------|
-| Test Case 1 | no pieces, valid products        | no building is called, no exception                                 | :x:          |
-| Test Case 2 | one `Settlement`, valid products | `Building.produceResources()` called once on it, passing `products` | :x:          |
-| Test Case 3 | one `City`, valid products       | `Building.produceResources()` called once on it, passing `products` | :x:          |
+|             | Input                                               | Expected output                                           | Implemented? |
+|-------------|-----------------------------------------------------|-----------------------------------------------------------|--------------|
+| Test Case 1 | No building, list with one brick of size 1          | No building is called                                     | :x:          |
+| Test Case 2 | One `Settlement`, list with a brick stack of size 1 | The settlement receives the one-stack list unchanged once | :x:          |
+| Test Case 3 | One `City`, list with a brick stack of size 1       | The city receives the one-stack list unchanged once       | :x:          |
