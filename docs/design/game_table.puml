@@ -302,10 +302,6 @@ package board {
         +setCanProduce() : void
     }
 
-    +class OceanHex {
-        +setCanProduce() : void
-    }
-
     +abstract class Location {
         #pieces : List<Piece>
         +getPieceData() : List<PieceData>
@@ -556,7 +552,6 @@ MountainsHex --|> Hex
 FieldsHex --|> Hex
 PastureHex --|> Hex
 DesertHex --|> Hex
-OceanHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
