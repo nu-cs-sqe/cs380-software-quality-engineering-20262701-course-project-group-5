@@ -112,10 +112,7 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_WhenRoadColorDiffers_ReturnsFalse() {
         Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
-        Road road = EasyMock.createMock(Road.class);
-        EasyMock.expect(road.getPieceData()).andStubReturn(new PieceData(Color.RED, "road"));
-        EasyMock.replay(road);
-        edge.addPiece(road);
+        edge.addPiece(roadWithData(new PieceData(Color.RED, "road")));
         PieceData query = new PieceData(Color.BLUE, "road");
 
         assertFalse(edge.holdsPieceWithData(query));
@@ -209,6 +206,25 @@ public class LocationTests {
         hex.removePieceWithData(robberData);
 
         assertTrue(hex.getPieces().isEmpty());
+    }
+
+    @Test
+    void RemovePieceWithData_WhenRoadColorDiffers_LeavesRoadInPlace() {
+        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
+        Road road = roadWithData(new PieceData(Color.RED, "road"));
+        edge.addPiece(road);
+        PieceData query = new PieceData(Color.BLUE, "road");
+
+        edge.removePieceWithData(query);
+
+        assertEquals(List.of(road), edge.getPieces());
+    }
+
+    private static Road roadWithData(PieceData roadData) {
+        Road road = EasyMock.createMock(Road.class);
+        EasyMock.expect(road.getPieceData()).andStubReturn(roadData);
+        EasyMock.replay(road);
+        return road;
     }
 
     private static Vertex vertexWithSettlement(PieceData settlementData) {
