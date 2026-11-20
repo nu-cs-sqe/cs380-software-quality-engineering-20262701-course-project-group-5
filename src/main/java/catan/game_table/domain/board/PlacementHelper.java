@@ -115,17 +115,34 @@ public class PlacementHelper {
             if (vertexHasBuildingOfColor(vertex, color)) {
                 return true;
             }
-            // TODO
         }
 
-        Set<Edge> connectingEdges = gameBoard.getConnectingEdges(edge);
+        Set<Edge> connectingEdges = new HashSet<>(gameBoard.getConnectingEdges(edge));
+
         for (Edge connectingEdge : connectingEdges) {
             if (edgeHasRoadOfColor(connectingEdge, color)) {
-                return true;
+                Set<Edge> blockedEdges = getBlockedConnectingEdges(edge, color, endpointVertices);
+                return !blockedEdges.contains(connectingEdge);
             }
         }
 
         return false;
+
+    }
+
+    private Set<Edge> getBlockedConnectingEdges(Edge edge, Color color, Set<Vertex> endpointVertices) {
+
+        Set<Edge> blockedEdges = new HashSet<>();
+
+        for (Vertex vertex : endpointVertices) {
+            if (vertexHasBuildingAlready(vertex) && !vertexHasBuildingOfColor(vertex, color)) {
+                blockedEdges.addAll(gameBoard.getConnectingEdges(vertex));
+            }
+        }
+
+        blockedEdges.remove(edge);
+
+        return blockedEdges;
 
     }
 
