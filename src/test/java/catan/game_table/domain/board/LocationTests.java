@@ -105,6 +105,18 @@ public class LocationTests {
         assertTrue(vertex.holdsPieceWithData(query));
     }
 
+    @Test
+    void HoldsPieceWithData_WhenRoadColorDiffers_ReturnsFalse() {
+        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
+        Road road = EasyMock.createMock(Road.class);
+        EasyMock.expect(road.getPieceData()).andStubReturn(new PieceData(Color.RED, "road"));
+        EasyMock.replay(road);
+        edge.addPiece(road);
+        PieceData query = new PieceData(Color.BLUE, "road");
+
+        assertFalse(edge.holdsPieceWithData(query));
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);
