@@ -36,10 +36,10 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| `products` | a valid `List<ResourceStack>` |
-| Output | Cases: `bankResourceDistributor:produceResources()` is called with the right `color` and `products`|
+| `products` | a valid `List<ResourceStack>` of size one |
+| Output | Cases: `bankResourceDistributor:produceResources()` is called with the right `color` and `products` |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called | :x: |
+| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called with the right `color` and `products` | :x: |
