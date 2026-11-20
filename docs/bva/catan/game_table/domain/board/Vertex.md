@@ -3,7 +3,7 @@ Classpath: catan.game_table.domain.board.Vertex
 
 ## `public class Vertex extends Location`
 
-A corner of one or more hexes where a building (`Settlement` or `City`) may sit.
+A corner of one or more hexes that holds at most one piece, a building (`Settlement` or `City`).
 
 ### `public Vertex(Point endpoint)`
 Initializes a `Vertex` at `endpoint`.
@@ -39,7 +39,7 @@ Inherited methods: see `Location`.
 | Variable | Values |
 |---|---|
 | `products` | a list containing one brick stack of size 1 |
-| pieces at vertex | empty, exactly one (a vertex holds at most one building, so more than one can't be set) |
+| pieces at vertex | empty, exactly one building |
 | outcome (output) | building called with `products`, no call |
 | buildings called (output) | None, Settlement, City |
 
@@ -48,5 +48,5 @@ Inherited methods: see `Location`.
 |             | Input                                               | Expected output                                           | Implemented?       |
 |-------------|-----------------------------------------------------|-----------------------------------------------------------|--------------------|
 | Test Case 1 | No building, list with one brick of size 1          | No building is called                                     | :white_check_mark: |
-| Test Case 2 | One `Settlement`, list with a brick stack of size 1 | The settlement receives the one-stack list unchanged once | :x:                |
+| Test Case 2 | One `Settlement`, list with a brick stack of size 1 | The settlement receives the one-stack list unchanged once | :white_check_mark: |
 | Test Case 3 | One `City`, list with a brick stack of size 1       | The city receives the one-stack list unchanged once       | :x:                |
