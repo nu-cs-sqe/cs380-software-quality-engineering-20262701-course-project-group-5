@@ -12,4 +12,12 @@ class EdgeTests {
 
         assertThrows(IllegalArgumentException.class, () -> new Edge(endpoint, endpoint));
     }
+
+    @Test
+    void Constructor_WithDistinctPointsAtSameCoordinates_ThrowsIllegalArgumentException() {
+        Point first = new Point(1, 1);
+        Point second = new Point(1, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> new Edge(first, second));
+    }
 }
