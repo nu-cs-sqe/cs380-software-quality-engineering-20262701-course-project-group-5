@@ -3,6 +3,7 @@ package catan.game_table.domain.board;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class PointTests {
 
@@ -19,5 +20,13 @@ class PointTests {
         Point second = new Point(1, 2);
 
         assertEquals(first, second);
+    }
+
+    @Test
+    void Equals_WhenOnlyXDiffers_ReturnsFalse() {
+        Point first = new Point(1, 2);
+        Point second = new Point(3, 2);
+
+        assertNotEquals(first, second);
     }
 }
