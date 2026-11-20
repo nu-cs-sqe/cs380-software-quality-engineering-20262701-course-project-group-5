@@ -88,7 +88,7 @@ public class PieceDataTests {
 
     // hashCode()
     @Test
-    public void HashCode_RedRoad_RedRoad_True(){
+    public void HashCode_RedRoad_RedRoad_Equals(){
         PieceData firstRoadData = new PieceData(Color.RED, ROAD);
         PieceData secondRoadData = new PieceData(Color.RED, ROAD);
 
@@ -96,5 +96,16 @@ public class PieceDataTests {
         int secondRoadHash = secondRoadData.hashCode();
 
         assertEquals(firstRoadHash, secondRoadHash);
+    }
+
+    @Test
+    public void HashCode_BlueRoad_RedRoad_NotEquals(){
+        PieceData firstRoadData = new PieceData(Color.BLUE, ROAD);
+        PieceData secondRoadData = new PieceData(Color.RED, ROAD);
+
+        int firstRoadHash = firstRoadData.hashCode();
+        int secondRoadHash = secondRoadData.hashCode();
+
+        assertNotEquals(firstRoadHash, secondRoadHash);
     }
 }
