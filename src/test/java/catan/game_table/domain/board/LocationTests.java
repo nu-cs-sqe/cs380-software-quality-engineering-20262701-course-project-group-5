@@ -1,5 +1,7 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.piece.Harbor;
+import catan.game_table.domain.piece.Road;
 import catan.game_table.domain.piece.Settlement;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -19,5 +21,18 @@ public class LocationTests {
         vertex.addPiece(settlement);
 
         assertEquals(List.of(settlement), vertex.getPieces());
+    }
+
+    @Test
+    void AddPiece_OnEdgeWithRoad_AppendsHarbor() {
+        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
+        Road road = EasyMock.createMock(Road.class);
+        Harbor harbor = EasyMock.createMock(Harbor.class);
+        EasyMock.replay(road, harbor);
+        edge.addPiece(road);
+
+        edge.addPiece(harbor);
+
+        assertEquals(List.of(road, harbor), edge.getPieces());
     }
 }
