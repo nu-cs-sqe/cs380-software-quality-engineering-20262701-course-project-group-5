@@ -1,15 +1,18 @@
 # Class Point
 Classpath: catan.game_table.domain.board.Point
 
-## `public class Point`
+## `public record Point(int x, int y)`
 
-An immutable `(x, y)` coordinate with `public final int x` and `public final int y`.
+An immutable `(x, y)` coordinate with record accessors `x()` and `y()`.
 
 ### `public boolean equals(Object o)`
 Returns true if `o` is a `Point` with the same `x` and the same `y` as this one. Otherwise returns false.
 
 ### `public int hashCode()`
 Returns a hash code consistent with `equals`: two equal points have the same hash code.
+
+### `public String toString()`
+Returns the record's string representation, which includes the values of `x` and `y`.
 
 ## Boundary-Value Analysis
 
