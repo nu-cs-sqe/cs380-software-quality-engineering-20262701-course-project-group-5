@@ -45,8 +45,8 @@ Inherited methods: see `Location`.
 
 **Step 4: Each choice**
 
-|             | Input                                               | Expected output                                           | Implemented? |
-|-------------|-----------------------------------------------------|-----------------------------------------------------------|--------------|
-| Test Case 1 | No building, list with one brick of size 1          | No building is called                                     | :x:          |
-| Test Case 2 | One `Settlement`, list with a brick stack of size 1 | The settlement receives the one-stack list unchanged once | :x:          |
-| Test Case 3 | One `City`, list with a brick stack of size 1       | The city receives the one-stack list unchanged once       | :x:          |
+|             | Input                                               | Expected output                                           | Implemented?       |
+|-------------|-----------------------------------------------------|-----------------------------------------------------------|--------------------|
+| Test Case 1 | No building, list with one brick of size 1          | No building is called                                     | :white_check_mark: |
+| Test Case 2 | One `Settlement`, list with a brick stack of size 1 | The settlement receives the one-stack list unchanged once | :x:                |
+| Test Case 3 | One `City`, list with a brick stack of size 1       | The city receives the one-stack list unchanged once       | :x:                |
