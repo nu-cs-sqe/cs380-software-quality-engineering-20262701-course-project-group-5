@@ -29,33 +29,33 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 ### Test: `public ResourceStack add(ResourceStack otherStack)`
 
-|             | State of the System                                                                           | Expected output                                                          | Implemented? |
-|-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------|
-| Test Case 1 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `INT_MAX - 1`           | `BrickResourceStack` with size `INT_MAX`                                 | :x:          |
-| Test Case 2 | `BrickResourceStack` with size `0` and `BrickResourceStack` with size `0`                     | `BrickResourceStack` with size `0`                                       | :x:          |
-| Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
+|             | State of the System                                                                           | Expected output                                                          | Implemented?       |
+|-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------|
+| Test Case 1 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `INT_MAX - 1`           | `BrickResourceStack` with size `INT_MAX`                                 | :white_check_mark: |
+| Test Case 2 | `BrickResourceStack` with size `0` and `BrickResourceStack` with size `0`                     | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
+| Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
 
 ### Test: `public ResourceStack subtract(ResourceStack otherStack)`
 
-|             | State of the System                                                                           | Expected output                                                          | Implemented? |
-|-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------|
-| Test Case 1 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `1`               | `BrickResourceStack` with size `INT_MAX - 1`                             | :x:          |
-| Test Case 2 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `1`                     | `BrickResourceStack` with size `0`                                       | :x:          |
-| Test Case 3 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `INT_MAX`         | `BrickResourceStack` with size `0`                                       | :x:          |
-| Test Case 4 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :x:          |
+|             | State of the System                                                                           | Expected output                                                          | Implemented?       |
+|-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------|
+| Test Case 1 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `1`               | `BrickResourceStack` with size `INT_MAX - 1`                             | :white_check_mark: |
+| Test Case 2 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `1`                     | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
+| Test Case 3 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `INT_MAX`         | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
+| Test Case 4 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
 
 ### Test: `public boolean equals(Object other)`
 
 |             | State of the System                                                                           | Expected output | Implemented? |
 |-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------|
-| Test Case 1 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `1`  | true            | :x:          |
-| Test Case 2 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `2`  | false           | :x:          |
-| Test Case 3 | Let this be a `LumberResourceStack` with size `1`, input a `BrickResourceStack` with size `1` | false           | :x:          |
-| Test Case 4 | Let this be a `BrickResourceStack` with size `1`, input a `LumberResourceStack` with size `1` | false           | :x:          |
-| Test Case 5 | Let this be a `BrickResourceStack` with size `1`, input `this`                                | true            | :x:          |
+| Test Case 1 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `1`  | true            | :white_check_mark: |
+| Test Case 2 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `2`  | false           | :white_check_mark: |
+| Test Case 3 | Let this be a `LumberResourceStack` with size `1`, input a `BrickResourceStack` with size `1` | false           | :white_check_mark: |
+| Test Case 4 | Let this be a `BrickResourceStack` with size `1`, input a `LumberResourceStack` with size `1` | false           | :white_check_mark: |
+| Test Case 5 | Let this be a `BrickResourceStack` with size `1`, input `this`                                | true            | :white_check_mark: |
 
 ### Test: `public int hashCode()`
 
 |             | State of the System                                        | Expected output      | Implemented? |
 |-------------|------------------------------------------------------------|----------------------|--------------|
-| Test Case 1 | Two different `BrickResourceStack` instances with size `1` | same value from each | :x:          |
+| Test Case 1 | Two different `BrickResourceStack` instances with size `1` | same value from each | :white_check_mark: |
