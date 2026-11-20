@@ -50,16 +50,16 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 
 **Step 4: Each choice**
 
-|             | Input                                                                                                  | Expected output | Implemented? |
-|-------------|--------------------------------------------------------------------------------------------------------|-----------------|--------------|
-| Test Case 1 | Empty `Vertex`, query with settlement data                                                             | false           | :x:          |
-| Test Case 2 | `Vertex` with one `Settlement`, query with the settlement data                                         | true            | :x:          |
-| Test Case 3 | `Edge` with a `Road` then a `Harbor`, query with the road's data                                       | true            | :x:          |
-| Test Case 4 | `Edge` with a `Road` then a `Harbor`, query with the harbor's data                                     | true            | :x:          |
-| Test Case 5 | `Edge` with a `Road` then a `Harbor`, query with settlement data                                       | false           | :x:          |
-| Test Case 6 | `Vertex` with one `Settlement`, query with a different `PieceData` object with the same type and color | true            | :x:          |
-| Test Case 7 | `Edge` with one `Road`, query with the same type and a different color                                 | false           | :x:          |
-| Test Case 8 | `Vertex` with one `Settlement`, query with the same color and a different type                         | false           | :x:          |
+|             | Input                                                                                                  | Expected output | Implemented?       |
+|-------------|--------------------------------------------------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Empty `Vertex`, query with settlement data                                                             | false           | :white_check_mark: |
+| Test Case 2 | `Vertex` with one `Settlement`, query with the settlement data                                         | true            | :x:                |
+| Test Case 3 | `Edge` with a `Road` then a `Harbor`, query with the road's data                                       | true            | :x:                |
+| Test Case 4 | `Edge` with a `Road` then a `Harbor`, query with the harbor's data                                     | true            | :x:                |
+| Test Case 5 | `Edge` with a `Road` then a `Harbor`, query with settlement data                                       | false           | :x:                |
+| Test Case 6 | `Vertex` with one `Settlement`, query with a different `PieceData` object with the same type and color | true            | :x:                |
+| Test Case 7 | `Edge` with one `Road`, query with the same type and a different color                                 | false           | :x:                |
+| Test Case 8 | `Vertex` with one `Settlement`, query with the same color and a different type                         | false           | :x:                |
 
 ### Test: `public void addPiece(Piece piece)`
 

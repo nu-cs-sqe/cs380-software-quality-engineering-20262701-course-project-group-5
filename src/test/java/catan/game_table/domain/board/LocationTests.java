@@ -1,6 +1,7 @@
 package catan.game_table.domain.board;
 
 import catan.game_table.domain.piece.Harbor;
+import catan.game_table.domain.piece.PieceData;
 import catan.game_table.domain.piece.Robber;
 import catan.game_table.domain.piece.Road;
 import catan.game_table.domain.piece.Settlement;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class LocationTests {
 
@@ -48,6 +50,14 @@ public class LocationTests {
         hex.addPiece(robber);
 
         assertEquals(List.of(robber), hex.getPieces());
+    }
+
+    @Test
+    void HoldsPieceWithData_OnEmptyVertex_ReturnsFalse() {
+        Vertex vertex = new Vertex(new Point(1, 2));
+        PieceData settlementData = new PieceData("settlement");
+
+        assertFalse(vertex.holdsPieceWithData(settlementData));
     }
 
     private static Hex emptyHex() {
