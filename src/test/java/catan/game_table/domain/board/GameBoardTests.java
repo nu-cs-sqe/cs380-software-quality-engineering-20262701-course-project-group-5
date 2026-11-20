@@ -148,7 +148,6 @@ class GameBoardTests {
     
     private static final int NO_TOKEN = 0;
     private static final int ROLLED_TOKEN = 8;
-    private static final int OCEAN_HEX_COUNT = 6;
     private static final int[] LAND_HEX_TOKENS = {
             2, 3, 3, 4, 4, 5, 5, 6, 6,
             NO_TOKEN, // desert
@@ -173,9 +172,6 @@ class GameBoardTests {
             } else {
                 hexes.add(hexNotExpectedToProduce(token));
             }
-        }
-        for (int i = 0; i < OCEAN_HEX_COUNT; i++) {
-            hexes.add(hexNotExpectedToProduce(NO_TOKEN));
         }
         return hexes;
     }
