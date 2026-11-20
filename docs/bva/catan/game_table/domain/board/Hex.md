@@ -5,9 +5,9 @@ Direct known subclasses: `HillsHex`, `ForestHex`, `MountainsHex`, `FieldsHex`, `
 
 ## `public abstract class Hex extends Location`
 
-A terrain tile with a token number, six vertices, six edges, and a set of resource products. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
+A terrain tile with a token number, six vertices, and a list of resource stacks. Its constructor uses six edges to validate the tile boundary. Passes its products to its vertices when produced, and can hold the Robber (through `Location`). Distributing resources to players is not done here.
 
-### `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
+### `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, List<ResourceStack> products)`
 Initializes a `Hex` with the given token number. Throws `IllegalArgumentException` if `vertices` or `edges` does not contain exactly 6 elements (including OceanHex), or if they do not form a hexagon: the 6 edges must connect the 6 vertices in one closed ring.
 
 ### `public boolean canProduce()`
@@ -25,12 +25,12 @@ If `canProduce()`, calls `Vertex.produceResources()` on each of its 6 vertices, 
 ## Boundary-Value Analysis
 Inherited methods: see `Location`.
 
-### Test: `public Hex(Set<Vertex> vertices, Set<Edge> edges, ResourceProducts products, int tokenValue)`
+### Test: `public Hex(int tokenValue, Set<Vertex> vertices, Set<Edge> edges, List<ResourceStack> products)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : ResourceProducts`, `tokenValue : int` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
+| `tokenValue : int`, `vertices : Set<Vertex>`, `edges : Set<Edge>`, `products : List<ResourceStack>` | New `Hex`. Outcome is one of: hex created, `IllegalArgumentException`. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -38,7 +38,7 @@ Inherited methods: see `Location`.
 | `vertices` | Collection (fixed size 6) |
 | `edges` | Collection (fixed size 6) |
 | edges' endpoints vs `vertices` | Collection built with references (the structure must be circular) |
-| `products` | Cases (a valid `ResourceProducts`) |
+| `products` | Collection of resource stacks |
 | `tokenValue` | Cases (a valid token; the boundary values are tested through `getTokenValue()`) |
 | outcome (output) | Cases |
 
@@ -48,7 +48,7 @@ Inherited methods: see `Location`.
 | `vertices` | empty, exactly one, 5, 6, 7 |
 | `edges` | empty, exactly one, 5, 6, 7 |
 | edges' endpoints vs `vertices` | one closed ring through all 6 vertices; circular but split into two rings; not circular (open chain); an endpoint that is not in `vertices` |
-| `products` | a valid `ResourceProducts` |
+| `products` | a list containing one resource stack |
 | `tokenValue` | a valid token |
 | outcome (output) | hex created, IllegalArgumentException |
 
@@ -176,7 +176,7 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | Boolean |
 | the hex's vertices | Collection (fixed size 6) |
-| `products` | Cases (a valid `ResourceProducts`) |
+| `products` | Collection of resource stacks |
 | concrete class | Cases (resource hex, `DesertHex`, `OceanHex`) |
 | outcome (output) | Cases |
 | vertices called (output) | Count |
@@ -186,7 +186,7 @@ Inherited methods: see `Location`.
 |---|---|
 | `canProduce` | true, false |
 | the hex's vertices | 6 |
-| `products` | a valid `ResourceProducts` |
+| `products` | a list containing one resource stack |
 | concrete class | `ForestHex` (chosen arbitrarily), `DesertHex`, `OceanHex` |
 | outcome (output) | all 6 vertices called with `products`, no vertex called |
 | vertices called (output) | 0, 6 (maximum) |

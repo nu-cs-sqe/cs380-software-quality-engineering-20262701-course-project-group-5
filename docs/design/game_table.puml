@@ -135,9 +135,9 @@ package bank {
     +class BankResourceDistributor {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} bankInventory : ResourceInventory
-        -resourcesToDistribute : Map<Color, List<ResourceStack>
+        -resourcesToDistribute : Map<Color, List<ResourceStack>>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
-        +produceResources(color : Color, products : ResourceProducts) : void
+        +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
         +abortProduction() : void
     }
@@ -258,10 +258,9 @@ package board {
     +abstract class Hex {
         -{final} tokenValue : int
         -vertices : Set<Vertex>
-        -edges : Set<Edge>
         -canProduce : boolean
-        -products : ResourceProducts
-        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
+        -products : List<ResourceStack>
+        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
@@ -307,7 +306,7 @@ package board {
         -point : Point
         +Vertex(endpoint : Point)
         +getPoint() : Point
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
     }
 
     +class Edge {
@@ -337,7 +336,7 @@ package piece {
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
     }
 
     +class PieceData {
@@ -350,14 +349,15 @@ package piece {
     +class Settlement {
         -ownerVictoryPointsTracker : ScoreTracker
         +Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
         +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        ' Produces twice the quantity in each base resource stack.
+        +produceResources(products : List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
@@ -420,14 +420,6 @@ package resource {
         +removeResources(stack : ResourceStack) : void
     }
 
-    +class ResourceProducts {
-        -baseProducts : List<ResourceStack>
-        -cityBonusProducts : List<ResourceStack>
-        +ResourceProducts(baseProducts : List<ResourceStack>, cityBonusProducts : List<ResourceStack>)
-        +getBaseProducts() : List<ResourceStack>
-        +getCityBonusProducts() : List<ResourceStack>
-    }
-
 }
 
 package development {
@@ -455,6 +447,7 @@ package award {
 }
 
 }
+
 
 Observed --> Observer
 
@@ -497,6 +490,7 @@ Bank ..|> ResourceInventory
 BankResourceDistributor --|> Observed
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
+BankResourceDistributor --> ResourceStack
 
 PurchaseHelper -u-> PlayerInventory
 PurchaseHelper --> Bank
@@ -538,13 +532,13 @@ GameBoard ..> PieceData
 
 Hex --> Piece
 Hex --> Vertex
-Hex --> Edge
+Hex ..> Edge
+Hex ..> Point
 Hex --|> Location
 
-Edge --> Vertex
 Edge ..> PieceData
 
-Hex --> ResourceProducts
+Hex --> ResourceStack
 HillsHex --|> Hex
 ForestHex --|> Hex
 MountainsHex --|> Hex
@@ -560,7 +554,7 @@ Vertex --|> Location
 Edge --> Piece
 Edge --> Point
 Edge --|> Location
-Vertex ..> ResourceProducts
+Vertex ..> ResourceStack
 
 Harbor --> ResourceStack
 
@@ -588,15 +582,12 @@ OreResourceStack --|> ResourceStack
 GrainResourceStack --|> ResourceStack
 WoolResourceStack --|> ResourceStack
 
-ResourceProducts --> ResourceStack
-
 Building --> BankResourceDistributor
 Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
-Building ..> ResourceProducts
-Settlement ..> ResourceProducts
-City ..> ResourceProducts
+Settlement ..> ResourceStack
+City ..> ResourceStack
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
