@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTests {
 
+    // tests for addPiece()
     @Test
     void AddPiece_OnEmptyVertex_StoresSettlement() {
         Vertex vertex = new Vertex(new Point(1, 2));
@@ -53,6 +54,8 @@ public class LocationTests {
 
         assertEquals(List.of(robber), hex.getPieces());
     }
+
+    // tests for holdsPieceWithData()
 
     @Test
     void HoldsPieceWithData_OnEmptyVertex_ReturnsFalse() {
@@ -123,6 +126,18 @@ public class LocationTests {
         PieceData query = new PieceData(Color.RED, "city");
 
         assertFalse(vertex.holdsPieceWithData(query));
+    }
+
+    // tests for removePieceWithData()
+
+    @Test
+    void RemovePieceWithData_OnEmptyVertex_LeavesVertexEmpty() {
+        Vertex vertex = new Vertex(new Point(1, 2));
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+
+        vertex.removePieceWithData(settlementData);
+
+        assertTrue(vertex.getPieces().isEmpty());
     }
 
     private static Vertex vertexWithSettlement(PieceData settlementData) {
