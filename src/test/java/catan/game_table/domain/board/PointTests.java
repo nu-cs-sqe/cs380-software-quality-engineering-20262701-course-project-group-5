@@ -12,4 +12,12 @@ class PointTests {
 
         assertEquals(point, point);
     }
+
+    @Test
+    void Equals_WhenDistinctPointsHaveTheSameCoordinates_ReturnsTrue() {
+        Point first = new Point(1, 2);
+        Point second = new Point(1, 2);
+
+        assertEquals(first, second);
+    }
 }
