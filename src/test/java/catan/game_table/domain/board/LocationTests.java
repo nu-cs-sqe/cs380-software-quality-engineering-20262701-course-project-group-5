@@ -75,17 +75,31 @@ public class LocationTests {
 
     @Test
     void HoldsPieceWithData_WhenFirstPieceMatches_ReturnsTrue() {
-        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
         PieceData roadData = new PieceData("road");
+        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData("harbor"));
+
+        assertTrue(edge.holdsPieceWithData(roadData));
+    }
+
+    @Test
+    void HoldsPieceWithData_WhenLastPieceMatches_ReturnsTrue() {
+        PieceData harborData = new PieceData("harbor");
+        Edge edge = edgeWithRoadThenHarbor(new PieceData("road"), harborData);
+
+        assertTrue(edge.holdsPieceWithData(harborData));
+    }
+
+    private static Edge edgeWithRoadThenHarbor(PieceData roadData, PieceData harborData) {
+        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
         Road road = EasyMock.createMock(Road.class);
         Harbor harbor = EasyMock.createMock(Harbor.class);
         EasyMock.expect(road.getPieceData()).andStubReturn(roadData);
-        EasyMock.expect(harbor.getPieceData()).andStubReturn(new PieceData("harbor"));
+        EasyMock.expect(harbor.getPieceData()).andStubReturn(harborData);
         EasyMock.replay(road, harbor);
         edge.addPiece(road);
         edge.addPiece(harbor);
 
-        assertTrue(edge.holdsPieceWithData(roadData));
+        return edge;
     }
 
     private static Hex emptyHex() {
