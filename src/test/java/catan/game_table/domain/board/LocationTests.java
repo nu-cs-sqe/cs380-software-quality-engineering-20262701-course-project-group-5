@@ -14,6 +14,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTests {
 
@@ -58,6 +59,18 @@ public class LocationTests {
         PieceData settlementData = new PieceData("settlement");
 
         assertFalse(vertex.holdsPieceWithData(settlementData));
+    }
+
+    @Test
+    void HoldsPieceWithData_OnVertexWithMatchingSettlement_ReturnsTrue() {
+        Vertex vertex = new Vertex(new Point(1, 2));
+        PieceData settlementData = new PieceData("settlement");
+        Settlement settlement = EasyMock.createMock(Settlement.class);
+        EasyMock.expect(settlement.getPieceData()).andStubReturn(settlementData);
+        EasyMock.replay(settlement);
+        vertex.addPiece(settlement);
+
+        assertTrue(vertex.holdsPieceWithData(settlementData));
     }
 
     private static Hex emptyHex() {

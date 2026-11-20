@@ -19,7 +19,8 @@ public abstract class Location {
 
     public void removePieceWithData(PieceData data) {
     }
+
     public boolean holdsPieceWithData(PieceData data) {
-        return false;
+        return pieces.stream().anyMatch(piece -> data.equals(piece.getPieceData()));
     }
 }
