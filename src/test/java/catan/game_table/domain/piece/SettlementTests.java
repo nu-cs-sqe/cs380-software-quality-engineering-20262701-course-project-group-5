@@ -13,20 +13,21 @@ public class SettlementTests {
         PieceData pieceData = EasyMock.createMock(PieceData.class);
         BankResourceDistributor bankResourceDistributor = EasyMock.createMock(BankResourceDistributor.class);
         ScoreTracker ownerVictoryPointsTracker = EasyMock.createMock(ScoreTracker.class);
-        List<WoolResourceStack> woolResourceStackList = EasyMock.createMock(WoolResourceStack.class);
+        ResourceStack resourceStack = EasyMock.createMock(ResourceStack.class);
 
-        EasyMock.expect(pieceData.color).andStubReturn(Color.BLUE);
+        List<ResourceStack> resourceStackList = List.of(resourceStack);
+
+        EasyMock.expect(pieceData.color).andReturn(Color.BLUE);
         WoolResourceStack singleWoolResourceStack = new WoolResourceStack(1);
-        EasyMock.expect(woolResourceStackList.getFirst()).andStubReturn(singleWoolResourceStack);
-        EasyMock.expect(singleWoolResourceStack.getSize()).andStubReturn(1);
-        EasyMock.expect(singleWoolResourceStack.add(singleWoolResourceStack));
+        EasyMock.expect(resourceStack.getSize()).andStubReturn(1);
+        EasyMock.expect(resourceStack.add(singleWoolResourceStack));
 
         EasyMock.replay(pieceData, bankResourceDistributor);
 
         Settlement settlement = new Settlement(pieceData, bankResourceDistributor, ownerVictoryPointsTracker);
 
-        settlement.produceResource(woolResourceStackList);
+        settlement.produceResources(resourceStackList);
 
-        EasyMock.verify(bankResourceDistributor.produceResources(Color.BLUE, woolResourceStackList));
+        EasyMock.verify(bankResourceDistributor);
     }
 }
