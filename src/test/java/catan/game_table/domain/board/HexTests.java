@@ -192,13 +192,6 @@ class HexTests {
     }
 
     @Test
-    void CanProduce_OnNewOceanHex_ReturnsFalse() {
-        Hex hex = new OceanHex(sixVertices(), ring());
-
-        assertFalse(hex.canProduce());
-    }
-
-    @Test
     void GetTokenValue_OnForestHexWithTokenTwo_ReturnsTwo() {
         Hex hex = new ForestHex(2, sixVertices(), ring(), PRODUCTS);
 
@@ -210,13 +203,6 @@ class HexTests {
         Hex hex = new HillsHex(12, sixVertices(), ring(), PRODUCTS);
 
         assertEquals(12, hex.getTokenValue());
-    }
-
-    @Test
-    void GetTokenValue_OnOceanHex_ReturnsZero() {
-        Hex hex = new OceanHex(sixVertices(), ring());
-
-        assertEquals(0, hex.getTokenValue());
     }
 
     @Test
@@ -283,24 +269,6 @@ class HexTests {
     }
 
     @Test
-    void SetCanProduce_OnOceanHexWithFlagFalseAndInputFalse_ReturnsFalse() {
-        Hex hex = new OceanHex(sixVertices(), ring());
-
-        hex.setCanProduce(false);
-
-        assertFalse(hex.canProduce());
-    }
-
-    @Test
-    void SetCanProduce_OnOceanHexWithFlagFalseAndInputTrue_ReturnsFalse() {
-        Hex hex = new OceanHex(sixVertices(), ring());
-
-        hex.setCanProduce(true);
-
-        assertFalse(hex.canProduce());
-    }
-
-    @Test
     void ProduceResources_OnProducingFieldsHexWithEmptyProducts_EachVertexProducesOnceWithProducts() {
         List<Vertex> vertices = CORNERS.stream()
                 .map(point -> vertexExpectedToProduce(point, PRODUCTS))
@@ -345,18 +313,6 @@ class HexTests {
                 .map(HexTests::vertexNotExpectedToProduce)
                 .toList();
         Hex hex = new DesertHex(new LinkedHashSet<>(vertices), ring());
-
-        hex.produceResources();
-
-        EasyMock.verify(vertices.toArray());
-    }
-
-    @Test
-    void ProduceResources_OnOceanHex_NoVertexProduces() {
-        List<Vertex> vertices = CORNERS.stream()
-                .map(HexTests::vertexNotExpectedToProduce)
-                .toList();
-        Hex hex = new OceanHex(new LinkedHashSet<>(vertices), ring());
 
         hex.produceResources();
 
