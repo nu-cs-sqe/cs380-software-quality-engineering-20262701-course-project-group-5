@@ -64,12 +64,8 @@ public class LocationTests {
 
     @Test
     void HoldsPieceWithData_OnVertexWithMatchingSettlement_ReturnsTrue() {
-        Vertex vertex = new Vertex(new Point(1, 2));
         PieceData settlementData = new PieceData(Color.RED, "settlement");
-        Settlement settlement = EasyMock.createMock(Settlement.class);
-        EasyMock.expect(settlement.getPieceData()).andStubReturn(settlementData);
-        EasyMock.replay(settlement);
-        vertex.addPiece(settlement);
+        Vertex vertex = vertexWithSettlement(settlementData);
 
         assertTrue(vertex.holdsPieceWithData(settlementData));
     }
@@ -98,6 +94,25 @@ public class LocationTests {
         PieceData settlementData = new PieceData(Color.RED, "settlement");
 
         assertFalse(edge.holdsPieceWithData(settlementData));
+    }
+
+    @Test
+    void HoldsPieceWithData_WhenDistinctDataHasSameTypeAndColor_ReturnsTrue() {
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        Vertex vertex = vertexWithSettlement(settlementData);
+        PieceData query = new PieceData(Color.RED, "settlement");
+
+        assertTrue(vertex.holdsPieceWithData(query));
+    }
+
+    private static Vertex vertexWithSettlement(PieceData settlementData) {
+        Vertex vertex = new Vertex(new Point(1, 2));
+        Settlement settlement = EasyMock.createMock(Settlement.class);
+        EasyMock.expect(settlement.getPieceData()).andStubReturn(settlementData);
+        EasyMock.replay(settlement);
+        vertex.addPiece(settlement);
+
+        return vertex;
     }
 
     private static Edge edgeWithRoadThenHarbor(PieceData roadData, PieceData harborData) {
