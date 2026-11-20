@@ -9,10 +9,6 @@ public class PieceData {
     private final Color color;
     private final String type;
 
-    public PieceData(String type) {
-        this(Color.NONE, type);
-    }
-
     public PieceData(Color color, String type) {
         this.color = color;
         this.type = type;
