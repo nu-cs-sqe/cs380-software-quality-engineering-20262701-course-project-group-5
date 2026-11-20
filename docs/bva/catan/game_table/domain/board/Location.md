@@ -59,7 +59,7 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 | Test Case 5 | `Edge` with a `Road` then a `Harbor`, query with settlement data                                       | false           | :white_check_mark: |
 | Test Case 6 | `Vertex` with one `Settlement`, query with a different `PieceData` object with the same type and color | true            | :white_check_mark: |
 | Test Case 7 | `Edge` with one `Road`, query with the same type and a different color                                 | false           | :white_check_mark: |
-| Test Case 8 | `Vertex` with one `Settlement`, query with the same color and a different type                         | false           | :x:                |
+| Test Case 8 | `Vertex` with one `Settlement`, query with the same color and a different type                         | false           | :white_check_mark: |
 
 ### Test: `public void addPiece(Piece piece)`
 

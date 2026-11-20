@@ -117,6 +117,14 @@ public class LocationTests {
         assertFalse(edge.holdsPieceWithData(query));
     }
 
+    @Test
+    void HoldsPieceWithData_WhenPieceTypeDiffers_ReturnsFalse() {
+        Vertex vertex = vertexWithSettlement(new PieceData(Color.RED, "settlement"));
+        PieceData query = new PieceData(Color.RED, "city");
+
+        assertFalse(vertex.holdsPieceWithData(query));
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);
