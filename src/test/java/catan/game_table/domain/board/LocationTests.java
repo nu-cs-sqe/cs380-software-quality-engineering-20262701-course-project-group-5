@@ -73,6 +73,21 @@ public class LocationTests {
         assertTrue(vertex.holdsPieceWithData(settlementData));
     }
 
+    @Test
+    void HoldsPieceWithData_WhenFirstPieceMatches_ReturnsTrue() {
+        Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
+        PieceData roadData = new PieceData("road");
+        Road road = EasyMock.createMock(Road.class);
+        Harbor harbor = EasyMock.createMock(Harbor.class);
+        EasyMock.expect(road.getPieceData()).andStubReturn(roadData);
+        EasyMock.expect(harbor.getPieceData()).andStubReturn(new PieceData("harbor"));
+        EasyMock.replay(road, harbor);
+        edge.addPiece(road);
+        edge.addPiece(harbor);
+
+        assertTrue(edge.holdsPieceWithData(roadData));
+    }
+
     private static Hex emptyHex() {
         List<Point> corners = List.of(
                 new Point(1, 0),
