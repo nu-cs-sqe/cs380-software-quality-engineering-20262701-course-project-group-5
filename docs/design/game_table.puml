@@ -135,7 +135,7 @@ package bank {
     +class BankResourceDistributor {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} bankInventory : ResourceInventory
-        -resourcesToDistribute : Map<Color, List<ResourceStack>
+        -resourcesToDistribute : Map<Color, List<ResourceStack>>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
         +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
@@ -313,7 +313,7 @@ package board {
 
     +abstract class Location {
         #pieces : List<Piece>
-        +getPieceData() : List<PieceData>
+        +getPieces() : List<Piece>
         +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
         +holdsPieceWithData(data : PieceData) : boolean
@@ -469,6 +469,7 @@ package award {
 
 }
 
+
 Observed --> Observer
 
 GameTableController --> GameTableView
@@ -510,6 +511,7 @@ Bank ..|> ResourceInventory
 BankResourceDistributor --|> Observed
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
+BankResourceDistributor --> ResourceStack
 
 PurchaseHelper -u-> PlayerInventory
 PurchaseHelper --> Bank
