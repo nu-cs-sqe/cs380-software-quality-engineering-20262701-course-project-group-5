@@ -231,10 +231,20 @@ package trade {
 package board {
 
     +class GameBoard {
-        -vertices : Set<Vertex>
-        -edges : Set<Edge>
-        -hexes : Set<Hex>
+        -{final} vertices : Set<Vertex>
+        -{final} edges : Set<Edge>
+        -{final} hexes : Set<Hex>
+        -{final} neighbors : Map<Vertex, Set<Vertex>>
+        -{static} {final} MIN_TOKEN_VALUE : int = 2
+        -{static} {final} MAX_TOKEN_VALUE : int = 12
+        +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>)
+        -createNeighbors() : void
+        -indexVerticesByPoint() : Map<Point, Vertex>
+        -linkEndpointsOf(edge : Edge, vertexAt : Map<Point, Vertex>) : void
+        -link(first : Vertex, second : Vertex) : void
+        +getNeighbors(vertex : Vertex) : Set<Vertex>
         +produceResourcesForToken(tokenValue : int) : void
+        -{static} requireValidTokenValue(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
     }
@@ -298,10 +308,7 @@ package board {
     }
 
     +class DesertHex {
-        -{static} {final} NO_TOKEN : int = 0
-        -{static} {final} NO_PRODUCTS : List<ResourceStack>
-        +DesertHex(vertices : Set<Vertex>, edges : Set<Edge>)
-        +setCanProduce(canProduce : boolean) : void
+        +setCanProduce() : void
     }
 
     +abstract class Location {
@@ -309,6 +316,7 @@ package board {
         +getPieceData() : List<PieceData>
         +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
+        +holdsPieceWithData(data : PieceData) : boolean
     }
 
     +class Vertex {
@@ -320,7 +328,7 @@ package board {
 
     +class Edge {
         -{final} endpoints : Set<Point>
-        +Edge(first : Point, second : Point)
+        +Edge(endpoint1 : Point, endpoint2 : Point)
         +getEndpoints() : Set<Point>
     }
 
@@ -540,6 +548,7 @@ GameBoard --> Edge
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
+GameBoard ..> Point
 
 Hex --> Piece
 Hex --> Vertex
