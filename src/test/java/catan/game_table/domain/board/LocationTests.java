@@ -140,6 +140,16 @@ public class LocationTests {
         assertTrue(vertex.getPieces().isEmpty());
     }
 
+    @Test
+    void RemovePieceWithData_WithOneMatchingSettlement_LeavesVertexEmpty() {
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        Vertex vertex = vertexWithSettlement(settlementData);
+
+        vertex.removePieceWithData(settlementData);
+
+        assertTrue(vertex.getPieces().isEmpty());
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);
