@@ -37,4 +37,11 @@ class PointTests {
 
         assertNotEquals(first, second);
     }
+
+    @Test
+    void Equals_WhenComparedToAString_ReturnsFalse() {
+        Point point = new Point(1, 2);
+
+        assertNotEquals("point", point);
+    }
 }

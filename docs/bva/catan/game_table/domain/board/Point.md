@@ -46,7 +46,7 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 | Test Case 2 | `Point(1, 2)` and a different `Point(1, 2)`        | true            | :white_check_mark: |
 | Test Case 3 | `Point(1, 2)` and `Point(3, 2)` (only `x` differs) | false           | :white_check_mark: |
 | Test Case 4 | `Point(1, 2)` and `Point(1, 3)` (only `y` differs) | false           | :white_check_mark: |
-| Test Case 5 | `Point(1, 2)` and a `String`                       | false           | :x:                |
+| Test Case 5 | `Point(1, 2)` and a `String`                       | false           | :white_check_mark: |
 
 ### Test: `public int hashCode()`
 
