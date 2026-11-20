@@ -1,12 +1,20 @@
 package catan.game_table.domain.piece;
 
+import catan.game_table.domain.Color;
+
 import java.util.Objects;
 
 public class PieceData {
 
+    private final Color color;
     private final String type;
 
     public PieceData(String type) {
+        this(Color.NONE, type);
+    }
+
+    public PieceData(Color color, String type) {
+        this.color = color;
         this.type = type;
     }
 
@@ -19,11 +27,11 @@ public class PieceData {
             return false;
         }
         PieceData otherOne = (PieceData) other;
-        return Objects.equals(type, otherOne.type);
+        return color == otherOne.color && Objects.equals(type, otherOne.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type);
+        return Objects.hash(color, type);
     }
 }

@@ -1,5 +1,6 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.Color;
 import catan.game_table.domain.piece.Harbor;
 import catan.game_table.domain.piece.PieceData;
 import catan.game_table.domain.piece.Robber;
@@ -56,7 +57,7 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_OnEmptyVertex_ReturnsFalse() {
         Vertex vertex = new Vertex(new Point(1, 2));
-        PieceData settlementData = new PieceData("settlement");
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
 
         assertFalse(vertex.holdsPieceWithData(settlementData));
     }
@@ -64,7 +65,7 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_OnVertexWithMatchingSettlement_ReturnsTrue() {
         Vertex vertex = new Vertex(new Point(1, 2));
-        PieceData settlementData = new PieceData("settlement");
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
         Settlement settlement = EasyMock.createMock(Settlement.class);
         EasyMock.expect(settlement.getPieceData()).andStubReturn(settlementData);
         EasyMock.replay(settlement);
@@ -75,16 +76,16 @@ public class LocationTests {
 
     @Test
     void HoldsPieceWithData_WhenFirstPieceMatches_ReturnsTrue() {
-        PieceData roadData = new PieceData("road");
-        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData("harbor"));
+        PieceData roadData = new PieceData(Color.RED, "road");
+        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, "harbor"));
 
         assertTrue(edge.holdsPieceWithData(roadData));
     }
 
     @Test
     void HoldsPieceWithData_WhenLastPieceMatches_ReturnsTrue() {
-        PieceData harborData = new PieceData("harbor");
-        Edge edge = edgeWithRoadThenHarbor(new PieceData("road"), harborData);
+        PieceData harborData = new PieceData(Color.NONE, "harbor");
+        Edge edge = edgeWithRoadThenHarbor(new PieceData(Color.RED, "road"), harborData);
 
         assertTrue(edge.holdsPieceWithData(harborData));
     }
