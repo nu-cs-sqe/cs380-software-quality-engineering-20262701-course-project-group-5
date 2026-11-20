@@ -29,4 +29,12 @@ class EdgeTests {
 
         assertDoesNotThrow(() -> new Edge(first, second));
     }
+
+    @Test
+    void Constructor_WithNonAdjacentPoints_ThrowsIllegalArgumentException() {
+        Point first = new Point(0, 0);
+        Point second = new Point(5, 5);
+
+        assertThrows(IllegalArgumentException.class, () -> new Edge(first, second));
+    }
 }

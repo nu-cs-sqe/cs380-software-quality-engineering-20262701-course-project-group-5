@@ -6,10 +6,10 @@ Classpath: catan.game_table.domain.board.Edge
 A side shared by up to two hexes. Roads and harbors are placed here.
 
 ### `public Edge(Point endpoint1, Point endpoint2)`
-Initializes an `Edge` between two points. Throws `IllegalArgumentException` if the two points are equal, or if the two points are not adjacent.
+Initializes an `Edge` between two points exactly one step apart horizontally or vertically. Throws `IllegalArgumentException` for any other endpoint pair.
 
 ### `public Set<Point> getEndpoints()`
-Returns the two endpoints as a set (order does not matter).
+Returns the two endpoints as an unmodifiable set.
 
 ## Boundary-Value Analysis
 
@@ -47,4 +47,4 @@ Inherited methods: see `Location`.
 | Test Case 1 | the same `Point` object for both | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 2 | two `Point(1, 1)` objects        | `IllegalArgumentException` | :white_check_mark: |
 | Test Case 3 | `Point(0, 0)` and `Point(1, 0)`  | edge created               | :white_check_mark: |
-| Test Case 4 | `Point(0, 0)` and `Point(5, 5)`  | `IllegalArgumentException` | :x:                |
+| Test Case 4 | `Point(0, 0)` and `Point(5, 5)`  | `IllegalArgumentException` | :white_check_mark: |
