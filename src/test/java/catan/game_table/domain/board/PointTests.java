@@ -29,4 +29,12 @@ class PointTests {
 
         assertNotEquals(first, second);
     }
+
+    @Test
+    void Equals_WhenOnlyYDiffers_ReturnsFalse() {
+        Point first = new Point(1, 2);
+        Point second = new Point(1, 3);
+
+        assertNotEquals(first, second);
+    }
 }
