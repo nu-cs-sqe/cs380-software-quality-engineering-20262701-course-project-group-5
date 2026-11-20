@@ -86,11 +86,11 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 
 **Step 4: Each choice**
 
-|             | Input                                        | Expected output                                  | Implemented? |
-|-------------|----------------------------------------------|--------------------------------------------------|--------------|
-| Test Case 1 | empty `Vertex`, add a `Settlement`           | vertex holds exactly that piece                  | :x:          |
-| Test Case 2 | `Edge` with one `Road`, add a `Harbor`       | edge holds both, the `Harbor` after the `Road`   | :x:          |
-| Test Case 3 | empty `Hex`, add the `Robber`                | hex holds exactly that piece                     | :x:          |
+|             | Input                                  | Expected output                                | Implemented?       |
+|-------------|----------------------------------------|------------------------------------------------|--------------------|
+| Test Case 1 | empty `Vertex`, add a `Settlement`     | vertex holds exactly that piece                | :white_check_mark: |
+| Test Case 2 | `Edge` with one `Road`, add a `Harbor` | edge holds both, the `Harbor` after the `Road` | :x:                |
+| Test Case 3 | empty `Hex`, add the `Robber`          | hex holds exactly that piece                   | :x:                |
 
 ### Test: `public void removePieceWithData(PieceData data)`
 
