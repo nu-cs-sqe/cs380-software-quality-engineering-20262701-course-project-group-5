@@ -1,12 +1,15 @@
 package catan.game_table.domain.board;
 
 import catan.game_table.domain.piece.Harbor;
+import catan.game_table.domain.piece.Robber;
 import catan.game_table.domain.piece.Road;
 import catan.game_table.domain.piece.Settlement;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,5 +37,37 @@ public class LocationTests {
         edge.addPiece(harbor);
 
         assertEquals(List.of(road, harbor), edge.getPieces());
+    }
+
+    @Test
+    void AddPiece_OnEmptyHex_StoresRobber() {
+        Hex hex = emptyHex();
+        Robber robber = EasyMock.createMock(Robber.class);
+        EasyMock.replay(robber);
+
+        hex.addPiece(robber);
+
+        assertEquals(List.of(robber), hex.getPieces());
+    }
+
+    private static Hex emptyHex() {
+        List<Point> corners = List.of(
+                new Point(1, 0),
+                new Point(2, 0),
+                new Point(3, 1),
+                new Point(2, 2),
+                new Point(1, 2),
+                new Point(0, 1));
+        Set<Vertex> vertices = new HashSet<>();
+        Set<Edge> edges = new HashSet<>();
+
+        for (int index = 0; index < corners.size(); index++) {
+            Point corner = corners.get(index);
+            Point nextCorner = corners.get((index + 1) % corners.size());
+            vertices.add(new Vertex(corner));
+            edges.add(new Edge(corner, nextCorner));
+        }
+
+        return new DesertHex(vertices, edges);
     }
 }
