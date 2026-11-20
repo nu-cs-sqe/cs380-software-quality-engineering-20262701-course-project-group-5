@@ -32,6 +32,8 @@ Returns the board edges having `vertex` as an endpoint.
 ### `public Set<Edge> getAdjacentEdges(Edge edge)`
 Returns the other board edges sharing either endpoint with `edge`. Excludes `edge` itself; there are up to four such edges on a hex board.
 
+All getters return unmodifiable, precomputed sets.
+
 ## Boundary-Value Analysis
 
 `GameBoard` is only called with valid arguments. Null cases and invalid-placement cases are not tested here (see `PlacementHelper`).
