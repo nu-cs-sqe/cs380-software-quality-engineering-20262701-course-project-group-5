@@ -304,13 +304,6 @@ package board {
         +setCanProduce(canProduce : boolean) : void
     }
 
-    +class OceanHex {
-        -{static} {final} NO_TOKEN : int = 0
-        -{static} {final} NO_PRODUCTS : List<ResourceStack>
-        +OceanHex(vertices : Set<Vertex>, edges : Set<Edge>)
-        +setCanProduce(canProduce : boolean) : void
-    }
-
     +abstract class Location {
         #pieces : List<Piece>
         +getPieceData() : List<PieceData>
@@ -563,7 +556,6 @@ MountainsHex --|> Hex
 FieldsHex --|> Hex
 PastureHex --|> Hex
 DesertHex --|> Hex
-OceanHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
