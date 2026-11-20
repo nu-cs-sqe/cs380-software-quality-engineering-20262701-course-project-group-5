@@ -2,6 +2,7 @@ package catan.game_table.domain.board;
 
 import catan.game_table.domain.Color;
 import catan.game_table.domain.piece.Harbor;
+import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.PieceData;
 import catan.game_table.domain.piece.Robber;
 import catan.game_table.domain.piece.Road;
@@ -148,6 +149,17 @@ public class LocationTests {
         vertex.removePieceWithData(settlementData);
 
         assertTrue(vertex.getPieces().isEmpty());
+    }
+
+    @Test
+    void RemovePieceWithData_WhenRoadMatchesFirst_LeavesOnlyHarbor() {
+        PieceData roadData = new PieceData(Color.RED, "road");
+        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, "harbor"));
+        Piece harbor = edge.getPieces().getLast();
+
+        edge.removePieceWithData(roadData);
+
+        assertEquals(List.of(harbor), edge.getPieces());
     }
 
     private static Vertex vertexWithSettlement(PieceData settlementData) {
