@@ -90,6 +90,16 @@ public class LocationTests {
         assertTrue(edge.holdsPieceWithData(harborData));
     }
 
+    @Test
+    void HoldsPieceWithData_WhenNoPieceMatches_ReturnsFalse() {
+        Edge edge = edgeWithRoadThenHarbor(
+                new PieceData(Color.RED, "road"),
+                new PieceData(Color.NONE, "harbor"));
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+
+        assertFalse(edge.holdsPieceWithData(settlementData));
+    }
+
     private static Edge edgeWithRoadThenHarbor(PieceData roadData, PieceData harborData) {
         Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
         Road road = EasyMock.createMock(Road.class);
