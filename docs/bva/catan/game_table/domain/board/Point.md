@@ -42,7 +42,7 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 
 |             | Input                                              | Expected output | Implemented? |
 |-------------|----------------------------------------------------|-----------------|--------------|
-| Test Case 1 | `Point(1, 2)` compared to itself                   | true            | :x:          |
+| Test Case 1 | `Point(1, 2)` compared to itself                   | true            | :white_check_mark: |
 | Test Case 2 | `Point(1, 2)` and a different `Point(1, 2)`        | true            | :x:          |
 | Test Case 3 | `Point(1, 2)` and `Point(3, 2)` (only `x` differs) | false           | :x:          |
 | Test Case 4 | `Point(1, 2)` and `Point(1, 3)` (only `y` differs) | false           | :x:          |
