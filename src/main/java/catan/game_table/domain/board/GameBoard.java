@@ -12,7 +12,7 @@ public class GameBoard {
         return null;
     }
 
-    public Set<Edge> getConnectingEdges(Vertex vertex) {
+    public Set<Edge> getConnectingEdges(Location location) {
         return null;
     }
 

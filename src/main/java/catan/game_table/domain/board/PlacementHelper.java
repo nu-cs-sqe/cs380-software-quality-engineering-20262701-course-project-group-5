@@ -41,6 +41,8 @@ public class PlacementHelper {
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
         Set<Edge> validEdges = new HashSet<>(gameBoard.getLandEdges());
 
+        validEdges.removeIf(this::edgeHasRoadAlready);
+
         validEdges.removeIf(edge -> !edgeTouchingSameColorPiece(edge, color));
 
         if (gamePhase == GamePhase.SETUP) {
@@ -96,7 +98,18 @@ public class PlacementHelper {
         return false;
     }
 
+    private boolean edgeHasRoadAlready(Edge edge) {
+        List<Piece> pieces = edge.getPieces();
+        for (Piece piece : pieces) {
+            if (piece instanceof Road) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean edgeTouchingSameColorPiece(Edge edge, Color color) {
+
         Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
         for (Vertex vertex : endpointVertices) {
             if (vertexHasBuildingOfColor(vertex, color)) {
@@ -104,7 +117,16 @@ public class PlacementHelper {
             }
             // TODO
         }
+
+        Set<Edge> connectingEdges = gameBoard.getConnectingEdges(edge);
+        for (Edge connectingEdge : connectingEdges) {
+            if (edgeHasRoadOfColor(connectingEdge, color)) {
+                return true;
+            }
+        }
+
         return false;
+
     }
 
     private boolean vertexHasBuildingOfColor(Vertex vertex, Color color) {
