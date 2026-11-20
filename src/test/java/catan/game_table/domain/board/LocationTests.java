@@ -197,6 +197,20 @@ public class LocationTests {
         assertTrue(vertex.getPieces().isEmpty());
     }
 
+    @Test
+    void RemovePieceWithData_WhenRobberMatches_LeavesHexEmpty() {
+        Hex hex = emptyHex();
+        PieceData robberData = new PieceData(Color.NONE, "robber");
+        Robber robber = EasyMock.createMock(Robber.class);
+        EasyMock.expect(robber.getPieceData()).andStubReturn(robberData);
+        EasyMock.replay(robber);
+        hex.addPiece(robber);
+
+        hex.removePieceWithData(robberData);
+
+        assertTrue(hex.getPieces().isEmpty());
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);

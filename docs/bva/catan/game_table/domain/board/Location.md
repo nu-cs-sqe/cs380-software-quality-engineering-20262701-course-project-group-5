@@ -131,5 +131,5 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 | Test Case 4 | `Edge` with a `Road` then a `Harbor`, `data` matches the `Harbor` only (last) | only the `Road` remains          | :white_check_mark: |
 | Test Case 5 | `Edge` with a `Road` then a `Harbor`, `data` matches neither                  | no change, both remain           | :white_check_mark: |
 | Test Case 6 | one piece, a different `PieceData` object with equal `type` and `color`       | piece removed, location is empty | :white_check_mark: |
-| Test Case 7 | `Hex` with the `Robber`, `data` is the Robber's data                          | hex is empty                     | :x:                |
+| Test Case 7 | `Hex` with the `Robber`, `data` is the Robber's data                          | hex is empty                     | :white_check_mark: |
 | Test Case 8 | `Edge` with one `Road`, `data` has the same `type` but a different `color`    | no change, the `Road` remains    | :x:                |
