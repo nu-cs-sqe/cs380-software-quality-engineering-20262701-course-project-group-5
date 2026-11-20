@@ -186,6 +186,17 @@ public class LocationTests {
         assertEquals(originalPieces, edge.getPieces());
     }
 
+    @Test
+    void RemovePieceWithData_WhenDistinctDataMatches_LeavesVertexEmpty() {
+        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        Vertex vertex = vertexWithSettlement(settlementData);
+        PieceData query = new PieceData(Color.RED, "settlement");
+
+        vertex.removePieceWithData(query);
+
+        assertTrue(vertex.getPieces().isEmpty());
+    }
+
     private static Vertex vertexWithSettlement(PieceData settlementData) {
         Vertex vertex = new Vertex(new Point(1, 2));
         Settlement settlement = EasyMock.createMock(Settlement.class);
