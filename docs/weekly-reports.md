@@ -58,3 +58,23 @@ TODO:
 - Daniel: Begin TDD on Resource package
 - Hayley: Finish Piece BVA in light of design refactor
 - Tentative TODOs: Following BVA completion, begin TDD on all relevant packages
+
+# Week 7 (11/09/2026 - 11/15/2026)
+**Planning and Progress Tracking:**
+
+1. [merged] Daniel: TDD on Resource package (all its classes)
+2. [in review] Breanna: Completed TDD on Hex class and its subclasses ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/77))
+3. [in review] Breanna: Completed TDD on GameBoard class, barring the "neighbors" functionality needed for PlacementHelper ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/73))
+4. [in progress, will be done by 11/16] Breanna: TDD on Location, Point, Edge, Vertex ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/82))
+5. [in progress, will be done by 11/18] Hayley: TDD on Piece package ([link to PR for PieceData class](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/86))
+6. [in progress, will be done by 11/15] Xavier: TDD on PlacementHelper class ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/71))
+7. [in progress] Anthony: TDD on Player package
+8. [in progress]: Daniel: BVA on Bank package ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/87))
+
+TODO:
+- Anyone: Review Hayley's PieceData TDD
+- All: Decide on Checkstyle warnings or violations
+- Breanna: Review comments by Daniel on GameBoard TDD
+- Breanna: TDD for added "neighbors" functionality in GameBoard
+- Check and merge Breanna's completed TDDs (2 reviews done on each)
+- TDD on remaining packages / classes
