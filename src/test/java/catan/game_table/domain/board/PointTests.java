@@ -39,7 +39,7 @@ class PointTests {
     }
 
     @Test
-    void Equals_WhenComparedToAString_ReturnsFalse() {
+    void Equals_WhenComparedToString_ReturnsFalse() {
         Point point = new Point(1, 2);
 
         assertNotEquals("point", point);
