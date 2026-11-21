@@ -14,8 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerInventoryTests {
 
@@ -71,6 +70,8 @@ public class PlayerInventoryTests {
           break;
         case 'c':
           pieces.add(new City(data, dist, tracker));
+          break;
+        default:
           break;
       }
     }
@@ -141,15 +142,7 @@ public class PlayerInventoryTests {
 
 
     Exception expected = new IllegalArgumentException(msg);
-    Exception actual = null;
-    try {
-      boolean res = inv.hasPiece(piece);
-    } catch (Exception e) {
-      actual = e;
-
-    }
-
-    assertNotNull(actual);
+    Exception actual = assertThrows(IllegalArgumentException.class, () -> inv.hasPiece(piece));;
     assertEquals(expected.getMessage(), actual.getMessage());
   }
 
@@ -282,7 +275,7 @@ public class PlayerInventoryTests {
 
     for (int i = 0; i < len; i += 2) {
       char type = construct.charAt(i);
-      int amount = (int)(construct.charAt(i + 1) - '0');
+      int amount = (int) (construct.charAt(i + 1) - '0');
 
       switch (type) {
         case 'l':
@@ -299,6 +292,8 @@ public class PlayerInventoryTests {
           break;
         case 'w':
           res.add(new WoolResourceStack(amount));
+          break;
+        default:
           break;
       }
     }
@@ -499,6 +494,8 @@ public class PlayerInventoryTests {
           break;
         case 'y':
           res.add(new YearOfPlenty());
+          break;
+        default:
           break;
       }
     }

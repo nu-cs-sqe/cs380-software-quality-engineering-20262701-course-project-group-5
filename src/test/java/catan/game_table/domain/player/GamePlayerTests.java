@@ -124,7 +124,7 @@ public class GamePlayerTests {
       throw new RuntimeException("Unexpected exception in test");
     }
 
-    
+
     EasyMock.verify(purchaseHelper, dev);
   }
 

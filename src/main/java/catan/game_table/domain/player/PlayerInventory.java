@@ -55,7 +55,7 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
       throw new IllegalArgumentException("player cannot own the robber");
     }
 
-    for (Piece current_piece: this.pieces) {
+    for (Piece current_piece : this.pieces) {
       if (current_piece.getClass().equals(piece.getClass())) {
         return true;
       }
@@ -175,7 +175,7 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   public boolean hasDevelopment(Development development) {
     // this should also probably be a dictionary
-    for (Development current_dev: this.developments) {
+    for (Development current_dev : this.developments) {
       if (current_dev.getClass().equals(development.getClass())) {
         return true;
       }

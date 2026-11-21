@@ -79,17 +79,14 @@ public class GamePlayer {
 
     if (piece_class.equals(Harbor.class)) {
       throw new IllegalArgumentException("Cannot move a harbor");
-    }
-    else if (piece_class.equals(City.class) || piece_class.equals(Settlement.class)) {
+    } else if (piece_class.equals(City.class) || piece_class.equals(Settlement.class)) {
       // stupid ass java does not let me return direcctly
       // because getvalidbuildingspots returns a list of vertices
       // and it is apparently not smart enough to know that vertex inherits from location
       res.addAll(this.placementHelper.getValidBuildingSpots(this.color));
-    }
-    else if (piece_class.equals(Robber.class)) {
+    } else if (piece_class.equals(Robber.class)) {
       res.addAll(this.placementHelper.getValidRobberSpots());
-    }
-    else if (piece_class.equals(Road.class)) {
+    } else if (piece_class.equals(Road.class)) {
       res.addAll(this.placementHelper.getValidRoadSpots(this.color));
     } else {
       throw new RuntimeException("Invalid piece type");

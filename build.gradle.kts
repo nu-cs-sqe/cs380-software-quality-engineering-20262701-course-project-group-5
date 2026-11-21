@@ -81,6 +81,7 @@ spotbugs {
     reportsDir = file("spotbugs")
     maxHeapSize = "1g"
     extraArgs = listOf("-nested:false")
+    excludeFilter = file("config/spotbugs/exclude.xml")
 }
 
 tasks.spotbugsMain {
