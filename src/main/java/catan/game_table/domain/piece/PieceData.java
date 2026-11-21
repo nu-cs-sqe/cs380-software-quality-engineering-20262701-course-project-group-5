@@ -3,8 +3,8 @@ package catan.game_table.domain.piece;
 import catan.game_table.domain.Color;
 
 public class PieceData {
-  private final Color color;
-  private final String type;
+  public final Color color;
+  public final String type;
   public PieceData(Color color, String type) {
     this.color = color;
     this.type = type;
