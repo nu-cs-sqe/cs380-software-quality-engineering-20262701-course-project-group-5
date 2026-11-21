@@ -565,6 +565,40 @@ public class PlayerInventoryTests {
   }
 
 
+  @ParameterizedTest
+  @CsvSource({
+          "v, v, e",
+          "k, k, e",
+          "r, r, e",
+          "y, y, e",
+          "m, m , e",
+          "y, yk, k"
+  })
+  public void removeDevelopmentTestsForValidExchanges(String type, String before, String after) {
+    Development development = this.listOfDevelopmentConstruct(type).getFirst();
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
+
+    try {
+      inv.removeDevelopment(development);
+    } catch (Exception e) {
+      throw new RuntimeException("this test should not have exceptions");
+    }
+
+    List<Development> expected_after = this.listOfDevelopmentConstruct(after);
+    List<Development> actual_after = inv.getDevelopments();
+
+    assertEquals(expected_after.size(), actual_after.size());
+    int size = expected_after.size();
+
+    for (int i = 0; i < size; i++) {
+      Development expected = expected_after.get(i);
+      Development actual = actual_after.get(i);
+      assertEquals(expected.getClass(), actual.getClass());
+    }
+  }
+
+
 
 
 

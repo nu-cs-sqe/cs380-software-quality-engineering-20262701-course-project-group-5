@@ -183,4 +183,23 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     return false;
   }
 
+  public void removeDevelopment(Development development) throws NotEnoughInventoryException {
+    int to_remove = -1;
+    int size = this.developments.size();
+
+    for (int i = 0; i < size; i++) {
+      Development current_development = this.developments.get(i);
+      if (current_development.getClass().equals(development.getClass())) {
+        to_remove = i;
+        break;
+      }
+    }
+
+    if (to_remove == -1) {
+      throw new NotEnoughInventoryException();
+    } else {
+      this.developments.remove(to_remove);
+    }
+  }
+
 }

@@ -441,14 +441,14 @@ Adding one element
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: doesn't matter, internal list: empty | `NotEnoughInventoryException` | :x: |
-| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder} | `NotEnoughInventoryException` | :x: |
-| Test Case 3 | `dev`: VictoryPoint, internal list: {VictoryPoint} | internal list: empty | :x: |
-| Test Case 4 | `dev`: Knight, internal list: {Knight} | internal list: empty | :x: |
-| Test Case 5 | `dev`: RoadBuilder, internal list: {RoadBuilder} | internal list: empty | :x: |
-| Test Case 6 | `dev`: Monopoly, internal list: {Monopoly} | internal list: empty | :x: |
-| Test Case 7 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | internal list: empty | :x: |
-| Test Case 8 | `dev`: YearOfPlenty, internal list: {YearOfPlenty, Knight} | internal list: {knight} | :x: |
-| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight} | `NotEnoughInventoryException` | :x: |
+|             | Inputs                                                     | Expected output               | Implemented?       |
+|-------------|------------------------------------------------------------|-------------------------------|--------------------|
+| Test Case 1 | `dev`: doesn't matter, internal list: empty                | `NotEnoughInventoryException` | :x:                |
+| Test Case 2 | `dev`: Knight, internal list: {RoadBuilder}                | `NotEnoughInventoryException` | :x:                |
+| Test Case 3 | `dev`: VictoryPoint, internal list: {VictoryPoint}         | internal list: empty          | :white_check_mark: |
+| Test Case 4 | `dev`: Knight, internal list: {Knight}                     | internal list: empty          | :white_check_mark: |
+| Test Case 5 | `dev`: RoadBuilder, internal list: {RoadBuilder}           | internal list: empty          | :white_check_mark: |
+| Test Case 6 | `dev`: Monopoly, internal list: {Monopoly}                 | internal list: empty          | :white_check_mark: |
+| Test Case 7 | `dev`: YearOfPlenty, internal list: {YearOfPlenty}         | internal list: empty          | :white_check_mark: |
+| Test Case 8 | `dev`: YearOfPlenty, internal list: {YearOfPlenty, Knight} | internal list: {knight}       | :white_check_mark: |
+| Test Case 9 | `dev`: YearOfPlenty, internal list: {Monopoly, Knight}     | `NotEnoughInventoryException` | :x:                |
