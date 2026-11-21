@@ -4,12 +4,17 @@ import catan.game_table.domain.Color;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
+import catan.game_table.domain.board.Location;
 import catan.game_table.domain.board.PlacementHelper;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
+import catan.game_table.domain.piece.*;
 import catan.game_table.domain.resource.ResourceStack;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GamePlayer is the model for each individual player.
@@ -19,12 +24,14 @@ public class GamePlayer {
 
   private final PurchaseHelper purchaseHelper;
   private final TradeHelper tradeHelper;
+  private final PlacementHelper placementHelper;
   private final Color color;
 
   public GamePlayer(Color color, PlacementHelper placementHelper, TradeHelper tradeHelper, PurchaseHelper purchaseHelper) {
     this.purchaseHelper = purchaseHelper;
     this.color = color;
     this.tradeHelper = tradeHelper;
+    this.placementHelper = placementHelper;
   }
 
   /**
@@ -63,6 +70,32 @@ public class GamePlayer {
 
     // TODO: this should probably take in the players right?
     this.tradeHelper.conductTrade(trade);
+  }
+
+  public List<Location> getValidPlacements(Piece piece) {
+    List<Location> res = new ArrayList<>();
+
+    Class<? extends Piece> piece_class = piece.getClass();
+
+    if (piece_class.equals(Harbor.class)) {
+      throw new IllegalArgumentException("Cannot move a harbor");
+    }
+    else if (piece_class.equals(City.class) || piece_class.equals(Settlement.class)) {
+      // stupid ass java does not let me return direcctly
+      // because getvalidbuildingspots returns a list of vertices
+      // and it is apparently not smart enough to know that vertex inherits from location
+      res.addAll(this.placementHelper.getValidBuildingSpots(this.color));
+    }
+    else if (piece_class.equals(Robber.class)) {
+      res.addAll(this.placementHelper.getValidRobberSpots());
+    }
+    else if (piece_class.equals(Road.class)) {
+      res.addAll(this.placementHelper.getValidRoadSpots(this.color));
+    } else {
+      throw new RuntimeException("Invalid piece type");
+    }
+
+    return res;
   }
 
   public void tradeWithBank(ResourceStack give, ResourceStack recieve) {

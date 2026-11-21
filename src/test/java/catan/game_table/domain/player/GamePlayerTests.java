@@ -1,24 +1,25 @@
 package catan.game_table.domain.player;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.ScoreTracker;
+import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
+import catan.game_table.domain.board.Location;
 import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.board.Vertex;
 import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
+import catan.game_table.domain.piece.*;
 import catan.game_table.domain.resource.*;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 import org.easymock.EasyMock;
-import org.easymock.internal.matchers.Or;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -316,7 +317,84 @@ public class GamePlayerTests {
 
   }
 
+  @Test
+  public void get_valid_placements_tests_city_at_least_one() {
+    PieceData data = EasyMock.createMock(PieceData.class);
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
 
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    Piece piece = new City(data, dist, tracker);
+
+    EasyMock.expect(placer.getValidBuildingSpots(Color.Red)).andReturn(List.of(new Vertex()));
+    EasyMock.replay(placer);
+
+    List<Location> actual_locs = player.getValidPlacements(piece);
+
+    assertFalse(actual_locs.isEmpty());
+
+
+    EasyMock.verify(placer);
+
+  }
+
+
+  // another useless test because this just tests passthrough to the placement helper
+  @Test
+  public void get_valid_placements_test_settlement_none() {
+    PieceData data = EasyMock.createMock(PieceData.class);
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    Piece piece = new Settlement(data, dist, tracker);
+
+    EasyMock.expect(placer.getValidBuildingSpots(Color.Red)).andReturn(new ArrayList<>());
+    EasyMock.replay(placer);
+
+    List<Location> actual_locs = player.getValidPlacements(piece);
+
+    assertTrue(actual_locs.isEmpty());
+
+
+    EasyMock.verify(placer);
+
+  }
+
+  @Test
+  public void get_valid_placements_try_to_move_harbor() {
+    PieceData data = EasyMock.createMock(PieceData.class);
+
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new IllegalArgumentException("Cannot move a harbor");
+    Exception actual = assertThrowsExactly(expected.getClass(), () -> player.getValidPlacements(new Harbor(data)));
+
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void get_valid_placements_try_to_move_robber() {
+    PieceData data = EasyMock.createMock(PieceData.class);
+
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    EasyMock.expect(placer.getValidRobberSpots()).andReturn(new ArrayList<>());
+    EasyMock.replay(placer);
+
+    List<Location> locs = player.getValidPlacements(new Robber(data));
+
+    assertTrue(locs.isEmpty());
+    EasyMock.verify(placer);
+
+  }
 
 
 }

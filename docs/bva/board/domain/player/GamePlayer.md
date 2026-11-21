@@ -174,10 +174,10 @@ none
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | piece: City, state of board: player is not landlocked, player has resources | locations { # at least one, the board is too hard to vizualize ahead of time lol} | :x: |
-| Test Case 2 | piece: settlement, state of board: player is not landlocked, player does not have any settlements left | locations : empty | :x: |
-| Test Case 3 | piece: Robber, state of board: robber on a desert | state of board: Robber moved to a different spot | :x: |
-| Test Case 4 | piece: Harbor | `IllegalArgumentException`| :x: |
+| Test Case 1 | piece: City, state of board: player is not landlocked, player has resources | locations { # at least one, the board is too hard to vizualize ahead of time lol} | :white_check_mark: |
+| Test Case 2 | piece: settlement, state of board: player is not landlocked, player does not have any settlements left | locations : empty | :white_check_mark: |
+| Test Case 3 | piece: Robber, state of board: robber on a desert | locations: some vertices I guess | :white_check_mark: |
+| Test Case 4 | piece: Harbor | `IllegalArgumentException`| :white_check_mark: |
 
 
 
