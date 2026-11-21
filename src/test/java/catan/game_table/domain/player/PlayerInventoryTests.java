@@ -152,4 +152,45 @@ public class PlayerInventoryTests {
   }
 
 
+  @ParameterizedTest
+  @CsvSource({
+          "Settlement, e, false", // e means emtpy list
+          "City, e, false",
+          "Road, e, false",
+          "Settlement, s, true", // s is list with one settlement
+          "City, s, false",
+          "Road, s, false",
+          "Settlement, r, false", // r is list with one road
+          "City, r, false",
+          "Road, r, true",
+          "Settlement, c, false",
+          "City, c, true",
+          "Road, c, false",
+          "Road, cr, true",
+          "City, rs, false"
+  })
+  public void hasPiece_tests(String type, String listConstructBefore, boolean expected_result) {
+    PlayerInventory inv = new PlayerInventory(this.listConstruct(listConstructBefore));
+
+    PieceData data = EasyMock.createMock(PieceData.class);
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    Piece piece;
+
+    if (type.equals("City")) {
+      piece = new City(data, dist, tracker);
+    } else if (type.equals("Settlement")) {
+      piece = new Settlement(data, dist, tracker);
+    } else {
+      piece = new Road(data);
+    }
+
+    boolean actual_result = inv.hasPiece(piece);
+
+    assertEquals(expected_result, actual_result);
+
+  }
+
+
 }

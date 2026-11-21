@@ -120,20 +120,20 @@ Equality comparisons
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own a harbor')` | :white_check_mark: |
 | Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own the robber')` | :white_check_mark: |
-| Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | false | :x: |
-| Test Case 4 | `piece`: City, internal list of pieces: empty list | false | :x: |
-| Test Case 5 | `piece`: Road, internal list of pieces: empty list | false | :x: |
-| Test Case 6 | `piece`: Settlement, internal list of pieces: {Settlement} | true | :x: |
-| Test Case 7 | `piece`: City, internal list of pieces: {Settlement} | false | :x: |
-| Test Case 8 | `piece`: Road, internal list of pieces: {Settlement} | false | :x: |
-| Test Case 9 | `piece`: Settlement, internal list of pieces: {Road} | False | :x: |
-| Test Case 10 | `piece`: City, internal list of pieces: {Road} | false | :x: |
-| Test Case 11 | `piece`: Road, internal list of pieces: {Road} | true | :x: |
-| Test Case 12 | `piece`: Settlement, internal list of pieces: {City} | false | :x: |
-| Test Case 13 | `piece`: City, internal list of pieces: {City} | true | :x: |
-| Test Case 14 | `piece`: Road, internal list of pieces: {City} | false | :x: |
-| Test Case 14 | `piece`: Road, internal list of pieces: {City, Road} | true | :x: |
-| Test Case 14 | `piece`: City, internal list of pieces: {Road, Settlement} | false | :x: |
+| Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | false | :white_check_mark: |
+| Test Case 4 | `piece`: City, internal list of pieces: empty list | false | :white_check_mark: |
+| Test Case 5 | `piece`: Road, internal list of pieces: empty list | false | :white_check_mark: |
+| Test Case 6 | `piece`: Settlement, internal list of pieces: {Settlement} | true | :white_check_mark: |
+| Test Case 7 | `piece`: City, internal list of pieces: {Settlement} | false | :white_check_mark: |
+| Test Case 8 | `piece`: Road, internal list of pieces: {Settlement} | false | :white_check_mark: |
+| Test Case 9 | `piece`: Settlement, internal list of pieces: {Road} | False | :white_check_mark: |
+| Test Case 10 | `piece`: City, internal list of pieces: {Road} | false | :white_check_mark: |
+| Test Case 11 | `piece`: Road, internal list of pieces: {Road} | true | :white_check_mark: |
+| Test Case 12 | `piece`: Settlement, internal list of pieces: {City} | false | :white_check_mark: |
+| Test Case 13 | `piece`: City, internal list of pieces: {City} | true | :white_check_mark: |
+| Test Case 14 | `piece`: Road, internal list of pieces: {City} | false | :white_check_mark: |
+| Test Case 14 | `piece`: Road, internal list of pieces: {City, Road} | true | :white_check_mark: |
+| Test Case 14 | `piece`: City, internal list of pieces: {Road, Settlement} | false | :white_check_mark: |
 
 ### Method under test: `removePiece(piece : Piece)`
 
