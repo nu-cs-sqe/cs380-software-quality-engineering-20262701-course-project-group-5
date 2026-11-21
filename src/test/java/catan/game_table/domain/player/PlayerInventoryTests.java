@@ -440,4 +440,42 @@ public class PlayerInventoryTests {
 
   }
 
+  @ParameterizedTest
+  @CsvSource({
+          // notation is <resource type><amount>
+          "l1, e0", // withdrawing from empty resources
+          "w1, e0",
+          "g1, e0",
+          "o1, e0",
+          "b1, e0",
+          "l9, l1", // don't feel like making a more complicated parser, so INT_MAX = 9
+          "w9, w1",
+          "o9, o1",
+          "g9, g1",
+          "b9, b1",
+          "b1, w1o1"
+
+  })
+  public void removeResourcesTestsForInValidCases(String to_remove, String before) {
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
+
+    // too much effort to write a separate switch case for all of this
+    List<ResourceStack> to_remove_as_list = this.listOfResourcesConstruct(to_remove);
+    ResourceStack to_remove_as_stack = to_remove_as_list.getFirst();
+
+
+    Exception expected_ex = new NotEnoughInventoryException();
+    Exception actual_ex = null;
+    try {
+      inv.removeResources(to_remove_as_stack);
+    } catch (Exception e) {
+      actual_ex = e;
+    }
+
+    assertNotNull(actual_ex);
+    assertEquals(expected_ex.getClass(), actual_ex.getClass());
+
+  }
+
 }
