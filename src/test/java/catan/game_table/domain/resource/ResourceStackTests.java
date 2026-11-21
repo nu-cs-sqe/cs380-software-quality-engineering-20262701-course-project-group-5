@@ -100,14 +100,14 @@ public class ResourceStackTests {
 
     @Test
     public void Subtract_StackOfMax_WithStackOfMax_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfOne = new BrickResourceStack(Integer.MAX_VALUE);
-        BrickResourceStack secondStackOfOne = new BrickResourceStack(Integer.MAX_VALUE);
+        OreResourceStack firstStackOfOne = new OreResourceStack(Integer.MAX_VALUE);
+        OreResourceStack secondStackOfOne = new OreResourceStack(Integer.MAX_VALUE);
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new OreResourceStack(expectedSize), resultStack);
     }
 
     @Test
