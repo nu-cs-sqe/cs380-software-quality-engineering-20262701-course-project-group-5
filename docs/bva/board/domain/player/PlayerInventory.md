@@ -77,15 +77,15 @@ Appending a single element (to the internal list of pieces)
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :white_check_mark: |
 | Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :white_check_mark: |
-| Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | internal list of pieces: {Settlement} | :x: |
-| Test Case 4 | `piece`: City, internal list of pieces: empty list | internal list of pieces: {City} | :x: |
-| Test Case 5 | `piece`: Road, internal list of pieces: empty list | internal list of pieces: {Road} | :x: |
-| Test Case 6 | `piece`: Settlement, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, Settlement} | :x: |
-| Test Case 7 | `piece`: City, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, City} | :x: |
-| Test Case 8 | `piece`: Road, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, Road} | :x: |
-| Test Case 9 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road, Settlement} | :x: |
-| Test Case 10 | `piece`: City, internal list of pieces: {Road} | internal list of pieces: {Road, City} | :x: |
-| Test Case 11 | `piece`: Road, internal list of pieces: {Road} | internal list of pieces: {Road, Road} | :x: |
+| Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | internal list of pieces: {Settlement} | :white_check_mark: |
+| Test Case 4 | `piece`: City, internal list of pieces: empty list | internal list of pieces: {City} | :white_check_mark: |
+| Test Case 5 | `piece`: Road, internal list of pieces: empty list | internal list of pieces: {Road} | :white_check_mark: |
+| Test Case 6 | `piece`: Settlement, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, Settlement} | :white_check_mark: |
+| Test Case 7 | `piece`: City, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, City} | :white_check_mark: |
+| Test Case 8 | `piece`: Road, internal list of pieces: {Settlement, City, Road} | internal list of pieces: {Settlement, City, Road, Road} | :white_check_mark: |
+| Test Case 9 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road, Settlement} | :white_check_mark: |
+| Test Case 10 | `piece`: City, internal list of pieces: {Road} | internal list of pieces: {Road, City} | :white_check_mark: |
+| Test Case 11 | `piece`: Road, internal list of pieces: {Road} | internal list of pieces: {Road, Road} | :white_check_mark: |
 
 
 ### Method under test: `hasPiece(piece : Piece)`

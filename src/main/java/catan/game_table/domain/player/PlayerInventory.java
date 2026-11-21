@@ -8,7 +8,16 @@ import catan.game_table.domain.piece.Robber;
 import catan.game_table.domain.resource.ResourceInventory;
 import catan.game_table.domain.resource.ResourceStack;
 
+import java.util.List;
+
 public class PlayerInventory implements PieceInventory, ResourceInventory {
+
+  private List<Piece> pieces;
+
+  public PlayerInventory(List<Piece> initialPieces) {
+    this.pieces = initialPieces;
+  }
+
   @Override
   public void addPiece(Piece piece) {
 
@@ -18,6 +27,8 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     if (piece.getClass() == Robber.class) {
       throw new IllegalArgumentException("player cannot own the robber");
     }
+
+    this.pieces.add(piece);
   }
 
   @Override
@@ -28,7 +39,19 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     if (piece.getClass() == Robber.class) {
       throw new IllegalArgumentException("player cannot own the robber");
     }
+
+    for (Piece i: this.pieces) {
+      if (i.getClass().equals(piece.getClass())) {
+        return true;
+      }
+    }
+
     return false;
+  }
+
+  // package private so that it is only for testing
+  List<Piece> getPieces() {
+    return this.pieces;
   }
 
   @Override
