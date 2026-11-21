@@ -38,15 +38,7 @@ public class PlayerInventoryTests {
 
 
     Exception expected = new IllegalArgumentException(msg);
-    Exception actual = null;
-    try {
-      inv.addPiece(piece);
-    } catch (Exception e) {
-      actual = e;
-
-    }
-
-    assertNotNull(actual);
+    Exception actual = assertThrows(expected.getClass(), () -> inv.addPiece(piece));
     assertEquals(expected.getMessage(), actual.getMessage());
 
   }
@@ -206,15 +198,7 @@ public class PlayerInventoryTests {
 
 
     Exception expected = new IllegalArgumentException(msg);
-    Exception actual = null;
-    try {
-      inv.removePiece(piece);
-    } catch (Exception e) {
-      actual = e;
-
-    }
-
-    assertNotNull(actual);
+    Exception actual = assertThrows(expected.getClass(), () -> inv.removePiece(piece));
     assertEquals(expected.getMessage(), actual.getMessage());
 
   }
@@ -463,14 +447,7 @@ public class PlayerInventoryTests {
 
 
     Exception expected_ex = new NotEnoughInventoryException();
-    Exception actual_ex = null;
-    try {
-      inv.removeResources(to_remove_as_stack);
-    } catch (Exception e) {
-      actual_ex = e;
-    }
-
-    assertNotNull(actual_ex);
+    Exception actual_ex = assertThrows(expected_ex.getClass(), () -> inv.removeResources(to_remove_as_stack));
     assertEquals(expected_ex.getClass(), actual_ex.getClass());
 
   }
@@ -557,11 +534,8 @@ public class PlayerInventoryTests {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
     boolean actual_result = inv.hasDevelopment(development);
 
-
     assertEquals(expected_result, actual_result);
-
   }
-
 
   @ParameterizedTest
   @CsvSource({
@@ -577,11 +551,7 @@ public class PlayerInventoryTests {
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
 
-    try {
-      inv.removeDevelopment(development);
-    } catch (Exception e) {
-      throw new RuntimeException("this test should not have exceptions");
-    }
+    assertDoesNotThrow(() -> inv.removeDevelopment(development));
 
     List<Development> expected_after = this.listOfDevelopmentConstruct(after);
     List<Development> actual_after = inv.getDevelopments();
@@ -608,14 +578,7 @@ public class PlayerInventoryTests {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
 
     Exception expected_ex = new NotEnoughInventoryException();
-    Exception actual_ex = null;
-    try {
-      inv.removeDevelopment(development);
-    } catch (Exception e) {
-      actual_ex = e;
-    }
-
-    assertNotNull(actual_ex);
+    Exception actual_ex = assertThrows(expected_ex.getClass(),() -> inv.removeDevelopment(development));
     assertEquals(expected_ex.getClass(), actual_ex.getClass());
 
   }

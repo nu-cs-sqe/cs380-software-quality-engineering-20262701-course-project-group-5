@@ -138,13 +138,7 @@ public class GamePlayerTests {
 
 
     Exception expected = new NotEnoughInventoryException();
-    Exception actual = null;
-    try {
-      player.buy(dev);
-    } catch (Exception e) {
-      actual = e;
-    }
-    assertNotNull(actual);
+    Exception actual = assertThrows(expected.getClass(), () -> player.buy(dev));
     assertEquals(expected.getClass(), actual.getClass());
   }
 
@@ -153,17 +147,15 @@ public class GamePlayerTests {
     GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
     Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
-    Exception actual = null;
-    try {
-      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
-      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
-      List<ResourceStack> offered = new ArrayList<>();
-      List<ResourceStack> requested = new ArrayList<>();
+
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = new ArrayList<>();
+    List<ResourceStack> requested = new ArrayList<>();
+
+    Exception actual = assertThrows(expected.getClass(), () ->{
       player.proposePlayerTrade(Color.Blue, new TradeOffer(inv_a, inv_b, requested, offered));
-    } catch (Exception e) {
-      actual = e;
-    }
-    assertNotNull(actual);
+    });
     assertEquals(expected.getClass(), actual.getClass());
     assertEquals(expected.getMessage(), actual.getMessage());
 
@@ -174,18 +166,15 @@ public class GamePlayerTests {
   public void propose_player_trade_to_no_one_unsuccessful() {
     GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = new ArrayList<>();
+    List<ResourceStack> requested = new ArrayList<>();
+
     Exception expected = new InvalidTradeException("Trade must go to someone");
-    Exception actual = null;
-    try {
-      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
-      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
-      List<ResourceStack> offered = new ArrayList<>();
-      List<ResourceStack> requested = new ArrayList<>();
+    Exception actual = assertThrows(expected.getClass(), () -> {
       player.proposePlayerTrade(Color.None, new TradeOffer(inv_a, inv_b, requested, offered));
-    } catch (Exception e) {
-      actual = e;
-    }
-    assertNotNull(actual);
+    });
     assertEquals(expected.getClass(), actual.getClass());
     assertEquals(expected.getMessage(), actual.getMessage());
 
@@ -246,18 +235,15 @@ public class GamePlayerTests {
   public void accept_player_trade_to_no_one_unsuccessful() {
     GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = new ArrayList<>();
+    List<ResourceStack> requested = new ArrayList<>();
+
     Exception expected = new InvalidTradeException("Trade must go to someone");
-    Exception actual = null;
-    try {
-      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
-      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
-      List<ResourceStack> offered = new ArrayList<>();
-      List<ResourceStack> requested = new ArrayList<>();
+    Exception actual = assertThrows(expected.getClass(), () ->{
       player.acceptPlayerTrade(Color.None, new TradeOffer(inv_a, inv_b, requested, offered));
-    } catch (Exception e) {
-      actual = e;
-    }
-    assertNotNull(actual);
+    });
     assertEquals(expected.getClass(), actual.getClass());
     assertEquals(expected.getMessage(), actual.getMessage());
 
@@ -267,18 +253,15 @@ public class GamePlayerTests {
   public void accept_player_trade_to_same_player_unsuccessful() {
     GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
 
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = new ArrayList<>();
+    List<ResourceStack> requested = new ArrayList<>();
+
     Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
-    Exception actual = null;
-    try {
-      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
-      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
-      List<ResourceStack> offered = new ArrayList<>();
-      List<ResourceStack> requested = new ArrayList<>();
+    Exception actual = assertThrows(expected.getClass(), () -> {
       player.acceptPlayerTrade(Color.Blue, new TradeOffer(inv_a, inv_b, requested, offered));
-    } catch (Exception e) {
-      actual = e;
-    }
-    assertNotNull(actual);
+    });
     assertEquals(expected.getClass(), actual.getClass());
     assertEquals(expected.getMessage(), actual.getMessage());
 
