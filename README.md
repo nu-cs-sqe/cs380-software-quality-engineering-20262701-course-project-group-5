@@ -20,8 +20,8 @@
 
 ## Exceptions
 ### Code Coverage
-N/A
+- PieceData: equals() requires null checks but our functions should not take null inputs, so this branch is never covered.
 ### Mutation Testing
-N/A
+- PieceData: hashCode() adds hash of PieceData's fields and an equivalent mutant where the fields are subtracted will not be killed.
 ### Others
 N/A
