@@ -21,7 +21,8 @@
 ## Exceptions
 ### Code Coverage
 Updated BVA and tests to cover the case where ResourceStack.hashCode() is different for two instances of ResourceStack
+Added test cases for every child of ResourceStack to test their overrides of makeNewStackOfSameType, to justify actually creating those overrides under BVA
 ### Mutation Testing
-Fixed the tests for Resource package to cover the ResourceStack.getSize function
-### Others
 N/A
+### Others
+Note: the Resource package should be integration tested with the bank and player packages
