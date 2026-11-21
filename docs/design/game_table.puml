@@ -81,6 +81,14 @@ package domain {
     ORANGE
 }
 
++enum PieceType {
+    CITY,
+    HARBOR,
+    ROAD,
+    ROBBER,
+    SETTLEMENT
+}
+
 package exception {
 
 +exception NotEnoughInventoryException
@@ -342,7 +350,7 @@ package piece {
     }
 
     +class PieceData {
-        +{final} type : String
+        +{final} type : PieceType
         +{final} color : Color
         +equals(o : Object) : boolean
         +hashCode() : int
@@ -581,12 +589,14 @@ WoolResourceStack --|> ResourceStack
 Building --> BankResourceDistributor
 Building ..> ResourceStack
 Piece --> Color
+Piece --> PieceType
 Piece --> PieceData
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
 
 PieceData --> Color
+PieceData --> PieceType
 
 Development ..|> Playable
 Development ..|> Buyable
