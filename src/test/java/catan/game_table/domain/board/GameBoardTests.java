@@ -1,5 +1,7 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 import catan.game_table.domain.board.*;
 import catan.game_table.domain.piece.*;
 import catan.mvc_util.Observer;
@@ -260,10 +262,10 @@ class GameBoardTests {
 
     // removePieceFromLocation tests
 
-    private static final PieceData SETTLEMENT_DATA = new PieceData("settlement");
-    private static final PieceData ROAD_DATA = new PieceData("road");
-    private static final PieceData HARBOR_DATA = new PieceData("harbor");
-    private static final PieceData ROBBER_DATA = new PieceData("robber");
+    private static final PieceData SETTLEMENT_DATA = new PieceData(Color.NONE, PieceType.SETTLEMENT);
+    private static final PieceData ROAD_DATA = new PieceData(Color.NONE, PieceType.ROAD);
+    private static final PieceData HARBOR_DATA = new PieceData(Color.NONE, PieceType.HARBOR);
+    private static final PieceData ROBBER_DATA = new PieceData(Color.NONE, PieceType.ROBBER);
 
 
 
@@ -359,8 +361,6 @@ class GameBoardTests {
         EasyMock.verify(edge);
     }
 
-    private static final String SETTLEMENT_TYPE = "settlement";
-
     @Test
     void RemovePieceFromLocation_WithEqualButDistinctPieceData_VertexRemovesIt() {
         Vertex vertex = EasyMock.createMock(Vertex.class);
@@ -369,7 +369,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(vertex);
 
-        boardWithHexes().removePieceFromLocation(new PieceData(SETTLEMENT_TYPE), vertex);
+        boardWithHexes().removePieceFromLocation(new PieceData(Color.NONE, PieceType.SETTLEMENT), vertex);
 
         EasyMock.verify(vertex);
     }

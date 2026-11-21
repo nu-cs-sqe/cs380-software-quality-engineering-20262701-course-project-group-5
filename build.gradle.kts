@@ -192,11 +192,6 @@ tasks.jacocoTestReport {
 }
 
 pitest {
-    jvmPath.set(
-        javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(21))
-        }.map { it.executablePath }
-    )
     targetClasses = setOf("catan.game_table.domain.*")
     targetTests = setOf("catan.game_table.domain.*")
     junit5PluginVersion = "1.2.1"
