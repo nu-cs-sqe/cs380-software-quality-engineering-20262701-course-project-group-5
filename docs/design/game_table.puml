@@ -256,15 +256,18 @@ package board {
         -{final} vertices : Set<Vertex>
         -{final} edges : Set<Edge>
         -{final} hexes : Set<Hex>
+        -{final} harborsByEdge : Map<Edge, Harbor>
         -{final} neighbors : Map<Vertex, Set<Vertex>>
         -{static} {final} MIN_TOKEN_VALUE : int = 2
         -{static} {final} MAX_TOKEN_VALUE : int = 12
         +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>)
+        +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>, harborsByEdge : Map<Edge, Harbor>)
         -createNeighbors() : void
         -indexVerticesByPoint() : Map<Point, Vertex>
         -linkEndpointsOf(edge : Edge, vertexAt : Map<Point, Vertex>) : void
         -link(first : Vertex, second : Vertex) : void
         +getNeighbors(vertex : Vertex) : Set<Vertex>
+        +getHarborsFor(player : Color) : Set<Harbor>
         +produceResourcesForToken(tokenValue : int) : void
         -{static} requireValidTokenValue(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
@@ -575,6 +578,7 @@ ResourceInventory ..> ResourceStack
 GameBoard --> Hex
 GameBoard --> Vertex
 GameBoard --> Edge
+GameBoard --> Harbor
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
