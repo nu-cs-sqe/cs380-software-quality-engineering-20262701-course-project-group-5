@@ -361,8 +361,6 @@ class GameBoardTests {
         EasyMock.verify(edge);
     }
 
-    private static final String SETTLEMENT_TYPE = "settlement";
-
     @Test
     void RemovePieceFromLocation_WithEqualButDistinctPieceData_VertexRemovesIt() {
         Vertex vertex = EasyMock.createMock(Vertex.class);
@@ -371,7 +369,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(vertex);
 
-        boardWithHexes().removePieceFromLocation(SETTLEMENT_DATA, vertex);
+        boardWithHexes().removePieceFromLocation(new PieceData(Color.NONE, PieceType.SETTLEMENT), vertex);
 
         EasyMock.verify(vertex);
     }
