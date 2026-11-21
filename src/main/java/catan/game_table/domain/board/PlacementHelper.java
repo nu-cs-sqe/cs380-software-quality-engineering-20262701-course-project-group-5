@@ -3,9 +3,11 @@ package catan.game_table.domain.board;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
+import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.Road;
+import catan.game_table.domain.piece.Settlement;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,7 +55,18 @@ public class PlacementHelper {
 
     }
 
-    public void place(Piece piece, Location location) {
+    public void place(Piece piece, Location location) throws InvalidPlacementException {
+
+        if (piece instanceof Building) {
+
+            Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
+            validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
+
+            if (!validVertices.contains(location)) {
+                throw new InvalidPlacementException(String.format("Cannot place %s at %s: too close to an existing building", piece.getClass().getSimpleName(), location.getClass().getSimpleName()));
+            }
+
+        }
 
         gameBoard.addPieceAtLocation(piece, location);
 

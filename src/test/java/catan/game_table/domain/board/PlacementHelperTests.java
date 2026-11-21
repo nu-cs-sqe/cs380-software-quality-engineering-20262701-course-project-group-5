@@ -3,6 +3,7 @@ package catan.game_table.domain.board;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
+import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.PieceData;
 import catan.game_table.domain.piece.Road;
@@ -10,11 +11,13 @@ import catan.game_table.domain.piece.Settlement;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlacementHelperTests {
 
@@ -1911,7 +1914,7 @@ public class PlacementHelperTests {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
-        Piece piece = makePieceMock(Settlement.class, playerColor);
+        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
 
         Vertex vertexA = EasyMock.createMock(Vertex.class);
         Vertex vertexB = EasyMock.createMock(Vertex.class);
@@ -1921,7 +1924,7 @@ public class PlacementHelperTests {
         Vertex vertexF = EasyMock.createMock(Vertex.class);
         Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
 
-        Location location = vertexA;
+        Location destinationLocation = vertexA;
 
         GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
         for (Vertex vertex : landVertices) {
@@ -1933,14 +1936,67 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
-        gameBoard.addPieceAtLocation(piece, location);
+        gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
         EasyMock.expectLastCall();
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-        placementHelper.place(piece, location);
 
+        assertDoesNotThrow(() -> placementHelper.place(pieceToPlace, destinationLocation));
+        EasyMock.verify(gameBoard);
+
+    }
+
+    @Test
+    public void Place_GivenSettlement_AndVertexInvalidUnderDistanceRule_ExpectInvalidPlacementException() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
+        Piece existingPiece = makePieceMock(Settlement.class, playerColor);
+
+        Vertex vertexA = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexA.getPieces()).andStubReturn(List.of(existingPiece));
+
+        Vertex vertexB = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexB.getPieces()).andStubReturn(List.of());
+
+        Vertex vertexC = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexC.getPieces()).andStubReturn(List.of());
+
+        Vertex vertexD = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexD.getPieces()).andStubReturn(List.of());
+
+        Vertex vertexE = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexE.getPieces()).andStubReturn(List.of());
+
+        Vertex vertexF = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertexF.getPieces()).andStubReturn(List.of());
+
+        Set<Vertex> landVertices = Set.of(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
+
+        Location destinationLocation = vertexB;
+
+        for (Vertex vertex : landVertices) {
+            EasyMock.replay(vertex);
+        }
+
+        GameBoard gameBoard = EasyMock.createMock(GameBoard.class);
+
+        EasyMock.expect(gameBoard.getLandVertices()).andStubReturn(landVertices);
+        EasyMock.expect(gameBoard.getNeighboringVertices(vertexA)).andStubReturn(Set.of(vertexF, vertexB));
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        String exceptionMessage = String.format("Cannot place %s at %s: too close to an existing building", Settlement.class.getSimpleName(), Vertex.class.getSimpleName());
+
+        assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation), exceptionMessage);
         EasyMock.verify(gameBoard);
 
     }
