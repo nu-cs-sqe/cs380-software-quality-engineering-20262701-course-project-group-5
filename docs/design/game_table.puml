@@ -27,7 +27,8 @@ package ui {
         -{final} bankResourceDistributor : BankResourceDistributor
         -{final} players : List<GamePlayer>
         -{final} placementHelper : PlacementHelper
-        -{final} tradeHelper : TradeHelper
+        -{final} playerTradeHelper : PlayerTradeHelper
+        -{final} bankTradeHelper : BankTradeHelper
         -{final} purchaseHelper : PurchaseHelper
         -activePlayer : GamePlayer
         -gamePhase : GamePhase
@@ -58,7 +59,7 @@ package ui {
     +class TradeController {
         -{final} view : TradeView
         -{final} players : List<GamePlayer>
-        -{final} tradeHelper : TradeHelper
+        -{final} playerTradeHelper : PlayerTradeHelper
         +update() : void
         -updateView() : void
         -routeUserInput() : void
@@ -167,10 +168,11 @@ package player {
         -{final} armySizeTracker : ScoreTracker
         -{final} inventory : PlayerInventory
         -{final} placementHelper : PlacementHelper
-        -{final} tradeHelper : TradeHelper
+        -{final} playerTradeHelper : PlayerTradeHelper
+        -{final} bankTradeHelper : BankTradeHelper
         -{final} purchaseHelper : PurchaseHelper
         -awards : List<Award>
-        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
+        +GamePlayer(color : Color, placementHelper : PlacementHelper, playerTradeHelper : PlayerTradeHelper, bankTradeHelper : BankTradeHelper)
         +getInventory() : PlayerInventory
         +rollDice(dice : Dice) : void
         +play(item : Playable) : void
@@ -214,13 +216,11 @@ package trade {
         +isTradingOpen() : boolean
     }
 
-    +class TradeHelper {
-        -{final} board : GameBoard
-        -{final} bank : Bank
+    +class PlayerTradeHelper {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} turnContext : TradeTurnContext
         -{final} activeTradeOffers : Set<TradeOffer>
-        +TradeHelper(board : GameBoard, bank : Bank, playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
+        +PlayerTradeHelper(playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
         +getActiveTradeOffers() : Set<TradeOffer>
         +proposeTrade(actor : Color, trade : TradeOffer) : void
         +counterTrade(actor : Color, original : TradeOffer, counter : TradeOffer) : void
@@ -228,8 +228,16 @@ package trade {
         +refuseTrade(actor : Color, trade : TradeOffer) : void
         +conductTrade(actor : Color, trade : TradeOffer) : void
         +expireTradeOffers() : void
-        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void
         -isValidPlayerTrade(trade : TradeOffer) : boolean
+    }
+
+    +class BankTradeHelper {
+        -{final} board : GameBoard
+        -{final} bank : Bank
+        -{final} playerInventories : Map<Color, ResourceInventory>
+        -{final} turnContext : TradeTurnContext
+        +BankTradeHelper(board : GameBoard, bank : Bank, playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
+        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void
         -isValidBankTrade(actor : Color, give : ResourceStack, receive : ResourceStack) : boolean
     }
 
@@ -513,23 +521,27 @@ GameTableController --> Dice
 GameTableController --> GamePhase
 GameTableController --> TurnPhase
 GameTableController --> PlacementHelper
-GameTableController --> TradeHelper
+GameTableController --> PlayerTradeHelper
+GameTableController --> BankTradeHelper
 GameTableController --> PurchaseHelper
 GameTableController ..> PlayerData
 GameTableView --> PlayerData
 
 TradeController ..> PlayerData
 TradeController --> GamePlayer
-TradeController --> TradeHelper
+TradeController --> PlayerTradeHelper
 TradeView --> PlayerData
 
-TradeHelper --> ResourceStack
-TradeHelper --> GameBoard
-TradeHelper --> Bank
-TradeHelper --> ResourceInventory
-TradeHelper --> TradeTurnContext
-TradeHelper --> TradeOffer
-TradeHelper --|> Observed
+PlayerTradeHelper --> ResourceInventory
+PlayerTradeHelper --> TradeTurnContext
+PlayerTradeHelper --> TradeOffer
+PlayerTradeHelper --|> Observed
+BankTradeHelper --> GameBoard
+BankTradeHelper --> Bank
+BankTradeHelper --> ResourceInventory
+BankTradeHelper --> TradeTurnContext
+BankTradeHelper ..> ResourceStack
+BankTradeHelper ..> Harbor
 TradeTurnContext ..> Color
 TradeOffer --> ResourceStack
 TradeOffer --> Color
@@ -561,7 +573,8 @@ GamePlayer --> Color
 GamePlayer --> Award
 GamePlayer ..> ResourceStack
 GamePlayer --> PlacementHelper
-GamePlayer --> TradeHelper
+GamePlayer --> PlayerTradeHelper
+GamePlayer --> BankTradeHelper
 GamePlayer ..> TradeOffer
 GamePlayer --> PurchaseHelper
 
