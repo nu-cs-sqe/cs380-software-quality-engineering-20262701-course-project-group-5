@@ -46,8 +46,8 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 |             | State of the System                                                                           | Expected output                                                          | Implemented?       |
 |-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `1`               | `BrickResourceStack` with size `INT_MAX - 1`                             | :white_check_mark: |
-| Test Case 2 | `LumberResourceStack` with size `1` and `LumberResourceStack` with size `1`                   | `LumberResourceStack` with size `0`                                      | :white_check_mark: |
-| Test Case 3 | `OreResourceStack` with size `INT_MAX` and `OreResourceStack` with size `INT_MAX`             | `OreResourceStack` with size `0`                                         | :white_check_mark: |
+| Test Case 2 | `LumberResourceStack` with size `1` and `LumberResourceStack` with size `1`                   | `LumberResourceStack` with size `0`                                      | :x:                |
+| Test Case 3 | `OreResourceStack` with size `INT_MAX` and `OreResourceStack` with size `INT_MAX`             | `OreResourceStack` with size `0`                                         | :x:                |
 | Test Case 4 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
 | Test Case 5 | `GrainResourceStack` of any size with `GrainResourceStack` of any size                        | `GrainResourceStack`                                                     | :x:                |
 | Test Case 6 | `WoolResourceStack` of any size with `WoolResourceStack` of any size                          | `WoolResourceStack`                                                      | :x:                |
