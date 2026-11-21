@@ -5,10 +5,7 @@ import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
-import catan.game_table.domain.board.Location;
-import catan.game_table.domain.board.PlacementHelper;
-import catan.game_table.domain.board.Point;
-import catan.game_table.domain.board.Vertex;
+import catan.game_table.domain.board.*;
 import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.exception.InvalidTradeException;
@@ -341,6 +338,29 @@ public class GamePlayerTests {
 
   }
 
+  @Test
+  public void get_valid_placements_tests_road_aat_east_one() {
+    PieceData data = EasyMock.createMock(PieceData.class);
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    Piece piece = new Road(data);
+
+    EasyMock.expect(placer.getValidRoadSpots(Color.Red)).andReturn(List.of(new Edge(new Point(0, 0), new Point(1,1))));
+    EasyMock.replay(placer);
+
+    List<Location> actual_locs = player.getValidPlacements(piece);
+
+    assertFalse(actual_locs.isEmpty());
+
+
+    EasyMock.verify(placer);
+
+  }
+
 
   // another useless test because this just tests passthrough to the placement helper
   @Test
@@ -375,6 +395,19 @@ public class GamePlayerTests {
 
     Exception expected = new IllegalArgumentException("Cannot move a harbor");
     Exception actual = assertThrowsExactly(expected.getClass(), () -> player.getValidPlacements(new Harbor(data)));
+
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void get_valid_placements_try_to_move_other_for_jacoco_coverage() {
+
+    PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new RuntimeException("Invalid piece type");
+    Exception actual = assertThrowsExactly(expected.getClass(), () -> player.getValidPlacements(EasyMock.createMock(Piece.class)));
 
     assertEquals(expected.getMessage(), actual.getMessage());
 

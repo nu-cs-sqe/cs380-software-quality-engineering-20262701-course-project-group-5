@@ -315,7 +315,8 @@ public class PlayerInventoryTests {
           "w1, w1, w2", // adding 1 wool into another wool -> 2 wools
           "g1, g1, g2",
           "b1, b1, b2",
-          "g1, g1b1o1w1l1, g2b1o1w1l1" // adding 1 grain into one of each -> 2 grains + one of the rest
+          "g1, g1b1o1w1l1, g2b1o1w1l1", // adding 1 grain into one of each -> 2 grains + one of the rest
+          "g1, w1, w1g1"
 
   })
   public void addResourcesTests(String to_add, String before, String after) {

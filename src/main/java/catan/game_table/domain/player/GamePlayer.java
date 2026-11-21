@@ -95,7 +95,4 @@ public class GamePlayer {
     return res;
   }
 
-  public void tradeWithBank(ResourceStack give, ResourceStack recieve) {
-
-  }
 }
