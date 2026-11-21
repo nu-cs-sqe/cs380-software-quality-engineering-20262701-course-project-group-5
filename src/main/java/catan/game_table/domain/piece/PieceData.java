@@ -1,29 +1,27 @@
 package catan.game_table.domain.piece;
 
-import java.util.Objects;
+import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 
 public class PieceData {
+  public final Color color;
+  public final PieceType type;
+  public PieceData(Color color, PieceType type) {
+    this.color = color;
+    this.type = type;
+  }
 
-    private final String type;
-
-    public PieceData(String type) {
-        this.type = type;
+  @Override
+  public boolean equals(Object object) {
+    if (object == null || object.getClass() != this.getClass()) {
+      return false;
     }
+    PieceData objectData = (PieceData) object;
+    return color == objectData.color && type == objectData.type;
+  }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof PieceData)) {
-            return false;
-        }
-        PieceData otherOne = (PieceData) other;
-        return Objects.equals(type, otherOne.type);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(type);
-    }
+  @Override
+  public int hashCode() {
+    return color.hashCode() + type.hashCode();
+  }
 }
