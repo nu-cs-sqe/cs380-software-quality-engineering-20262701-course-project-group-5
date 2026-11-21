@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class ResourceStackTests {
     @Test
@@ -137,6 +137,17 @@ public class ResourceStackTests {
         int secondHash = secondStackOfOne.hashCode();
 
         assertEquals(firstHash, secondHash);
+    }
+
+    @Test
+    public void Hash_StackOfEmpty_WithStackOfOne_ProducesDifferentHashCode(){
+        BrickResourceStack stackOfEmpty = new BrickResourceStack(0);
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+
+        int firstHash = stackOfEmpty.hashCode();
+        int secondHash = stackOfOne.hashCode();
+
+        assertNotEquals(firstHash, secondHash);
     }
 
     @Test
