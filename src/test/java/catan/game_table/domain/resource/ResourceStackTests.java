@@ -88,14 +88,14 @@ public class ResourceStackTests {
 
     @Test
     public void Subtract_StackOfOne_WithStackOfOne_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
-        BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
+        LumberResourceStack firstStackOfOne = new LumberResourceStack(1);
+        LumberResourceStack secondStackOfOne = new LumberResourceStack(1);
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new LumberResourceStack(expectedSize), resultStack);
     }
 
     @Test
