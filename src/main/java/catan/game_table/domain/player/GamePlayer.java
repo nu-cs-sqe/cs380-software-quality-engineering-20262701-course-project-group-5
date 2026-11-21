@@ -7,6 +7,7 @@ import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.PlacementHelper;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
+import catan.game_table.domain.resource.ResourceStack;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 
@@ -50,6 +51,21 @@ public class GamePlayer {
     }
 
     this.tradeHelper.addTradeOffer(trade);
+
+  }
+
+  public void acceptPlayerTrade(Color otherPlayer, TradeOffer trade) {
+    if (otherPlayer == Color.None) {
+      throw new InvalidTradeException("Trade must go to someone");
+    } else if (this.color == otherPlayer) {
+      throw new InvalidTradeException("Cannot offer to same player as proposed");
+    }
+
+    // TODO: this should probably take in the players right?
+    this.tradeHelper.conductTrade(trade);
+  }
+
+  public void tradeWithBank(ResourceStack give, ResourceStack recieve) {
 
   }
 }

@@ -6,4 +6,8 @@ public class TradeHelper {
 
   }
 
+  public void conductTrade(TradeOffer offer) {
+
+  }
+
 }

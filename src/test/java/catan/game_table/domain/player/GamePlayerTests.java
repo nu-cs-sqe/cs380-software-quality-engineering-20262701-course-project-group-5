@@ -8,14 +8,17 @@ import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
-import catan.game_table.domain.resource.ResourceInventory;
-import catan.game_table.domain.resource.ResourceStack;
+import catan.game_table.domain.resource.*;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 import org.easymock.EasyMock;
+import org.easymock.internal.matchers.Or;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -217,6 +220,103 @@ public class GamePlayerTests {
 
 
   }
+
+  @Test
+  public void accept_player_trade_successful() {
+    TradeHelper trader = EasyMock.createMock(TradeHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, new PlacementHelper(), trader, new PurchaseHelper());
+
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = List.of(new OreResourceStack(1));
+    List<ResourceStack> requested = List.of(new GrainResourceStack(1));
+    TradeOffer offer = new TradeOffer(inv_a, inv_b, requested, offered);
+
+    trader.conductTrade(offer);
+    EasyMock.expectLastCall();
+
+
+    EasyMock.replay(trader);
+
+    player.acceptPlayerTrade(Color.Blue, offer);
+
+    EasyMock.verify(trader);
+  }
+
+  @Test
+  public void accept_player_trade_to_no_one_unsuccessful() {
+    GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new InvalidTradeException("Trade must go to someone");
+    Exception actual = null;
+    try {
+      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+      List<ResourceStack> offered = new ArrayList<>();
+      List<ResourceStack> requested = new ArrayList<>();
+      player.acceptPlayerTrade(Color.None, new TradeOffer(inv_a, inv_b, requested, offered));
+    } catch (Exception e) {
+      actual = e;
+    }
+    assertNotNull(actual);
+    assertEquals(expected.getClass(), actual.getClass());
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void accept_player_trade_to_same_player_unsuccessful() {
+    GamePlayer player = new GamePlayer(Color.Blue, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
+    Exception actual = null;
+    try {
+      ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+      ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+      List<ResourceStack> offered = new ArrayList<>();
+      List<ResourceStack> requested = new ArrayList<>();
+      player.acceptPlayerTrade(Color.Blue, new TradeOffer(inv_a, inv_b, requested, offered));
+    } catch (Exception e) {
+      actual = e;
+    }
+    assertNotNull(actual);
+    assertEquals(expected.getClass(), actual.getClass());
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void accept_player_trade_not_enough_resources_unsuccessful() {
+    TradeHelper trader = EasyMock.createMock(TradeHelper.class);
+    GamePlayer player = new GamePlayer(Color.Red, new PlacementHelper(), trader, new PurchaseHelper());
+
+    ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
+    ResourceInventory inv_b = EasyMock.createMock(ResourceInventory.class);
+    List<ResourceStack> offered = List.of(new OreResourceStack(1));
+    List<ResourceStack> requested = List.of(new GrainResourceStack(1));
+    TradeOffer offer = new TradeOffer(inv_a, inv_b, requested, offered);
+
+    trader.conductTrade(offer);
+
+    // this test seems kinda useless imo
+    Exception expected_ex = new InvalidTradeException("Not enough resources for that trade");
+    EasyMock.expectLastCall().andThrow(expected_ex);
+    EasyMock.replay(trader);
+
+    boolean exception_seen = false;
+
+    try {
+      player.acceptPlayerTrade(Color.Blue, offer);
+    } catch (Exception e) {
+      assertEquals(e.getMessage(), expected_ex.getMessage());
+      exception_seen = true;
+    }
+    assertTrue(exception_seen);
+    EasyMock.verify(trader);
+
+  }
+
+
 
 
 }
