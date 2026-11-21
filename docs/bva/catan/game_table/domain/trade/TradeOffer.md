@@ -4,7 +4,7 @@ Classpath: `catan.game_table.domain.trade.TradeOffer`
 
 ## `public class TradeOffer`
 
-Stores the terms and acceptance status of a player-to-player offer. Callers supply valid arguments, and `PlayerTradeHelper` checks whether the terms satisfy the trade rules.
+Stores the terms and acceptance status of a player-to-player offer. Callers supply non-null parties and lists of non-null stacks. `PlayerTradeHelper` checks whether the terms satisfy the trade rules.
 
 ### `public TradeOffer(Color proposer, Color receiver, List<ResourceStack> requestedResources, List<ResourceStack> offeredResources)`
 
@@ -36,57 +36,37 @@ Records acceptance on this offer for `PlayerTradeHelper` within the trade packag
 
 ## Boundary-Value Analysis
 
-### Test: `public TradeOffer(Color proposer, Color receiver, List<ResourceStack> requestedResources, List<ResourceStack> offeredResources)`
+### Test: `TradeOffer(...)`, `getRequestedResources()`, and `getOfferedResources()`
 
-**To verify that edits through either the original lists or returned lists leave the offer intact. 
+The constructor takes a copy of each list so a caller can reuse its lists without changing an existing offer. The getters expose the saved terms as read-only lists.
 
-**Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
-| `proposer`, `receiver`, `requestedResources`, and `offeredResources`, with list edits attempted after construction. | A new offer that retains its original terms. |
+|             | Inputs                                                                                                                                                                                                  | Expected output                                                                                                                                                                  | Implemented? |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | Pass mutable lists containing `[1 ore]` requested and `[1 brick]` offered to `new TradeOffer(...)`. Clear both original lists, then call both resource getters and try `clear()` on each returned list. | `getRequestedResources()` still returns `[1 ore]` and `getOfferedResources()` still returns `[1 brick]`. Both returned lists throw `UnsupportedOperationException` on `clear()`. | :x:          |
 
-**Step 2: Data types**
-| Variable | Type |
-|---|---|
-| proposer and receiver | Cases |
-| offered and requested lists | Pairs of collections |
-| source of edit | Cases |
+### Test: `isAccepted()`
 
-**Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| proposer and receiver | `RED` and `BLUE` |
-| offered and requested lists | `[1 brick]` offered and `[1 ore]` requested |
-| source of edit | original lists, lists exposed by the offer |
-
-**Step 4: Each choice**
-
-|             | Inputs                                                                                                                         | Expected output                                                                                                                    | Implemented? |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1 | Create a Red-to-Blue offer of 1 brick for 1 ore from mutable lists, clear the originals, then try to clear each returned list. | Both returned lists reject `clear()` with `UnsupportedOperationException`, and the terms stay 1 brick offered for 1 ore requested. | :x:          |
-
-### Test: `public boolean isAccepted()`
+Package-private to use markAccepted()
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| The offer's response status, with no arguments. | Whether the recipient has accepted. |
+| Two initially unanswered offers with identical terms. Record acceptance on one. | Only the selected offer records agreement, as observed through `isAccepted()`. |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
-| response status | Cases |
-| accepted (output) | Boolean |
+| whether acceptance was recorded for this offer | Cases |
+| `isAccepted()` result | Boolean |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| response status | unanswered, accepted through `markAccepted()` |
-| accepted (output) | `false`, `true` |
+| whether acceptance was recorded for this offer | still awaiting the recipient's response, acceptance recorded by `markAccepted()` |
+| `isAccepted()` result | `false` while awaiting a response, `true` after acceptance |
 
 **Step 4: Each choice**
 
-|             | Inputs                                                                                                       | Expected output                                                               | Implemented? |
-|-------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|--------------|
-| Test Case 1 | Check acceptance on a new Red-to-Blue offer, Red proposed but Blue hasn't agreed.                            | Returns `false`.                                                              | :x:          |
-| Test Case 2 | Create two Red-to-Blue offers for 1 brick in exchange for 1 ore and call `markAccepted()` on the first only. | `isAccepted()` returns `true` for the first offer and `false` for the second. | :x:          |
+|             | Inputs                                                                                                                                                           | Expected output                                                                                                 | Implemented? |
+|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | Create two Red-to-Blue offers for 1 brick in exchange for 1 ore. Call `isAccepted()` on both. Then call `markAccepted()` on the first only and check both again. | Both return `false` initially. After acceptance, the first returns `true` and the second still returns `false`. | :x:          |

@@ -4,7 +4,7 @@ Classpath: `catan.game_table.domain.trade.PlayerTradeHelper`
 
 ## `public class PlayerTradeHelper extends Observed`
 
-Manages domestic offers using the current turn context and player inventories. Callers supply valid arguments. Changes to offer membership or agreement notify observers after the new state is visible.
+Manages domestic offers using the current turn context and player inventories. Callers supply non-null arguments. Each offer is identified by its instance, so two separate offers may have identical terms. Changes to offer membership or agreement notify observers after the new state is visible. Rejected operations leave membership, agreement, and inventories unchanged and send no notification.
 
 ### `public PlayerTradeHelper(Map<Color, ResourceInventory> playerInventories, TradeTurnContext turnContext)`
 
@@ -16,15 +16,15 @@ Returns a read-only set of the current unanswered and accepted offers. The calle
 
 ### `public void proposeTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
-Registers an unanswered offer from the active player to a different configured player while trading is open. Each side gives resources in positive quantities, and no resource type appears on both sides. Proposing does not reserve or transfer cards.
+Registers an offer from the active player to a different configured player while trading is open. The offer must have no recorded acceptance and must not already be in the active set. Each side gives resources in positive quantities, and no resource type appears on both sides. Proposing does not reserve or transfer cards.
 
 ### `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException`
 
-While trading is open, the addressed player may replace an unanswered active offer with a fresh counteroffer. The participants reverse roles and the new offer starts unanswered. The same resource-term rules apply.
+While trading is open, the recipient may replace an active offer they have yet to accept. The original recipient makes the counteroffer to the original proposer. The counteroffer must have no recorded acceptance and must not already be in the active set. The same resource-term rules apply.
 
 ### `public void acceptTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
-While trading is open, the addressed player records agreement to an active offer. The accepted offer remains active until finalization or expiry, and inventories stay as they were.
+While trading is open, the addressed player records agreement to an unanswered active offer. The accepted offer remains active until finalization or expiry, and inventories stay as they were.
 
 ### `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
@@ -44,46 +44,22 @@ Checks that the offer involves two distinct configured players, each side gives 
 
 ## Boundary-Value Analysis
 
-### Test: `public Set<TradeOffer> getActiveTradeOffers()`
-
-**Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
-| Active-offer state, with no arguments. | Read-only set of active offers. |
-
-**Step 2: Data types**
-| Variable | Type |
-|---|---|
-| active offers | Collections |
-| offer status | Cases |
-
-**Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| active offers | empty, one offer, multiple offers |
-| offer status | unanswered, accepted and awaiting finalization |
-
-**Step 4: Each choice**
-
-|             | Inputs                                                                                                      | Expected output                                                                                  | Implemented? |
-|-------------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1 | Read the active offers when none exist.                                                                     | Returns an empty set.                                                                            | :x:          |
-| Test Case 2 | Read the set with one accepted offer, add an unanswered offer, then read again and try to clear the result. | The first read shows one offer, the second shows both, and the clear attempt leaves both active. | :x:          |
-
 ### Test: `public void proposeTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor` and `trade`, with the active player, trading status, and configured players. | Registers or rejects the offer without moving cards. |
+| `actor` and `trade`, with the active player, trading status, configured players, and current offers. | Registers or rejects the offer without moving cards. |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | trading open | Boolean |
-| actor relative to active player and offer | Cases |
-| receiver | Cases |
+| who submits the proposal | Cases |
+| player named as the recipient | Cases |
 | offered and requested resources | Pairs of collections |
+| status of the submitted offer | Cases |
+| active offers before proposal | Collection |
 
 **Operations:**
 Appending an offer to the active set.
@@ -92,24 +68,31 @@ Appending an offer to the active set.
 | Variable | Values |
 |---|---|
 | trading open | true, false |
-| actor relative to active player and offer | active proposer, non-active proposer, active player named as receiver |
-| receiver | different configured player, proposer, player color without an inventory |
-| offered and requested resources | one stack on each side, offers cards but requests none, requests cards but offers none, both sides include the same resource type, a stack of size 0 |
+| who submits the proposal | active player submits their own offer, another player submits their own offer during the active player's turn, active player submits an offer naming someone else as proposer |
+| player named as the recipient | a different player with an inventory, the proposer, a player color with no inventory |
+| offered and requested resources | nonempty disjoint lists, either side empty, same resource type on both sides, a stack of size 0 |
+| status of the submitted offer | new offer awaiting a response, the same offer submitted again while still active, previously accepted offer that has expired |
+| active offers before proposal | empty, one accepted offer with identical terms |
+
+The one-sided empty tests isolate each list requirement. Either one already rejects an offer with both lists empty.
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                  | Expected output                                                                        | Implemented? |
-|--------------|---------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | On Red's open turn, with no active offers and no brick in hand, Red offers Blue 1 brick for 1 ore.      | The helper registers the unanswered offer and notifies observers without moving cards. | :x:          |
-| Test Case 2  | Red offers Blue 1 brick for 1 ore after trading closes on Red's turn.                                   | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 3  | Blue starts an offer to trade 1 ore for 2 brick with Red during Red's open turn.                        | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 4  | During Red's open turn, Red submits an offer naming Blue as the proposer of 1 ore for 2 brick from Red. | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 5  | During Red's open turn, Red offers to trade 1 brick for 1 ore with themself.                            | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 6  | During Red's open turn, Red offers 1 brick for 1 ore to Orange, who has no inventory entry.             | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 7  | During Red's open turn, Red offers Blue 1 brick and asks for no cards.                                  | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 8  | During Red's open turn, Red asks Blue for 1 ore and offers no cards.                                    | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 9  | During Red's open turn, Red offers Blue a zero-size brick stack for 1 ore.                              | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
-| Test Case 10 | During Red's open turn, Red offers Blue 1 brick and 1 lumber for 1 brick and 1 ore.                     | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+|              | Inputs                                                                                                                                                                                 | Expected output                                                                                                                                                               | Implemented? |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | On Red's open turn, with no active offers and no brick in hand, Red offers Blue 1 brick for 1 ore.                                                                                     | The new unanswered offer is the only active offer. Observers see it, and no cards move.                                                                                       | :x:          |
+| Test Case 2  | Red offers Blue 1 brick for 1 ore after trading closes on Red's turn.                                                                                                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 3  | Blue starts an offer to trade 1 ore for 2 brick with Red during Red's open turn.                                                                                                       | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 4  | During Red's open turn, Red submits an offer naming Blue as the proposer of 1 ore for 2 brick from Red.                                                                                | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 5  | During Red's open turn, Red offers to trade 1 brick for 1 ore with themself.                                                                                                           | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 6  | During Red's open turn, Red offers 1 brick for 1 ore to Orange, who has no inventory entry.                                                                                            | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 7  | During Red's open turn, Red offers Blue 1 brick and asks for no cards.                                                                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 8  | During Red's open turn, Red asks Blue for 1 ore and offers no cards.                                                                                                                   | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 9  | During Red's open turn, Red offers Blue a zero-size brick stack for 1 ore.                                                                                                             | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 10 | During Red's open turn, Red offers Blue `[1 lumber, 1 brick]` for `[1 ore, 2 brick]`.                                                                                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                        | :x:          |
+| Test Case 11 | During Red's open turn, Red proposes the same unanswered offer instance twice.                                                                                                         | The first call registers it. The second throws `InvalidTradeException`, leaves the offer pending, and causes no inventory change or additional observer notification.         | :x:          |
+| Test Case 12 | On a later open turn for Red, Red proposes the same instance of an accepted offer to Blue that expired at the end of an earlier turn.                                                  | Throws `InvalidTradeException` without registering the offer or changing inventories.                                                                                         | :x:          |
+| Test Case 13 | During Red's open turn, Red creates and proposes a new offer to Blue with the same terms as an active, accepted offer. Then try to clear the set returned by `getActiveTradeOffers()`. | Both instances appear in the set. The original remains accepted and the new one is unanswered. `clear()` throws `UnsupportedOperationException`, and both offers stay active. | :x:          |
 
 ### Test: `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException`
 
@@ -122,9 +105,9 @@ Appending an offer to the active set.
 | Variable | Type |
 |---|---|
 | trading open | Boolean |
-| original offer status | Cases |
-| actor role | Cases |
-| counteroffer parties and terms | Cases |
+| status of the original offer | Cases |
+| who submits the counteroffer | Cases |
+| counteroffer participants, terms, and status | Cases |
 
 **Operations:**
 Searching for the original and replacing that entry.
@@ -133,36 +116,38 @@ Searching for the original and replacing that entry.
 | Variable | Values |
 |---|---|
 | trading open | true, false |
-| original offer status | unanswered and active, no longer active, accepted |
-| actor role | original receiver, another player |
-| counteroffer parties and terms | valid reversed roles, wrong receiver, wrong proposer, requests cards but offers none |
+| status of the original offer | active offer awaiting a response, copy that was never registered, active offer already accepted |
+| who submits the counteroffer | the original recipient, a player other than the original recipient |
+| counteroffer participants, terms, and status | original recipient counters to the original proposer, counter names the wrong recipient, counter names the wrong proposer, counter includes a negative card quantity, the same counteroffer is already active |
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                                          | Expected output                                                                                                                      | Implemented? |
-|--------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | During Red's open turn, Blue counters an unanswered offer from Red, then Red counters back while another offer is pending.      | Each unanswered counteroffer replaces its predecessor and notifies observers, leaving the unrelated offer and inventories unchanged. | :x:          |
-| Test Case 2  | During Red's open turn, Blue counters a Red-to-Blue offer that is absent from the active set.                                   | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 3  | During Red's open turn, White tries to counter an unanswered offer from Red to Blue.                                            | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 4  | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer addressed to White.           | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 5  | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer naming White as its proposer. | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 6  | During Red's open turn, Blue counters an unanswered offer from Red by asking for 2 brick and offering no cards.                 | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 7  | Blue counters an unanswered offer from Red after trading closes on Red's turn.                                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
-| Test Case 8  | During Red's open turn, Blue counters an active offer from Red that Blue has already accepted.                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+|             | Inputs                                                                                                                                                      | Expected output                                                                                                                                                                           | Implemented? |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | During Red's open turn, Blue counters an unanswered offer from Red, then Red counters back while another offer is pending.                                  | Each unanswered counteroffer replaces its predecessor and notifies observers, leaving the unrelated offer and inventories unchanged.                                                      | :x:          |
+| Test Case 2 | During Red's open turn, Blue submits a valid Blue-to-Red counteroffer for an unregistered copy of a pending Red-to-Blue offer.                              | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 3 | During Red's open turn, White submits an otherwise valid Blue-to-Red counteroffer for an unanswered offer from Red to Blue.                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 4 | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer addressed to White.                                       | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 5 | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer naming White as its proposer.                             | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 6 | During Red's open turn, Blue counters an unanswered offer from Red by asking for 2 brick and offering a stack of -1 ore.                                    | Throws `InvalidTradeException` without removing the original or changing inventories.                                                                                                     | :x:          |
+| Test Case 7 | Blue counters an unanswered offer from Red after trading closes on Red's turn.                                                                              | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 8 | During Red's open turn, Blue counters an active offer from Red that Blue has already accepted.                                                              | Throws `InvalidTradeException` without changing offers or inventories.                                                                                                                    | :x:          |
+| Test Case 9 | During Red's open turn, Blue counters one of two unanswered offers from Red, then tries to use that same active counteroffer instance to replace the other. | Throws `InvalidTradeException`. The second original and the first counteroffer remain active, inventories stay unchanged, and observers receive no notification for the rejected attempt. | :x:          |
 
 ### Test: `public void acceptTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor` and `trade`, with trading status and whether the offer is active. | Records agreement or rejects the request. |
+| `actor` and `trade`, with trading status, offer membership, and agreement status. | Records agreement or rejects the request. |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | trading open | Boolean |
-| actor role | Cases |
-| offer membership | Cases |
+| who tries to accept | Cases |
+| whether this offer is active | Cases |
+| whether the recipient already accepted | Boolean |
 
 **Operations:**
 Searching for the offer.
@@ -171,17 +156,19 @@ Searching for the offer.
 | Variable | Values |
 |---|---|
 | trading open | true, false |
-| actor role | receiver, another player |
-| offer membership | registered offer, distinct unregistered offer |
+| who tries to accept | the offer's recipient, a player other than the recipient |
+| whether this offer is active | the active offer itself, a separate copy with identical terms that was never registered |
+| whether the recipient already accepted | awaiting the recipient's response, recipient already accepted |
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                                                  | Expected output                                                                                                  | Implemented? |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | During Red's open turn, Blue accepts an unanswered offer that requests 1 ore from Blue, who holds none, while another offer is pending. | The addressed offer becomes accepted, both remain active, and observers see the change without any cards moving. | :x:          |
-| Test Case 2  | During Red's open turn, White tries to accept an unanswered offer from Red to Blue.                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
-| Test Case 3  | During Red's open turn, Blue tries to accept an unregistered copy of a pending offer from Red.                                          | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
-| Test Case 4  | Blue tries to accept an unanswered offer from Red after trading closes.                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
+|             | Inputs                                                                                                                                  | Expected output                                                                                                                                    | Implemented? |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | During Red's open turn, Blue accepts an unanswered offer that requests 1 ore from Blue, who holds none, while another offer is pending. | The addressed offer becomes accepted, both remain active, and observers see the change without any cards moving.                                   | :x:          |
+| Test Case 2 | During Red's open turn, White tries to accept an unanswered offer from Red to Blue.                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :x:          |
+| Test Case 3 | During Red's open turn, Blue tries to accept an unregistered copy of a pending offer from Red.                                          | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :x:          |
+| Test Case 4 | Blue tries to accept an unanswered offer from Red after trading closes.                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :x:          |
+| Test Case 5 | During Red's open turn, Blue tries to accept the same active offer from Red again.                                                      | Throws `InvalidTradeException`. The offer stays accepted and active, inventories stay unchanged, and observers receive no additional notification. | :x:          |
 
 ### Test: `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
@@ -194,8 +181,8 @@ Searching for the offer.
 | Variable | Type |
 |---|---|
 | trading open | Boolean |
-| actor role | Cases |
-| offer status | Cases |
+| who tries to refuse | Cases |
+| status of the offer | Cases |
 
 **Operations:**
 Searching for and deleting the offer.
@@ -204,8 +191,8 @@ Searching for and deleting the offer.
 | Variable | Values |
 |---|---|
 | trading open | true, false |
-| actor role | receiver, another player |
-| offer status | unanswered and active, no longer active, accepted |
+| who tries to refuse | the offer's recipient, a player other than the recipient |
+| status of the offer | active offer awaiting a response, offer already removed from the active set, active offer already accepted |
 
 **Step 4: Each choice**
 
@@ -228,32 +215,34 @@ Searching for and deleting the offer.
 | Variable | Type |
 |---|---|
 | trading open | Boolean |
-| actor and agreement | Cases |
-| offer membership | Cases |
-| both inventories | Pairs of intervals, pairs of counts |
+| who tries to finalize and whether the offer was accepted | Cases |
+| whether this offer is active | Cases |
+| stock of each resource owed by either player | Counts |
 | resource lists | Pairs of collections |
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
 | trading open | true, false |
-| actor and agreement | active proposer with or without agreement, active counteroffer receiver, non-active receiver |
-| offer membership | active, already completed |
-| both inventories | each side at or above the required total, proposer short by one, receiver short by one |
+| who tries to finalize and whether the offer was accepted | active player finalizes their own accepted offer, active player tries to finalize their own offer before the recipient accepts, active player finalizes a counteroffer addressed to them, another player tries to finalize an accepted offer addressed to them |
+| whether this offer is active | offer still in the active set, offer already completed and removed |
+| stock of each resource owed by either player | exactly enough or surplus, proposer short by one on a repeated resource, receiver short by one on a required resource |
 | resource lists | one stack per side, multiple stacks with repeated or distinct resource types |
+
+Repeated stacks of the same resource on one side interact because their quantities must be added before checking stock.
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                                                                                         | Expected output                                                                                                                  | Implemented? |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | During Red's open turn, Red finalizes an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` with enough stock, 2 ore held by Blue, and another offer pending.       | Red gives Blue 2 brick and receives 1 ore and 1 grain, Blue keeps 1 ore, and observers see only the unrelated offer.             | :x:          |
-| Test Case 2  | During Red's open turn, Red tries to finalize Blue's unanswered counteroffer of `[1 ore, 1 ore]` for 2 brick when Blue has only 1 ore and Red has 2 brick.                     | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
-| Test Case 3  | During Red's open turn, Red tries to finalize an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` when both players have every required card except Blue's grain. | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
-| Test Case 4  | During Red's open turn, Red tries to finalize a stocked trade that Blue has yet to accept.                                                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
-| Test Case 5  | During Red's open turn, Red finalizes Blue's unanswered counteroffer to give Red 1 ore for 2 brick with enough stock on both sides.                                            | Blue gives Red 1 ore, Red gives Blue 2 brick, and the counteroffer is removed.                                                   | :x:          |
-| Test Case 6  | During Red's open turn, Blue tries to finalize a stocked, accepted offer from Red.                                                                                             | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
-| Test Case 7  | During Red's open turn, Red twice tries to finalize their accepted offer to give Blue 1 brick for 1 ore, starting with enough stock for two exchanges.                         | The first call transfers the cards and removes the offer, and the second throws `InvalidTradeException` without further changes. | :x:          |
-| Test Case 8  | After trading closes on Red's turn, Red tries to finalize a stocked, accepted offer to Blue.                                                                                   | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
+|             | Inputs                                                                                                                                                                                             | Expected output                                                                                                                                           | Implemented? |
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | During Red's open turn, Red finalizes an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]`. Red holds 2 brick, and Blue holds 2 ore and 1 grain. Another offer is pending.             | Red loses 2 brick and gains 1 ore and 1 grain. Blue gains 2 brick and keeps 1 ore and 0 grain. Observers see only the unrelated offer after the exchange. | :x:          |
+| Test Case 2 | During Red's open turn, Red tries to finalize Blue's unanswered counteroffer of `[1 ore, 1 ore]` for 2 brick when Blue has only 1 ore and Red has 2 brick.                                         | Throws `InvalidTradeException`. The counteroffer stays unanswered and active, and neither inventory changes.                                              | :x:          |
+| Test Case 3 | During Red's open turn, Blue accepts Red's offer of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` while both players have enough stock. Blue spends the required grain before Red tries to finalize. | Throws `InvalidTradeException`. The offer stays accepted and active, and both inventories stay as they were immediately before finalization.              | :x:          |
+| Test Case 4 | During Red's open turn, Red tries to finalize a stocked trade that Blue has yet to accept.                                                                                                         | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :x:          |
+| Test Case 5 | During Red's open turn, Red finalizes Blue's unanswered counteroffer to give Red 1 ore for 2 brick with enough stock on both sides.                                                                | Blue gives Red 1 ore, Red gives Blue 2 brick, and the counteroffer is removed.                                                                            | :x:          |
+| Test Case 6 | During Red's open turn, Blue tries to finalize a stocked, accepted offer from Red.                                                                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :x:          |
+| Test Case 7 | During Red's open turn, Red twice tries to finalize their accepted offer to give Blue 1 brick for 1 ore, starting with enough stock for two exchanges.                                             | The first call transfers the cards and removes the offer, and the second throws `InvalidTradeException` without further changes.                          | :x:          |
+| Test Case 8 | After trading closes on Red's turn, Red tries to finalize a stocked, accepted offer to Blue.                                                                                                       | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :x:          |
 
 ### Test: `public void expireTradeOffers()`
 
@@ -275,7 +264,7 @@ Deleting all entries from the set.
 | Variable | Values |
 |---|---|
 | active-offer set | empty, multiple offers |
-| offer status | unanswered, accepted and awaiting finalization |
+| offer status | awaiting the recipient's response, accepted but still waiting to be finalized |
 
 **Step 4: Each choice**
 
