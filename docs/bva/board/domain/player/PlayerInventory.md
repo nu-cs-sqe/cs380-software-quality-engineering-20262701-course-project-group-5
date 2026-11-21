@@ -396,21 +396,21 @@ Adding one element
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: Knight, internal list: empty | false | :x: |
-| Test Case 2 | `dev`: RoadBuilder, internal list: empty | false| :x: |
-| Test Case 3 | `dev`: VictoryPoint, internal list: empty | false | :x: |
-| Test Case 4 | `dev`: Monopoly, internal list: empty | false | :x: |
-| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | false | :x: |
-| Test Case 6 | `dev`: Knight, internal list: {Knight} | true | :x: |
-| Test Case 7 | `dev`: RoadBuilder, internal list: {RoadBuilder} | true | :x: |
-| Test Case 8 | `dev`: VictoryPoint, internal list: {VictoryPoint} | true | :x: |
-| Test Case 9 | `dev`: Monopoly, internal list: {Monopoly}  | true | :x: |
-| Test Case 10 | `dev`: YearOfPlenty, internal list: {YearOfPlenty} | true | :x: |
-| Test Case 11 | `dev`: YearOfPlenty, internal list: {RoadBuilder} | false | :x: |
-| Test Case 12 | `dev`: YearOfPlenty, internal list: {RoadBuilder, Knight} | false | :x: |
-| Test Case 13 | `dev`: YearOfPlenty, internal list: {Knight, YearOfPlenty} | true | :x: |
+|              | Inputs                                                     | Expected output | Implemented?       |
+|--------------|------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1  | `dev`: Knight, internal list: empty                        | false           | :white_check_mark: |
+| Test Case 2  | `dev`: RoadBuilder, internal list: empty                   | false           | :white_check_mark: |
+| Test Case 3  | `dev`: VictoryPoint, internal list: empty                  | false           | :white_check_mark: |
+| Test Case 4  | `dev`: Monopoly, internal list: empty                      | false           | :white_check_mark: |
+| Test Case 5  | `dev`: YearOfPlenty, internal list: empty                  | false           | :white_check_mark: |
+| Test Case 6  | `dev`: Knight, internal list: {Knight}                     | true            | :white_check_mark: |
+| Test Case 7  | `dev`: RoadBuilder, internal list: {RoadBuilder}           | true            | :white_check_mark: |
+| Test Case 8  | `dev`: VictoryPoint, internal list: {VictoryPoint}         | true            | :white_check_mark: |
+| Test Case 9  | `dev`: Monopoly, internal list: {Monopoly}                 | true            | :white_check_mark: |
+| Test Case 10 | `dev`: YearOfPlenty, internal list: {YearOfPlenty}         | true            | :white_check_mark: |
+| Test Case 11 | `dev`: YearOfPlenty, internal list: {RoadBuilder}          | false           | :white_check_mark: |
+| Test Case 12 | `dev`: YearOfPlenty, internal list: {RoadBuilder, Knight}  | false           | :white_check_mark: |
+| Test Case 13 | `dev`: YearOfPlenty, internal list: {Knight, YearOfPlenty} | true            | :white_check_mark: |
 
 
 ### Method under test: `removeDevelopment(development : Development)`

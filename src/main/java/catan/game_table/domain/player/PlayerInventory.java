@@ -173,4 +173,14 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     this.developments.add(development);
   }
 
+  public boolean hasDevelopment(Development development) {
+    // this should also probably be a dictionary
+    for (Development current_dev: this.developments) {
+      if (current_dev.getClass().equals(development.getClass())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

@@ -536,4 +536,37 @@ public class PlayerInventoryTests {
     }
   }
 
+
+  @ParameterizedTest
+  @CsvSource({
+          "k, e, false",
+          "y, e, false",
+          "v, e, false",
+          "r, e, false",
+          "m, e, false",
+          "k, k, true",
+          "y, y, true",
+          "v, v, true",
+          "r, r, true",
+          "m, m, true",
+          "y, r, false",
+          "y, rk, false",
+          "y, ky, true"
+  })
+  public void hasDevelopmentTests(String type, String before, boolean expected_result) {
+    Development development = this.listOfDevelopmentConstruct(type).getFirst();
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
+    boolean actual_result = inv.hasDevelopment(development);
+
+
+    assertEquals(expected_result, actual_result);
+
+  }
+
+
+
+
+
+
 }
