@@ -4,10 +4,7 @@ import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.exception.InvalidPlacementException;
-import catan.game_table.domain.piece.Piece;
-import catan.game_table.domain.piece.PieceData;
-import catan.game_table.domain.piece.Road;
-import catan.game_table.domain.piece.Settlement;
+import catan.game_table.domain.piece.*;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +94,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece settlement = makePieceMock(Settlement.class, playerColor);
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(settlement));
@@ -136,7 +133,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road = makePieceMock(Road.class, playerColor);
+        Piece road = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -175,8 +172,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece otherSettlement = makePieceMock(Settlement.class, Color.BLUE);
-        Piece ownRoad = makePieceMock(Road.class, playerColor);
+        Piece otherSettlement = makePieceMock(PieceType.SETTLEMENT, Color.BLUE);
+        Piece ownRoad = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of("C", List.of(otherSettlement));
@@ -215,8 +212,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road1 = makePieceMock(Road.class, playerColor);
-        Piece road2 = makePieceMock(Road.class, playerColor);
+        Piece road1 = makePieceMock(PieceType.ROAD, playerColor);
+        Piece road2 = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -258,8 +255,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road1 = makePieceMock(Road.class, playerColor);
-        Piece road2 = makePieceMock(Road.class, playerColor);
+        Piece road1 = makePieceMock(PieceType.ROAD, playerColor);
+        Piece road2 = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -301,9 +298,9 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece settlement1 = makePieceMock(Settlement.class, playerColor);
-        Piece settlement2 = makePieceMock(Settlement.class, Color.BLUE);
-        Piece settlement3 = makePieceMock(Settlement.class, Color.WHITE);
+        Piece settlement1 = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece settlement2 = makePieceMock(PieceType.SETTLEMENT, Color.BLUE);
+        Piece settlement3 = makePieceMock(PieceType.SETTLEMENT, Color.WHITE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of(
@@ -346,7 +343,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road = makePieceMock(Road.class, Color.BLUE);
+        Piece road = makePieceMock(PieceType.ROAD, Color.BLUE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -387,9 +384,9 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece settlement = makePieceMock(Settlement.class, playerColor);
-        Piece road1 = makePieceMock(Road.class, playerColor);
-        Piece road2 = makePieceMock(Road.class, playerColor);
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece road1 = makePieceMock(PieceType.ROAD, playerColor);
+        Piece road2 = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(settlement));
@@ -431,7 +428,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece road = makePieceMock(Road.class, playerColor);
+        Piece road = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -472,8 +469,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece road1 = makePieceMock(Road.class, playerColor);
-        Piece road2 = makePieceMock(Road.class, playerColor);
+        Piece road1 = makePieceMock(PieceType.ROAD, playerColor);
+        Piece road2 = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -515,7 +512,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.BLUE;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road = makePieceMock(Road.class, playerColor);
+        Piece road = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -556,7 +553,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece settlement = makePieceMock(Settlement.class, playerColor);
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(settlement));
@@ -600,9 +597,9 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
 
-        Piece settlement1 = makePieceMock(Settlement.class, playerColor);
-        Piece road1 = makePieceMock(Road.class, playerColor);
-        Piece settlement2 = makePieceMock(Settlement.class, playerColor);
+        Piece settlement1 = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece road1 = makePieceMock(PieceType.ROAD, playerColor);
+        Piece settlement2 = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of(
@@ -725,7 +722,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece settlement = makePieceMock(Settlement.class, playerColor);
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(settlement));
@@ -769,7 +766,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece road = makePieceMock(Road.class, playerColor);
+        Piece road = makePieceMock(PieceType.ROAD, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -812,13 +809,13 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece ownSettlement = makePieceMock(Road.class, playerColor);
-        Piece ownRoad = makePieceMock(Road.class, playerColor);
-        Piece otherRoad1 = makePieceMock(Road.class, Color.BLUE);
-        Piece otherRoad2 = makePieceMock(Road.class, Color.BLUE);
-        Piece otherRoad3 = makePieceMock(Road.class, Color.BLUE);
-        Piece otherRoad4 = makePieceMock(Road.class, Color.BLUE);
-        Piece otherRoad5 = makePieceMock(Road.class, Color.BLUE);
+        Piece ownSettlement = makePieceMock(PieceType.ROAD, playerColor);
+        Piece ownRoad = makePieceMock(PieceType.ROAD, playerColor);
+        Piece otherRoad1 = makePieceMock(PieceType.ROAD, Color.BLUE);
+        Piece otherRoad2 = makePieceMock(PieceType.ROAD, Color.BLUE);
+        Piece otherRoad3 = makePieceMock(PieceType.ROAD, Color.BLUE);
+        Piece otherRoad4 = makePieceMock(PieceType.ROAD, Color.BLUE);
+        Piece otherRoad5 = makePieceMock(PieceType.ROAD, Color.BLUE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of(
@@ -867,8 +864,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece ownSettlement = makePieceMock(Settlement.class, playerColor);
-        Piece otherSettlement = makePieceMock(Settlement.class, Color.BLUE);
+        Piece ownSettlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece otherSettlement = makePieceMock(PieceType.SETTLEMENT, Color.BLUE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of(
@@ -914,9 +911,9 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece ownSettlement = makePieceMock(Settlement.class, playerColor);
-        Piece otherRoad1 = makePieceMock(Road.class, Color.BLUE);
-        Piece otherRoad2 = makePieceMock(Road.class, Color.BLUE);
+        Piece ownSettlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece otherRoad1 = makePieceMock(PieceType.ROAD, Color.BLUE);
+        Piece otherRoad2 = makePieceMock(PieceType.ROAD, Color.BLUE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(ownSettlement));
@@ -959,7 +956,7 @@ public class PlacementHelperTests {
         Color playerColor = Color.BLUE;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece settlement = makePieceMock(Settlement.class, playerColor);
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(settlement));
@@ -1003,8 +1000,8 @@ public class PlacementHelperTests {
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
 
-        Piece ownRoad = makePieceMock(Road.class, playerColor);
-        Piece otherSettlement = makePieceMock(Settlement.class, Color.BLUE);
+        Piece ownRoad = makePieceMock(PieceType.ROAD, playerColor);
+        Piece otherSettlement = makePieceMock(PieceType.SETTLEMENT, Color.BLUE);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(otherSettlement));
@@ -1043,7 +1040,7 @@ public class PlacementHelperTests {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
+        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of();
@@ -1084,8 +1081,8 @@ public class PlacementHelperTests {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
-        Piece existingPiece = makePieceMock(Settlement.class, playerColor);
+        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece existingPiece = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
@@ -1131,8 +1128,8 @@ public class PlacementHelperTests {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
-        Piece existingPiece = makePieceMock(Settlement.class, playerColor);
+        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece existingPiece = makePieceMock(PieceType.SETTLEMENT, playerColor);
 
         Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
         Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
@@ -1175,13 +1172,71 @@ public class PlacementHelperTests {
 
     }
 
-    private Piece makePieceMock(Class<? extends Piece> pieceClass, Color color) {
+    @Test
+    public void Place_GivenSettlement_AndVertexAlreadyHasCity_ExpectInvalidPlacementException() {
 
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
+        Piece existingPiece = makePieceMock(PieceType.CITY, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
+        Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("A", "F")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        Location destinationLocation = vertexMap.get("A");
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        String exceptionMessage = String.format(
+                "Cannot place %s at %s: %s already holds a %s",
+                "settlement",
+                "vertex",
+                "vertex",
+                "city"
+        );
+
+        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(exceptionMessage, actualException.getMessage());
+
+        EasyMock.verify(gameBoard);
+
+    }
+
+    private Piece makePieceMock(PieceType pieceType, Color color) {
+
+        Class<? extends Piece> pieceClass;
+        switch (pieceType) {
+            case SETTLEMENT -> pieceClass = Settlement.class;
+            case CITY -> pieceClass = City.class;
+            case ROAD -> pieceClass = Road.class;
+            default -> throw new RuntimeException();
+        }
+        
         Piece piece = EasyMock.createMock(pieceClass);
         PieceData pieceData = EasyMock.createMock(PieceData.class);
 
         EasyMock.expect(piece.getPieceData()).andStubReturn(pieceData);
         EasyMock.expect(pieceData.getColor()).andStubReturn(color);
+        EasyMock.expect(pieceData.getPieceType()).andStubReturn(pieceType);
         EasyMock.replay(piece, pieceData);
 
         return piece;

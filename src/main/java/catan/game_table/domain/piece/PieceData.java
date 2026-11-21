@@ -8,4 +8,7 @@ public class PieceData {
         return null;
     }
 
+    public PieceType getPieceType() {
+        return null;
+    }
 }

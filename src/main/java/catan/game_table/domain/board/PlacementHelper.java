@@ -6,6 +6,7 @@ import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.PieceType;
 import catan.game_table.domain.piece.Road;
 
 import java.util.HashSet;
@@ -199,7 +200,7 @@ public class PlacementHelper {
                                 "settlement",
                                 "vertex",
                                 "vertex",
-                                "settlement"
+                                getFirstPieceType(vertex).toString().toLowerCase()
                         )
                 );
             }
@@ -216,6 +217,14 @@ public class PlacementHelper {
 
         }
 
+    }
+
+    private PieceType getFirstPieceType(Location location) {
+        List<Piece> locationPieces = location.getPieces();
+        for (Piece piece : locationPieces) {
+            return piece.getPieceData().getPieceType();
+        }
+        throw new RuntimeException();
     }
 
 }
