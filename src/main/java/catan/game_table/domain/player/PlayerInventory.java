@@ -57,6 +57,21 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   @Override
   public void removePiece(Piece piece) {
 
+    int to_remove = -1;
+    int size = this.pieces.size();
+
+
+    // remove from the end
+    for (int i = size - 1; i > -1; i--) {
+      if (this.pieces.get(i).getClass().equals(piece.getClass())) {
+        to_remove = i;
+        break;
+      }
+    }
+
+    if (to_remove != -1) {
+      this.pieces.remove(to_remove);
+    }
   }
 
   @Override

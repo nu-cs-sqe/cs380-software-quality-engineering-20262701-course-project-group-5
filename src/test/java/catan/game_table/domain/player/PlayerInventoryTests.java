@@ -193,4 +193,48 @@ public class PlayerInventoryTests {
   }
 
 
+  @ParameterizedTest
+  @CsvSource({
+          "Road, e, e", // if there is nothing to remove then it is already in a good state
+          "Settlement, s, e", // 1 settlement before, nothing after
+          "Settlement, r, r", // keeps the road
+          "City, c, e", // removes the one city
+          "City, r, r", // keeps the orad
+          "Road, r, e", // removes the road
+          "Road, c, c", // keeps the city
+          "Road, cr, c", // removes the one road
+          "Settlement, ss, s", // removes one settlement
+          "Settlement, cr, cr", // keeps the pieces
+          "Settlement, sscr, scr", // keeps the pieces
+  })
+  public void removePiece_tests(String type, String listConstructBefore, String listConstructAfter) {
+    PlayerInventory inv = new PlayerInventory(this.listConstruct(listConstructBefore));
+
+    List<Piece> expectedAfter = this.listConstruct(listConstructAfter);
+
+    PieceData data = EasyMock.createMock(PieceData.class);
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    Piece piece;
+
+    if (type.equals("City")) {
+      piece = new City(data, dist, tracker);
+    } else if (type.equals("Settlement")) {
+      piece = new Settlement(data, dist, tracker);
+    } else {
+      piece = new Road(data);
+    }
+
+    inv.removePiece(piece);
+
+    List<Piece> actualPieces = inv.getPieces();
+    assertEquals(expectedAfter.size(), actualPieces.size());
+    int lst_size = expectedAfter.size();
+    for (int i = 0; i < lst_size; i++) {
+      assertEquals(expectedAfter.get(i).getClass(), actualPieces.get(i).getClass());
+    }
+  }
+
+
 }

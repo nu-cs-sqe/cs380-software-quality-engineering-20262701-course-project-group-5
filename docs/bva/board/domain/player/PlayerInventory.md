@@ -163,20 +163,21 @@ Equality comparisons, Removing a single element
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Road, internal list of pieces: empty list | `NotEnoughInventoryException` | :x: |
-| Test Case 2 | `piece`: Settlement, internal list of pieces: {Settlement} | internal list of pieces: empty list| :x: |
-| Test Case 3 | `piece`: Settlement, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
-| Test Case 4 | `piece`: City, internal list of pieces: {City} | internal list of pieces: empty list| :x: |
-| Test Case 5 | `piece`: City, internal list of pieces: {Road} | internal list of pieces: {Road} | :x: |
-| Test Case 6 | `piece`: Road, internal list of pieces: {Road} | internal list of pieces: empty list| :x: |
-| Test Case 7 | `piece`: Road, internal list of pieces: {City} | internal list of pieces: {City} | :x: |
-| Test Case 8 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :x: |
-| Test Case 9 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :x: |
-| Test Case 10 | `piece`: Road, internal list of pieces: {City, Road} | internal list of pieces: {City} | :x: |
-| Test Case 11 | `piece`: Settlement, internal list of pieces: {Settlement, Settlement} | internal list of pieces: {Settlement} | :x: |
-| Test Case 12 | `piece`: Settlement, internal list of pieces: {City, Road} | internal list of pieces: {City, Road} | :x: |
+|              | Inputs                                                                             | Expected output                                          | Implemented? |
+|--------------|------------------------------------------------------------------------------------|----------------------------------------------------------|--------------|
+| Test Case 1  | `piece`: Road, internal list of pieces: empty list                                 | internal list of pieces: empty list                      | :x:          |
+| Test Case 2  | `piece`: Settlement, internal list of pieces: {Settlement}                         | internal list of pieces: empty list                      | :x:          |
+| Test Case 3  | `piece`: Settlement, internal list of pieces: {Road}                               | internal list of pieces: {Road}                          | :x:          |
+| Test Case 4  | `piece`: City, internal list of pieces: {City}                                     | internal list of pieces: empty list                      | :x:          |
+| Test Case 5  | `piece`: City, internal list of pieces: {Road}                                     | internal list of pieces: {Road}                          | :x:          |
+| Test Case 6  | `piece`: Road, internal list of pieces: {Road}                                     | internal list of pieces: empty list                      | :x:          |
+| Test Case 7  | `piece`: Road, internal list of pieces: {City}                                     | internal list of pieces: {City}                          | :x:          |
+| Test Case 8  | `piece`: Harbor, internal list of pieces: does not matter                          | IllegalArgumentException(`player cannot own a harbor`)   | :x:          |
+| Test Case 9  | `piece`: Robber, internal list of pieces: does not matter                          | IllegalArgumentException(`player cannot own the robber`) | :x:          |
+| Test Case 10 | `piece`: Road, internal list of pieces: {City, Road}                               | internal list of pieces: {City}                          | :x:          |
+| Test Case 11 | `piece`: Settlement, internal list of pieces: {Settlement, Settlement}             | internal list of pieces: {Settlement}                    | :x:          |
+| Test Case 12 | `piece`: Settlement, internal list of pieces: {City, Road}                         | internal list of pieces: {City, Road}                    | :x:          |
+| Test Case 11 | `piece`: Settlement, internal list of pieces: {Settlement, Settlement, City, Road} | internal list of pieces: {Settlement, City, Road}        | :x:          |
 
 ### Method under test: `addResources(stack : ResourceStack)`
 
