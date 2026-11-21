@@ -75,7 +75,7 @@ Appending a single element (to the internal list of pieces)
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :x: |
+| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own a harbor`) | :white_check_mark: |
 | Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | IllegalArgumentException(`player cannot own the robber`) | :x: |
 | Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | internal list of pieces: {Settlement} | :x: |
 | Test Case 4 | `piece`: City, internal list of pieces: empty list | internal list of pieces: {City} | :x: |
