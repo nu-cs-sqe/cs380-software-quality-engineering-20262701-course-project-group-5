@@ -303,29 +303,29 @@ Removing one element from a list
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 2 | `stack`: OreResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 3 | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 4 | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 5 | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 6 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}} | internal list of resources: empty list | :white_check_mark: |
-| Test Case 7 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}} | internal list of resources: empty list | :white_check_mark: |
-| Test Case 8 | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | internal list of resources: empty list | :white_check_mark: |
-| Test Case 9 | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}} | internal list of resources: empty list | :white_check_mark: |
-| Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}} | internal list of resources: empty list | :white_check_mark: |
-| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 17 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} | internal list of resources: {OreResourceStack{size:1}} | :white_check_mark: |
-| Test Case 18 | `stack`: BrickResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} |`NotEnoughResourcesException("not enough of that resource type")` | :x: |
-| Test Case 19 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:2}} | internal list of resources: {LumberResourceStack{size:1}} | :white_check_mark: |
-| Test Case 20 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:2}} | internal list of resources: {WoolResourceStack{size:1}} | :white_check_mark: |
-| Test Case 21 | `stack`: WoolResourceStack{size:2}, internal list of resources: {WoolResourceStack{size:5}} | internal list of resources: {WoolResourceStack{size:3}} | :white_check_mark: |
+|              | Inputs                                                                                                                 | Expected output                                                   | Implemented?       |
+|--------------|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|--------------------|
+| Test Case 1  | `stack`: LumberResourceStack{size:1}, internal list of resources: empty list                                           | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 2  | `stack`: OreResourceStack{size:1}, internal list of resources: empty list                                              | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 3  | `stack`: WoolResourceStack{size:1}, internal list of resources: empty list                                             | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 4  | `stack`: BrickResourceStack{size:1}, internal list of resources: empty list                                            | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 5  | `stack`: GrainResourceStack{size:1}, internal list of resources: empty list                                            | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 6  | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:1}}                        | internal list of resources: empty list                            | :white_check_mark: |
+| Test Case 7  | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}}                            | internal list of resources: empty list                            | :white_check_mark: |
+| Test Case 8  | `stack`: OreResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}}                              | internal list of resources: empty list                            | :white_check_mark: |
+| Test Case 9  | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}}                          | internal list of resources: empty list                            | :white_check_mark: |
+| Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}}                          | internal list of resources: empty list                            | :white_check_mark: |
+| Test Case 11 | `stack`: LumberResourceStack{size:INT_MAX}, internal list of resources: {LumberResourceStack{size:1}}                  | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 12 | `stack`: WoolResourceStack{size:INT_MAX}, internal list of resources: {WoolResourceStack{size:1}}                      | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 13 | `stack`: OreResourceStack{size:INT_MAX}, internal list of resources: {OreResourceStack{size:1}}                        | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 14 | `stack`: BrickResourceStack{size:INT_MAX}, internal list of resources: {BrickResourceStack{size:1}}                    | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 15 | `stack`: GrainResourceStack{size:INT_MAX}, internal list of resources: {GrainResourceStack{size:1}}                    | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 16 | `stack`: GrainResourceStack{size:1}, internal list of resources: {OreResourceStack{size:1}}                            | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 17 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}}  | internal list of resources: {OreResourceStack{size:1}}            | :white_check_mark: |
+| Test Case 18 | `stack`: BrickResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:1}, OreResourceStack{size:1}} | `NotEnoughResourcesException("not enough of that resource type")` | :white_check_mark: |
+| Test Case 19 | `stack`: LumberResourceStack{size:1}, internal list of resources: {LumberResourceStack{size:2}}                        | internal list of resources: {LumberResourceStack{size:1}}         | :white_check_mark: |
+| Test Case 20 | `stack`: WoolResourceStack{size:1}, internal list of resources: {WoolResourceStack{size:2}}                            | internal list of resources: {WoolResourceStack{size:1}}           | :white_check_mark: |
+| Test Case 21 | `stack`: WoolResourceStack{size:2}, internal list of resources: {WoolResourceStack{size:5}}                            | internal list of resources: {WoolResourceStack{size:3}}           | :white_check_mark: |
 
 
 
