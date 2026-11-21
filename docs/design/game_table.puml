@@ -88,6 +88,7 @@ package exception {
 
 +exception NotEnoughInventoryException
 +exception InvalidPlacementException
++exception InvalidTradeException
 
 }
 
@@ -179,12 +180,12 @@ package player {
         +buy(item : Buyable) : void
         +getValidPlacements(piece : Piece) : List<Location>
         +place(piece : Piece, location : Location) : void
-        +proposePlayerTrade(trade : TradeOffer) : void
-        +counterPlayerTrade(original : TradeOffer, counter : TradeOffer) : void
-        +acceptPlayerTrade(trade : TradeOffer) : void
-        +refusePlayerTrade(trade : TradeOffer) : void
-        +finalizePlayerTrade(trade : TradeOffer) : void
-        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void
+        +proposePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
+        +counterPlayerTrade(original : TradeOffer, counter : TradeOffer) : void throws InvalidTradeException
+        +acceptPlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
+        +refusePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
+        +finalizePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
+        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void throws InvalidTradeException
     }
 
     +class PlayerInventory {
@@ -222,11 +223,11 @@ package trade {
         -{final} activeTradeOffers : Set<TradeOffer>
         +PlayerTradeHelper(playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
         +getActiveTradeOffers() : Set<TradeOffer>
-        +proposeTrade(actor : Color, trade : TradeOffer) : void
-        +counterTrade(actor : Color, original : TradeOffer, counter : TradeOffer) : void
-        +acceptTrade(actor : Color, trade : TradeOffer) : void
-        +refuseTrade(actor : Color, trade : TradeOffer) : void
-        +conductTrade(actor : Color, trade : TradeOffer) : void
+        +proposeTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
+        +counterTrade(actor : Color, original : TradeOffer, counter : TradeOffer) : void throws InvalidTradeException
+        +acceptTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
+        +refuseTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
+        +conductTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
         +expireTradeOffers() : void
         -isValidPlayerTrade(trade : TradeOffer) : boolean
     }
@@ -237,7 +238,7 @@ package trade {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} turnContext : TradeTurnContext
         +BankTradeHelper(board : GameBoard, bank : Bank, playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
-        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void
+        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void throws InvalidTradeException
         -isValidBankTrade(actor : Color, give : ResourceStack, receive : ResourceStack) : boolean
     }
 
@@ -530,6 +531,7 @@ GameTableView --> PlayerData
 TradeController ..> PlayerData
 TradeController --> GamePlayer
 TradeController --> PlayerTradeHelper
+TradeController ..> InvalidTradeException : handles
 TradeView --> PlayerData
 
 PlayerTradeHelper --> ResourceInventory
@@ -669,5 +671,8 @@ LargestArmyAward ..|> Award
 ResourceInventory ..> NotEnoughInventoryException
 PieceInventory ..> NotEnoughInventoryException
 PlacementHelper ..> InvalidPlacementException
+PlayerTradeHelper ..> InvalidTradeException
+BankTradeHelper ..> InvalidTradeException
+InvalidTradeException --|> Exception
 
 @enduml

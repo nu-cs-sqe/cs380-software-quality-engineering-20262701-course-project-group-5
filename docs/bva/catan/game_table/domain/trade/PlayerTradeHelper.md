@@ -14,23 +14,23 @@ Creates a helper with no active offers. Game setup supplies the player inventori
 
 Returns a read-only set of the current unanswered and accepted offers. The caller cannot change offer membership through this set.
 
-### `public void proposeTrade(Color actor, TradeOffer trade)`
+### `public void proposeTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 Registers an unanswered offer from the active player to a different configured player while trading is open. Each side gives resources in positive quantities, and no resource type appears on both sides. Proposing does not reserve or transfer cards.
 
-### `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter)`
+### `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException`
 
 While trading is open, the addressed player may replace an unanswered active offer with a fresh counteroffer. The participants reverse roles and the new offer starts unanswered. The same resource-term rules apply.
 
-### `public void acceptTrade(Color actor, TradeOffer trade)`
+### `public void acceptTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 While trading is open, the addressed player records agreement to an active offer. The accepted offer remains active until finalization or expiry, and inventories stay as they were.
 
-### `public void refuseTrade(Color actor, TradeOffer trade)`
+### `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 While trading is open, the addressed player may remove an unanswered active offer by refusing it. Inventories stay as they were.
 
-### `public void conductTrade(Color actor, TradeOffer trade)`
+### `public void conductTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 Only the active player may finalize an active offer involving them while trading is open. A proposal from the active player must already be accepted. When the active player is the receiver of a counteroffer, finalization can record agreement and complete the exchange in one call. Check both sides' current stocks before moving any cards. Add together stacks of the same type on the same side. On success, move the resources in both directions and remove that offer.
 
@@ -40,7 +40,7 @@ At turn end, clear all outstanding offers, including accepted ones. The controll
 
 ## Boundary-Value Analysis
 
-Assume valid arguments and nonnegative resource stack sizes. **Rejected** means `IllegalStateException` with the offer set, agreement, and inventories unchanged. All cases are planned (`:x:`).
+Assume valid arguments and nonnegative resource stack sizes. **Rejected** means the checked `InvalidTradeException` is thrown and the offer set, agreement, and inventories stay unchanged. All cases are planned (`:x:`).
 
 Unless stated otherwise, Red is active, trading is open, and Red, Blue, and White have enough stock. `A` is Red's offer to give Blue 1 brick for 1 ore. `B` is a separate Red-to-White offer to give 1 brick for 1 grain. `C` is Blue's counteroffer to give Red 1 ore for 2 brick. Offers start unanswered unless the case says otherwise.
 
@@ -73,7 +73,7 @@ Use the catalog's Each choice strategy for observable behavior. Rows marked “S
 | See TH-03 | Read after proposing the first offer. | Exactly `{A}`. | :x: |
 | Test Case TH-02 | `A` is accepted and `B` is unanswered. Read the set and attempt to clear it. | Returns exactly `{A, B}`. The caller cannot remove offers by clearing the returned set. | :x: |
 
-### Test: `public void proposeTrade(Color actor, TradeOffer trade)`
+### Test: `public void proposeTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -114,7 +114,7 @@ Appending an offer to the active set.
 | Test Case TH-11 | Red offers a brick stack of size 0 for 1 ore. | Rejected. | :x: |
 | Test Case TH-12 | Red offers 1 brick and 1 lumber for 1 brick and 1 ore. | Rejected. | :x: |
 
-### Test: `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter)`
+### Test: `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -153,7 +153,7 @@ Searching for the original and replacing that entry.
 | Test Case TH-19 | `A` is unanswered and trading is closed. Blue counters with `C`. | Rejected. | :x: |
 | Test Case TH-20 | Blue tries to counter `A` after accepting it. | Rejected. | :x: |
 
-### Test: `public void acceptTrade(Color actor, TradeOffer trade)`
+### Test: `public void acceptTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -186,7 +186,7 @@ Searching for the offer.
 | Test Case TH-23 | Blue tries to accept a separate unregistered offer with the same terms as active `A`. | Rejected. `A` remains unanswered. | :x: |
 | Test Case TH-24 | Blue tries to accept active `A` after trading closes. | Rejected. | :x: |
 
-### Test: `public void refuseTrade(Color actor, TradeOffer trade)`
+### Test: `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -220,7 +220,7 @@ Searching for and deleting the offer.
 | Test Case TH-28 | Blue tries to refuse unanswered `A` after trading closes. | Rejected. | :x: |
 | Test Case TH-29 | Blue tries to refuse `A` after accepting it. | Rejected. | :x: |
 
-### Test: `public void conductTrade(Color actor, TradeOffer trade)`
+### Test: `public void conductTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |

@@ -10,17 +10,17 @@ Executes immediate exchanges between the active player and the bank. `GameBoard.
 
 Uses the supplied board, bank, player inventories, and turn context for bank exchanges.
 
-### `public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive)`
+### `public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException`
 
 Only the active player may trade with the bank while trading is open. The player gives four cards of one type at the standard rate, three with a generic harbor, or two with a harbor matching the resource given. The bank gives one card of a different type. Check both inventories before transferring cards.
 
 ## Boundary-Value Analysis
 
-Assume valid arguments and nonnegative resource stack sizes. **Rejected** means `IllegalStateException` with both inventories unchanged. All cases are planned (`:x:`).
+Assume valid arguments and nonnegative resource stack sizes. **Rejected** means the checked `InvalidTradeException` is thrown and both inventories stay unchanged. All cases are planned (`:x:`).
 
 Unless stated otherwise, Red is active, trading is open, and Red offers 4 lumber for 1 ore without a harbor. Both inventories have enough cards for the stated exchange. A successful trade updates both inventories by the stated amounts.
 
-### Test: `public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive)`
+### Test: `public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
