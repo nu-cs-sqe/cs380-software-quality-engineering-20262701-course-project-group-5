@@ -10,4 +10,7 @@ public abstract class Location {
         return null;
     }
 
+    public void addPiece(Piece piece) {
+    }
+
 }

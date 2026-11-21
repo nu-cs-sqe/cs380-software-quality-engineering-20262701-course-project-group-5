@@ -53,6 +53,12 @@ public class PlacementHelper {
 
     }
 
+    public void place(Piece piece, Location location) {
+
+        gameBoard.addPieceAtLocation(piece, location);
+
+    }
+
     private Set<Vertex> getVerticesInvalidUnderDistanceRule(Set<Vertex> existingVertices) {
 
         Set<Vertex> verticesInvalidUnderDistanceRule = new HashSet<>();
