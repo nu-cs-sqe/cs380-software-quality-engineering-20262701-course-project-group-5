@@ -68,3 +68,9 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 |-------------|---------------------------------------------------------------------------------------|-----------------------|--------------------|
 | Test Case 1 | Two different `BrickResourceStack` instances with size `1`                            | same value from each  | :white_check_mark: |
 | Test Case 2 | Two different `BrickResourceStack` instances, one with size `1` and one with size `0` | different hash values | :white_check_mark: |
+
+### Test: `public int size()`
+
+|             | State of the System                               | Expected output | Implemented? |
+|-------------|---------------------------------------------------|-----------------|--------------|
+| Test Case 1 | An instance of `BrickResourceStack` with size `1` | `1`             | :x:          |
