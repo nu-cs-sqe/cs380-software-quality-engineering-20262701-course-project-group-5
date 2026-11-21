@@ -2,6 +2,8 @@
 
 ![Missed complexity](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/raw/badges/complexity.svg)
 
+![Mutants killed](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/raw/badges/mutants-killed.svg)
+
 # Settlers of Catan (by team Toyota Camry)
 
 ## Contributors

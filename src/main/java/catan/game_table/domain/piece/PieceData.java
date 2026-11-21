@@ -1,6 +1,7 @@
 package catan.game_table.domain.piece;
 
 import catan.game_table.domain.Color;
+import java.util.Objects;
 
 public class PieceData {
   public final String type;
@@ -11,14 +12,20 @@ public class PieceData {
     this.color = color;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    return false;
-  }
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof PieceData)) {
+            return false;
+        }
+        PieceData otherOne = (PieceData) other;
+        return Objects.equals(type, otherOne.type);
+    }
 
-
-  @Override
-  public int hashCode() {
-    return 0;
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
+    }
 }

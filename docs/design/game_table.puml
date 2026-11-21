@@ -137,7 +137,7 @@ package bank {
         -{final} bankInventory : ResourceInventory
         -resourcesToDistribute : Map<Color, List<ResourceStack>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
-        +produceResources(color : Color, products : ResourceProducts) : void
+        +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
         +abortProduction() : void
     }
@@ -231,10 +231,20 @@ package trade {
 package board {
 
     +class GameBoard {
-        -vertices : Set<Vertex>
-        -edges : Set<Edge>
-        -hexes : Set<Hex>
+        -{final} vertices : Set<Vertex>
+        -{final} edges : Set<Edge>
+        -{final} hexes : Set<Hex>
+        -{final} neighbors : Map<Vertex, Set<Vertex>>
+        -{static} {final} MIN_TOKEN_VALUE : int = 2
+        -{static} {final} MAX_TOKEN_VALUE : int = 12
+        +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>)
+        -createNeighbors() : void
+        -indexVerticesByPoint() : Map<Point, Vertex>
+        -linkEndpointsOf(edge : Edge, vertexAt : Map<Point, Vertex>) : void
+        -link(first : Vertex, second : Vertex) : void
+        +getNeighbors(vertex : Vertex) : Set<Vertex>
         +produceResourcesForToken(tokenValue : int) : void
+        -{static} requireValidTokenValue(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
     }
@@ -256,71 +266,81 @@ package board {
     }
 
     +abstract class Hex {
+        -{static} {final} SIDE_COUNT : int = 6
+        -{static} {final} EDGES_PER_CORNER : int = 2
         -{final} tokenValue : int
-        -vertices : Set<Vertex>
-        -edges : Set<Edge>
-        -canProduce : boolean
-        -products : ResourceProducts
-        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : ResourceProducts)
+        -{final} vertices : Set<Vertex>
+        #canProduce : boolean = true
+        -{final} products : List<ResourceStack>
+        +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
+        -Hex(tokenValue : int, vertices : Set<Vertex>, products : List<ResourceStack>)
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
         +produceResources() : void
+        -{static} validatedVertices(vertices : Set<Vertex>, edges : Set<Edge>) : Set<Vertex>
+        -{static} requireClosedRing(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireSingleRing(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} addConnectedPoints(currentPoint : Point, edges : Set<Edge>, pointsToVisit : Deque<Point>) : void
+        -{static} requireTwoEdgesPerCorner(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireEndpointsInVertices(vertices : Set<Vertex>, edges : Set<Edge>) : void
+        -{static} requireSideCount(elements : Set<?>, name : String) : void
     }
 
     +class HillsHex {
-        +produceResources() : void
+        +HillsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
     }
 
     +class ForestHex {
-        +produceResources() : void
+        +ForestHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
     }
 
     +class MountainsHex {
-        +produceResources() : void
+        +MountainsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
     }
 
     +class FieldsHex {
-        +produceResources() : void
+        +FieldsHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
     }
 
     +class PastureHex {
-        +produceResources() : void
+        +PastureHex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
     }
 
     +class DesertHex {
         +setCanProduce() : void
     }
 
-    +class OceanHex {
-        +setCanProduce() : void
-    }
-
     +abstract class Location {
         #pieces : List<Piece>
         +getPieceData() : List<PieceData>
-        +addPiece(piece : Piece)) : void
+        +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
+        +holdsPieceWithData(data : PieceData) : boolean
     }
 
     +class Vertex {
-        -point : Point
-        +Vertex(endpoint : Point)
+        -{final} point : Point
+        +Vertex(point : Point)
         +getPoint() : Point
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
     }
 
     +class Edge {
-        -endpoints : Set<Point>
+        -{final} endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
         +getEndpoints() : Set<Point>
     }
 
-    +class Point {
-        +{final} x : int
-        +{final} y : int
+    +class Point <<record>> {
+        -{final} x : int
+        -{final} y : int
+        +Point(x : int, y : int)
+        +x() : int
+        +y() : int
         +equals(o : Object) : boolean
         +hashCode() : int
+        +toString() : String
     }
 
 }
@@ -336,8 +356,9 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
+        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
     }
 
     +class PieceData {
@@ -350,14 +371,14 @@ package piece {
     +class Settlement {
         -ownerVictoryPointsTracker : ScoreTracker
         +Settlement(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
         +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
-        +produceResources(products : ResourceProducts) : void
+        +produceResources(products : List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
     }
 
@@ -417,15 +438,7 @@ package resource {
     +interface ResourceInventory {
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) throws NotEnoughInventoryException : void
-    }
-
-    +class ResourceProducts {
-        -baseProducts : List<ResourceStack>
-        -cityBonusProducts : List<ResourceStack>
-        +ResourceProducts(baseProducts : List<ResourceStack>, cityBonusProducts : List<ResourceStack>)
-        +getBaseProducts() : List<ResourceStack>
-        +getCityBonusProducts() : List<ResourceStack>
+        +removeResources(stack : ResourceStack) : void
     }
 
 }
@@ -535,23 +548,23 @@ GameBoard --> Edge
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
+GameBoard ..> Point
 
 Hex --> Piece
 Hex --> Vertex
-Hex --> Edge
+Hex ..> Edge
+Hex ..> Point
 Hex --|> Location
 
-Edge --> Vertex
 Edge ..> PieceData
 
-Hex --> ResourceProducts
+Hex --> ResourceStack
 HillsHex --|> Hex
 ForestHex --|> Hex
 MountainsHex --|> Hex
 FieldsHex --|> Hex
 PastureHex --|> Hex
 DesertHex --|> Hex
-OceanHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
@@ -560,7 +573,7 @@ Vertex --|> Location
 Edge --> Piece
 Edge --> Point
 Edge --|> Location
-Vertex ..> ResourceProducts
+Vertex ..> ResourceStack
 
 Harbor --> ResourceStack
 
@@ -588,15 +601,12 @@ OreResourceStack --|> ResourceStack
 GrainResourceStack --|> ResourceStack
 WoolResourceStack --|> ResourceStack
 
-ResourceProducts --> ResourceStack
-
 Building --> BankResourceDistributor
 Building ..> ResourceStack
 Piece --> Color
 Piece --> PieceData
-Building ..> ResourceProducts
-Settlement ..> ResourceProducts
-City ..> ResourceProducts
+Settlement ..> ResourceStack
+City ..> ResourceStack
 
 Settlement --> ScoreTracker
 City --> ScoreTracker

@@ -7,6 +7,7 @@ import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.Location;
 import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.board.Point;
 import catan.game_table.domain.board.Vertex;
 import catan.game_table.domain.development.*;
 import catan.game_table.domain.Playable;
@@ -328,7 +329,7 @@ public class GamePlayerTests {
 
     Piece piece = new City(data, dist, tracker);
 
-    EasyMock.expect(placer.getValidBuildingSpots(Color.Red)).andReturn(List.of(new Vertex()));
+    EasyMock.expect(placer.getValidBuildingSpots(Color.Red)).andReturn(List.of(new Vertex(new Point(0, 0))));
     EasyMock.replay(placer);
 
     List<Location> actual_locs = player.getValidPlacements(piece);
