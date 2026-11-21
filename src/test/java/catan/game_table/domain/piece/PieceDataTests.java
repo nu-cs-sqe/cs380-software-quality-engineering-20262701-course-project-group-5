@@ -80,4 +80,16 @@ public class PieceDataTests {
 
         assertFalse(firstHarborData.equals(secondHarborData));
     }
+
+    // hashCode()
+    @Test
+    public void HashCode_BlueCity_BlueCity_Equals(){
+        PieceData firstCityData = new PieceData(Color.BLUE, PieceType.CITY);
+        PieceData secondCityData = new PieceData(Color.BLUE, PieceType.CITY);
+
+        int firstCityHash = firstCityData.hashCode();
+        int secondCityHash = secondCityData.hashCode();
+
+        assertEquals(firstCityHash, secondCityHash);
+    }
 }
