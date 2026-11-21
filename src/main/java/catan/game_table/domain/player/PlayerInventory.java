@@ -47,8 +47,8 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
       throw new IllegalArgumentException("player cannot own the robber");
     }
 
-    for (Piece i: this.pieces) {
-      if (i.getClass().equals(piece.getClass())) {
+    for (Piece current_piece: this.pieces) {
+      if (current_piece.getClass().equals(piece.getClass())) {
         return true;
       }
     }
@@ -98,9 +98,9 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     int len = this.resources.size();
     for (int i = 0; i < len; i++) {
 
-      ResourceStack current = this.resources.get(i);
-      if (current.getClass().equals(stack.getClass())) {
-        this.resources.set(i, current.add(stack));
+      ResourceStack current_stack = this.resources.get(i);
+      if (current_stack.getClass().equals(stack.getClass())) {
+        this.resources.set(i, current_stack.add(stack));
         return;
       }
     }
@@ -110,10 +110,10 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public boolean hasResources(ResourceStack stack) {
-    for (ResourceStack i : this.resources) {
+    for (ResourceStack current_stack : this.resources) {
       // this should be a dictionary imo
       // but gotta stick to design or some crap like that
-      if (i.getClass().equals(stack.getClass()) && i.getSize() >= stack.getSize()) {
+      if (current_stack.getClass().equals(stack.getClass()) && current_stack.getSize() >= stack.getSize()) {
         return true;
       }
     }
@@ -126,15 +126,15 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     int len = this.resources.size();
 
     for (int i = 0; i < len; i++) {
-      ResourceStack current = this.resources.get(i);
+      ResourceStack current_stack = this.resources.get(i);
 
-      if (current.getClass().equals(stack.getClass())) {
+      if (current_stack.getClass().equals(stack.getClass())) {
 
-        if (current.getSize() == stack.getSize()) {
+        if (current_stack.getSize() == stack.getSize()) {
           to_remove = i;
           break;
         } else {
-          this.resources.set(i, current.subtract(stack));
+          this.resources.set(i, current_stack.subtract(stack));
           break;
         }
       }

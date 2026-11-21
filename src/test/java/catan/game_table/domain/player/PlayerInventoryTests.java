@@ -21,7 +21,7 @@ public class PlayerInventoryTests {
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void addPiece_with_exception(String type, String msg) {
+  public void addPieceWithException(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData("", Color.None);
@@ -52,7 +52,8 @@ public class PlayerInventoryTests {
   }
 
 
-  private List<Piece> ListOfPiecesConstruct(String pattern) {
+  // constructs a list of pieces from a given pattern
+  private List<Piece> listOfPiecesConstruct(String pattern) {
     List<Piece> pieces = new ArrayList<>();
 
     PieceData data = EasyMock.createMock(PieceData.class);
@@ -90,10 +91,10 @@ public class PlayerInventoryTests {
           "City, r, rc", // one road before, road and city after
           "Road, r, rr", // one road before, 2 roads after
   })
-  public void addPiece_tests(String type, String listConstructBefore, String listConstructAfter) {
-    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
+  public void addPieceTests(String type, String listConstructBefore, String listConstructAfter) {
+    PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
-    List<Piece> expectedAfter = this.ListOfPiecesConstruct(listConstructAfter);
+    List<Piece> expected_pieces = this.listOfPiecesConstruct(listConstructAfter);
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -111,18 +112,18 @@ public class PlayerInventoryTests {
 
     inv.addPiece(piece);
 
-    List<Piece> actualPieces = inv.getPieces();
-    assertEquals(expectedAfter.size(), actualPieces.size());
-    int lst_size = expectedAfter.size();
+    List<Piece> actual_pieces = inv.getPieces();
+    assertEquals(expected_pieces.size(), actual_pieces.size());
+    int lst_size = expected_pieces.size();
     for (int i = 0; i < lst_size; i++) {
-      assertEquals(expectedAfter.get(i).getClass(), actualPieces.get(i).getClass());
+      assertEquals(expected_pieces.get(i).getClass(), actual_pieces.get(i).getClass());
     }
   }
 
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void hasPiece_illegal_pieces(String type, String msg) {
+  public void hasPieceIllegalPieces(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData("", Color.None);
@@ -169,8 +170,8 @@ public class PlayerInventoryTests {
           "Road, cr, true",
           "City, rs, false"
   })
-  public void hasPiece_tests(String type, String listConstructBefore, boolean expected_result) {
-    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
+  public void hasPieceTests(String type, String listConstructBefore, boolean expected_result) {
+    PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -194,7 +195,7 @@ public class PlayerInventoryTests {
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void removePiece_with_exception(String type, String msg) {
+  public void removePieceWithExceptions(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData("", Color.None);
@@ -238,10 +239,10 @@ public class PlayerInventoryTests {
           "Settlement, cr, cr", // keeps the pieces
           "Settlement, sscr, scr", // keeps the pieces
   })
-  public void removePiece_tests(String type, String listConstructBefore, String listConstructAfter) {
-    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
+  public void removePieceTests(String type, String listConstructBefore, String listConstructAfter) {
+    PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
-    List<Piece> expectedAfter = this.ListOfPiecesConstruct(listConstructAfter);
+    List<Piece> expected_pieces = this.listOfPiecesConstruct(listConstructAfter);
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -259,16 +260,17 @@ public class PlayerInventoryTests {
 
     inv.removePiece(piece);
 
-    List<Piece> actualPieces = inv.getPieces();
-    assertEquals(expectedAfter.size(), actualPieces.size());
-    int lst_size = expectedAfter.size();
+    List<Piece> actual_pieces = inv.getPieces();
+    assertEquals(expected_pieces.size(), actual_pieces.size());
+    int lst_size = expected_pieces.size();
     for (int i = 0; i < lst_size; i++) {
-      assertEquals(expectedAfter.get(i).getClass(), actualPieces.get(i).getClass());
+      assertEquals(expected_pieces.get(i).getClass(), actual_pieces.get(i).getClass());
     }
   }
 
 
-  private List<ResourceStack> ListOfResourcesConstruct(String construct) {
+  // constructs a list of resources from a pattern
+  private List<ResourceStack> listOfResourcesConstruct(String construct) {
     List<ResourceStack> res = new ArrayList<>();
 
     if (construct.length() % 2 != 0) {
@@ -320,27 +322,27 @@ public class PlayerInventoryTests {
           "g1, g1b1o1w1l1, g2b1o1w1l1" // adding 1 grain into one of each -> 2 grains + one of the rest
 
   })
-  public void addResources_tests(String to_add, String before, String after) {
+  public void addResourcesTests(String to_add, String before, String after) {
 
-    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
     // too much effort to write a separate switch case for all of this
-    List<ResourceStack> to_add_as_list = this.ListOfResourcesConstruct(to_add);
+    List<ResourceStack> to_add_as_list = this.listOfResourcesConstruct(to_add);
     ResourceStack to_add_as_stack = to_add_as_list.getFirst();
 
 
     inv.addResources(to_add_as_stack);
 
 
-    List<ResourceStack> actualResources = inv.getResources();
-    List<ResourceStack> expectedResources = this.ListOfResourcesConstruct(after);
+    List<ResourceStack> actual_resources = inv.getResources();
+    List<ResourceStack> expected_resources = this.listOfResourcesConstruct(after);
 
-    assertEquals(actualResources.size(), expectedResources.size());
+    assertEquals(actual_resources.size(), expected_resources.size());
 
-    int size = expectedResources.size();
+    int size = expected_resources.size();
     for (int i = 0; i < size; i++) {
-      ResourceStack actual = actualResources.get(i);
-      ResourceStack expected = expectedResources.get(i);
+      ResourceStack actual = actual_resources.get(i);
+      ResourceStack expected = expected_resources.get(i);
 
       assertEquals(actual.getSize(), expected.getSize());
       assertEquals(actual.getClass(), expected.getClass());
@@ -375,12 +377,12 @@ public class PlayerInventoryTests {
           "g1, o1l1, false",
           "b1, b2, true",
   })
-  public void hasResources_tests(String to_check, String before, boolean expected_res) {
+  public void hasResourcesTests(String to_check, String before, boolean expected_res) {
 
-    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
     // too much effort to write a separate switch case for all of this
-    List<ResourceStack> to_check_as_list = this.ListOfResourcesConstruct(to_check);
+    List<ResourceStack> to_check_as_list = this.listOfResourcesConstruct(to_check);
     ResourceStack to_check_as_stack = to_check_as_list.getFirst();
 
 
@@ -405,12 +407,12 @@ public class PlayerInventoryTests {
           "l1, l2, l1"
 
   })
-  public void removeResources_tests_no_except(String to_remove, String before, String after) {
+  public void removeResourcesTestsForValidCases(String to_remove, String before, String after) {
 
-    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
     // too much effort to write a separate switch case for all of this
-    List<ResourceStack> to_remove_as_list = this.ListOfResourcesConstruct(to_remove);
+    List<ResourceStack> to_remove_as_list = this.listOfResourcesConstruct(to_remove);
     ResourceStack to_remove_as_stack = to_remove_as_list.getFirst();
 
 
@@ -422,15 +424,15 @@ public class PlayerInventoryTests {
     }
 
 
-    List<ResourceStack> actualResources = inv.getResources();
-    List<ResourceStack> expectedResources = this.ListOfResourcesConstruct(after);
+    List<ResourceStack> actual_resources = inv.getResources();
+    List<ResourceStack> expected_resources = this.listOfResourcesConstruct(after);
 
-    assertEquals(actualResources.size(), expectedResources.size());
+    assertEquals(actual_resources.size(), expected_resources.size());
 
-    int size = expectedResources.size();
+    int size = expected_resources.size();
     for (int i = 0; i < size; i++) {
-      ResourceStack actual = actualResources.get(i);
-      ResourceStack expected = expectedResources.get(i);
+      ResourceStack actual = actual_resources.get(i);
+      ResourceStack expected = expected_resources.get(i);
 
       assertEquals(actual.getSize(), expected.getSize());
       assertEquals(actual.getClass(), expected.getClass());
