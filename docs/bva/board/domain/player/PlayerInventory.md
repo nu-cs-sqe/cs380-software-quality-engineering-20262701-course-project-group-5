@@ -357,15 +357,15 @@ Adding one element
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `dev`: Knight, internal list: empty | internal list: {Knight} | :x: |
-| Test Case 2 | `dev`: RoadBuilder, internal list: empty | internal list: {RoadBuilder} | :x: |
-| Test Case 3 | `dev`: VictoryPoint, internal list: empty | internal list: {VictoryPoint} | :x: |
-| Test Case 4 | `dev`: Monopoly, internal list: empty | internal list: {Monopoly} | :x: |
-| Test Case 5 | `dev`: YearOfPlenty, internal list: empty | internal list: {YearOfPlenty} | :x: |
-| Test Case 6 | `dev`: YearOfPlenty, internal list: {Knight} | internal list: {Knight, YearOfPlenty} | :x: |
-| Test Case 7 | `dev`: YearOfPlenty, internal list: {Knight, RoadBuilder} | internal list: {Knight, RoadBuilder, YearOfPlenty} | :x: |
+|             | Inputs                                                    | Expected output                                    | Implemented?       |
+|-------------|-----------------------------------------------------------|----------------------------------------------------|--------------------|
+| Test Case 1 | `dev`: Knight, internal list: empty                       | internal list: {Knight}                            | :white_check_mark: |
+| Test Case 2 | `dev`: RoadBuilder, internal list: empty                  | internal list: {RoadBuilder}                       | :white_check_mark: |
+| Test Case 3 | `dev`: VictoryPoint, internal list: empty                 | internal list: {VictoryPoint}                      | :white_check_mark: |
+| Test Case 4 | `dev`: Monopoly, internal list: empty                     | internal list: {Monopoly}                          | :white_check_mark: |
+| Test Case 5 | `dev`: YearOfPlenty, internal list: empty                 | internal list: {YearOfPlenty}                      | :white_check_mark: |
+| Test Case 6 | `dev`: YearOfPlenty, internal list: {Knight}              | internal list: {Knight, YearOfPlenty}              | :white_check_mark: |
+| Test Case 7 | `dev`: YearOfPlenty, internal list: {Knight, RoadBuilder} | internal list: {Knight, RoadBuilder, YearOfPlenty} | :white_check_mark: |
 
 
 ### Method under test: `hasDevelopment(development : Development)`

@@ -3,6 +3,7 @@ package catan.game_table.domain.player;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
+import catan.game_table.domain.development.*;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
 import catan.game_table.domain.resource.*;
@@ -476,6 +477,63 @@ public class PlayerInventoryTests {
     assertNotNull(actual_ex);
     assertEquals(expected_ex.getClass(), actual_ex.getClass());
 
+  }
+
+
+  private List<Development> listOfDevelopmentConstruct(String pattern) {
+    List<Development> res = new ArrayList<>();
+
+    for (char i : pattern.toCharArray()) {
+      switch (i) {
+        case 'k':
+          res.add(new Knight());
+          break;
+        case 'r':
+          res.add(new RoadBuilder());
+          break;
+        case 'm':
+          res.add(new Monopoly());
+          break;
+        case 'v':
+          res.add(new VictoryPoint());
+          break;
+        case 'y':
+          res.add(new YearOfPlenty());
+          break;
+      }
+    }
+
+    return res;
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+          "k, e, k", // k = knight, e = empty
+          "r, e, r", // r = road builder
+          "v, e, v", // v = victory point
+          "m, e, m", // m = monopoly
+          "y, e, y", // y = year of plenty
+          "y, k, ky",
+          "y, kr, kry"
+  })
+  public void addDevelopmentTests(String type, String before, String after) {
+    Development development = this.listOfDevelopmentConstruct(type).getFirst();
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
+
+    inv.addDevelopment(development);
+
+    List<Development> expected_after = this.listOfDevelopmentConstruct(after);
+    List<Development> actual_after = inv.getDevelopments();
+
+    assertEquals(expected_after.size(), actual_after.size());
+    int size = expected_after.size();
+
+    for (int i = 0; i < size; i++) {
+      Development expected = expected_after.get(i);
+      Development actual = actual_after.get(i);
+      assertEquals(expected.getClass(), actual.getClass());
+    }
   }
 
 }

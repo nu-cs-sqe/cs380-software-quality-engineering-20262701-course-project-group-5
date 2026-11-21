@@ -1,5 +1,6 @@
 package catan.game_table.domain.player;
 
+import catan.game_table.domain.development.Development;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.Harbor;
 import catan.game_table.domain.piece.Piece;
@@ -14,6 +15,7 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   private List<Piece> pieces;
   private List<ResourceStack> resources;
+  private List<Development> developments;
 
 
   public PlayerInventory(List<Piece> initialPieces) {
@@ -23,6 +25,12 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   public PlayerInventory(List<Piece> initialPieces, List<ResourceStack> initialResources) {
     this.pieces = initialPieces;
     this.resources = initialResources;
+  }
+
+  public PlayerInventory(List<Piece> initialPieces, List<ResourceStack> initialResources, List<Development> initialDevCards) {
+    this.pieces = initialPieces;
+    this.resources = initialResources;
+    this.developments = initialDevCards;
   }
 
   @Override
@@ -63,6 +71,10 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   List<ResourceStack> getResources() {
     return this.resources;
+  }
+
+  List<Development> getDevelopments() {
+    return this.developments;
   }
 
   @Override
@@ -156,4 +168,9 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     }
 
   }
+
+  public void addDevelopment(Development development) {
+    this.developments.add(development);
+  }
+
 }
