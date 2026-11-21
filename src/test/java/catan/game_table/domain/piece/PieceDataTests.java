@@ -25,5 +25,11 @@ public class PieceDataTests {
         assertTrue(firstSettlementData.equals(secondSettlementData));
     }
 
+    @Test
+    public void Equals_TwoHarbor_BothRed_True() {
+        PieceData firstHarborData = new PieceData(Color.RED, PieceType.HARBOR);
+        PieceData secondHarborData = new PieceData(Color.RED, PieceType.HARBOR);
 
+        assertTrue(firstHarborData.equals(secondHarborData));
+    }
 }
