@@ -20,8 +20,8 @@
 
 ## Exceptions
 ### Code Coverage
-N/A
+Updated BVA and tests to cover the case where ResourceStack.hashCode() is different for two instances of ResourceStack
 ### Mutation Testing
-N/A
+Fixed the tests for Resource package to cover the ResourceStack.getSize function
 ### Others
 N/A
