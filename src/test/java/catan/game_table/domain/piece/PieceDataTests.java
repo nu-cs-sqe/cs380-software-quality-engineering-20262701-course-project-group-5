@@ -40,4 +40,12 @@ public class PieceDataTests {
 
         assertTrue(firstRoadData.equals(secondRoadData));
     }
+
+    @Test
+    public void Equals_NoColorRobber_WhiteRoad_False() {
+        PieceData robberData = new PieceData(Color.NONE, PieceType.ROBBER);
+        PieceData roadData = new PieceData(Color.WHITE, PieceType.ROAD);
+
+        assertFalse(robberData.equals(roadData));
+    }
 }
