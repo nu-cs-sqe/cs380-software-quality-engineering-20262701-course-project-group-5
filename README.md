@@ -20,9 +20,10 @@
 
 ## Exceptions
 ### Code Coverage
-Updated BVA and tests to cover the case where ResourceStack.hashCode() is different for two instances of ResourceStack
-Added test cases for every child of ResourceStack to test their overrides of makeNewStackOfSameType, to justify actually creating those overrides under BVA
+- Updated BVA and tests to cover the case where ResourceStack.hashCode() is different for two instances of ResourceStack
+- Added test cases for every child of ResourceStack to test their overrides of makeNewStackOfSameType, to justify actually creating those overrides under BVA
+- `PieceData`: `equals()` requires null checks but our functions should not take null inputs so the branch is never covered.
 ### Mutation Testing
-N/A
+- `PieceData`: `hashCode()` adds hash of PieceData's fields and an equivalent mutant where the fields are subtracted will not be killed.
 ### Others
 Note: the Resource package should be integration tested with the bank and player packages
