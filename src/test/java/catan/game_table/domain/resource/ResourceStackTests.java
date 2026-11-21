@@ -23,14 +23,14 @@ public class ResourceStackTests {
 
     @Test
     public void Add_EmptyStack_WithEmptyStack_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfEmpty = new BrickResourceStack(0);
-        BrickResourceStack secondStackOfEmpty = new BrickResourceStack(0);
+        LumberResourceStack firstStackOfEmpty = new LumberResourceStack(0);
+        LumberResourceStack secondStackOfEmpty = new LumberResourceStack(0);
 
         ResourceStack resultStack = firstStackOfEmpty.add(secondStackOfEmpty);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new LumberResourceStack(expectedSize), resultStack);
     }
 
     @Test
