@@ -55,6 +55,16 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Add_StackOfGrain_WithStackOfGrain_ProducesStackOfGrain(){
+        GrainResourceStack firstStackOfGrain = new GrainResourceStack(0);
+        GrainResourceStack secondStackOfGrain = new GrainResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfGrain.add(secondStackOfGrain);
+
+        assertInstanceOf(GrainResourceStack.class, resultStack);
+    }
+
+    @Test
     public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
         BrickResourceStack stackOfMax = new BrickResourceStack(Integer.MAX_VALUE);
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
