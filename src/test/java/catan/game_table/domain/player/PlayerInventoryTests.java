@@ -598,9 +598,28 @@ public class PlayerInventoryTests {
     }
   }
 
+  @ParameterizedTest
+  @CsvSource({
+          "k, e",
+          "k, r",
+          "y, mk"
+  })
+  public void removeDevelopmentTestsRaisingExceptions(String type, String before) {
+    Development development = this.listOfDevelopmentConstruct(type).getFirst();
 
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
 
+    Exception expected_ex = new NotEnoughInventoryException();
+    Exception actual_ex = null;
+    try {
+      inv.removeDevelopment(development);
+    } catch (Exception e) {
+      actual_ex = e;
+    }
 
+    assertNotNull(actual_ex);
+    assertEquals(expected_ex.getClass(), actual_ex.getClass());
 
+  }
 
 }
