@@ -56,15 +56,8 @@ public class PlacementHelper {
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {
 
-        if (piece instanceof Building) {
-
-            Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
-            validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
-
-            if (!validVertices.contains(location)) {
-                throw new InvalidPlacementException(String.format("Cannot place %s at %s: too close to an existing building", "building", "vertex"));
-            }
-
+        if (piece instanceof Building building) {
+            validateBuildingPlacement(building, location);
         }
 
         gameBoard.addPieceAtLocation(piece, location);
@@ -192,6 +185,37 @@ public class PlacementHelper {
             }
         }
         return false;
+    }
+
+    private void validateBuildingPlacement(Building building, Location location) throws InvalidPlacementException {
+
+        if (location instanceof Vertex vertex) {
+
+            Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
+            if (vertexHasBuildingAlready(vertex)) {
+                throw new InvalidPlacementException(
+                        String.format(
+                                "Cannot place %s at %s: %s already holds a %s",
+                                "settlement",
+                                "vertex",
+                                "vertex",
+                                "settlement"
+                        )
+                );
+            }
+
+            validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
+
+            if (!validVertices.contains(vertex)) {
+                throw new InvalidPlacementException(
+                        String.format(
+                                "Cannot place %s at %s: too close to an existing building", "building", "vertex"
+                        )
+                );
+            }
+
+        }
+
     }
 
 }

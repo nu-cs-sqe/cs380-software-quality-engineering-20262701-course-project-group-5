@@ -1126,6 +1126,55 @@ public class PlacementHelperTests {
 
     }
 
+    @Test
+    public void Place_GivenSettlement_AndVertexAlreadyHasSettlement_ExpectInvalidPlacementException() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+        Piece pieceToPlace = makePieceMock(Settlement.class, playerColor);
+        Piece existingPiece = makePieceMock(Settlement.class, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
+        Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("A", "F")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        Location destinationLocation = vertexMap.get("A");
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        String exceptionMessage = String.format(
+                "Cannot place %s at %s: %s already holds a %s",
+                "settlement",
+                "vertex",
+                "vertex",
+                "settlement"
+        );
+
+        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(exceptionMessage, actualException.getMessage());
+
+        EasyMock.verify(gameBoard);
+
+    }
+
     private Piece makePieceMock(Class<? extends Piece> pieceClass, Color color) {
 
         Piece piece = EasyMock.createMock(pieceClass);
