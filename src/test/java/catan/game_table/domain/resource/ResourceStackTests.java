@@ -121,6 +121,26 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Subtract_StackOfGrain_WithStackOfGrain_ProducesStackOfGrain(){
+        GrainResourceStack firstStackOfGrain = new GrainResourceStack(0);
+        GrainResourceStack secondStackOfGrain = new GrainResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfGrain.subtract(secondStackOfGrain);
+
+        assertInstanceOf(GrainResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Subtract_StackOfWool_WithStackOfWool_ProducesStackOfWool(){
+        WoolResourceStack firstStackOfWool = new WoolResourceStack(0);
+        WoolResourceStack secondStackOfWool = new WoolResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfWool.subtract(secondStackOfWool);
+
+        assertInstanceOf(WoolResourceStack.class, resultStack);
+    }
+
+    @Test
     public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue(){
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
