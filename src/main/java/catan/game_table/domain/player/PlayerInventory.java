@@ -110,6 +110,13 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public boolean hasResources(ResourceStack stack) {
+    for (ResourceStack i : this.resources) {
+      // this should be a dictionary imo
+      // but gotta stick to design or some crap like that
+      if (i.getClass().equals(stack.getClass()) && i.getSize() >= stack.getSize()) {
+        return true;
+      }
+    }
     return false;
   }
 

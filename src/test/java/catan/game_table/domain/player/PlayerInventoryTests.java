@@ -347,4 +347,46 @@ public class PlayerInventoryTests {
 
   }
 
+
+  @ParameterizedTest
+  @CsvSource({
+          // notation is <resource type><amount>
+          // I don't want to make a complicated parser
+          // so I will take the executive decision that INT_MAX = 9 because it doenst really matter that much
+          // and testing int overflow can be done in another test I suppose
+          "l1, e0, false",
+          "w1, e0, false",
+          "g1, e0, false",
+          "o1, e0, false",
+          "b1, e0, false",
+          "l1, l1, true",
+          "w1, w1, true",
+          "g1, g1, true",
+          "o1, o1, true",
+          "b1, b1, true",
+          "l9, l1, false",
+          "w9, w1, false",
+          "g9, g1, false",
+          "o9, o1, false",
+          "b9, b1, false",
+          "g1, o1, false",
+          "g1, o1g1, true",
+          "g1, o1l1, false",
+          "b1, b2, true",
+  })
+  public void hasResources_tests(String to_check, String before, boolean expected_res) {
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+
+    // too much effort to write a separate switch case for all of this
+    List<ResourceStack> to_check_as_list = this.ListOfResourcesConstruct(to_check);
+    ResourceStack to_check_as_stack = to_check_as_list.getFirst();
+
+
+    boolean actual_res = inv.hasResources(to_check_as_stack);
+
+    assertEquals(expected_res, actual_res);
+
+  }
+
 }
