@@ -1,6 +1,7 @@
 package catan.game_table.domain.piece;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.resource.ResourceStack;
@@ -11,7 +12,7 @@ import org.easymock.EasyMock;
 import java.util.Arrays;
 import java.util.List;
 
-public class SettlementTests extends Building {
+public class SettlementTests {
     //produce(products : ResourceProducts)
     @Test
     public void ProduceResources_ValidProducts_VerifyCorrectFunctionCall(){
@@ -24,6 +25,7 @@ public class SettlementTests extends Building {
         WoolResourceStack doubleStack = new WoolResourceStack(2);
         EasyMock.expect(resourceStack.add(resourceStack)).andStubReturn(doubleStack);
         bankResourceDistributor.produceResources(pieceData.color, resourceStackList);
+        EasyMock.expectLastCall();
 
         EasyMock.replay(bankResourceDistributor, resourceStack);
 
