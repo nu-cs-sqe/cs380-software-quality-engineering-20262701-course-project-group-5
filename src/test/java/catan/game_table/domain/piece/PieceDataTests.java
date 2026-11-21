@@ -48,4 +48,12 @@ public class PieceDataTests {
 
         assertFalse(robberData.equals(roadData));
     }
+
+    @Test
+    public void Equals_WhiteCity_RedSettlement_False() {
+        PieceData cityData = new PieceData(Color.WHITE, PieceType.CITY);
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
+
+        assertFalse(cityData.equals(settlementData));
+    }
 }
