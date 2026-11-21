@@ -4,7 +4,7 @@ Classpath: `catan.game_table.domain.trade.PlayerTradeHelper`
 
 ## `public class PlayerTradeHelper extends Observed`
 
-Manages domestic offers using the current turn context and player inventories. Successful changes to offer membership or agreement notify observers after the new state is visible.
+Manages domestic offers using the current turn context and player inventories. Callers supply valid arguments. Changes to offer membership or agreement notify observers after the new state is visible.
 
 ### `public PlayerTradeHelper(Map<Color, ResourceInventory> playerInventories, TradeTurnContext turnContext)`
 
@@ -40,18 +40,12 @@ At turn end, clear all outstanding offers, including accepted ones. The controll
 
 ## Boundary-Value Analysis
 
-Assume valid arguments and nonnegative resource stack sizes. **Rejected** means the checked `InvalidTradeException` is thrown and the offer set, agreement, and inventories stay unchanged. All cases are planned (`:x:`).
-
-Unless stated otherwise, Red is active, trading is open, and Red, Blue, and White have enough stock. `A` is Red's offer to give Blue 1 brick for 1 ore. `B` is a separate Red-to-White offer to give 1 brick for 1 grain. `C` is Blue's counteroffer to give Red 1 ore for 2 brick. Offers start unanswered unless the case says otherwise.
-
-Use the catalog's Each choice strategy for observable behavior. Rows marked “See” share an existing test case, as in the Lab 03 approach of observing one method through another.
-
 ### Test: `public Set<TradeOffer> getActiveTradeOffers()`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| No arguments. State: active offers. | Read-only set of active offers. |
+| Active-offer state, with no arguments. | Read-only set of active offers. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -67,18 +61,17 @@ Use the catalog's Each choice strategy for observable behavior. Rows marked “S
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-01 | Read the active offers on a new helper. | Empty set. | :x: |
-| See TH-03 | Read after proposing the first offer. | Exactly `{A}`. | :x: |
-| Test Case TH-02 | `A` is accepted and `B` is unanswered. Read the set and attempt to clear it. | Returns exactly `{A, B}`. The caller cannot remove offers by clearing the returned set. | :x: |
+|             | Inputs                                                                                                      | Expected output                                                                                  | Implemented? |
+|-------------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | Read the active offers when none exist.                                                                     | Returns an empty set.                                                                            | :x:          |
+| Test Case 2 | Read the set with one accepted offer, add an unanswered offer, then read again and try to clear the result. | The first read shows one offer, the second shows both, and the clear attempt leaves both active. | :x:          |
 
 ### Test: `public void proposeTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor`, `trade`. State: active player, trading status, configured participants. | No return value. Registers the offer or rejects the proposal. Inventories stay as they were. |
+| `actor` and `trade`, with the active player, trading status, and configured players. | Registers or rejects the offer without moving cards. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -101,25 +94,25 @@ Appending an offer to the active set.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-03 | Red proposes `A` to Blue with an empty offer set and 0 brick in Red's inventory. | `{A}` is active and unanswered. No cards move. An observer can read the new offer. | :x: |
-| Test Case TH-04 | Trading has closed. Red proposes `A`. | Rejected. | :x: |
-| Test Case TH-05 | Blue opens a new Blue-to-Red offer during Red's action phase. | Rejected. | :x: |
-| Test Case TH-06 | Red submits a new offer that names Blue as proposer and Red as receiver. | Rejected. | :x: |
-| Test Case TH-07 | Red proposes a trade with Red. | Rejected. | :x: |
-| Test Case TH-08 | Red proposes `A`'s terms to Orange, who has no inventory entry. | Rejected. | :x: |
-| Test Case TH-09 | Red offers 1 brick and requests no cards. | Rejected. | :x: |
-| Test Case TH-10 | Red offers no cards and requests 1 ore. | Rejected. | :x: |
-| Test Case TH-11 | Red offers a brick stack of size 0 for 1 ore. | Rejected. | :x: |
-| Test Case TH-12 | Red offers 1 brick and 1 lumber for 1 brick and 1 ore. | Rejected. | :x: |
+|              | Inputs                                                                                                  | Expected output                                                                        | Implemented? |
+|--------------|---------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | On Red's open turn, with no active offers and no brick in hand, Red offers Blue 1 brick for 1 ore.      | The helper registers the unanswered offer and notifies observers without moving cards. | :x:          |
+| Test Case 2  | Red offers Blue 1 brick for 1 ore after trading closes on Red's turn.                                   | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 3  | Blue starts an offer to trade 1 ore for 2 brick with Red during Red's open turn.                        | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 4  | During Red's open turn, Red submits an offer naming Blue as the proposer of 1 ore for 2 brick from Red. | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 5  | During Red's open turn, Red offers to trade 1 brick for 1 ore with themself.                            | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 6  | During Red's open turn, Red offers 1 brick for 1 ore to Orange, who has no inventory entry.             | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 7  | During Red's open turn, Red offers Blue 1 brick and asks for no cards.                                  | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 8  | During Red's open turn, Red asks Blue for 1 ore and offers no cards.                                    | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 9  | During Red's open turn, Red offers Blue a zero-size brick stack for 1 ore.                              | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
+| Test Case 10 | During Red's open turn, Red offers Blue 1 brick and 1 lumber for 1 brick and 1 ore.                     | Throws `InvalidTradeException` without changing offers or inventories.                 | :x:          |
 
 ### Test: `public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor`, `original`, `counter`. State: trading status and original offer status. | No return value. Replaces the original with the unanswered counteroffer or rejects the request. Inventories stay as they were. |
+| `actor`, `original`, and `counter`, with trading and original offer status. | Replaces the original with the unanswered counteroffer or rejects the request, with inventories unchanged. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -142,23 +135,23 @@ Searching for the original and replacing that entry.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-13 | `A` and `B` are unanswered. Blue counters `A` with `C`. Red then counters `C` by offering Blue 3 brick for 1 ore. | After Blue's counter, the set is `{B, C}`. After Red's counter, only `B` and Red's new offer remain. Both replacements start unanswered, and observers can read the new set after each change. | :x: |
-| Test Case TH-14 | Only `B` is active. Blue tries to counter `A` with `C`. | Rejected. | :x: |
-| Test Case TH-15 | `A` is unanswered. White tries to counter it. | Rejected. | :x: |
-| Test Case TH-16 | Blue counters `A` with a Blue-to-White offer. | Rejected. | :x: |
-| Test Case TH-17 | Blue counters `A` with a White-to-Red offer. | Rejected. | :x: |
-| Test Case TH-18 | Blue counters `A` by asking Red for 2 brick and offering no cards in return. | Rejected. | :x: |
-| Test Case TH-19 | `A` is unanswered and trading is closed. Blue counters with `C`. | Rejected. | :x: |
-| Test Case TH-20 | Blue tries to counter `A` after accepting it. | Rejected. | :x: |
+|              | Inputs                                                                                                                          | Expected output                                                                                                                      | Implemented? |
+|--------------|---------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | During Red's open turn, Blue counters an unanswered offer from Red, then Red counters back while another offer is pending.      | Each unanswered counteroffer replaces its predecessor and notifies observers, leaving the unrelated offer and inventories unchanged. | :x:          |
+| Test Case 2  | During Red's open turn, Blue counters a Red-to-Blue offer that is absent from the active set.                                   | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 3  | During Red's open turn, White tries to counter an unanswered offer from Red to Blue.                                            | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 4  | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer addressed to White.           | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 5  | During Red's open turn, Blue attempts to counter an unanswered offer from Red with a counteroffer naming White as its proposer. | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 6  | During Red's open turn, Blue counters an unanswered offer from Red by asking for 2 brick and offering no cards.                 | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 7  | Blue counters an unanswered offer from Red after trading closes on Red's turn.                                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
+| Test Case 8  | During Red's open turn, Blue counters an active offer from Red that Blue has already accepted.                                  | Throws `InvalidTradeException` without changing offers or inventories.                                                               | :x:          |
 
 ### Test: `public void acceptTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor`, `trade`. State: trading status and membership of `trade`. | No return value. Records agreement or rejects the request. |
+| `actor` and `trade`, with trading status and whether the offer is active. | Records agreement or rejects the request. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -179,19 +172,19 @@ Searching for the offer.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-21 | Blue accepts unanswered `A` while holding 0 ore. `B` is also active. | Both offers stay active. Only `A` becomes accepted. No cards move, and an observer can read the agreement. | :x: |
-| Test Case TH-22 | White tries to accept `A`, which is addressed to Blue. | Rejected. | :x: |
-| Test Case TH-23 | Blue tries to accept a separate unregistered offer with the same terms as active `A`. | Rejected. `A` remains unanswered. | :x: |
-| Test Case TH-24 | Blue tries to accept active `A` after trading closes. | Rejected. | :x: |
+|              | Inputs                                                                                                                                  | Expected output                                                                                                  | Implemented? |
+|--------------|-----------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | During Red's open turn, Blue accepts an unanswered offer that requests 1 ore from Blue, who holds none, while another offer is pending. | The addressed offer becomes accepted, both remain active, and observers see the change without any cards moving. | :x:          |
+| Test Case 2  | During Red's open turn, White tries to accept an unanswered offer from Red to Blue.                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
+| Test Case 3  | During Red's open turn, Blue tries to accept an unregistered copy of a pending offer from Red.                                          | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
+| Test Case 4  | Blue tries to accept an unanswered offer from Red after trading closes.                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                           | :x:          |
 
 ### Test: `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor`, `trade`. State: trading status and offer status. | No return value. Removes the offer or rejects the request. |
+| `actor` and `trade`, with trading and offer status. | Removes the offer or rejects the request. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -212,20 +205,20 @@ Searching for and deleting the offer.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-25 | Blue refuses unanswered `A` while `B` is also active. | Only `B` remains. No cards move, and an observer can read the updated set. | :x: |
-| Test Case TH-26 | Blue tries to refuse `A` after it was removed. | Rejected. | :x: |
-| Test Case TH-27 | White tries to refuse `A`, which is addressed to Blue. | Rejected. | :x: |
-| Test Case TH-28 | Blue tries to refuse unanswered `A` after trading closes. | Rejected. | :x: |
-| Test Case TH-29 | Blue tries to refuse `A` after accepting it. | Rejected. | :x: |
+|              | Inputs                                                                                                | Expected output                                                                          | Implemented? |
+|--------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | During Red's open turn, Blue refuses an unanswered offer from Red while another offer is pending.     | Only the unrelated offer remains, and observers see the change without any cards moving. | :x:          |
+| Test Case 2  | During Red's open turn, Blue tries to refuse a Red-to-Blue offer that was already removed.            | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
+| Test Case 3  | During Red's open turn, White tries to refuse an unanswered offer from Red to Blue.                   | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
+| Test Case 4  | Blue tries to refuse an unanswered offer from Red after trading closes.                               | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
+| Test Case 5  | During Red's open turn, Blue tries to refuse an active offer from Red that Blue has already accepted. | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
 
 ### Test: `public void conductTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor`, `trade`. State: trading status, active player, offer membership and agreement, and both inventories. | No return value. Transfers the agreed resources and removes the offer, or rejects the exchange without changing either inventory or the offer. |
+| `actor` and `trade`, with trading status, active player, offer status, and both inventories. | Transfers cards and removes the offer or rejects the exchange without changing offers or inventories. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -247,23 +240,23 @@ Searching for and deleting the offer.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-30 | Red finalizes an accepted offer giving `[1 brick, 1 brick]` for `[1 ore, 1 grain]`. Red has exactly 2 brick. Blue has 2 ore and 1 grain. `B` is also pending. | Red loses 2 brick and gains 1 ore and 1 grain. Blue gains 2 brick, retains 1 ore, and has 0 grain. The completed offer is removed, and an observer sees only `B`. | :x: |
-| Test Case TH-31 | Red tries to finalize Blue's unanswered counteroffer to give `[1 ore, 1 ore]` for `[2 brick]`. Blue has 1 ore and Red has 2 brick. | Rejected because Blue owes 2 ore. The counteroffer remains active and unanswered. | :x: |
-| Test Case TH-32 | Use TH-30 with Blue holding 0 grain. | Rejected. No cards move, and the accepted offer stays active. | :x: |
-| Test Case TH-33 | Red tries to finalize unanswered `A`. | Rejected. | :x: |
-| Test Case TH-34 | Red finalizes unanswered counteroffer `C` while it is active. | Red loses 2 brick and gains 1 ore. Blue loses 1 ore and gains 2 brick. `C` is removed. | :x: |
-| Test Case TH-35 | Blue tries to finalize accepted `A` during Red's turn. | Rejected. | :x: |
-| Test Case TH-36 | Red finalizes accepted `A` and then finalizes the same offer again. Red starts with 2 brick and Blue starts with 2 ore. | The first call completes the exchange. The second is rejected even though both players still have sufficient cards. | :x: |
-| Test Case TH-37 | Red tries to finalize accepted `A` after trading closes. | Rejected. | :x: |
+|              | Inputs                                                                                                                                                                         | Expected output                                                                                                                  | Implemented? |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | During Red's open turn, Red finalizes an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` with enough stock, 2 ore held by Blue, and another offer pending.       | Red gives Blue 2 brick and receives 1 ore and 1 grain, Blue keeps 1 ore, and observers see only the unrelated offer.             | :x:          |
+| Test Case 2  | During Red's open turn, Red tries to finalize Blue's unanswered counteroffer of `[1 ore, 1 ore]` for 2 brick when Blue has only 1 ore and Red has 2 brick.                     | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
+| Test Case 3  | During Red's open turn, Red tries to finalize an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` when both players have every required card except Blue's grain. | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
+| Test Case 4  | During Red's open turn, Red tries to finalize a stocked trade that Blue has yet to accept.                                                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
+| Test Case 5  | During Red's open turn, Red finalizes Blue's unanswered counteroffer to give Red 1 ore for 2 brick with enough stock on both sides.                                            | Blue gives Red 1 ore, Red gives Blue 2 brick, and the counteroffer is removed.                                                   | :x:          |
+| Test Case 6  | During Red's open turn, Blue tries to finalize a stocked, accepted offer from Red.                                                                                             | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
+| Test Case 7  | During Red's open turn, Red twice tries to finalize their accepted offer to give Blue 1 brick for 1 ore, starting with enough stock for two exchanges.                         | The first call transfers the cards and removes the offer, and the second throws `InvalidTradeException` without further changes. | :x:          |
+| Test Case 8  | After trading closes on Red's turn, Red tries to finalize a stocked, accepted offer to Blue.                                                                                   | Throws `InvalidTradeException` without changing offers or inventories.                                                           | :x:          |
 
 ### Test: `public void expireTradeOffers()`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| No arguments. State: outstanding offers at turn end. | No return value. The active-offer set is empty. |
+| Outstanding offers at turn end, with no arguments. | The active-offer set becomes empty. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -282,7 +275,7 @@ Deleting all entries from the set.
 
 **Step 4: Each choice**
 
-|              | Inputs | Expected output | Implemented? |
-|---|---|---|---|
-| Test Case TH-38 | Call with an empty active-offer set at turn end. | The set remains empty. | :x: |
-| Test Case TH-39 | At turn end, `A` is accepted and `B` is unanswered. Trading has closed. | Both offers are removed. No cards move, and an observer can read the empty set. | :x: |
+|              | Inputs                                                                                     | Expected output                                                                    | Implemented? |
+|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|--------------|
+| Test Case 1  | Expire offers at turn end with no active offers.                                           | The active-offer set stays empty.                                                  | :x:          |
+| Test Case 2  | Expire offers after trading closes at turn end with one accepted and one unanswered offer. | Both offers are removed, and observers see the empty set without any cards moving. | :x:          |
