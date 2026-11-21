@@ -3,6 +3,7 @@ package catan.game_table.domain.player;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
+import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
 import catan.game_table.domain.resource.*;
 import org.easymock.EasyMock;
@@ -386,6 +387,54 @@ public class PlayerInventoryTests {
     boolean actual_res = inv.hasResources(to_check_as_stack);
 
     assertEquals(expected_res, actual_res);
+
+  }
+
+
+  @ParameterizedTest
+  @CsvSource({
+          // notation is <resource type><amount>
+          "l1, l1, e0", // 1 lumber, remove 1 lumber, rest is empty
+          "w1, w1, e0",
+          "b1, b1, e0",
+          "o1, o1, e0",
+          "b1, b1, e0",
+          "w1, w1o1, o1",
+          "w1, w2, w1", // have 2 remove 1, leaves 1
+          "w2, w5, w3",
+          "l1, l2, l1"
+
+  })
+  public void removeResources_tests_no_except(String to_remove, String before, String after) {
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+
+    // too much effort to write a separate switch case for all of this
+    List<ResourceStack> to_remove_as_list = this.ListOfResourcesConstruct(to_remove);
+    ResourceStack to_remove_as_stack = to_remove_as_list.getFirst();
+
+
+    try {
+      inv.removeResources(to_remove_as_stack);
+    } catch (NotEnoughInventoryException e) {
+      System.err.println("this shouldn't happen in this test");
+      throw new RuntimeException("This test should not have exceptions");
+    }
+
+
+    List<ResourceStack> actualResources = inv.getResources();
+    List<ResourceStack> expectedResources = this.ListOfResourcesConstruct(after);
+
+    assertEquals(actualResources.size(), expectedResources.size());
+
+    int size = expectedResources.size();
+    for (int i = 0; i < size; i++) {
+      ResourceStack actual = actualResources.get(i);
+      ResourceStack expected = expectedResources.get(i);
+
+      assertEquals(actual.getSize(), expected.getSize());
+      assertEquals(actual.getClass(), expected.getClass());
+    }
 
   }
 
