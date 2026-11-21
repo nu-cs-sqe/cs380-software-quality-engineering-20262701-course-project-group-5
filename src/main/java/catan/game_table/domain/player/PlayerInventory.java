@@ -13,9 +13,16 @@ import java.util.List;
 public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   private List<Piece> pieces;
+  private List<ResourceStack> resources;
+
 
   public PlayerInventory(List<Piece> initialPieces) {
     this.pieces = initialPieces;
+  }
+
+  public PlayerInventory(List<Piece> initialPieces, List<ResourceStack> initialResources) {
+    this.pieces = initialPieces;
+    this.resources = initialResources;
   }
 
   @Override
@@ -54,6 +61,10 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     return this.pieces;
   }
 
+  List<ResourceStack> getResources() {
+    return this.resources;
+  }
+
   @Override
   public void removePiece(Piece piece) {
 
@@ -84,7 +95,17 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public void addResources(ResourceStack stack) {
+    int len = this.resources.size();
+    for (int i = 0; i < len; i++) {
 
+      ResourceStack current = this.resources.get(i);
+      if (current.getClass().equals(stack.getClass())) {
+        this.resources.set(i, current.add(stack));
+        return;
+      }
+    }
+
+    this.resources.add(stack);
   }
 
   @Override

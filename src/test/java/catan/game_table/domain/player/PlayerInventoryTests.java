@@ -4,11 +4,10 @@ import catan.game_table.domain.Color;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.piece.*;
+import catan.game_table.domain.resource.*;
 import org.easymock.EasyMock;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.FieldSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,7 @@ public class PlayerInventoryTests {
   }
 
 
-  private List<Piece> listConstruct(String pattern) {
+  private List<Piece> ListOfPiecesConstruct(String pattern) {
     List<Piece> pieces = new ArrayList<>();
 
     PieceData data = EasyMock.createMock(PieceData.class);
@@ -91,9 +90,9 @@ public class PlayerInventoryTests {
           "Road, r, rr", // one road before, 2 roads after
   })
   public void addPiece_tests(String type, String listConstructBefore, String listConstructAfter) {
-    PlayerInventory inv = new PlayerInventory(this.listConstruct(listConstructBefore));
+    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
 
-    List<Piece> expectedAfter = this.listConstruct(listConstructAfter);
+    List<Piece> expectedAfter = this.ListOfPiecesConstruct(listConstructAfter);
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -170,7 +169,7 @@ public class PlayerInventoryTests {
           "City, rs, false"
   })
   public void hasPiece_tests(String type, String listConstructBefore, boolean expected_result) {
-    PlayerInventory inv = new PlayerInventory(this.listConstruct(listConstructBefore));
+    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -239,9 +238,9 @@ public class PlayerInventoryTests {
           "Settlement, sscr, scr", // keeps the pieces
   })
   public void removePiece_tests(String type, String listConstructBefore, String listConstructAfter) {
-    PlayerInventory inv = new PlayerInventory(this.listConstruct(listConstructBefore));
+    PlayerInventory inv = new PlayerInventory(this.ListOfPiecesConstruct(listConstructBefore));
 
-    List<Piece> expectedAfter = this.listConstruct(listConstructAfter);
+    List<Piece> expectedAfter = this.ListOfPiecesConstruct(listConstructAfter);
 
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
@@ -267,5 +266,85 @@ public class PlayerInventoryTests {
     }
   }
 
+
+  private List<ResourceStack> ListOfResourcesConstruct(String construct) {
+    List<ResourceStack> res = new ArrayList<>();
+
+    if (construct.length() % 2 != 0) {
+      throw new IllegalArgumentException("must have even nuber of characters");
+    }
+
+    int len = construct.length();
+
+    for (int i = 0; i < len; i += 2) {
+      char type = construct.charAt(i);
+      int amount = (int)(construct.charAt(i + 1) - '0');
+
+      switch (type) {
+        case 'l':
+          res.add(new LumberResourceStack(amount));
+          break;
+        case 'o':
+          res.add(new OreResourceStack(amount));
+          break;
+        case 'b':
+          res.add(new BrickResourceStack(amount));
+          break;
+        case 'g':
+          res.add(new GrainResourceStack(amount));
+          break;
+        case 'w':
+          res.add(new WoolResourceStack(amount));
+          break;
+      }
+    }
+
+
+    return res;
+  }
+
+
+  @ParameterizedTest
+  @CsvSource({
+          // notation is <resource type><amount>
+          "l1, e0, l1", // adding 1 lumber to empty
+          "o1, e0, o1",
+          "w1, e0, w1",
+          "b1, e0, b1",
+          "g1, e0, g1",
+          "l1, l1, l2",
+          "w1, w1, w2", // adding 1 wool into another wool -> 2 wools
+          "g1, g1, g2",
+          "b1, b1, b2",
+          "g1, g1b1o1w1l1, g2b1o1w1l1" // adding 1 grain into one of each -> 2 grains + one of the rest
+
+  })
+  public void addResources_tests(String to_add, String before, String after) {
+
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.ListOfResourcesConstruct(before));
+
+    // too much effort to write a separate switch case for all of this
+    List<ResourceStack> to_add_as_list = this.ListOfResourcesConstruct(to_add);
+    ResourceStack to_add_as_stack = to_add_as_list.getFirst();
+
+
+    inv.addResources(to_add_as_stack);
+
+
+    List<ResourceStack> actualResources = inv.getResources();
+    List<ResourceStack> expectedResources = this.ListOfResourcesConstruct(after);
+
+    assertEquals(actualResources.size(), expectedResources.size());
+
+    int size = expectedResources.size();
+    for (int i = 0; i < size; i++) {
+      ResourceStack actual = actualResources.get(i);
+      ResourceStack expected = expectedResources.get(i);
+
+      assertEquals(actual.getSize(), expected.getSize());
+      assertEquals(actual.getClass(), expected.getClass());
+    }
+
+  }
 
 }
