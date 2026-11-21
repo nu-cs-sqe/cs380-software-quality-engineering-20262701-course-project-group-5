@@ -43,6 +43,8 @@ public class ResourceStackTests {
         assertTrue(thrownException.getMessage().contains("Incompatible ResourceStack types: LumberResourceStack and BrickResourceStack"));
     }
 
+
+
     @Test
     public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
         BrickResourceStack stackOfMax = new BrickResourceStack(Integer.MAX_VALUE);
@@ -140,7 +142,7 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Hash_StackOfEmpty_WithStackOfOne_ProducesDifferentHashCode(){
+    public void Hash_EmptyStack_WithStackOfOne_ProducesDifferentHashCode(){
         BrickResourceStack stackOfEmpty = new BrickResourceStack(0);
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
 
