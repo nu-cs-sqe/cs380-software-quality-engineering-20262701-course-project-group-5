@@ -39,7 +39,7 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 | Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
 | Test Case 4 | `OreResourceStack` of any size with `OreResourceStack` of any size                            | `OreResourceStack`                                                       | :white_check_mark: |
 | Test Case 5 | `GrainResourceStack` of any size with `GrainResourceStack` of any size                        | `GrainResourceStack`                                                     | :white_check_mark: |
-| Test Case 6 | `WoolResourceStack` of any size with `WoolResourceStack` of any size                          | `WoolResourceStack`                                                      | :x:                |
+| Test Case 6 | `WoolResourceStack` of any size with `WoolResourceStack` of any size                          | `WoolResourceStack`                                                      | :white_check_mark: |
 
 ### Test: `public ResourceStack subtract(ResourceStack otherStack)`
 

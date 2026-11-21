@@ -65,6 +65,16 @@ public class ResourceStackTests {
     }
 
     @Test
+    public void Add_StackOfWool_WithStackOfWool_ProducesStackOfWool(){
+        WoolResourceStack firstStackOfWool = new WoolResourceStack(0);
+        WoolResourceStack secondStackOfWool = new WoolResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfWool.add(secondStackOfWool);
+
+        assertInstanceOf(WoolResourceStack.class, resultStack);
+    }
+
+    @Test
     public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
         BrickResourceStack stackOfMax = new BrickResourceStack(Integer.MAX_VALUE);
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
