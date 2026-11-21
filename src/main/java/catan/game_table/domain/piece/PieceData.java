@@ -1,14 +1,16 @@
 package catan.game_table.domain.piece;
 
+import catan.game_table.domain.Color;
 import java.util.Objects;
 
 public class PieceData {
+  public final String type;
+  public final Color color;
 
-    private final String type;
-
-    public PieceData(String type) {
-        this.type = type;
-    }
+  public PieceData(String type, Color color) {
+    this.type = type;
+    this.color = color;
+  }
 
     @Override
     public boolean equals(Object other) {

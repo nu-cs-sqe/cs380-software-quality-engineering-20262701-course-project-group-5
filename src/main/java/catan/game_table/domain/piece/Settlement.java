@@ -1,4 +1,20 @@
 package catan.game_table.domain.piece;
 
-public class Settlement extends Piece{
+import catan.game_table.domain.ScoreTracker;
+import catan.game_table.domain.bank.BankResourceDistributor;
+import catan.game_table.domain.resource.ResourceStack;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Settlement extends Building {
+  public Settlement(PieceData data, BankResourceDistributor distributor, ScoreTracker ownerVictoryPointsTracker) {
+    super(data, distributor);
+  }
+
+  @Override
+  public List<ResourceStack> getCost() {
+    return new ArrayList<>();
+  }
+
 }
