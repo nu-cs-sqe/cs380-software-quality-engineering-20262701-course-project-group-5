@@ -38,6 +38,10 @@ Only the active player may finalize an active offer involving them while trading
 
 At turn end, clear all outstanding offers, including accepted ones. The controller may call this after trading closes. Inventories stay as they were.
 
+### `private boolean isValidPlayerTrade(TradeOffer trade)`
+
+Checks that the offer involves two distinct configured players, each side gives resources in positive quantities, and no resource type appears on both sides. Tested indirectly through `proposeTrade()` and `counterTrade()`.
+
 ## Boundary-Value Analysis
 
 ### Test: `public Set<TradeOffer> getActiveTradeOffers()`

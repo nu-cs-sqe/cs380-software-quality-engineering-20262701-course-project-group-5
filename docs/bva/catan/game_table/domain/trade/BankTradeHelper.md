@@ -14,6 +14,10 @@ Uses the supplied board, bank, player inventories, and turn context for bank exc
 
 Only the active player may trade with the bank while trading is open. The player gives four cards of one type at the standard rate, three with a generic harbor, or two with a harbor matching the resource given. The bank gives one card of a different type. Check both inventories before transferring cards.
 
+### `private boolean isValidBankTrade(Color actor, ResourceStack give, ResourceStack receive)`
+
+Checks that the requested exchange gives the player one card of a different type and that the offered quantity matches a rate available to `actor`. Tested indirectly through `tradeWithBank()`.
+
 ## Boundary-Value Analysis
 
 ### Test: `public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException`
