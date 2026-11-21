@@ -56,3 +56,4 @@ Returns an integer based on the color and the subclass of a given `Piece`. If tw
 |             | State of the System                                        | Expected output      | Implemented? |
 |-------------|------------------------------------------------------------|----------------------|--------------|
 | Test Case 1 | Two different `Piece` instances of `type` City and `color` Blue | same value from each | :white_check_mark:          |
+| Test Case 2 | Two different `Piece` instances of `type` Road one of `color` Blue and the other of Red | different values from each | :white_check_mark:          |
