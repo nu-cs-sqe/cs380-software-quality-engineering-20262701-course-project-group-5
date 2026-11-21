@@ -118,8 +118,8 @@ Equality comparisons
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own a harbor')` | :x: |
-| Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own the robber')` | :x: |
+| Test Case 1 | `piece`: Harbor, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own a harbor')` | :white_check_mark: |
+| Test Case 2 | `piece`: Robber, internal list of pieces: does not matter | `IllegalArgumentException('player cannot own the robber')` | :white_check_mark: |
 | Test Case 3 | `piece`: Settlement, internal list of pieces: empty list | false | :x: |
 | Test Case 4 | `piece`: City, internal list of pieces: empty list | false | :x: |
 | Test Case 5 | `piece`: Road, internal list of pieces: empty list | false | :x: |

@@ -22,6 +22,12 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public boolean hasPiece(Piece piece) {
+    if (piece.getClass() == Harbor.class) {
+      throw new IllegalArgumentException("player cannot own a harbor");
+    }
+    if (piece.getClass() == Robber.class) {
+      throw new IllegalArgumentException("player cannot own the robber");
+    }
     return false;
   }
 
