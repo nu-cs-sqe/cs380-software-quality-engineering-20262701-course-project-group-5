@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class ResourceStackTests {
     @Test
@@ -43,7 +44,15 @@ public class ResourceStackTests {
         assertTrue(thrownException.getMessage().contains("Incompatible ResourceStack types: LumberResourceStack and BrickResourceStack"));
     }
 
+    @Test
+    public void Add_StackOfOre_WithStackOfOre_ProducesStackOfOre(){
+        OreResourceStack firstStackOfOre = new OreResourceStack(0);
+        OreResourceStack secondStackOfOre = new OreResourceStack(0);
 
+        ResourceStack resultStack = firstStackOfOre.add(secondStackOfOre);
+
+        assertInstanceOf(OreResourceStack.class, resultStack);
+    }
 
     @Test
     public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
