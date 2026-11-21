@@ -41,4 +41,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: badges
           publish_dir: build/badges
+          keep_files: true
           commit_message: "Update complexity badge"
