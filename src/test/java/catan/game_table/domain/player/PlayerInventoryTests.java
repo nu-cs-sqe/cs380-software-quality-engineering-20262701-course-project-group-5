@@ -192,6 +192,37 @@ public class PlayerInventoryTests {
 
   }
 
+  @ParameterizedTest
+  @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
+  public void removePiece_with_exception(String type, String msg) {
+    PlayerInventory inv = new PlayerInventory(new ArrayList<>());
+
+    PieceData data = new PieceData("", Color.None);
+
+    Piece piece;
+
+    if (type.equals("Harbor")) {
+      piece = new Harbor(data);
+    } else if (type.equals("Robber")) {
+      piece = new Robber(data);
+    } else {
+      throw new IllegalStateException("should only be robber or harbor");
+    }
+
+
+    Exception expected = new IllegalArgumentException(msg);
+    Exception actual = null;
+    try {
+      inv.removePiece(piece);
+    } catch (Exception e) {
+      actual = e;
+
+    }
+
+    assertNotNull(actual);
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
 
   @ParameterizedTest
   @CsvSource({
