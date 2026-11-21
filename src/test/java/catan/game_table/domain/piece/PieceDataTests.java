@@ -16,4 +16,14 @@ public class PieceDataTests {
 
         assertTrue(firstCityData.equals(secondCityData));
     }
+
+    @Test
+    public void Equals_TwoSettlement_BothOrange_True() {
+        PieceData firstSettlementData = new PieceData(Color.ORANGE, PieceType.SETTLEMENT);
+        PieceData secondSettlementData = new PieceData(Color.ORANGE, PieceType.SETTLEMENT);
+
+        assertTrue(firstSettlementData.equals(secondSettlementData));
+    }
+
+
 }
