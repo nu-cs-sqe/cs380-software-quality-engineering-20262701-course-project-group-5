@@ -32,4 +32,12 @@ public class PieceDataTests {
 
         assertTrue(firstHarborData.equals(secondHarborData));
     }
+
+    @Test
+    public void Equals_TwoRoad_BothWhite_True() {
+        PieceData firstRoadData = new PieceData(Color.WHITE, PieceType.ROAD);
+        PieceData secondRoadData = new PieceData(Color.WHITE, PieceType.ROAD);
+
+        assertTrue(firstRoadData.equals(secondRoadData));
+    }
 }
