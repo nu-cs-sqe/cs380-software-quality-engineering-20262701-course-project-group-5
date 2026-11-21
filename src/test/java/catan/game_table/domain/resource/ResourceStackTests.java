@@ -138,4 +138,15 @@ public class ResourceStackTests {
 
         assertEquals(firstHash, secondHash);
     }
+
+    @Test
+    public void GetSize_StackOfOne_ReturnsOne(){
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+
+        int actual = stackOfOne.getSize();
+
+        int expected = 1;
+
+        assertEquals(expected, actual);
+    }
 }
