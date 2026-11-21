@@ -92,4 +92,15 @@ public class PieceDataTests {
 
         assertEquals(firstCityHash, secondCityHash);
     }
+
+    @Test
+    public void HashCode_BlueRoad_RedRoad_NotEquals(){
+        PieceData firstRoadData = new PieceData(Color.BLUE, PieceType.ROAD);
+        PieceData secondRoadData = new PieceData(Color.RED, PieceType.ROAD);
+
+        int firstRoadHash = firstRoadData.hashCode();
+        int secondRoadHash = secondRoadData.hashCode();
+
+        assertNotEquals(firstRoadHash, secondRoadHash);
+    }
 }
