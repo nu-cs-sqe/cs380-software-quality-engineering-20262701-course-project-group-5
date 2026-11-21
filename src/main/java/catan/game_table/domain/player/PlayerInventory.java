@@ -145,15 +145,16 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
         int current_size = current_stack.getSize();
         int look_up_size = stack.getSize();
-        if (current_size == look_up_size) {
-          to_remove = i;
-          found_any = true;
-          break;
-        } else if (current_size >= look_up_size) {
+        if (current_size > look_up_size) {
           this.resources.set(i, current_stack.subtract(stack));
           found_any = true;
           break;
-        } else {
+        } else if (current_size == look_up_size) {
+          to_remove = i;
+          found_any = true;
+          break;
+        } else
+         {
           throw new NotEnoughInventoryException();
         }
       }

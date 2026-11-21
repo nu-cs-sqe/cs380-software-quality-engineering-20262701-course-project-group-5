@@ -341,8 +341,6 @@ public class GamePlayerTests {
   @Test
   public void get_valid_placements_tests_road_aat_east_one() {
     PieceData data = EasyMock.createMock(PieceData.class);
-    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
-    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
 
     PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
     GamePlayer player = new GamePlayer(Color.Red, placer, new TradeHelper(), new PurchaseHelper());
