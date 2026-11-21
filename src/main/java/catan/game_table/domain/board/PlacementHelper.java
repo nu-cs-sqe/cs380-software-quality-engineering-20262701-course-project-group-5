@@ -7,7 +7,6 @@ import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.Road;
-import catan.game_table.domain.piece.Settlement;
 
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +62,7 @@ public class PlacementHelper {
             validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
 
             if (!validVertices.contains(location)) {
-                throw new InvalidPlacementException(String.format("Cannot place %s at %s: too close to an existing building", piece.getClass().getSimpleName(), location.getClass().getSimpleName()));
+                throw new InvalidPlacementException(String.format("Cannot place %s at %s: too close to an existing building", "building", "vertex"));
             }
 
         }

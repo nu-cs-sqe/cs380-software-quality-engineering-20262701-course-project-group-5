@@ -1113,9 +1113,15 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        String exceptionMessage = String.format("Cannot place %s at %s: too close to an existing building", Settlement.class.getSimpleName(), Vertex.class.getSimpleName());
+        String expectedMessage = String.format(
+                "Cannot place %s at %s: too close to an existing building",
+                "building",
+                "vertex"
+        );
 
-        assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation), exceptionMessage);
+        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(expectedMessage, actualException.getMessage());
+
         EasyMock.verify(gameBoard);
 
     }
