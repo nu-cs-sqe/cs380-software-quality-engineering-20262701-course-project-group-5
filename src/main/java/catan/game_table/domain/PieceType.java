@@ -4,5 +4,6 @@ public enum PieceType {
     CITY,
     HARBOR,
     ROAD,
+    ROBBER,
     SETTLEMENT
 }
