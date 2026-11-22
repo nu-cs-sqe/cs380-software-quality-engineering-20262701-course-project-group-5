@@ -259,7 +259,13 @@ public class PlacementHelper {
         Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
 
         if (!canDoCityUpgrade(city, vertex, city.getPieceData().getColor())) {
-            // TODO
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: not your color",
+                            pieceTypeName,
+                            locationTypeName
+                    )
+            );
         }
 
     }
