@@ -13,4 +13,8 @@ public abstract class Location {
     public void addPiece(Piece piece) {
     }
 
+    public LocationType getLocationType() {
+        return null;
+    }
+
 }

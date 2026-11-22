@@ -1112,7 +1112,7 @@ public class PlacementHelperTests {
 
         String expectedMessage = String.format(
                 "Cannot place %s at %s: too close to an existing building",
-                "building",
+                "settlement",
                 "vertex"
         );
 
@@ -1244,6 +1244,8 @@ public class PlacementHelperTests {
         Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
 
         Location destinationLocation = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(destinationLocation.getLocationType()).andStubReturn(LocationType.VERTEX);
+        EasyMock.replay(destinationLocation);
 
         GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
 
@@ -1259,6 +1261,54 @@ public class PlacementHelperTests {
                 "settlement",
                 "vertex",
                 "vertex"
+        );
+
+        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(exceptionMessage, actualException.getMessage());
+
+        EasyMock.verify(gameBoard);
+
+    }
+
+    @Test
+    public void Place_GivenSettlement_AndEdge_ExpectInvalidPlacementException() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
+        Map<String, List<Piece>> vertexPieces = Map.of();
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("A", "F")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        Location destinationLocation = edgeMap.get(Set.of("A", "B"));
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        String exceptionMessage = String.format(
+                "Cannot place %s at %s: %s does not fit a %s",
+                "settlement",
+                "edge",
+                "edge",
+                "settlement"
         );
 
         Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
@@ -1307,6 +1357,8 @@ public class PlacementHelperTests {
             }
             EasyMock.expect(vertex.getPieces()).andStubReturn(expectedPieces);
 
+            EasyMock.expect(vertex.getLocationType()).andStubReturn(LocationType.VERTEX);
+
             EasyMock.replay(vertex);
         }
 
@@ -1330,6 +1382,8 @@ public class PlacementHelperTests {
                 expectedPieces = List.of();
             }
             EasyMock.expect(edge.getPieces()).andStubReturn(expectedPieces);
+
+            EasyMock.expect(edge.getLocationType()).andStubReturn(LocationType.EDGE);
 
             EasyMock.replay(edge);
         }
