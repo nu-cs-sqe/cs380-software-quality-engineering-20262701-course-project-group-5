@@ -107,6 +107,18 @@ public class PlacementHelper {
         return false;
     }
 
+    private boolean locationHasPieceOfType(Location location, PieceType pieceType) {
+        List<Piece> pieces = location.getPieces();
+        for (Piece piece : pieces) {
+            PieceData existingPieceData = piece.getPieceData();
+            PieceType existingPieceType = existingPieceData.getPieceType();
+            if (pieceType == existingPieceType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean vertexHasNoRoadsOfColor(Vertex vertex, Color color) {
         Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
         for (Edge edge : connectingEdges) {
@@ -225,14 +237,14 @@ public class PlacementHelper {
         }
 
         if (vertexHasBuildingAlready(vertex)) {
-            String existingPieceTypeString = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
+            String existingPieceTypeName = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
             throw new InvalidPlacementException(
                     String.format(
                             "Cannot place %s at %s: %s already holds a %s",
                             pieceTypeName,
                             locationTypeName,
                             locationTypeName,
-                            existingPieceTypeString
+                            existingPieceTypeName
                     )
             );
         }
@@ -264,6 +276,19 @@ public class PlacementHelper {
                             "%s cannot be placed on empty %s",
                             pieceTypeName,
                             locationTypeName
+                    )
+            );
+        }
+
+        if (locationHasPieceOfType(location, PieceType.CITY)) {
+            String existingPieceTypeName = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s already holds a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            existingPieceTypeName
                     )
             );
         }
