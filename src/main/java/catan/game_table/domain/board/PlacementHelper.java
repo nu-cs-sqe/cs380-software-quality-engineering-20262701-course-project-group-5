@@ -311,7 +311,9 @@ public class PlacementHelper {
         String pieceTypeName = road.getPieceData().getPieceType().toString().toLowerCase();
         String locationTypeName = location.getLocationType().toString().toLowerCase();
 
-        if (locationHasPieceOfType(location, PieceType.ROAD)) {
+        Edge edge = enforceEdge(location, pieceTypeName, locationTypeName);
+
+        if (locationHasPieceOfType(edge, PieceType.ROAD)) {
             String existingPieceTypeName = getFirstPieceData(location).getPieceType().toString().toLowerCase();
             throw new InvalidPlacementException(
                     String.format(
@@ -339,6 +341,21 @@ public class PlacementHelper {
             );
         }
         return vertex;
+    }
+
+    private Edge enforceEdge(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
+        if (!(location instanceof Edge edge)) {
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s does not fit a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            pieceTypeName
+                    )
+            );
+        }
+        return edge;
     }
 
     private PieceData getFirstPieceData(Location location) {
