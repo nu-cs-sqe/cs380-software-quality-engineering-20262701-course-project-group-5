@@ -1,5 +1,5 @@
 package catan.game_table.domain;
 
 public enum Color {
-    BLUE, WHITE, RED
+    BLUE, WHITE, NONE, RED
 }
