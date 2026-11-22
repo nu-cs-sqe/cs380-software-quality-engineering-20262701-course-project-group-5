@@ -4,10 +4,7 @@ import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.exception.InvalidPlacementException;
-import catan.game_table.domain.piece.Building;
-import catan.game_table.domain.piece.Piece;
-import catan.game_table.domain.piece.PieceType;
-import catan.game_table.domain.piece.Road;
+import catan.game_table.domain.piece.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -57,10 +54,15 @@ public class PlacementHelper {
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {
 
-        PieceType pieceType = piece.getPieceData().getPieceType();
-
-        if (piece instanceof Building) {
-            validateBuildingPlacement(pieceType, location);
+        switch (piece) {
+            case Settlement settlement -> validateSettlementPlacement(piece, location);
+            case City city -> {
+                validateCityPlacement(piece, location);
+                PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
+                gameBoard.removePieceFromLocation(settlementData, location);
+            }
+            default -> {
+            }
         }
 
         gameBoard.addPieceAtLocation(piece, location);
@@ -86,6 +88,19 @@ public class PlacementHelper {
         List<Piece> pieces = vertex.getPieces();
         for (Piece piece : pieces) {
             if (piece instanceof Building) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean canDoCityUpgrade(Piece piece, Vertex vertex, Color color) {
+        if (!(piece instanceof City)) {
+            return false;
+        }
+        List<Piece> pieces = vertex.getPieces();
+        for (Piece existingPiece : pieces) {
+            if (existingPiece instanceof Settlement && existingPiece.getPieceData().getColor() == color) {
                 return true;
             }
         }
@@ -190,22 +205,12 @@ public class PlacementHelper {
         return false;
     }
 
-    private void validateBuildingPlacement(PieceType pieceType, Location location) throws InvalidPlacementException {
+    private void validateSettlementPlacement(Piece settlement, Location location) throws InvalidPlacementException {
 
-        String pieceTypeName = pieceType.toString().toLowerCase();
+        String pieceTypeName = settlement.getPieceData().getPieceType().toString().toLowerCase();
         String locationTypeName = location.getLocationType().toString().toLowerCase();
 
-        if (!(location instanceof Vertex vertex)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s does not fit a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            pieceTypeName
-                    )
-            );
-        }
+        Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
 
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
         if (!validVertices.contains(vertex)) {
@@ -220,13 +225,14 @@ public class PlacementHelper {
         }
 
         if (vertexHasBuildingAlready(vertex)) {
+            String existingPieceTypeString = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
             throw new InvalidPlacementException(
                     String.format(
                             "Cannot place %s at %s: %s already holds a %s",
                             pieceTypeName,
                             locationTypeName,
                             locationTypeName,
-                            getFirstPieceType(vertex).toString().toLowerCase()
+                            existingPieceTypeString
                     )
             );
         }
@@ -245,10 +251,47 @@ public class PlacementHelper {
 
     }
 
-    private PieceType getFirstPieceType(Location location) {
+    private void validateCityPlacement(Piece city, Location location) throws InvalidPlacementException {
+
+        String pieceTypeName = city.getPieceData().getPieceType().toString().toLowerCase();
+        String locationTypeName = location.getLocationType().toString().toLowerCase();
+
+        Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
+
+        if (!canDoCityUpgrade(city, vertex, city.getPieceData().getColor())) {
+            // TODO
+        }
+
+    }
+
+    private Vertex enforceVertex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
+        if (!(location instanceof Vertex vertex)) {
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s does not fit a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            pieceTypeName
+                    )
+            );
+        }
+        return vertex;
+    }
+
+    private PieceData getFirstPieceData(Location location) {
         List<Piece> locationPieces = location.getPieces();
         for (Piece piece : locationPieces) {
-            return piece.getPieceData().getPieceType();
+            return piece.getPieceData();
+        }
+        throw new RuntimeException();
+    }
+
+    private PieceData getFirstPieceDataWithType(Location location, PieceType pieceType) {
+        List<Piece> locationPieces = location.getPieces();
+        for (Piece piece : locationPieces) {
+            if (piece.getPieceData().getPieceType() == pieceType)
+                return piece.getPieceData();
         }
         throw new RuntimeException();
     }

@@ -1,6 +1,7 @@
 package catan.game_table.domain.board;
 
 import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.PieceData;
 
 import java.util.Set;
 
@@ -23,4 +24,8 @@ public class GameBoard {
     }
 
     public void addPieceAtLocation(Piece piece, Location location) {}
+
+    public void removePieceFromLocation(PieceData pieceData, Location destinationLocation) {
+
+    }
 }
