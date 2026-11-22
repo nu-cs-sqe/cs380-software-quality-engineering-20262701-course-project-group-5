@@ -1653,6 +1653,47 @@ public class PlacementHelperTests {
 
     }
 
+    @Test
+    public void Place_GivenRoad_AndValidEdge_ExpectRoadPlacedAtVertex() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+        Piece pieceToPlace = makePieceMock(PieceType.ROAD, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
+        Map<String, List<Piece>> vertexPieces = Map.of();
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("A", "F")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        Location destinationLocation = edgeMap.get(Set.of("A", "B"));
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        assertDoesNotThrow(() -> placementHelper.place(pieceToPlace, destinationLocation));
+        EasyMock.verify(gameBoard);
+
+    }
+
     private Piece makePieceMock(PieceType pieceType, Color color) {
 
         Class<? extends Piece> pieceClass;
