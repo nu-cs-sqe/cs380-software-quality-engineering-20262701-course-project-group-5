@@ -7,6 +7,9 @@ Direct known subclasses: `Vertex`, `Edge`, `Hex`
 
 A place on the board that holds pieces.
 
+### `public abstract LocationType getLocationType()`
+Returns `VERTEX` for a vertex, `EDGE` for an edge, and `HEX` for any hex.
+
 ### `public List<Piece> getPieces()`
 Returns the pieces at this location in the order added. Returns an empty list if there are none.
 

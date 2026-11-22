@@ -1,5 +1,7 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.LocationType;
+
 import java.util.Set;
 
 public class Edge extends Location {
@@ -11,6 +13,11 @@ public class Edge extends Location {
 
     private Edge(Set<Point> endpoints) {
         this.endpoints = Set.copyOf(endpoints);
+    }
+
+    @Override
+    public LocationType getLocationType() {
+        return LocationType.EDGE;
     }
 
     public Set<Point> getEndpoints() {

@@ -1,5 +1,6 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.LocationType;
 import catan.game_table.domain.piece.Building;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.resource.ResourceStack;
@@ -11,6 +12,11 @@ public class Vertex extends Location {
 
     public Vertex(Point point) {
         this.point = point;
+    }
+
+    @Override
+    public LocationType getLocationType() {
+        return LocationType.VERTEX;
     }
 
     public Point getPoint() {

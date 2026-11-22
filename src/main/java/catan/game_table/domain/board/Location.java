@@ -1,5 +1,6 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.LocationType;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.PieceData;
 
@@ -9,6 +10,8 @@ import java.util.List;
 
 public abstract class Location {
     protected final List<Piece> pieces = new ArrayList<>();
+
+    public abstract LocationType getLocationType();
 
     public List<Piece> getPieces() {
         return List.copyOf(pieces);

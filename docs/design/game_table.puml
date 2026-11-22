@@ -81,6 +81,15 @@ package domain {
     ORANGE
 }
 
++enum LocationType {
+    VERTEX,
+    EDGE,
+    HEX
+    -{final} label : String
+    -LocationType(label : String)
+    +toString() : String
+}
+
 package exception {
 
 +exception NotEnoughInventoryException
@@ -274,6 +283,7 @@ package board {
         -{final} products : List<ResourceStack>
         +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
         -Hex(tokenValue : int, vertices : Set<Vertex>, products : List<ResourceStack>)
+        +getLocationType() : LocationType
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
@@ -313,6 +323,7 @@ package board {
 
     +abstract class Location {
         #pieces : List<Piece>
+        +{abstract} getLocationType() : LocationType
         +getPieces() : List<Piece>
         +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
@@ -322,6 +333,7 @@ package board {
     +class Vertex {
         -{final} point : Point
         +Vertex(point : Point)
+        +getLocationType() : LocationType
         +getPoint() : Point
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -329,6 +341,7 @@ package board {
     +class Edge {
         -{final} endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
+        +getLocationType() : LocationType
         +getEndpoints() : Set<Point>
     }
 
@@ -570,6 +583,7 @@ DesertHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
+Location ..> LocationType
 Vertex --> Point
 Vertex --|> Location
 Edge --> Piece
