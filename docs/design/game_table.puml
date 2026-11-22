@@ -158,29 +158,6 @@ package bank {
 
 }
 
-note right of Bank
-    Game setup supplies the starting resource stacks and an already shuffled deck.
-    The first card in the supplied order is the top card.
-    Drawing removes and returns that card. An empty deck rejects the draw.
-end note
-
-note right of BankResourceDistributor
-    Queue requests for one roll and total them by player and resource type.
-    For each resource, pay all claims if stock covers the total.
-    If stock falls short, pay the remaining stock only if one player claimed it.
-    If several players claimed it, skip that resource and resolve the other types.
-    Finalizing clears the queue. Aborting clears it without transferring cards.
-end note
-
-note right of PurchaseHelper
-    A development card costs one grain, one wool, and one ore.
-    Check affordability and deck availability before charging the buyer.
-    Give the buyer the card drawn from the bank.
-    For a paid build, check piece ownership and affordability, then let
-    PlacementHelper validate and place the piece before collecting payment.
-    A rejected purchase or build leaves the board and inventories unchanged.
-end note
-
 package player {
 
     +class GamePlayer {
