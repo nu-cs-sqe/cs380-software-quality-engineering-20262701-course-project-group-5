@@ -1,6 +1,7 @@
 package catan.game_table.domain.board;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 import catan.game_table.domain.piece.Harbor;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.PieceData;
@@ -61,14 +62,14 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_OnEmptyVertex_ReturnsFalse() {
         Vertex vertex = new Vertex(new Point(1, 2));
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         assertFalse(vertex.holdsPieceWithData(settlementData));
     }
 
     @Test
     void HoldsPieceWithData_OnVertexWithMatchingSettlement_ReturnsTrue() {
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
         Vertex vertex = vertexWithSettlement(settlementData);
 
         assertTrue(vertex.holdsPieceWithData(settlementData));
@@ -76,16 +77,16 @@ public class LocationTests {
 
     @Test
     void HoldsPieceWithData_WhenFirstPieceMatches_ReturnsTrue() {
-        PieceData roadData = new PieceData(Color.RED, "road");
-        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, "harbor"));
+        PieceData roadData = new PieceData(Color.RED, PieceType.ROAD);
+        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, PieceType.HARBOR));
 
         assertTrue(edge.holdsPieceWithData(roadData));
     }
 
     @Test
     void HoldsPieceWithData_WhenLastPieceMatches_ReturnsTrue() {
-        PieceData harborData = new PieceData(Color.NONE, "harbor");
-        Edge edge = edgeWithRoadThenHarbor(new PieceData(Color.RED, "road"), harborData);
+        PieceData harborData = new PieceData(Color.NONE, PieceType.HARBOR);
+        Edge edge = edgeWithRoadThenHarbor(new PieceData(Color.RED, PieceType.ROAD), harborData);
 
         assertTrue(edge.holdsPieceWithData(harborData));
     }
@@ -93,18 +94,18 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_WhenNoPieceMatches_ReturnsFalse() {
         Edge edge = edgeWithRoadThenHarbor(
-                new PieceData(Color.RED, "road"),
-                new PieceData(Color.NONE, "harbor"));
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+                new PieceData(Color.RED, PieceType.ROAD),
+                new PieceData(Color.NONE, PieceType.HARBOR));
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         assertFalse(edge.holdsPieceWithData(settlementData));
     }
 
     @Test
     void HoldsPieceWithData_WhenDistinctDataHasSameTypeAndColor_ReturnsTrue() {
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
         Vertex vertex = vertexWithSettlement(settlementData);
-        PieceData query = new PieceData(Color.RED, "settlement");
+        PieceData query = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         assertTrue(vertex.holdsPieceWithData(query));
     }
@@ -112,16 +113,16 @@ public class LocationTests {
     @Test
     void HoldsPieceWithData_WhenRoadColorDiffers_ReturnsFalse() {
         Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
-        edge.addPiece(roadWithData(new PieceData(Color.RED, "road")));
-        PieceData query = new PieceData(Color.BLUE, "road");
+        edge.addPiece(roadWithData(new PieceData(Color.RED, PieceType.ROAD)));
+        PieceData query = new PieceData(Color.BLUE, PieceType.ROAD);
 
         assertFalse(edge.holdsPieceWithData(query));
     }
 
     @Test
     void HoldsPieceWithData_WhenPieceTypeDiffers_ReturnsFalse() {
-        Vertex vertex = vertexWithSettlement(new PieceData(Color.RED, "settlement"));
-        PieceData query = new PieceData(Color.RED, "city");
+        Vertex vertex = vertexWithSettlement(new PieceData(Color.RED, PieceType.SETTLEMENT));
+        PieceData query = new PieceData(Color.RED, PieceType.CITY);
 
         assertFalse(vertex.holdsPieceWithData(query));
     }
@@ -131,7 +132,7 @@ public class LocationTests {
     @Test
     void RemovePieceWithData_OnEmptyVertex_LeavesVertexEmpty() {
         Vertex vertex = new Vertex(new Point(1, 2));
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         vertex.removePieceWithData(settlementData);
 
@@ -140,7 +141,7 @@ public class LocationTests {
 
     @Test
     void RemovePieceWithData_WithOneMatchingSettlement_LeavesVertexEmpty() {
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
         Vertex vertex = vertexWithSettlement(settlementData);
 
         vertex.removePieceWithData(settlementData);
@@ -150,8 +151,8 @@ public class LocationTests {
 
     @Test
     void RemovePieceWithData_WhenRoadMatchesFirst_LeavesOnlyHarbor() {
-        PieceData roadData = new PieceData(Color.RED, "road");
-        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, "harbor"));
+        PieceData roadData = new PieceData(Color.RED, PieceType.ROAD);
+        Edge edge = edgeWithRoadThenHarbor(roadData, new PieceData(Color.NONE, PieceType.HARBOR));
         Piece harbor = edge.getPieces().getLast();
 
         edge.removePieceWithData(roadData);
@@ -161,8 +162,8 @@ public class LocationTests {
 
     @Test
     void RemovePieceWithData_WhenHarborMatchesLast_LeavesOnlyRoad() {
-        PieceData harborData = new PieceData(Color.NONE, "harbor");
-        Edge edge = edgeWithRoadThenHarbor(new PieceData(Color.RED, "road"), harborData);
+        PieceData harborData = new PieceData(Color.NONE, PieceType.HARBOR);
+        Edge edge = edgeWithRoadThenHarbor(new PieceData(Color.RED, PieceType.ROAD), harborData);
         Piece road = edge.getPieces().getFirst();
 
         edge.removePieceWithData(harborData);
@@ -173,10 +174,10 @@ public class LocationTests {
     @Test
     void RemovePieceWithData_WhenNeitherPieceMatches_LeavesBothPieces() {
         Edge edge = edgeWithRoadThenHarbor(
-                new PieceData(Color.RED, "road"),
-                new PieceData(Color.NONE, "harbor"));
+                new PieceData(Color.RED, PieceType.ROAD),
+                new PieceData(Color.NONE, PieceType.HARBOR));
         List<Piece> originalPieces = edge.getPieces();
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         edge.removePieceWithData(settlementData);
 
@@ -185,9 +186,9 @@ public class LocationTests {
 
     @Test
     void RemovePieceWithData_WhenDistinctDataMatches_LeavesVertexEmpty() {
-        PieceData settlementData = new PieceData(Color.RED, "settlement");
+        PieceData settlementData = new PieceData(Color.RED, PieceType.SETTLEMENT);
         Vertex vertex = vertexWithSettlement(settlementData);
-        PieceData query = new PieceData(Color.RED, "settlement");
+        PieceData query = new PieceData(Color.RED, PieceType.SETTLEMENT);
 
         vertex.removePieceWithData(query);
 
@@ -197,7 +198,7 @@ public class LocationTests {
     @Test
     void RemovePieceWithData_WhenRobberMatches_LeavesHexEmpty() {
         Hex hex = emptyHex();
-        PieceData robberData = new PieceData(Color.NONE, "robber");
+        PieceData robberData = new PieceData(Color.NONE, PieceType.ROBBER);
         Robber robber = EasyMock.createMock(Robber.class);
         EasyMock.expect(robber.getPieceData()).andStubReturn(robberData);
         EasyMock.replay(robber);
@@ -211,9 +212,9 @@ public class LocationTests {
     @Test
     void RemovePieceWithData_WhenRoadColorDiffers_LeavesRoadInPlace() {
         Edge edge = new Edge(new Point(0, 0), new Point(1, 0));
-        Road road = roadWithData(new PieceData(Color.RED, "road"));
+        Road road = roadWithData(new PieceData(Color.RED, PieceType.ROAD));
         edge.addPiece(road);
-        PieceData query = new PieceData(Color.BLUE, "road");
+        PieceData query = new PieceData(Color.BLUE, PieceType.ROAD);
 
         edge.removePieceWithData(query);
 

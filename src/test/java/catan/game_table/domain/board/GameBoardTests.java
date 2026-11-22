@@ -3,7 +3,6 @@ package catan.game_table.domain.board;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.PieceType;
 import catan.game_table.domain.board.*;
-import catan.game_table.domain.Color;
 import catan.game_table.domain.piece.*;
 import catan.mvc_util.Observer;
 import org.easymock.EasyMock;
@@ -263,10 +262,10 @@ class GameBoardTests {
 
     // removePieceFromLocation tests
 
-    private static final PieceData SETTLEMENT_DATA = new PieceData(Color.RED, "settlement");
-    private static final PieceData ROAD_DATA = new PieceData(Color.RED, "road");
-    private static final PieceData HARBOR_DATA = new PieceData(Color.NONE, "harbor");
-    private static final PieceData ROBBER_DATA = new PieceData(Color.NONE, "robber");
+    private static final PieceData SETTLEMENT_DATA = new PieceData(Color.RED, PieceType.SETTLEMENT);
+    private static final PieceData ROAD_DATA = new PieceData(Color.RED, PieceType.ROAD);
+    private static final PieceData HARBOR_DATA = new PieceData(Color.NONE, PieceType.HARBOR);
+    private static final PieceData ROBBER_DATA = new PieceData(Color.NONE, PieceType.ROBBER);
 
 
 
@@ -370,7 +369,7 @@ class GameBoardTests {
         EasyMock.expectLastCall();
         EasyMock.replay(vertex);
 
-        boardWithHexes().removePieceFromLocation(new PieceData(Color.RED, SETTLEMENT_TYPE), vertex);
+        boardWithHexes().removePieceFromLocation(new PieceData(Color.RED, PieceType.SETTLEMENT), vertex);
 
         EasyMock.verify(vertex);
     }
