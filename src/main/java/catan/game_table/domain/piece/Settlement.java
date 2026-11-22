@@ -14,7 +14,7 @@ public class Settlement extends Building {
   public Settlement(PieceData pieceData, BankResourceDistributor bankResourceDistributor, ScoreTracker ownerVictoryPointsTracker){
     super(pieceData, bankResourceDistributor);
     this.ownerVictoryPointsTracker = ownerVictoryPointsTracker;
-    this.multiplier = 2;
+    this.multiplier = 1;
   }
 
   @Override
