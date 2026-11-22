@@ -336,6 +336,19 @@ public class PlacementHelper {
 
         Hex hex = enforceHex(location, pieceTypeName, locationTypeName);
 
+        if (locationHasPieceOfType(hex, PieceType.ROBBER)) {
+            String existingPieceTypeName = getFirstPieceData(location).getPieceType().toString().toLowerCase();
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s already holds a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            existingPieceTypeName
+                    )
+            );
+        }
+
     }
 
     private Vertex enforceVertex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
