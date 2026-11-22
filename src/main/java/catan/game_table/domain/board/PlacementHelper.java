@@ -62,6 +62,7 @@ public class PlacementHelper {
                 gameBoard.removePieceFromLocation(settlementData, location);
             }
             case Road road -> validateRoadPlacement(piece, location);
+            case Robber robber -> validateRobberPlacement(piece, location);
             default -> {
             }
         }
@@ -328,6 +329,15 @@ public class PlacementHelper {
 
     }
 
+    private void validateRobberPlacement(Piece robber, Location location) throws InvalidPlacementException {
+
+        String pieceTypeName = robber.getPieceData().getPieceType().toString().toLowerCase();
+        String locationTypeName = location.getLocationType().toString().toLowerCase();
+
+        Hex hex = enforceHex(location, pieceTypeName, locationTypeName);
+
+    }
+
     private Vertex enforceVertex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
         if (!(location instanceof Vertex vertex)) {
             throw new InvalidPlacementException(
@@ -356,6 +366,21 @@ public class PlacementHelper {
             );
         }
         return edge;
+    }
+
+    private Hex enforceHex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
+        if (!(location instanceof Hex hex)) {
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s does not fit a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            pieceTypeName
+                    )
+            );
+        }
+        return hex;
     }
 
     private PieceData getFirstPieceData(Location location) {
