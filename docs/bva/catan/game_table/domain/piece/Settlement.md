@@ -42,4 +42,4 @@ Accessor for the cost of a Settlement in terms of Resources, in this case a `Gra
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called with the right `color` and `products` | :x: |
+| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called with the right `color` and `products` | :white_check_mark: |
