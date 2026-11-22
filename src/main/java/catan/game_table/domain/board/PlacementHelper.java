@@ -258,6 +258,16 @@ public class PlacementHelper {
 
         Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
 
+        if (location.getPieces().isEmpty()) {
+            throw new InvalidPlacementException(
+                    String.format(
+                            "%s cannot be placed on empty %s",
+                            pieceTypeName,
+                            locationTypeName
+                    )
+            );
+        }
+
         if (!canDoCityUpgrade(city, vertex, city.getPieceData().getColor())) {
             throw new InvalidPlacementException(
                     String.format(
