@@ -1,5 +1,7 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 import catan.game_table.domain.board.*;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.piece.*;
@@ -359,8 +361,6 @@ class GameBoardTests {
 
         EasyMock.verify(edge);
     }
-
-    private static final String SETTLEMENT_TYPE = "settlement";
 
     @Test
     void RemovePieceFromLocation_WithEqualButDistinctPieceData_VertexRemovesIt() {
