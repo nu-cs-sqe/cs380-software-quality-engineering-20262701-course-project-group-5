@@ -125,18 +125,18 @@ package bank {
         +Bank(startingResources : List<ResourceStack>, startingDevelopments : List<Development>)
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) : void
+        +removeResources(stack : ResourceStack) : void throws NotEnoughInventoryException
         +hasDevelopmentsRemaining() : boolean
-        +removeDevelopment() : void
-        +getResourceCount(Class<ResourceStack> resourceStackClass) : int
+        +drawDevelopment() : Development throws NotEnoughInventoryException
+        +getResourceCount(resourceType : Class<? extends ResourceStack>) : int
         +getDevelopmentCount() : int
     }
 
     +class BankResourceDistributor {
         -{final} playerInventories : Map<Color, ResourceInventory>
-        -{final} bankInventory : ResourceInventory
-        -resourcesToDistribute : Map<Color, List<ResourceStack>
-        +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
+        -{final} bank : Bank
+        -resourcesToDistribute : Map<Color, List<ResourceStack>>
+        +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bank : Bank)
         +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
         +abortProduction() : void
@@ -144,10 +144,12 @@ package bank {
 
     +class PurchaseHelper {
         -{final} playerInventories : Map<Color, PlayerInventory>
-        -bank : Bank
-        +PurchaseHelper(bank : Bank, playerInventories : Map<Color, PlayerInventory>)
-        +buy(player : Color, item : Buyable) : void
-        -canBuy(player : Color, item : Buyable) : boolean
+        -{final} bank : Bank
+        -{final} placementHelper : PlacementHelper
+        +PurchaseHelper(bank : Bank, playerInventories : Map<Color, PlayerInventory>, placementHelper : PlacementHelper)
+        +buyDevelopment(buyerColor : Color) : void throws NotEnoughInventoryException
+        +build<T extends Piece & Buyable>(buyerColor : Color, piece : T, location : Location) : void throws NotEnoughInventoryException, InvalidPlacementException
+        -canAfford(inventory : PlayerInventory, cost : List<ResourceStack>) : boolean
     }
 
     +interface Buyable {
@@ -249,13 +251,13 @@ package board {
         +removePieceFromLocation(pieceData : PieceData, location : Location) : void
     }
 
-    class PlacementHelper {
+    +class PlacementHelper {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
         +getValidBuildingSpots(color : Color) : List<Vertex>
         +getValidRoadSpots(color : Color) : List<Edge>
         ' build
-        +place(piece : Piece, location : Location) : void
+        +place(piece : Piece, location : Location) : void throws InvalidPlacementException
         ' checks for validity, ties to highlighting
         -isValidBuildingSpot(vertex : Vertex) : boolean
         -isValidRoadSpot(edge : Edge) : boolean
@@ -438,7 +440,7 @@ package resource {
     +interface ResourceInventory {
         +addResources(stack : ResourceStack) : void
         +hasResources(stack : ResourceStack) : boolean
-        +removeResources(stack : ResourceStack) : void
+        +removeResources(stack : ResourceStack) : void throws NotEnoughInventoryException
     }
 
 }
@@ -507,14 +509,19 @@ Dice --|> Observed
 Bank --|> Observed
 
 Bank ..|> ResourceInventory
+Bank ..> Development
+Bank ..> NotEnoughInventoryException
 BankResourceDistributor --|> Observed
+BankResourceDistributor --> Bank
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
 
 PurchaseHelper -u-> PlayerInventory
 PurchaseHelper --> Bank
 PurchaseHelper --> Color
+PurchaseHelper --> PlacementHelper
 PurchaseHelper ..> Buyable
+PurchaseHelper ..> Location
 
 Buyable ..> ResourceStack
 
