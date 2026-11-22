@@ -61,6 +61,7 @@ public class PlacementHelper {
                 PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
                 gameBoard.removePieceFromLocation(settlementData, location);
             }
+            case Road road -> validateRoadPlacement(piece, location);
             default -> {
             }
         }
@@ -299,6 +300,26 @@ public class PlacementHelper {
                             "Cannot place %s at %s: not your color",
                             pieceTypeName,
                             locationTypeName
+                    )
+            );
+        }
+
+    }
+
+    private void validateRoadPlacement(Piece road, Location location) throws InvalidPlacementException {
+
+        String pieceTypeName = road.getPieceData().getPieceType().toString().toLowerCase();
+        String locationTypeName = location.getLocationType().toString().toLowerCase();
+
+        if (locationHasPieceOfType(location, PieceType.ROAD)) {
+            String existingPieceTypeName = getFirstPieceData(location).getPieceType().toString().toLowerCase();
+            throw new InvalidPlacementException(
+                    String.format(
+                            "Cannot place %s at %s: %s already holds a %s",
+                            pieceTypeName,
+                            locationTypeName,
+                            locationTypeName,
+                            existingPieceTypeName
                     )
             );
         }
