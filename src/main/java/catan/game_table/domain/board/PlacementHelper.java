@@ -193,6 +193,17 @@ public class PlacementHelper {
         if (location instanceof Vertex vertex) {
 
             Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
+            if (!validVertices.contains(vertex)) {
+                throw new InvalidPlacementException(
+                        String.format(
+                                "Cannot place %s at %s: %s is not on this board",
+                                "settlement",
+                                "vertex",
+                                "vertex"
+                        )
+                );
+            }
+
             if (vertexHasBuildingAlready(vertex)) {
                 throw new InvalidPlacementException(
                         String.format(
