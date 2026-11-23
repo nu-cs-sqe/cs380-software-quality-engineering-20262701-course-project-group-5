@@ -1,24 +1,26 @@
 package catan.game_table.domain.player;
 
-import catan.game_table.domain.Color;
-import catan.game_table.domain.Dice;
-import catan.game_table.domain.ScoreTracker;
+import catan.game_table.domain.*;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
 import catan.game_table.domain.board.*;
 import catan.game_table.domain.development.*;
-import catan.game_table.domain.Playable;
+import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
 import catan.game_table.domain.resource.*;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
+import io.cucumber.java.hu.Ha;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.FieldSource;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,6 +156,159 @@ public class GamePlayerTests {
     Exception expected = new NotEnoughInventoryException();
     Exception actual = assertThrows(expected.getClass(), () -> player.buy(dev));
     assertEquals(expected.getClass(), actual.getClass());
+  }
+
+  @Test
+  public void build_city_at_vertex_valid() {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    // cannot mock edge because actually checking the concrete class
+    Location vertex = new Vertex(new Point(0, 1));
+    Piece city = new City(new PieceData(Color.BLUE, PieceType.CITY), dist, tracker);
+
+    purchaser.build(Color.NONE, city, vertex);
+    EasyMock.expectLastCall();
+
+
+    EasyMock.replay(purchaser);
+    assertDoesNotThrow(() -> player.build(city, vertex));
+
+    EasyMock.verify(purchaser);
+
+  }
+
+  @Test
+  public void build_settlement_at_vertex_but_with_not_enough_stuff() {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    // cannot mock edge because actually checking the concrete class
+    Location vertex = new Vertex(new Point(0, 1));
+    Piece settlement = new Settlement(new PieceData(Color.BLUE, PieceType.CITY), dist, tracker);
+
+
+    Exception ex = new NotEnoughInventoryException();
+    purchaser.build(Color.BLUE, settlement, vertex);
+    EasyMock.expectLastCall().andStubThrow(ex);
+    EasyMock.replay(purchaser);
+
+    assertThrows(ex.getClass(), () ->player.build(settlement, vertex));
+
+
+
+  }
+
+  @Test
+  public void build_road_at_edge_valid() {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    // cannot mock edge because actually checking the concrete class
+    Location edge = new Edge(new Point(1,1), new Point(0, 0));
+    Piece road = new Road(EasyMock.createMock(PieceData.class));
+
+    purchaser.build(Color.NONE, road, edge);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(purchaser);
+    assertDoesNotThrow(() -> player.build(road, edge));
+
+    EasyMock.verify(purchaser);
+
+  }
+
+  // it is either creating this or having to copy paste even more tests
+  static final List<Location> locations_invalid_for_buildings = List.of(
+          new Edge(new Point(0, 0), new Point(1, 0)),
+          new HillsHex(1,
+                  new HashSet<>(List.of(
+                          new Vertex(new Point(0, 0)),
+                          new Vertex(new Point(1, 0)),
+                          new Vertex(new Point(2, 0)),
+                          new Vertex(new Point(3, 0)),
+                          new Vertex(new Point(4, 0)),
+                          new Vertex(new Point(5, 0))
+                  )),
+                  new HashSet<>(List.of(
+                          new Edge(new Point(0, 0), new Point(1, 0)),
+                          new Edge(new Point(1, 0), new Point(2, 0)),
+                          new Edge(new Point(2, 0), new Point(3, 0)),
+                          new Edge(new Point(3, 0), new Point(4, 0)),
+                          new Edge(new Point(4, 0), new Point(5, 0)),
+                          new Edge(new Point(5, 0), new Point(0, 0))
+                  )),
+                  new ArrayList<>()
+          )
+  );
+
+  @ParameterizedTest
+  @FieldSource("locations_invalid_for_buildings")
+  public void build_settlement_at_hex_invalid(Location location) {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
+    ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
+
+    Piece settlement = new Settlement(new PieceData(Color.BLUE, PieceType.CITY), dist, tracker);
+
+    purchaser.build(Color.NONE, settlement, location);
+    EasyMock.expectLastCall();
+    EasyMock.replay(purchaser);
+
+    Exception expected = new InvalidPlacementException("Settlements/Cities can only be build on points");
+    Exception actual = assertThrows(expected.getClass(), () -> player.build(settlement, location));
+
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  @Test
+  public void build_road_at_hex_invalid() {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    Piece settlement = new Road(new PieceData(Color.BLUE, PieceType.CITY));
+
+    Location location = EasyMock.createMock(Hex.class);
+    purchaser.build(Color.NONE, settlement, location);
+    EasyMock.expectLastCall();
+    EasyMock.replay(purchaser);
+
+    Exception expected = new InvalidPlacementException("Roads can only be build on edges");
+    Exception actual = assertThrows(expected.getClass(), () -> player.build(settlement, location));
+
+    assertEquals(expected.getMessage(), actual.getMessage());
+
+  }
+
+  static final List<Piece> invalid_pieces = List.of(
+          new Harbor(new PieceData(Color.BLUE, PieceType.HARBOR)),
+          new Robber(new PieceData(Color.NONE, PieceType.ROBBER)));
+
+  @ParameterizedTest
+  @FieldSource("invalid_pieces")
+  public void build_invalid_pieces_test(Piece piece) {
+    PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaser);
+
+    Location location = EasyMock.createMock(Hex.class);
+    purchaser.build(Color.NONE, piece, location);
+    EasyMock.expectLastCall();
+    EasyMock.replay(purchaser);
+
+    Exception expected = new InvalidPlacementException("Cannot build either robber or harbor");
+    Exception actual = assertThrows(expected.getClass(), () -> player.build(piece, location));
+
+    assertEquals(expected.getMessage(), actual.getMessage());
+
   }
 
   @Test

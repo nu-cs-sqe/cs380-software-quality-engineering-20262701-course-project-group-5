@@ -5,8 +5,8 @@ import catan.game_table.domain.Dice;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
-import catan.game_table.domain.board.Location;
-import catan.game_table.domain.board.PlacementHelper;
+import catan.game_table.domain.board.*;
+import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
@@ -93,6 +93,29 @@ public class GamePlayer {
     }
 
     return res;
+  }
+
+  public void build(Piece piece, Location location) {
+
+    Class<? extends Location> location_type = location.getClass();
+    Class<? extends Piece> piece_type = piece.getClass();
+
+    boolean is_building = piece_type.equals(City.class) || piece_type.equals(Settlement.class);
+
+    if (piece_type.equals(Robber.class) || piece_type.equals(Harbor.class)) {
+      throw new InvalidPlacementException("Cannot build either robber or harbor");
+    }
+
+    //? should this logic be passed into the purchaseHelper itself?
+    if (is_building && !location_type.equals(Vertex.class)) {
+      throw new InvalidPlacementException("Settlements/Cities can only be build on points");
+    }
+
+    if (piece_type.equals(Road.class) && !location_type.equals(Edge.class)) {
+      throw new InvalidPlacementException("Roads can only be build on edges");
+    }
+
+    this.purchaseHelper.build(this.color, piece, location);
   }
 
 }

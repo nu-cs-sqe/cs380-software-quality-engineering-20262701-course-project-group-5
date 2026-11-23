@@ -28,15 +28,11 @@ Buy a development card from the bank if able. Can Throw `NotEnoughResourcesExcep
 
 ### `public build(piece: Piece, location: Location)` : void
 
-Buy a development card from the bank if able. Can Throw `NotEnoughResourcesException`.
+Buy a development card from the bank if able. Can Throw `NotEnoughResourcesException`, Can throw `InvalidPlacementException`.
 
 ### `public getValidPlacements(piece : Piece)` : List<Location>
 
 Get possible placement locations for a given piece for said player.
-
-### `public place(piece : Piece, location : Location)` : void
-
-Place the piece at the given location if able. Can throw `InvalidPlacementException`.
 
 ### `public proposePlayerTrade(otherPlayer : Color, trade : TradeOffer)` : void
 
@@ -153,14 +149,14 @@ none
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| piece, location, state of player | state of board, or `NotEnoughResourcesException`, whether `PurchaseHelper#build()` has been called |
+| piece, location, state of player | state of board, or `InvalidPlacementException`, or `NotEnoughResourcesException`, whether `PurchaseHelper#build()` has been called |
 
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
 | piece | buyable piece (road / settlement / city are valid, harbor / robber are not valid) |
-| location | Hex, Edge, or Point, roads go on edges, settlements/cities on points |
+| location | Hex, Edge, or vertex, roads go on edges, settlements/cities on points |
 
 **Operations:**
 none
@@ -169,25 +165,22 @@ none
 | Variable | Values |
 |---|---|
 | piece | road, city, settlement, harbor, robber |
-| location | hex, edge, point (actual internal values don't really matter here) |
+| location | hex, edge, vertex (actual internal values don't really matter here) |
 | state of player | player has or doesn't have enough resources |
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                   | Expected output                                                  | Implemented? |
-|--------------|--------------------------------------------------------------------------|------------------------------------------------------------------|--------------|
-| Test Case 1  | item: City, location: Point, state of player: has enough resources       | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
-| Test Case 2  | item: City, location: Hex, state of player: has enough resources         | `IllegalArgumentException`                                       | :x:          |
-| Test Case 3  | item: City, location: Edge, state of player: has enough resources        | `IllegalArgumentException`                                       | :x:          |
-| Test Case 4  | item: road, location: Edge, state of player:has enough resources         | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
-| Test Case 5  | item: road, location: point, state of player: has enough resources       | `IllegalArgumentException`                                       | :x:          |
-| Test Case 6  | item: road, location: hex, state of player: has enough resources         | `IllegalArgumentException`                                       | :x:          |
-| Test Case 7  | item: harbor, rest of stuff doesnt matter                                | `IllegalArgumentException`                                       | :x:          |
-| Test Case 8  | item: robber, rest of stuff doesnt matter                                | `IllegalArgumentException`                                       | :x:          |
-| Test Case 9  | item: settlement, location: Point, state of player: has enough resources | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
-| Test Case 10 | item: settlement, location: Hex, state of player: has enough resources   | `IllegalArgumentException`                                       | :x:          |
-| Test Case 11 | item: settlement, location: Edge, state of player: has enough resources  | `IllegalArgumentException`                                       | :x:          |
-| Test Case 11 | item: settlement, location: Edge, state of player: not enough resources  | rethrows `NotEnoughInventoryException`                           | :x:          |
+|              | Inputs                                                                    | Expected output                                                  | Implemented?       |
+|--------------|---------------------------------------------------------------------------|------------------------------------------------------------------|--------------------|
+| Test Case 1  | item: City, location: vertex, state of player: has enough resources       | add piece to inventory, `PurchaseHelper#build()` has been called | :white_check_mark: |
+| Test Case 2  | item: Settlement, location: Hex, state of player: has enough resources          | `InvalidPlacementException`                                      | :white_check_mark: |
+| Test Case 3  | item: Settlement, location: Edge, state of player: has enough resources         | `InvalidPlacementException`                                      | :white_check_mark: |
+| Test Case 4  | item: road, location: Edge, state of player:has enough resources          | add piece to inventory, `PurchaseHelper#build()` has been called | :white_check_mark:                |
+| Test Case 5  | item: road, location: vertex, state of player: has enough resources       | `InvalidPlacementException`                                      | :white_check_mark:                |
+| Test Case 6  | item: road, location: hex, state of player: has enough resources          | `InvalidPlacementException`                                      | :white_check_mark:                |
+| Test Case 7  | item: harbor, rest of stuff doesnt matter                                 | `InvalidPlacementException`                                      | :white_check_mark:                |
+| Test Case 8  | item: robber, rest of stuff doesnt matter                                 | `InvalidPlacementException`                                      |  :white_check_mark: |
+| Test Case 9 | item: settlement, location: Vertex, state of player: not enough resources   | rethrows `NotEnoughInventoryException`                           | :white_check_mark:                |
 
 
 ### Method under test: `getValidPlacements(piece : Piece)`
@@ -224,48 +217,6 @@ none
 | Test Case 2 | piece: settlement, state of board: player is not landlocked, player does not have any settlements left | locations : empty | :white_check_mark: |
 | Test Case 3 | piece: Robber, state of board: robber on a desert | locations: some vertices I guess | :white_check_mark: |
 | Test Case 4 | piece: Harbor | `IllegalArgumentException`| :white_check_mark: |
-
-
-
-### Method under test: `place(piece : Piece, location : Location)`
-
-**Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
-| piece, location, state of board, state of player | state of board |
-
-
-**Step 2: Data types**
-| Variable | Type |
-|---|---|
-| piece | Piece(Settlement, City, Road, Robber, Harbor) |
-| state of board | Collections of Points, edges, and hexes |
-| location |  Location |
-
-**Operations:**
-none
-
-**Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| piece |  Settlement, City, Road, Robber, Harbor |
-| Location | Location{no pieces}, location {has piece} |
-| state of board | minimum locations occupied (2 points and 2 edges per player), maximum locations occupied, robber on desert, robber not on desert |
-| player inventory | 0 resources, enough resources to do the operation in the test case |
-
-**Step 4: Each choice** 
-
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | piece: Settlement, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff | board has settlement at that location | :x: |
-| Test Case 2 | piece: City, min locations occupied, location: adjacent to current player road and not to other adversarial player stuff  | board has city at that location | :x: |
-| Test Case 3 | piece: Robber, min locations occupied | board has robber at that location | :x: |
-| Test Case 4 | piece: harbor | `IllegalArgumentException` | :x: |
-| Test Case 5 | piece: Settlement, max locations occuplied | `InvalidPlacementException` | :x: |
-| Test Case 6 | piece: Road, min locations occupied, location: adjacent to settlement of player | board has road at that location | :x: |
-| Test Case 7 | piece: road, min locations occupied, location: not adjacent to player settlement | `InvalidPlacementException`| :x: |
-| Test Case 8 | piece: road, max locations occupied | `InvalidPlacementException`| :x: |
-
 
 
 ### Method under test: `proposePlayerTrade(otherPlayer : Color, trade : TradeOffer)`
