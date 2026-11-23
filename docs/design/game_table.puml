@@ -69,6 +69,24 @@ package ui {
         …()
     }
 
+    +class RobberyController {
+        -{final} view : RobView
+        -{final} players : List<GamePlayer>
+        -{final} robberyHelper : RobberyHelper
+        -{final} gameBoard : GameBoard
+        +RobberyController(players : List<GamePlayer>, gameBoard : gameBoard)
+        +update() : void
+        -updateView() : void
+        -routeUserInput() : void
+    }
+
+    +class RobberyView {
+        -{final} players : Set<PlayerData>
+        …
+        +update() : void
+        …()
+    }
+
 }
 
 package domain {
@@ -228,6 +246,34 @@ package trade {
 
 }
 
+package robbery {
+
+    +class RobberyHelper {
+        -robberyInProgress : Robbery
+        -{final} gameBoard : GameBoard
+        -{final} playerInventories : Map<Color, ResourceInventory>
+        +RobberyHelper(gameBoard : GameBoard, playerInventories : Map<Color, ResourceInventory>)
+        +initiateRobbery(initiatorColor : Color) : void
+        +setRobberyTarget(targetColor : Color) : void
+        +conductRobbery() : void
+        +getRobberyInProgress() : Optional<Robbery>
+        -isValidRobberyUnderBoardState(initiatorColor : Color, targetColor : Color) : boolean
+    }
+
+    +class Robbery {
+        -{final} initiator : Color
+        -{final} target : Color
+        -initiatorInventory : ResourceInventory
+        -targetInventory : ResourceInventory
+        -{final} randomSource : Random
+        ~Robbery(initiator : Color, initiatorInventory : ResourceInventory, randomSource : Random)
+        ~setTarget(target : Color, targetInventory : ResourceInventory) : void
+        +getInitiator() : Color
+        +getTarget() : Color
+    }
+
+}
+
 package board {
 
     +class GameBoard {
@@ -365,6 +411,9 @@ package piece {
     }
 
     +class Robber {
+        -robberyHelper : RobberyHelper
+        +Robber(robberyHelper : RobberyHelper)
+        +onPlaceEffect() : void
     }
 
     +class Harbor {
@@ -482,6 +531,11 @@ TradeController --> GamePlayer
 TradeController --> TradeHelper
 TradeView --> PlayerData
 
+RobberyController ..> PlayerData
+RobberyController --> GamePlayer
+RobberyController --> RobberyHelper
+RobberyView --> PlayerData
+
 TradeHelper --> ResourceStack
 TradeHelper --> GameBoard
 TradeHelper --> TradeOffer
@@ -596,6 +650,7 @@ Piece --> PieceData
 Building ..> ResourceProducts
 Settlement ..> ResourceProducts
 City ..> ResourceProducts
+Robber --> RobberyHelper
 
 Settlement --> ScoreTracker
 City --> ScoreTracker
@@ -607,6 +662,14 @@ Development ..|> Buyable
 
 LongestRoadAward ..|> Award
 LargestArmyAward ..|> Award
+
+RobberyHelper --|> Observed
+RobberyHelper --> Robbery
+RobberyHelper --> Color
+RobberyHelper --> ResourceInventory
+RobberyHelper --> GameBoard
+Robbery --> Color
+Robbery --> ResourceInventory
 
 ResourceInventory ..> NotEnoughInventoryException
 PieceInventory ..> NotEnoughInventoryException
