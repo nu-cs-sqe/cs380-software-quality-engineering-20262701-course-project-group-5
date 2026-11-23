@@ -6,7 +6,7 @@ Classpath: catan.game_table.domain.player.GamePlayer
 
 Represents one of the players in the game and stores references to their inventories
 
-### `public GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper, purchaseHelper: PurchaseHelper)`
+### `public GamePlayer(color : Color, placementHelper : PlacementHelper, playerTradeHelper : TradeHelper, purchaseHelper: PurchaseHelper)`
 
 Constructor for the game player. Initializes color and injects dependencies for the road/building placement helper and the trade manager.
 
@@ -302,7 +302,7 @@ Removing element from list
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| give, receive, PlayerInventory, bankInventory, board state | no exception / `InvalidTradeException` |
+| give, receive, PlayerInventory, bankInventory, board state | calls `BankTradeHelper.trade` / `InvalidTradeException` |
 
 
 **Step 2: Data types**
@@ -329,8 +329,8 @@ none
 
 |              | Inputs                                                                                                         | Expected output                 | Implemented? |
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `InvalidTradeException(needs to be 4 to 1)` | :x: |
-| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool | no exception | :x: |
-| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `InvalidTradeException(needs to be 4 to 1)` | :x: |
-| Test Case 4 | give{Lumber 3}, receive {1 Wool}, player controls a 3->1 harbor | no exception | :x: |
-| Test Case 5 | give{Grain 2}, receive {1 Wool}, player controls a 2 grain->1 harbor | no exception | :x: |
+| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |
+| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool | calls bankTradeHelper.trade | :white_check_mark: |
+| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |
+| Test Case 4 | give{Lumber 3}, receive {1 Wool}, player controls a 3->1 harbor |calls bankTradeHelper.trade | :x: |
+| Test Case 5 | give{Grain 2}, receive {1 Wool}, player controls a 2 grain->1 harbor | calls bankTradeHelper.trade | :x: |

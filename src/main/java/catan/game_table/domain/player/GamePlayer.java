@@ -10,7 +10,9 @@ import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
-import catan.game_table.domain.trade.TradeHelper;
+import catan.game_table.domain.resource.ResourceStack;
+import catan.game_table.domain.trade.BankTradeHelper;
+import catan.game_table.domain.trade.PlayerTradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 
 import java.util.ArrayList;
@@ -23,15 +25,17 @@ import java.util.List;
 public class GamePlayer {
 
   private final PurchaseHelper purchaseHelper;
-  private final TradeHelper tradeHelper;
+  private final PlayerTradeHelper playerTradeHelper;
   private final PlacementHelper placementHelper;
+  private final BankTradeHelper bankTradeHelper;
   private final Color color;
 
-  public GamePlayer(Color color, PlacementHelper placementHelper, TradeHelper tradeHelper, PurchaseHelper purchaseHelper) {
+  public GamePlayer(Color color, PlacementHelper placementHelper, PlayerTradeHelper playerTradeHelper, PurchaseHelper purchaseHelper, BankTradeHelper bankTradeHelper) {
     this.purchaseHelper = purchaseHelper;
     this.color = color;
-    this.tradeHelper = tradeHelper;
+    this.playerTradeHelper = playerTradeHelper;
     this.placementHelper = placementHelper;
+    this.bankTradeHelper = bankTradeHelper;
   }
 
 
@@ -58,7 +62,7 @@ public class GamePlayer {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
     }
 
-    this.tradeHelper.addTradeOffer(trade);
+    this.playerTradeHelper.addTradeOffer(trade);
 
   }
 
@@ -69,7 +73,7 @@ public class GamePlayer {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
     }
 
-    this.tradeHelper.conductTrade(trade);
+    this.playerTradeHelper.conductTrade(trade);
   }
 
   public List<Location> getValidPlacements(Piece piece) {
@@ -116,6 +120,10 @@ public class GamePlayer {
     }
 
     this.purchaseHelper.build(this.color, piece, location);
+  }
+
+  public void tradeWithBank(ResourceStack give, ResourceStack receive) {
+    this.bankTradeHelper.tradeWithBank(this.color, give, receive);
   }
 
 }

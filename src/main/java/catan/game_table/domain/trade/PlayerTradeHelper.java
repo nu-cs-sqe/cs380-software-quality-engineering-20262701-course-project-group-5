@@ -1,6 +1,6 @@
 package catan.game_table.domain.trade;
 
-public class TradeHelper {
+public class PlayerTradeHelper {
 
   public void addTradeOffer(TradeOffer offer) {
 
