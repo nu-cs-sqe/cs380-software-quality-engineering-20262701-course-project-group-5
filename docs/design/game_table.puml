@@ -356,7 +356,6 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
-        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -377,6 +376,7 @@ package piece {
 
     +class City {
         -ownerVictoryPointsTracker : ScoreTracker
+        -multiplier : int
         +City(data : PieceData, bankResourceDistributor : BankResourceDistributor, ownerVictoryPointsTracker : ScoreTracker)
         +produceResources(products : List<ResourceStack>) : void
         +getCost() : List<ResourceStack>
