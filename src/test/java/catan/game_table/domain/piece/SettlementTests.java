@@ -22,8 +22,6 @@ public class SettlementTests {
         WoolResourceStack resourceStack = EasyMock.createMock(WoolResourceStack.class);
 
         List<ResourceStack> resourceStackList = Arrays.asList(resourceStack);
-        WoolResourceStack doubleStack = new WoolResourceStack(2);
-        EasyMock.expect(resourceStack.add(resourceStack)).andStubReturn(doubleStack);
         bankResourceDistributor.produceResources(pieceData.getColor(), resourceStackList);
         EasyMock.expectLastCall();
 
