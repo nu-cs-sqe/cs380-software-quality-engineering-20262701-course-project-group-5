@@ -20,8 +20,9 @@ public class City extends Building {
   public void produceResources(List<ResourceStack> products) {
     ResourceStack resourceStack = products.getFirst();
     int stackSize = resourceStack.getSize();
-    for (int i = 1; i < stackSize * multiplier; i++) {
+    while (stackSize < stackSize * multiplier) {
       resourceStack = resourceStack.add(resourceStack);
+      stackSize = resourceStack.getSize();
     }
     products.set(0, resourceStack);
     Color pieceColor = pieceData.getColor();
