@@ -7,4 +7,8 @@
         <Bug code="EI2"/>
     </Match>
 
+    <Match>
+        <Bug code="EI"/>
+    </Match>
+
 </FindBugsFilter>
