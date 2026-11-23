@@ -9,7 +9,6 @@ import catan.game_table.domain.board.PlacementHelper;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.*;
-import catan.game_table.domain.resource.ResourceStack;
 import catan.game_table.domain.trade.TradeHelper;
 import catan.game_table.domain.trade.TradeOffer;
 
@@ -44,7 +43,7 @@ public class GamePlayer {
   }
 
   public void buy(Buyable item) throws NotEnoughInventoryException {
-    boolean res = this.purchaseHelper.buy(item);
+    boolean res = this.purchaseHelper.buyDevelopment(item);
     if (!res) {
       throw new NotEnoughInventoryException();
     }

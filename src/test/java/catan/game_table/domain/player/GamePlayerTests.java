@@ -112,7 +112,7 @@ public class GamePlayerTests {
 
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaseHelper);
 
-    EasyMock.expect(purchaseHelper.buy(dev)).andReturn(true);
+    EasyMock.expect(purchaseHelper.buyDevelopment(dev)).andReturn(true);
     EasyMock.replay(purchaseHelper, dev);
 
     try {
@@ -133,7 +133,7 @@ public class GamePlayerTests {
 
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), purchaseHelper);
 
-    EasyMock.expect(purchaseHelper.buy(dev)).andReturn(false);
+    EasyMock.expect(purchaseHelper.buyDevelopment(dev)).andReturn(false);
     EasyMock.replay(purchaseHelper, dev);
 
 

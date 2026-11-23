@@ -22,9 +22,13 @@ Roll dice to start a turn.
 
 Play a development card or other playable if able. Can throw `IllegalPlayException`.
 
-### `public buy(item : Buyable)` : void
+### `public buyDevelopment(item : Buyable)` : void
 
-Buy a road, settlement, city, or development card from the bank if able. Can Throw `NotEnoughResourcesException`.
+Buy a development card from the bank if able. Can Throw `NotEnoughResourcesException`.
+
+### `public build(piece: Piece, location: Location)` : void
+
+Buy a development card from the bank if able. Can Throw `NotEnoughResourcesException`.
 
 ### `public getValidPlacements(piece : Piece)` : List<Location>
 
@@ -114,12 +118,12 @@ none
 
 
 
-### Method under test: `buy(item : Buyable)`
+### Method under test: `buyDevelopment(item : Buyable)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| item, state of player | state of player, or `NotEnoughResourcesException`, whether `PurchaseHelper#buy()` has been called |
+| item, state of player | state of player, or `NotEnoughResourcesException`, whether `PurchaseHelper#buyDevelopment()` has been called |
 
 
 **Step 2: Data types**
@@ -142,6 +146,48 @@ none
 |--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
 | Test Case 1 | item: Development, state of player: has enough resources | add development to player inventory, `PurchaseHelper#buy()` has been called | :white_check_mark: |
 | Test Case 2 | item: Dev card, state of player: doesn't have enough resources | throw `NotEnoughResourcesException` | :white_check_mark: |
+
+
+### Method under test: `build(piece: Piece, location: Location)`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| piece, location, state of player | state of board, or `NotEnoughResourcesException`, whether `PurchaseHelper#build()` has been called |
+
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| piece | buyable piece (road / settlement / city are valid, harbor / robber are not valid) |
+| location | Hex, Edge, or Point, roads go on edges, settlements/cities on points |
+
+**Operations:**
+none
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| piece | road, city, settlement, harbor, robber |
+| location | hex, edge, point (actual internal values don't really matter here) |
+| state of player | player has or doesn't have enough resources |
+
+**Step 4: Each choice**
+
+|              | Inputs                                                                   | Expected output                                                  | Implemented? |
+|--------------|--------------------------------------------------------------------------|------------------------------------------------------------------|--------------|
+| Test Case 1  | item: City, location: Point, state of player: has enough resources       | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
+| Test Case 2  | item: City, location: Hex, state of player: has enough resources         | `IllegalArgumentException`                                       | :x:          |
+| Test Case 3  | item: City, location: Edge, state of player: has enough resources        | `IllegalArgumentException`                                       | :x:          |
+| Test Case 4  | item: road, location: Edge, state of player:has enough resources         | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
+| Test Case 5  | item: road, location: point, state of player: has enough resources       | `IllegalArgumentException`                                       | :x:          |
+| Test Case 6  | item: road, location: hex, state of player: has enough resources         | `IllegalArgumentException`                                       | :x:          |
+| Test Case 7  | item: harbor, rest of stuff doesnt matter                                | `IllegalArgumentException`                                       | :x:          |
+| Test Case 8  | item: robber, rest of stuff doesnt matter                                | `IllegalArgumentException`                                       | :x:          |
+| Test Case 9  | item: settlement, location: Point, state of player: has enough resources | add piece to inventory, `PurchaseHelper#build()` has been called | :x:          |
+| Test Case 10 | item: settlement, location: Hex, state of player: has enough resources   | `IllegalArgumentException`                                       | :x:          |
+| Test Case 11 | item: settlement, location: Edge, state of player: has enough resources  | `IllegalArgumentException`                                       | :x:          |
+| Test Case 11 | item: settlement, location: Edge, state of player: not enough resources  | rethrows `NotEnoughInventoryException`                           | :x:          |
 
 
 ### Method under test: `getValidPlacements(piece : Piece)`
