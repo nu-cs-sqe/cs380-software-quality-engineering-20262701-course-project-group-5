@@ -11,6 +11,10 @@ public class PieceData {
     this.type = type;
   }
 
+  public Color getColor() {
+    return color;
+  }
+
   @Override
   public boolean equals(Object object) {
     if (object == null || object.getClass() != this.getClass()) {
