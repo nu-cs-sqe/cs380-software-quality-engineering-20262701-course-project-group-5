@@ -497,6 +497,19 @@ package development {
     RoadBuilder ..|> Development
     RoadBuilder --> ResourceStack
     RoadBuilder --> GamePlayer: calls the build method on game player twice
+
+    +class YearOfPlenty {
+        -asks: List<ResourceStack>
+        -distributor: BankResourceDistributor
+        +YearOfPlenty(distributor: BankResourceDistributor)
+        +setAsks(resources: List<ResourceStack>)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    YearOfPlenty ..|> Development
+    YearOfPlenty --> ResourceStack
+    YearOfPlenty --> BankResourceDistributor: calls the distributor to get the resources
 }
 
 package award {
