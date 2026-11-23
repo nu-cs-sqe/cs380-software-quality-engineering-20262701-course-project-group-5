@@ -1,6 +1,7 @@
 package catan.game_table.domain.player;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.development.*;
@@ -24,7 +25,7 @@ public class PlayerInventoryTests {
   public void addPieceWithException(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData("", Color.None);
+    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
 
     Piece piece;
 
@@ -120,7 +121,7 @@ public class PlayerInventoryTests {
   public void hasPieceIllegalPieces(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData("", Color.None);
+    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
 
     Piece piece;
 
@@ -184,7 +185,7 @@ public class PlayerInventoryTests {
   public void removePieceWithExceptions(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData("", Color.None);
+    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
 
     Piece piece;
 

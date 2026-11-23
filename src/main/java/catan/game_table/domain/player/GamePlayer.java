@@ -51,7 +51,7 @@ public class GamePlayer {
   }
 
   public void proposePlayerTrade(Color otherPlayer, TradeOffer trade) {
-    if (otherPlayer == Color.None) {
+    if (otherPlayer == Color.NONE) {
       throw new InvalidTradeException("Trade must go to someone");
     } else if (this.color == otherPlayer) {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
@@ -62,7 +62,7 @@ public class GamePlayer {
   }
 
   public void acceptPlayerTrade(Color otherPlayer, TradeOffer trade) {
-    if (otherPlayer == Color.None) {
+    if (otherPlayer == Color.NONE) {
       throw new InvalidTradeException("Trade must go to someone");
     } else if (this.color == otherPlayer) {
       throw new InvalidTradeException("Cannot offer to same player as proposed");

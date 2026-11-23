@@ -40,19 +40,20 @@ Returns an integer based on the color and the subclass of a given `Piece`. If tw
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1 | Let this be a City owned by Blue, input a City owned by Blue | True | :x: |
-| Test Case 2 | Let this be a Settlement owned by Orange, input a Settlement owned by Orange | True | :x: |
-| Test Case 3 | Let this be a Harbor owned by Red, input a Harbor owned by Red | True | :x: |
-| Test Case 4 | Let this be a Road owned by White, input a Road owned by White | True | :x: |
-| Test Case 5 | Let this be a Robber with No Color, input a Road owned by White | False | :x: |
-| Test Case 6 | Let this be a City owned by White, input a Settlement owned by Red | False | :x: |
-| Test Case 7 | Let this be a Road owned by Orange, input a Harbor owned by Blue | False | :x: |
-| Test Case 8 | Let this be a Settlement owned by Red, input a Road owned by Red | False | :x: |
-| Test Case 9 | Let this be a Harbor owned by Orange, input a Harbor owned by Blue | False | :x: |
+| Test Case 1 | Let this be a City owned by Blue, input a City owned by Blue | True | :white_check_mark: |
+| Test Case 2 | Let this be a Settlement owned by Orange, input a Settlement owned by Orange | True | :white_check_mark: |
+| Test Case 3 | Let this be a Harbor owned by Red, input a Harbor owned by Red | True | :white_check_mark: |
+| Test Case 4 | Let this be a Road owned by White, input a Road owned by White | True | :white_check_mark: |
+| Test Case 5 | Let this be a Robber with No Color, input a Road owned by White | False | :white_check_mark: |
+| Test Case 6 | Let this be a City owned by White, input a Settlement owned by Red | False | :white_check_mark: |
+| Test Case 7 | Let this be a Road owned by Orange, input a Harbor owned by Blue | False | :white_check_mark: |
+| Test Case 8 | Let this be a Settlement owned by Red, input a Road owned by Red | False | :white_check_mark: |
+| Test Case 9 | Let this be a Harbor owned by Orange, input a Harbor owned by Blue | False | :white_check_mark: |
 
 
 ### Method under test: `public int hashCode()`
 
 |             | State of the System                                        | Expected output      | Implemented? |
 |-------------|------------------------------------------------------------|----------------------|--------------|
-| Test Case 1 | Two different `Piece` instances of `type` City and `color` Blue | same value from each | :x:          |
+| Test Case 1 | Two different `Piece` instances of `type` City and `color` Blue | same value from each | :white_check_mark:          |
+| Test Case 2 | Two different `Piece` instances of `type` Road one of `color` Blue and the other of Red | different values from each | :white_check_mark:          |
