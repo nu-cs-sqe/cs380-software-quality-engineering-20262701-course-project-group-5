@@ -224,7 +224,9 @@ package trade {
 
     +class TradeHelper {
         -{final} board : GameBoard
-        -{final} activeTradeOffers : Set<TradeOffer>
+        -activeTradeOffers : Set<TradeOffer>
+        -playerInventories : Map<Color, ResourceInventory>
+        +TradeHelper(gameBoard : GameBoard, playerInventories : Map<Color, ResourceInventory>)
         +getActiveTradeOffers() : Set<TradeOffer>
         +conductTrade(trade : TradeOffer) : void
         +refuseTrade(trade : Trade) : void
@@ -236,10 +238,16 @@ package trade {
     +class TradeOffer {
         -{final} requestedResources : List<ResourceStack>
         -{final} offeredResources : List<ResourceStack>
-        -{final} proposer : ResourceInventory
-        -{final} receiver : ResourceInventory
+        -{final} proposer : Color
+        -{final} receiver : Color
+        -{final} proposerInventory : ResourceInventory
+        -{final} receiverInventory : ResourceInventory
         -accepted : boolean
-        +TradeOffer(proposer : ResourceInventory, receiver : ResourceInventory, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
+        ~TradeOffer(proposer : Color, proposerInventory : ResourceInventory, receiver : Color, receiverInventory : ResourceInventory, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
+        +getProposer() : Color
+        +getReceiver() : Color
+        +isAccepted() : boolean
+        +setAccepted() : boolean
         +getRequestedResources() : List<ResourceStack>
         +getOfferedResources() : List<ResourceStack>
     }
@@ -536,6 +544,7 @@ RobberyController --> GamePlayer
 RobberyController --> RobberyHelper
 RobberyView --> PlayerData
 
+TradeHelper --|> Observed
 TradeHelper --> ResourceStack
 TradeHelper --> GameBoard
 TradeHelper --> TradeOffer
