@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TradeOfferTests {
 
@@ -33,5 +35,24 @@ class TradeOfferTests {
         assertEquals(List.of(brick), savedOfferedResources);
         assertThrows(UnsupportedOperationException.class, savedRequestedResources::clear);
         assertThrows(UnsupportedOperationException.class, savedOfferedResources::clear);
+    }
+
+    @Test
+    void IsAccepted_WhenOneOfTwoOffersIsMarkedAccepted_ReturnsTrueOnlyForThatOffer() {
+        ResourceStack ore = EasyMock.createMock(OreResourceStack.class);
+        ResourceStack brick = EasyMock.createMock(BrickResourceStack.class);
+        EasyMock.replay(ore, brick);
+        List<ResourceStack> requestedResources = List.of(ore);
+        List<ResourceStack> offeredResources = List.of(brick);
+        TradeOffer firstOffer = new TradeOffer(Color.RED, Color.BLUE, requestedResources, offeredResources);
+        TradeOffer secondOffer = new TradeOffer(Color.RED, Color.BLUE, requestedResources, offeredResources);
+
+        assertFalse(firstOffer.isAccepted());
+        assertFalse(secondOffer.isAccepted());
+
+        firstOffer.markAccepted();
+
+        assertTrue(firstOffer.isAccepted());
+        assertFalse(secondOffer.isAccepted());
     }
 }

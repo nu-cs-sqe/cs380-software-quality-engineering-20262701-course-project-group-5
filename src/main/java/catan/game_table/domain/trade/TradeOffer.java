@@ -9,6 +9,7 @@ public class TradeOffer {
 
     private final List<ResourceStack> requestedResources;
     private final List<ResourceStack> offeredResources;
+    private boolean accepted;
 
     public TradeOffer(Color proposer, Color receiver, List<ResourceStack> requestedResources,
                       List<ResourceStack> offeredResources) {
@@ -22,5 +23,13 @@ public class TradeOffer {
 
     public List<ResourceStack> getOfferedResources() {
         return offeredResources;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    void markAccepted() {
+        accepted = true;
     }
 }
