@@ -25,12 +25,12 @@ public class SettlementTests {
         bankResourceDistributor.produceResources(pieceData.getColor(), resourceStackList);
         EasyMock.expectLastCall();
 
-        EasyMock.replay(bankResourceDistributor, resourceStack);
+        EasyMock.replay(bankResourceDistributor);
 
         Settlement settlement = new Settlement(pieceData, bankResourceDistributor, ownerVictoryPointsTracker);
 
         settlement.produceResources(resourceStackList);
 
-        EasyMock.verify(bankResourceDistributor, resourceStack);
+        EasyMock.verify(bankResourceDistributor);
     }
 }
