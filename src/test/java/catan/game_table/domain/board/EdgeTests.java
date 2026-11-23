@@ -2,7 +2,7 @@ package catan.game_table.domain.board;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EdgeTests {
@@ -27,7 +27,7 @@ class EdgeTests {
         Point first = new Point(0, 0);
         Point second = new Point(1, 0);
 
-        assertDoesNotThrow(() -> new Edge(first, second));
+        assertNotNull(new Edge(first, second));
     }
 
     @Test
