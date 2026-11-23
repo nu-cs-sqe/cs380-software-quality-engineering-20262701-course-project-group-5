@@ -510,6 +510,17 @@ package development {
     YearOfPlenty ..|> Development
     YearOfPlenty --> ResourceStack
     YearOfPlenty --> BankResourceDistributor: calls the distributor to get the resources
+
+    +class VictoryPointCard {
+            -scoreTracker: ScoreTracker
+            +VictoryPointCard(tracker: ScoreTracker)
+            +onPlayEffect() : void
+            +getCost() : List<ResourceStack>
+        }
+
+        VictoryPointCard ..|> Development
+        VictoryPointCard --> ResourceStack
+        VictoryPointCard --> ScoreTracker
 }
 
 package award {
