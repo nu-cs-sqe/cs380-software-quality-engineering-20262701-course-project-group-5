@@ -1,15 +1,18 @@
 # Class Point
 Classpath: catan.game_table.domain.board.Point
 
-## `public class Point`
+## `public record Point(int x, int y)`
 
-An immutable `(x, y)` coordinate with `public final int x` and `public final int y`.
+An immutable `(x, y)` coordinate with record accessors `x()` and `y()`.
 
 ### `public boolean equals(Object o)`
 Returns true if `o` is a `Point` with the same `x` and the same `y` as this one. Otherwise returns false.
 
 ### `public int hashCode()`
 Returns a hash code consistent with `equals`: two equal points have the same hash code.
+
+### `public String toString()`
+Returns the record's string representation, which includes the values of `x` and `y`.
 
 ## Boundary-Value Analysis
 
@@ -40,13 +43,13 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 
 **Step 4: Each choice**
 
-|             | Input                                              | Expected output | Implemented? |
-|-------------|----------------------------------------------------|-----------------|--------------|
-| Test Case 1 | `Point(1, 2)` compared to itself                   | true            | :x:          |
-| Test Case 2 | `Point(1, 2)` and a different `Point(1, 2)`        | true            | :x:          |
-| Test Case 3 | `Point(1, 2)` and `Point(3, 2)` (only `x` differs) | false           | :x:          |
-| Test Case 4 | `Point(1, 2)` and `Point(1, 3)` (only `y` differs) | false           | :x:          |
-| Test Case 5 | `Point(1, 2)` and a `String`                       | false           | :x:          |
+|             | Input                                              | Expected output | Implemented?       |
+|-------------|----------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | `Point(1, 2)` compared to itself                   | true            | :white_check_mark: |
+| Test Case 2 | `Point(1, 2)` and a different `Point(1, 2)`        | true            | :white_check_mark: |
+| Test Case 3 | `Point(1, 2)` and `Point(3, 2)` (only `x` differs) | false           | :white_check_mark: |
+| Test Case 4 | `Point(1, 2)` and `Point(1, 3)` (only `y` differs) | false           | :white_check_mark: |
+| Test Case 5 | `Point(1, 2)` and a `String`                       | false           | :white_check_mark: |
 
 ### Test: `public int hashCode()`
 
@@ -69,6 +72,6 @@ Returns a hash code consistent with `equals`: two equal points have the same has
 
 **Step 4: Each choice**
 
-|             | Input                                         | Expected output                  | Implemented? |
-|-------------|-----------------------------------------------|----------------------------------|--------------|
-| Test Case 1 | `Point(1, 2)` and a different `Point(1, 2)`   | the same hash code for both      | :x:          |
+|             | Input                                       | Expected output             | Implemented?       |
+|-------------|---------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | `Point(1, 2)` and a different `Point(1, 2)` | the same hash code for both | :white_check_mark: |

@@ -19,12 +19,12 @@ class HexTests {
     private static final int TOKEN_VALUE = 8;
     private static final List<ResourceStack> PRODUCTS = List.of();
     private static final List<Point> CORNERS = List.of(
+            new Point(0, 0),
             new Point(1, 0),
             new Point(2, 0),
-            new Point(3, 1),
-            new Point(2, 2),
-            new Point(1, 2),
-            new Point(0, 1));
+            new Point(2, -1),
+            new Point(1, -1),
+            new Point(0, -1));
 
     @Test
     void Constructor_WithClosedRingOfSixVerticesAndEmptyProducts_CreatesHex() {
@@ -51,7 +51,7 @@ class HexTests {
                 edge(1, 2),
                 edge(2, 3),
                 edge(3, 4),
-                edge(4, 0)));
+                stubEdge(4, 0)));
 
         assertThrows(IllegalArgumentException.class,
                 () -> forestHex(vertices, edges));
@@ -104,7 +104,7 @@ class HexTests {
     @Test
     void Constructor_WithSevenEdges_ThrowsIllegalArgumentException() {
         Set<Edge> edges = ring();
-        edges.add(edge(0, 2));
+        edges.add(edge(1, 4));
 
         assertThrows(IllegalArgumentException.class,
                 () -> forestHex(sixVertices(), edges));
@@ -112,7 +112,7 @@ class HexTests {
 
     @Test
     void Constructor_WithEdgeEndpointOutsideVertices_ThrowsIllegalArgumentException() {
-        Point outsidePoint = new Point(4, 4);
+        Point outsidePoint = new Point(-1, -1);
         Set<Edge> edges = new LinkedHashSet<>(List.of(
                 edge(0, 1),
                 edge(1, 2),
@@ -156,10 +156,10 @@ class HexTests {
         Set<Edge> edges = new LinkedHashSet<>(List.of(
                 edge(0, 1),
                 edge(1, 2),
-                edge(2, 0),
+                stubEdge(2, 0),
                 edge(3, 4),
                 edge(4, 5),
-                edge(5, 3)));
+                stubEdge(5, 3)));
 
         assertThrows(IllegalArgumentException.class,
                 () -> forestHex(sixVertices(), edges));
@@ -357,5 +357,12 @@ class HexTests {
 
     private static Edge edge(int from, int to) {
         return new Edge(CORNERS.get(from), CORNERS.get(to));
+    }
+
+    private static Edge stubEdge(int from, int to) {
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.getEndpoints()).andStubReturn(Set.of(CORNERS.get(from), CORNERS.get(to)));
+        EasyMock.replay(edge);
+        return edge;
     }
 }
