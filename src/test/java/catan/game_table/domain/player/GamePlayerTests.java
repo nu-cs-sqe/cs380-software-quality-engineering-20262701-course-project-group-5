@@ -63,7 +63,6 @@ public class GamePlayerTests {
 
     Playable monopoly = EasyMock.createMock(Monopoly.class);
 
-    // this is how you expect a void method
     monopoly.onPlayEffect();
     EasyMock.expectLastCall();
     EasyMock.replay(monopoly);
@@ -79,7 +78,6 @@ public class GamePlayerTests {
 
     Playable roadbuilder = EasyMock.createMock(RoadBuilder.class);
 
-    // this is how you expect a void method
     roadbuilder.onPlayEffect();
     EasyMock.expectLastCall();
     EasyMock.replay(roadbuilder);
@@ -95,7 +93,6 @@ public class GamePlayerTests {
 
     Playable vp = EasyMock.createMock(VictoryPoint.class);
 
-    // this is how you expect a void method
     vp.onPlayEffect();
     EasyMock.expectLastCall();
     EasyMock.replay(vp);
@@ -111,7 +108,6 @@ public class GamePlayerTests {
 
     Playable yop = EasyMock.createMock(YearOfPlenty.class);
 
-    // this is how you expect a void method
     yop.onPlayEffect();
     EasyMock.expectLastCall();
     EasyMock.replay(yop);
@@ -351,8 +347,6 @@ public class GamePlayerTests {
 
     // I suppose the test is for a call to add the trade offer to the ledger
     EasyMock.verify(trader);
-
-
   }
 
   @Test
@@ -426,7 +420,6 @@ public class GamePlayerTests {
 
     trader.conductTrade(offer);
 
-    // this test seems kinda useless imo
     Exception expected_ex = new InvalidTradeException("Not enough resources for that trade");
     EasyMock.expectLastCall().andThrow(expected_ex);
     EasyMock.replay(trader);
@@ -488,8 +481,6 @@ public class GamePlayerTests {
 
   }
 
-
-  // another useless test because this just tests passthrough to the placement helper
   @Test
   public void Get_Valid_Placements_Test_Settlement_NONE() {
     PieceData data = EasyMock.createMock(PieceData.class);
@@ -604,6 +595,4 @@ public class GamePlayerTests {
     EasyMock.verify(bankTradeHelper);
 
   }
-
-
 }

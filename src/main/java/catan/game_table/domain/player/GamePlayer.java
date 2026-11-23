@@ -40,6 +40,7 @@ public class GamePlayer {
 
 
   public void rollDice(Dice dice) {
+    // this probably has a side effect on the board right?
     dice.roll();
   }
 
