@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GamePlayerTests {
 
   @Test
-  public void roll_dice_doesnt_crash() {
+  public void Roll_Dice_Doesnt_Crash() {
     Dice dice = EasyMock.createMock(Dice.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
@@ -42,7 +42,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void play_item_knight() {
+  public void Play_Item_Knight() {
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Playable knight = EasyMock.createMock(Knight.class);
@@ -58,7 +58,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void play_item_monopoly() {
+  public void Play_Item_Monopoly() {
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Playable monopoly = EasyMock.createMock(Monopoly.class);
@@ -74,7 +74,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void play_item_road_builder() {
+  public void Play_Item_RoadBuilder() {
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Playable roadbuilder = EasyMock.createMock(RoadBuilder.class);
@@ -90,7 +90,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void play_item_vp() {
+  public void Play_Item_VP() {
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Playable vp = EasyMock.createMock(VictoryPoint.class);
@@ -106,7 +106,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void play_item_yop() {
+  public void Play_Item_YOP() {
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Playable yop = EasyMock.createMock(YearOfPlenty.class);
@@ -122,7 +122,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void buy_dev_success() {
+  public void Buy_Dev_Success() {
 
     PurchaseHelper purchaseHelper = EasyMock.createMock(PurchaseHelper.class);
     Buyable dev = EasyMock.createMock(Knight.class);
@@ -143,7 +143,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void buy_dev_failure() {
+  public void Buy_Dev_Failure() {
 
     PurchaseHelper purchaseHelper = EasyMock.createMock(PurchaseHelper.class);
     Buyable dev = EasyMock.createMock(Knight.class);
@@ -160,7 +160,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void build_city_at_vertex_valid() {
+  public void Build_City_At_Vertex_Valid() {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
@@ -183,7 +183,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void build_settlement_at_vertex_but_with_not_enough_stuff() {
+  public void Build_Settlement_At_Vertex_But_With_Not_Enough_Stuff() {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
@@ -200,19 +200,18 @@ public class GamePlayerTests {
     EasyMock.expectLastCall().andStubThrow(ex);
     EasyMock.replay(purchaser);
 
-    assertThrows(ex.getClass(), () ->player.build(settlement, vertex));
-
+    assertThrows(ex.getClass(), () -> player.build(settlement, vertex));
 
 
   }
 
   @Test
-  public void build_road_at_edge_valid() {
+  public void Build_Road_At_Edge_Valid() {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
     // cannot mock edge because actually checking the concrete class
-    Location edge = new Edge(new Point(1,1), new Point(0, 0));
+    Location edge = new Edge(new Point(1, 1), new Point(0, 0));
     Piece road = new Road(EasyMock.createMock(PieceData.class));
 
     purchaser.build(Color.NONE, road, edge);
@@ -226,32 +225,11 @@ public class GamePlayerTests {
   }
 
   // it is either creating this or having to copy paste even more tests
-  static final List<Location> locations_invalid_for_buildings = List.of(
-          new Edge(new Point(0, 0), new Point(1, 0)),
-          new HillsHex(1,
-                  new HashSet<>(List.of(
-                          new Vertex(new Point(0, 0)),
-                          new Vertex(new Point(1, 0)),
-                          new Vertex(new Point(2, 0)),
-                          new Vertex(new Point(3, 0)),
-                          new Vertex(new Point(4, 0)),
-                          new Vertex(new Point(5, 0))
-                  )),
-                  new HashSet<>(List.of(
-                          new Edge(new Point(0, 0), new Point(1, 0)),
-                          new Edge(new Point(1, 0), new Point(2, 0)),
-                          new Edge(new Point(2, 0), new Point(3, 0)),
-                          new Edge(new Point(3, 0), new Point(4, 0)),
-                          new Edge(new Point(4, 0), new Point(5, 0)),
-                          new Edge(new Point(5, 0), new Point(0, 0))
-                  )),
-                  new ArrayList<>()
-          )
-  );
+  static final List<Location> locations_invalid_for_buildings = List.of(new Edge(new Point(0, 0), new Point(1, 0)), new HillsHex(1, new HashSet<>(List.of(new Vertex(new Point(0, 0)), new Vertex(new Point(1, 0)), new Vertex(new Point(2, 0)), new Vertex(new Point(3, 0)), new Vertex(new Point(4, 0)), new Vertex(new Point(5, 0)))), new HashSet<>(List.of(new Edge(new Point(0, 0), new Point(1, 0)), new Edge(new Point(1, 0), new Point(2, 0)), new Edge(new Point(2, 0), new Point(3, 0)), new Edge(new Point(3, 0), new Point(4, 0)), new Edge(new Point(4, 0), new Point(5, 0)), new Edge(new Point(5, 0), new Point(0, 0)))), new ArrayList<>()));
 
   @ParameterizedTest
   @FieldSource("locations_invalid_for_buildings")
-  public void build_settlement_at_hex_invalid(Location location) {
+  public void Build_Settlement_At_Hex_Invalid(Location location) {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
@@ -272,7 +250,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void build_road_at_hex_invalid() {
+  public void Build_Road_At_Hex_Invalid() {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
@@ -290,13 +268,11 @@ public class GamePlayerTests {
 
   }
 
-  static final List<Piece> invalid_pieces = List.of(
-          new Harbor(new PieceData(Color.BLUE, PieceType.HARBOR)),
-          new Robber(new PieceData(Color.NONE, PieceType.ROBBER)));
+  static final List<Piece> invalid_pieces = List.of(new Harbor(new PieceData(Color.BLUE, PieceType.HARBOR)), new Robber(new PieceData(Color.NONE, PieceType.ROBBER)));
 
   @ParameterizedTest
   @FieldSource("invalid_pieces")
-  public void build_invalid_pieces_test(Piece piece) {
+  public void Build_Invalid_Pieces_Test(Piece piece) {
     PurchaseHelper purchaser = EasyMock.createMock(PurchaseHelper.class);
     GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new PlayerTradeHelper(), purchaser, new BankTradeHelper());
 
@@ -313,7 +289,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void propose_player_trade_same_player_unsuccessful() {
+  public void Propose_Player_Trade_Same_Player_Unsuccessful() {
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     Exception expected = new InvalidTradeException("Cannot offer to same player as proposed");
@@ -323,7 +299,7 @@ public class GamePlayerTests {
     List<ResourceStack> offered = new ArrayList<>();
     List<ResourceStack> requested = new ArrayList<>();
 
-    Exception actual = assertThrows(expected.getClass(), () ->{
+    Exception actual = assertThrows(expected.getClass(), () -> {
       player.proposePlayerTrade(Color.BLUE, new TradeOffer(inv_a, inv_b, requested, offered));
     });
     assertEquals(expected.getClass(), actual.getClass());
@@ -333,7 +309,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void propose_player_trade_to_no_one_unsuccessful() {
+  public void Propose_Player_Trade_To_No_One_Unsuccessful() {
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
@@ -351,7 +327,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void propose_player_trade_successful() {
+  public void Propose_Player_Trade_Successful() {
     PlayerTradeHelper trader = EasyMock.createMock(PlayerTradeHelper.class);
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), trader, new PurchaseHelper(), new BankTradeHelper());
 
@@ -380,7 +356,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void accept_player_trade_successful() {
+  public void Accept_Player_Trade_Successful() {
     PlayerTradeHelper trader = EasyMock.createMock(PlayerTradeHelper.class);
     GamePlayer player = new GamePlayer(Color.RED, new PlacementHelper(), trader, new PurchaseHelper(), new BankTradeHelper());
 
@@ -402,7 +378,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void accept_player_trade_to_no_one_unsuccessful() {
+  public void Accept_Player_Trade_To_No_One_Unsuccessful() {
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
@@ -411,7 +387,7 @@ public class GamePlayerTests {
     List<ResourceStack> requested = new ArrayList<>();
 
     Exception expected = new InvalidTradeException("Trade must go to someone");
-    Exception actual = assertThrows(expected.getClass(), () ->{
+    Exception actual = assertThrows(expected.getClass(), () -> {
       player.acceptPlayerTrade(Color.NONE, new TradeOffer(inv_a, inv_b, requested, offered));
     });
     assertEquals(expected.getClass(), actual.getClass());
@@ -420,7 +396,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void accept_player_trade_to_same_player_unsuccessful() {
+  public void Accept_Player_Trade_To_Same_Player_Unsuccessful() {
     GamePlayer player = new GamePlayer(Color.BLUE, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
 
     ResourceInventory inv_a = EasyMock.createMock(ResourceInventory.class);
@@ -438,7 +414,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void accept_player_trade_not_enough_resources_unsuccessful() {
+  public void Accept_Player_Trade_Not_Enough_Resources_Unsuccessful() {
     PlayerTradeHelper trader = EasyMock.createMock(PlayerTradeHelper.class);
     GamePlayer player = new GamePlayer(Color.RED, new PlacementHelper(), trader, new PurchaseHelper(), new BankTradeHelper());
 
@@ -469,7 +445,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void get_valid_placements_tests_city_at_least_one() {
+  public void Get_Valid_Placements_Tests_City_At_Least_One() {
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
     ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
@@ -492,7 +468,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void get_valid_placements_tests_road_aat_east_one() {
+  public void Get_Valid_Placements_Tests_Road_At_Least_One() {
     PieceData data = EasyMock.createMock(PieceData.class);
 
     PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
@@ -500,7 +476,7 @@ public class GamePlayerTests {
 
     Piece piece = new Road(data);
 
-    EasyMock.expect(placer.getValidRoadSpots(Color.RED)).andReturn(List.of(new Edge(new Point(0, 0), new Point(1,1))));
+    EasyMock.expect(placer.getValidRoadSpots(Color.RED)).andReturn(List.of(new Edge(new Point(0, 0), new Point(1, 1))));
     EasyMock.replay(placer);
 
     List<Location> actual_locs = player.getValidPlacements(piece);
@@ -515,7 +491,7 @@ public class GamePlayerTests {
 
   // another useless test because this just tests passthrough to the placement helper
   @Test
-  public void get_valid_placements_test_settlement_NONE() {
+  public void Get_Valid_Placements_Test_Settlement_NONE() {
     PieceData data = EasyMock.createMock(PieceData.class);
     BankResourceDistributor dist = EasyMock.createMock(BankResourceDistributor.class);
     ScoreTracker tracker = EasyMock.createMock(ScoreTracker.class);
@@ -538,7 +514,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void get_valid_placements_try_to_move_harbor() {
+  public void Get_Valid_Placements_Try_To_Move_Harbor() {
     PieceData data = EasyMock.createMock(PieceData.class);
 
     PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
@@ -552,7 +528,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void get_valid_placements_try_to_move_other_for_jacoco_coverage() {
+  public void Get_Valid_Placements_Try_To_Move_Other_For_Jacoco_Coverage() {
 
     PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
     GamePlayer player = new GamePlayer(Color.RED, placer, new PlayerTradeHelper(), new PurchaseHelper(), new BankTradeHelper());
@@ -565,7 +541,7 @@ public class GamePlayerTests {
   }
 
   @Test
-  public void get_valid_placements_try_to_move_robber() {
+  public void Get_Valid_Placements_Try_To_Move_Robber() {
     PieceData data = EasyMock.createMock(PieceData.class);
 
     PlacementHelper placer = EasyMock.createMock(PlacementHelper.class);
@@ -583,7 +559,7 @@ public class GamePlayerTests {
 
 
   @Test
-  public void bank_trade_valid() {
+  public void Bank_Trade_Valid() {
 
     BankTradeHelper bankTradeHelper = EasyMock.createMock(BankTradeHelper.class);
     GamePlayer player = new GamePlayer(Color.RED, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), bankTradeHelper);
@@ -604,14 +580,11 @@ public class GamePlayerTests {
 
   }
 
-  static List<Arguments> invalid_bank_trades = List.of(
-          Arguments.arguments(new GrainResourceStack(1), new BrickResourceStack(4)),
-          Arguments.arguments(new LumberResourceStack(3), new WoolResourceStack(1))
-  );
+  static List<Arguments> invalid_bank_trades = List.of(Arguments.arguments(new GrainResourceStack(1), new BrickResourceStack(4)), Arguments.arguments(new LumberResourceStack(3), new WoolResourceStack(1)));
 
   @ParameterizedTest
   @FieldSource("invalid_bank_trades")
-  public void bank_trade_invalid_due_to_number(ResourceStack give, ResourceStack receive) {
+  public void Bank_Trade_Invalid_Due_To_Number_Of_Resource(ResourceStack give, ResourceStack receive) {
 
     BankTradeHelper bankTradeHelper = EasyMock.createMock(BankTradeHelper.class);
     GamePlayer player = new GamePlayer(Color.RED, new PlacementHelper(), new PlayerTradeHelper(), new PurchaseHelper(), bankTradeHelper);

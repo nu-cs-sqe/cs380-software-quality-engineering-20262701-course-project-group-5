@@ -22,7 +22,7 @@ public class PlayerInventoryTests {
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void addPieceWithException(String type, String msg) {
+  public void Add_Piece_With_Exception(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData(Color.NONE, PieceType.CITY);
@@ -75,8 +75,7 @@ public class PlayerInventoryTests {
 
 
   @ParameterizedTest
-  @CsvSource({
-          "Settlement, e, s", // empty before, 1 settlement after
+  @CsvSource({"Settlement, e, s", // empty before, 1 settlement after
           "City, e, c", // empty before, 1 city after
           "Road, e, r", // empty before road after
           "Settlement, scr, scrs", // one of each before, 2 settlements after
@@ -86,7 +85,7 @@ public class PlayerInventoryTests {
           "City, r, rc", // one road before, road and city after
           "Road, r, rr", // one road before, 2 roads after
   })
-  public void addPieceTests(String type, String listConstructBefore, String listConstructAfter) {
+  public void Add_Piece_Tests(String type, String listConstructBefore, String listConstructAfter) {
     PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
     List<Piece> expected_pieces = this.listOfPiecesConstruct(listConstructAfter);
@@ -118,7 +117,7 @@ public class PlayerInventoryTests {
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void hasPieceIllegalPieces(String type, String msg) {
+  public void Has_Piece_Illegal_Pieces(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData(Color.NONE, PieceType.CITY);
@@ -135,29 +134,18 @@ public class PlayerInventoryTests {
 
 
     Exception expected = new IllegalArgumentException(msg);
-    Exception actual = assertThrows(IllegalArgumentException.class, () -> inv.hasPiece(piece));;
+    Exception actual = assertThrows(IllegalArgumentException.class, () -> inv.hasPiece(piece));
+    ;
     assertEquals(expected.getMessage(), actual.getMessage());
   }
 
 
   @ParameterizedTest
-  @CsvSource({
-          "Settlement, e, false", // e means emtpy list
-          "City, e, false",
-          "Road, e, false",
-          "Settlement, s, true", // s is list with one settlement
-          "City, s, false",
-          "Road, s, false",
-          "Settlement, r, false", // r is list with one road
-          "City, r, false",
-          "Road, r, true",
-          "Settlement, c, false",
-          "City, c, true",
-          "Road, c, false",
-          "Road, cr, true",
-          "City, rs, false"
-  })
-  public void hasPieceTests(String type, String listConstructBefore, boolean expected_result) {
+  @CsvSource({"Settlement, e, false", // e means emtpy list
+          "City, e, false", "Road, e, false", "Settlement, s, true", // s is list with one settlement
+          "City, s, false", "Road, s, false", "Settlement, r, false", // r is list with one road
+          "City, r, false", "Road, r, true", "Settlement, c, false", "City, c, true", "Road, c, false", "Road, cr, true", "City, rs, false"})
+  public void Has_Piece_Tests(String type, String listConstructBefore, boolean expected_result) {
     PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
     PieceData data = EasyMock.createMock(PieceData.class);
@@ -182,7 +170,7 @@ public class PlayerInventoryTests {
 
   @ParameterizedTest
   @CsvSource({"Harbor, player cannot own a harbor", "Robber, player cannot own the robber"})
-  public void removePieceWithExceptions(String type, String msg) {
+  public void Remove_Piece_With_Exceptions(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
     PieceData data = new PieceData(Color.NONE, PieceType.CITY);
@@ -205,8 +193,7 @@ public class PlayerInventoryTests {
   }
 
   @ParameterizedTest
-  @CsvSource({
-          "Road, e, e", // if there is nothing to remove then it is already in a good state
+  @CsvSource({"Road, e, e", // if there is nothing to remove then it is already in a good state
           "Settlement, s, e", // 1 settlement before, nothing after
           "Settlement, r, r", // keeps the road
           "City, c, e", // removes the one city
@@ -218,7 +205,7 @@ public class PlayerInventoryTests {
           "Settlement, cr, cr", // keeps the pieces
           "Settlement, sscr, scr", // keeps the pieces
   })
-  public void removePieceTests(String type, String listConstructBefore, String listConstructAfter) {
+  public void Remove_Piece_Tests(String type, String listConstructBefore, String listConstructAfter) {
     PlayerInventory inv = new PlayerInventory(this.listOfPiecesConstruct(listConstructBefore));
 
     List<Piece> expected_pieces = this.listOfPiecesConstruct(listConstructAfter);
@@ -292,19 +279,12 @@ public class PlayerInventoryTests {
   @CsvSource({
           // notation is <resource type><amount>
           "l1, e0, l1", // adding 1 lumber to empty
-          "o1, e0, o1",
-          "w1, e0, w1",
-          "b1, e0, b1",
-          "g1, e0, g1",
-          "l1, l1, l2",
-          "w1, w1, w2", // adding 1 wool into another wool -> 2 wools
-          "g1, g1, g2",
-          "b1, b1, b2",
-          "g1, g1b1o1w1l1, g2b1o1w1l1", // adding 1 grain into one of each -> 2 grains + one of the rest
+          "o1, e0, o1", "w1, e0, w1", "b1, e0, b1", "g1, e0, g1", "l1, l1, l2", "w1, w1, w2", // adding 1 wool into another wool -> 2 wools
+          "g1, g1, g2", "b1, b1, b2", "g1, g1b1o1w1l1, g2b1o1w1l1", // adding 1 grain into one of each -> 2 grains + one of the rest
           "g1, w1, w1g1"
 
   })
-  public void addResourcesTests(String to_add, String before, String after) {
+  public void Add_Resources_Tests(String to_add, String before, String after) {
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
@@ -339,27 +319,8 @@ public class PlayerInventoryTests {
           // I don't want to make a complicated parser
           // so I will take the executive decision that INT_MAX = 9 because it doenst really matter that much
           // and testing int overflow can be done in another test I suppose
-          "l1, e0, false",
-          "w1, e0, false",
-          "g1, e0, false",
-          "o1, e0, false",
-          "b1, e0, false",
-          "l1, l1, true",
-          "w1, w1, true",
-          "g1, g1, true",
-          "o1, o1, true",
-          "b1, b1, true",
-          "l9, l1, false",
-          "w9, w1, false",
-          "g9, g1, false",
-          "o9, o1, false",
-          "b9, b1, false",
-          "g1, o1, false",
-          "g1, o1g1, true",
-          "g1, o1l1, false",
-          "b1, b2, true",
-  })
-  public void hasResourcesTests(String to_check, String before, boolean expected_res) {
+          "l1, e0, false", "w1, e0, false", "g1, e0, false", "o1, e0, false", "b1, e0, false", "l1, l1, true", "w1, w1, true", "g1, g1, true", "o1, o1, true", "b1, b1, true", "l9, l1, false", "w9, w1, false", "g9, g1, false", "o9, o1, false", "b9, b1, false", "g1, o1, false", "g1, o1g1, true", "g1, o1l1, false", "b1, b2, true",})
+  public void Has_Resources_Tests(String to_check, String before, boolean expected_res) {
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
@@ -379,17 +340,11 @@ public class PlayerInventoryTests {
   @CsvSource({
           // notation is <resource type><amount>
           "l1, l1, e0", // 1 lumber, remove 1 lumber, rest is empty
-          "w1, w1, e0",
-          "b1, b1, e0",
-          "o1, o1, e0",
-          "b1, b1, e0",
-          "w1, w1o1, o1",
-          "w1, w2, w1", // have 2 remove 1, leaves 1
-          "w2, w5, w3",
-          "l1, l2, l1"
+          "w1, w1, e0", "b1, b1, e0", "o1, o1, e0", "b1, b1, e0", "w1, w1o1, o1", "w1, w2, w1", // have 2 remove 1, leaves 1
+          "w2, w5, w3", "l1, l2, l1"
 
   })
-  public void removeResourcesTestsForValidCases(String to_remove, String before, String after) {
+  public void Remove_Resources_Tests_For_Valid_Cases(String to_remove, String before, String after) {
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
@@ -426,19 +381,11 @@ public class PlayerInventoryTests {
   @CsvSource({
           // notation is <resource type><amount>
           "l1, e0", // withdrawing from empty resources
-          "w1, e0",
-          "g1, e0",
-          "o1, e0",
-          "b1, e0",
-          "l9, l1", // don't feel like making a more complicated parser, so INT_MAX = 9
-          "w9, w1",
-          "o9, o1",
-          "g9, g1",
-          "b9, b1",
-          "b1, w1o1"
+          "w1, e0", "g1, e0", "o1, e0", "b1, e0", "l9, l1", // don't feel like making a more complicated parser, so INT_MAX = 9
+          "w9, w1", "o9, o1", "g9, g1", "b9, b1", "b1, w1o1"
 
   })
-  public void removeResourcesTestsForInValidCases(String to_remove, String before) {
+  public void Remove_Resources_Tests_For_Invalid_Cases(String to_remove, String before) {
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), this.listOfResourcesConstruct(before));
 
@@ -483,16 +430,13 @@ public class PlayerInventoryTests {
   }
 
   @ParameterizedTest
-  @CsvSource({
-          "k, e, k", // k = knight, e = empty
+  @CsvSource({"k, e, k", // k = knight, e = empty
           "r, e, r", // r = road builder
           "v, e, v", // v = victory point
           "m, e, m", // m = monopoly
           "y, e, y", // y = year of plenty
-          "y, k, ky",
-          "y, kr, kry"
-  })
-  public void addDevelopmentTests(String type, String before, String after) {
+          "y, k, ky", "y, kr, kry"})
+  public void Add_Development_Tests(String type, String before, String after) {
     Development development = this.listOfDevelopmentConstruct(type).getFirst();
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
@@ -514,22 +458,8 @@ public class PlayerInventoryTests {
 
 
   @ParameterizedTest
-  @CsvSource({
-          "k, e, false",
-          "y, e, false",
-          "v, e, false",
-          "r, e, false",
-          "m, e, false",
-          "k, k, true",
-          "y, y, true",
-          "v, v, true",
-          "r, r, true",
-          "m, m, true",
-          "y, r, false",
-          "y, rk, false",
-          "y, ky, true"
-  })
-  public void hasDevelopmentTests(String type, String before, boolean expected_result) {
+  @CsvSource({"k, e, false", "y, e, false", "v, e, false", "r, e, false", "m, e, false", "k, k, true", "y, y, true", "v, v, true", "r, r, true", "m, m, true", "y, r, false", "y, rk, false", "y, ky, true"})
+  public void Has_Development_Tests(String type, String before, boolean expected_result) {
     Development development = this.listOfDevelopmentConstruct(type).getFirst();
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
@@ -539,15 +469,8 @@ public class PlayerInventoryTests {
   }
 
   @ParameterizedTest
-  @CsvSource({
-          "v, v, e",
-          "k, k, e",
-          "r, r, e",
-          "y, y, e",
-          "m, m , e",
-          "y, yk, k"
-  })
-  public void removeDevelopmentTestsForValidExchanges(String type, String before, String after) {
+  @CsvSource({"v, v, e", "k, k, e", "r, r, e", "y, y, e", "m, m , e", "y, yk, k"})
+  public void Remove_Development_Tests_For_Valid_Exchanges(String type, String before, String after) {
     Development development = this.listOfDevelopmentConstruct(type).getFirst();
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
@@ -568,18 +491,14 @@ public class PlayerInventoryTests {
   }
 
   @ParameterizedTest
-  @CsvSource({
-          "k, e",
-          "k, r",
-          "y, mk"
-  })
-  public void removeDevelopmentTestsRaisingExceptions(String type, String before) {
+  @CsvSource({"k, e", "k, r", "y, mk"})
+  public void Remove_Development_Tests_Raising_Exceptions(String type, String before) {
     Development development = this.listOfDevelopmentConstruct(type).getFirst();
 
     PlayerInventory inv = new PlayerInventory(new ArrayList<>(), new ArrayList<>(), this.listOfDevelopmentConstruct(before));
 
     Exception expected_ex = new NotEnoughInventoryException();
-    Exception actual_ex = assertThrows(expected_ex.getClass(),() -> inv.removeDevelopment(development));
+    Exception actual_ex = assertThrows(expected_ex.getClass(), () -> inv.removeDevelopment(development));
     assertEquals(expected_ex.getClass(), actual_ex.getClass());
 
   }

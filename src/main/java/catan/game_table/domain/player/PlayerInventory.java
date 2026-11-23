@@ -153,8 +153,7 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
           to_remove = i;
           found_any = true;
           break;
-        } else
-         {
+        } else {
           throw new NotEnoughInventoryException();
         }
       }

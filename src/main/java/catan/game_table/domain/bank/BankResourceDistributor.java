@@ -8,12 +8,16 @@ import java.util.Map;
 
 public class BankResourceDistributor {
 
-  public BankResourceDistributor(Map<Color, ResourceInventory> playerInventories, ResourceInventory bankInventory) {}
+  public BankResourceDistributor(Map<Color, ResourceInventory> playerInventories, ResourceInventory bankInventory) {
+  }
 
 
-  public void produceResources(Color color, ResourceProducts products) {}
+  public void produceResources(Color color, ResourceProducts products) {
+  }
 
-  public void finalizeProduction() {}
+  public void finalizeProduction() {
+  }
 
-  public void abortProduction() {}
+  public void abortProduction() {
+  }
 }
