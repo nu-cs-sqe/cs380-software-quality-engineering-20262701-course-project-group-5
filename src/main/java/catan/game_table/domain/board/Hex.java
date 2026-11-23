@@ -1,5 +1,6 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.LocationType;
 import catan.game_table.domain.resource.ResourceStack;
 
 import java.util.ArrayDeque;
@@ -40,6 +41,11 @@ public abstract class Hex extends Location {
 
     public boolean canProduce() {
         return canProduce;
+    }
+
+    @Override
+    public LocationType getLocationType() {
+        return LocationType.HEX;
     }
 
     public int getTokenValue() {
