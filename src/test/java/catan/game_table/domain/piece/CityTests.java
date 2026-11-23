@@ -2,6 +2,8 @@ package catan.game_table.domain.piece;
 
 import catan.game_table.domain.Color;
 import catan.game_table.domain.PieceType;
+import catan.game_table.domain.ScoreTracker;
+import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.resource.ResourceStack;
 import catan.game_table.domain.resource.WoolResourceStack;
 import org.easymock.EasyMock;
