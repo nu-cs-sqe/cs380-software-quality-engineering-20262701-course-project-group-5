@@ -1,6 +1,7 @@
 package catan.game_table.domain.player;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.Dice;
 import catan.game_table.domain.Playable;
 import catan.game_table.domain.bank.Buyable;
 import catan.game_table.domain.bank.PurchaseHelper;
@@ -33,11 +34,12 @@ public class GamePlayer {
     this.placementHelper = placementHelper;
   }
 
-  /**
-   * Plays a playable item in the player's hand if able.
-   *
-   * @param item: playable item
-   */
+
+  public void rollDice(Dice dice) {
+    dice.roll();
+  }
+
+
   public void play(Playable item) {
     item.onPlayEffect();
   }
@@ -67,7 +69,6 @@ public class GamePlayer {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
     }
 
-    // TODO: this should probably take in the players right?
     this.tradeHelper.conductTrade(trade);
   }
 

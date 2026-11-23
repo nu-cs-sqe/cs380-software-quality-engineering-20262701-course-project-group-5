@@ -73,13 +73,13 @@ none
 | Variable | Values |
 |---|---|
 |dice| Dice{lastDiceRoll:0}, Dice{lastDiceRoll:INT_MAX} |
+| result | called `Dice.roll` |
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | dice: Dice{lastDiceRoll:0}| state of dice: Dice{lastDiceRoll:4} | :x: |
-| Test Case 2 | dice: Dice{lastDiceRoll:INT_MAX}| state of dice: Dice{lastDiceRoll:2} | :x: |
+|             | Inputs                     | Expected output                          | Implemented?       |
+|-------------|----------------------------|------------------------------------------|--------------------|
+| Test Case 1 | dice: Dice{lastDiceRoll:0} | called `Dice.roll`, doesnt crash I guess | :white_check_mark: |
 
 
 ### Method under test: `play(item : Playable)`

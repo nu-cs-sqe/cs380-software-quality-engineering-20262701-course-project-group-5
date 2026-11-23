@@ -1,6 +1,7 @@
 package catan.game_table.domain.player;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.Dice;
 import catan.game_table.domain.ScoreTracker;
 import catan.game_table.domain.bank.BankResourceDistributor;
 import catan.game_table.domain.bank.Buyable;
@@ -23,6 +24,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GamePlayerTests {
+
+  @Test
+  public void roll_dice_doesnt_crash() {
+    Dice dice = EasyMock.createMock(Dice.class);
+    GamePlayer player = new GamePlayer(Color.NONE, new PlacementHelper(), new TradeHelper(), new PurchaseHelper());
+
+    EasyMock.expect(dice.roll()).andReturn(4);
+    EasyMock.replay(dice);
+
+    assertDoesNotThrow(() -> player.rollDice(dice));
+
+    EasyMock.verify(dice);
+  }
 
   @Test
   public void play_item_knight() {
