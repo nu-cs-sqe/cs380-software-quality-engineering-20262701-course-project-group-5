@@ -473,6 +473,20 @@ package development {
     Knight ..|> Development
     Knight --> Robber
 
+    +class Monopoly {
+        -resourceType: Class<? extends ResourceStack>
+        -receiver: ResourceInventory
+        +Monopoly()
+        +setReceiver(playerInventory: ResourceInventory): void
+        +setResourceType(type: Class<? extends ResourceStack>): void
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    Monopoly ..|> Development
+    Monopoly --> ResourceInventory
+    Monopoly --> ResourceStack
+
 }
 
 package award {
