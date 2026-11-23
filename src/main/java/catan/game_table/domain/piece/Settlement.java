@@ -9,21 +9,14 @@ import java.util.List;
 
 public class Settlement extends Building {
   private ScoreTracker ownerVictoryPointsTracker;
-  private final int multiplier;
 
   public Settlement(PieceData pieceData, BankResourceDistributor bankResourceDistributor, ScoreTracker ownerVictoryPointsTracker){
     super(pieceData, bankResourceDistributor);
     this.ownerVictoryPointsTracker = ownerVictoryPointsTracker;
-    this.multiplier = 1;
   }
 
   @Override
   public void produceResources(List<ResourceStack> products){
-    ResourceStack resourceStack = products.getFirst();
-    for(int i = 1; i < multiplier; i++) {
-      resourceStack = resourceStack.add(resourceStack);
-    }
-    products.set(0, resourceStack);
     Color pieceColor = pieceData.getColor();
     bankResourceDistributor.produceResources(pieceColor, products);
   }
