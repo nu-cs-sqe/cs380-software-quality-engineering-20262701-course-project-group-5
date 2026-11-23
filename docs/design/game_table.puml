@@ -471,7 +471,6 @@ package development {
     }
 
     Knight ..|> Development
-    Knight --> Robber
 
     +class Monopoly {
         -resourceType: Class<? extends ResourceStack>
@@ -487,6 +486,17 @@ package development {
     Monopoly --> ResourceInventory
     Monopoly --> ResourceStack
 
+    +class RoadBuilder {
+        -player: GamePlayer
+        +RoadBuilder()
+        +setColor(player: GamePlayer)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    RoadBuilder ..|> Development
+    RoadBuilder --> ResourceStack
+    RoadBuilder --> GamePlayer: calls the build method on game player twice
 }
 
 package award {
