@@ -6,7 +6,7 @@ import catan.game_table.domain.resource.ResourceStack;
 import java.util.List;
 
 public class Settlement extends Building {
-    Settlement(PieceData pieceData, BankResourceDistributor bankResourceDistributor){
+    public Settlement(PieceData pieceData, BankResourceDistributor bankResourceDistributor){
         super(pieceData, bankResourceDistributor);
     }
     @Override
