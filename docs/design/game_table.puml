@@ -463,6 +463,16 @@ package development {
         +getCost() : List<ResourceStack>
     }
 
+    +class Knight {
+        -robber: Robber
+        +Knight(robber: Robber)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    Knight ..|> Development
+    Knight --> Robber
+
 }
 
 package award {
