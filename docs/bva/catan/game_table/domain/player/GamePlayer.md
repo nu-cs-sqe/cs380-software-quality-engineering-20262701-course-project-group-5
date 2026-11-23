@@ -320,17 +320,14 @@ none
 **Step 3: Concrete values**
 | Variable | Values |
 | give | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
-| recieve | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
+| receive | {1, 4} convolved with {Ore, Grain, Lumber, Wool, Brick} |
 | player inventory | empty, has enough for a 4-1 trade of ore to brick |
 | bank inventory | empty, enough for the trade to happen |
-| board state | player controls a harbor or not |
 
 **Step 4: Each choice** 
 
-|              | Inputs                                                                                                         | Expected output                 | Implemented? |
-|--------------|----------------------------------------------------------------------------------------------------------------|---------------------------------|--------------|
-| Test Case 1 | give{Grain 1}, receive {4 Brick} |  `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |
-| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool | calls bankTradeHelper.trade | :white_check_mark: |
-| Test Case 3 | give{Lumber 3}, receive {1 Wool} |  `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |
-| Test Case 4 | give{Lumber 3}, receive {1 Wool}, player controls a 3->1 harbor |calls bankTradeHelper.trade | :x: |
-| Test Case 5 | give{Grain 2}, receive {1 Wool}, player controls a 2 grain->1 harbor | calls bankTradeHelper.trade | :x: |
+|             | Inputs                                                              | Expected output                             | Implemented?       |
+|-------------|---------------------------------------------------------------------|---------------------------------------------|--------------------|
+| Test Case 1 | give{Grain 1}, receive {4 Brick}                                    | `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |
+| Test Case 2 | give{Ore 4}, receive {1 Wool}, playerInv has 4 ore, bank has 1 wool | calls bankTradeHelper.trade                 | :white_check_mark: |
+| Test Case 3 | give{Lumber 3}, receive {1 Wool}                                    | `InvalidTradeException(needs to be 4 to 1)` | :white_check_mark: |

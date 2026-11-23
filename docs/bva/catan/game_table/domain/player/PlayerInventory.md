@@ -202,7 +202,7 @@ Appending a single element if no element of that type already exists
 | Variable | Values |
 |---|---|
 | `stack`|WoolResourceStack, LumberResourceStack, OreResourceStack, GrainResourceStack, BrickResourceStack, each with size 1 |
-| internal list of pieces | empty list, list with one element, list with one of each ownable type of piece |
+| internal list of pieces | empty list, list with one element, list with one of each ownable type of piece, list with one different element |
 
 
 **Step 4: Each choice** 
@@ -220,7 +220,7 @@ Appending a single element if no element of that type already exists
 | Test Case 9  | `stack`: BrickResourceStack{size:1}, internal list of resources: {BrickResourceStack{size:1}}                                                                                                               | internal list of resources: {BrickResourceStack{size:2}}                                                                                                               | :white_check_mark: |
 | Test Case 10 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}}                                                                                                               | internal list of resources: {GrainResourceStack{size:2}}                                                                                                               | :white_check_mark: |
 | Test Case 11 | `stack`: GrainResourceStack{size:1}, internal list of resources: {GrainResourceStack{size:1}, OreResourceStack{size:1}, WoolResourceStack{size:1}, LumberResourceStack{size:1}, BrickResourceStack{size:1}} | internal list of resources: {GrainResourceStack{size:2}, OreResourceStack{size:1}, WoolResourceStack{size:1}, LumberResourceStack{size:1}, BrickResourceStack{size:1}} | :white_check_mark: |
-
+| Test Case 12 | `stack`: GrainResourceStack{size: 1}, internal list of resources: {WoolResourceStack{size: 1}}                                                                                                              | internal list of resources: {WoolResourceStack{size: 1}, GrainResourceStack{size: 1}}                                                                                  | :white_check_mark: |
 
 
 
