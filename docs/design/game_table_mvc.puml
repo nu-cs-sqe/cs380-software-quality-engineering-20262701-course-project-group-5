@@ -1,0 +1,149 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+
+package "JavaFX UI" {
+    class Main {
+        +start(stage : Stage) : void
+        +showLobby() : void
+        +showGame(game : GameSession) : void
+    }
+
+    class LobbyController {
+        +open() : void
+        -onStart(players : List<PlayerData>) : void
+    }
+    class LobbyView
+
+    class GameTableController {
+        +open() : void
+        +close() : void
+        +update() : void
+        -refreshTable() : void
+        -onReady() : void
+        -onRoll() : void
+        -onSelectBuild(type : BuildType) : void
+        -onVertexSelected(point : Point) : void
+        -onEdgeSelected(endpoints : Set<Point>) : void
+        -onHexSelected(center : Point) : void
+        -onOpenTrade() : void
+        -onCloseTrade() : void
+        -onBuyDevelopment() : void
+        -onPlayDevelopment(card : Development) : void
+        -onChooseYearOfPlenty(cards : List<ResourceStack>) : void
+        -onChooseMonopoly(type : ResourceType) : void
+        -onEndTurn() : void
+        -onPlayAgain() : void
+    }
+    class GameTableView
+
+    class TradeController {
+        +open() : void
+        +requiredViewer() : Color
+        +render(viewer : Color) : Node
+        -onOpenProposal() : void
+        -onPropose(receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        -onRequestResponse(offerId : int) : void
+        -onAccept(offerId : int) : void
+        -onDecline(offerId : int) : void
+        -onCounter(offerId : int, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        -onFinalize(offerId : int) : void
+        -onOpenBankTrade() : void
+        -onBankTrade(give : ResourceStack, receive : ResourceStack) : void
+        -onClose() : void
+    }
+    class TradeView
+
+    class RobberController {
+        +requiredViewer() : Optional<Color>
+        +render(viewer : Color) : Node
+        +onHexSelected(center : Point) : void
+        -onDiscard(cards : List<ResourceStack>) : void
+        -onVictimSelected(victim : Color) : void
+    }
+    class RobberView
+}
+
+package "Match model" {
+    interface Observer {
+        +update() : void
+    }
+    abstract class Observed {
+        +addObserver(observer : Observer) : void
+        +removeObserver(observer : Observer) : void
+        #notifyObservers() : void
+    }
+    class GameSetup {
+        +createGame(players : List<PlayerData>) : GameSession
+    }
+    class GameSession
+    class TurnState
+    class GameBoard
+    class Bank
+    class PlayerInventory
+    class PlacementHelper
+    class PurchaseHelper
+    class PlayerTradeHelper
+    class BankTradeHelper
+    class RobberHelper
+    class DevelopmentHelper
+}
+
+Main --> LobbyController : wires lobby
+Main --> GameTableController : wires table
+Main ..> TradeController : wires overlay
+Main ..> RobberController : wires overlay
+LobbyController --> LobbyView : binds Start and shows errors
+LobbyController --> GameSetup : submits players
+LobbyController ..> Main : returns the session via callback
+GameSetup ..> GameSession : creates and wires one match
+
+GameTableController --> GameTableView : binds table actions and renders
+GameTableController --> GameSession : reads state and submits turn actions
+GameTableController ..|> Observer
+Observed --> Observer
+GameSession --|> Observed
+
+GameTableController --> TradeController : opens and renders trade workflow
+GameTableController --> RobberController : renders prompt and routes hex clicks
+GameTableView ..> TradeView : hosts overlay content
+GameTableView ..> RobberView : hosts overlay content
+TradeController --> TradeView : binds trade commands and renders
+RobberController --> RobberView : binds robber commands and renders
+TradeController --> GameSession : queries and submits trades
+RobberController --> GameSession : queries and submits robber steps
+TradeController ..> GameTableController : uses viewer and overlay callbacks
+RobberController ..> GameTableController : uses confirmed viewer callback
+
+GameSession --> TurnState
+GameSession --> GameBoard
+GameSession --> Bank
+GameSession --> PlayerInventory
+GameSession --> PlacementHelper
+GameSession --> PurchaseHelper
+GameSession --> PlayerTradeHelper
+GameSession --> BankTradeHelper
+GameSession --> RobberHelper
+GameSession --> DevelopmentHelper
+
+note top of GameTableController
+  Owns the displayed overlay, selected build,
+  and confirmed viewer. Clears private content when
+  a handoff starts and waits for the next Ready.
+  Subscribes on open and unsubscribes on close.
+  Coalesces model updates and UI-only changes
+  into a queued JavaFX refresh.
+end note
+
+note bottom of GameSession
+  Controllers share this instance. The session validates
+  match-level actions, delegates rule work, and notifies
+  observers after a successful action is fully applied.
+  Read methods supply display data and legal choices.
+end note
+
+note bottom of GameTableView
+  Layout, rendering, and hit-testing.
+  Tells controller what the player selected.
+end note
+@enduml
