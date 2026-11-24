@@ -27,3 +27,9 @@
 - 11/21: PIT reports four uncovered mutants for the location-type API, one in each of the three `getLocationType()` implementations and one in `LocationType.toString()`.
 ### Others
 N/A
+## Spotbugs
+URF_UNREAD_FIELD — "Field is written but never read"
+
+Files:
+src/main/java/catan/game_table/domain/piece/Settlement.java (class-level)
+Why: The Settlement class has a ScoreTracker field of the player that owns it. The Settlement class initializes the field so that when placed on the board, the PlacementHelper can trigger an update to the owning players points. Because the write and the read are in different methods, SpotBugs treats the field as written but never read.
