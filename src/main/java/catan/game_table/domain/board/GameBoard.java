@@ -15,6 +15,10 @@ public class GameBoard {
         return null;
     }
 
+    public Set<Hex> getLandHexes() {
+        return null;
+    }
+
     public Set<Edge> getConnectingEdges(Location location) {
         return null;
     }
@@ -28,4 +32,5 @@ public class GameBoard {
     public void removePieceFromLocation(PieceData pieceData, Location destinationLocation) {
 
     }
+
 }

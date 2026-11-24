@@ -69,6 +69,12 @@ public class PlacementHelper extends Observed {
 
     }
 
+    public Set<Hex> getValidRobberSpots() {
+
+        return new HashSet<>(gameBoard.getLandHexes());
+
+    }
+
     public void place(Piece piece, Location location) throws InvalidPlacementException {
 
         switch (piece) {
