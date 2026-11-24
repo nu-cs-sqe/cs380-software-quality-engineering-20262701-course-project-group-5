@@ -13,7 +13,7 @@ Initializes a PlacementHelper for `board` and with access to the `GamePhase` pro
 
 Saves the locations where the given `piece` can be placed using the `GameBoard` instance, and notifies observers.
 
-### `public Set<Location> getSavedValidSpots()`
+### `public Set<Location> getCachedValidSpots()`
 
 Returns the last saved set of valid locations for the piece that `cacheValidSpots(…)` was called with.
 
