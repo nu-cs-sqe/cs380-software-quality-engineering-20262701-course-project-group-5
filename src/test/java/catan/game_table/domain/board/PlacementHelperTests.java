@@ -167,6 +167,46 @@ public class PlacementHelperTests {
     }
 
     @Test
+    public void GetAndCacheValidSpots_GivenRobber_ExpectCorrectMethodCalledOnce_AndRobberSpotsReturned() {
+
+        GamePhase gamePhase = GamePhase.REGULAR;
+
+        Piece inputPiece = makePieceMock(PieceType.ROBBER, Color.NONE);
+
+        Hex hex1 = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex1.getPieces()).andStubReturn(List.of());
+        Hex hex2 = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex2.getPieces()).andStubReturn(List.of());
+        EasyMock.replay(hex1, hex2);
+
+        GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
+        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(Set.of(hex1, hex2));
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
+        builder.addMockedMethod("getValidRobberSpots");
+        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
+        builder.withArgs(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = builder.createMock();
+
+        Set<Hex> expectedHexes = Set.of(hex1, hex2);
+
+        EasyMock.expect(placementHelper.getValidRobberSpots()).andReturn(expectedHexes).times(1);
+        EasyMock.replay(placementHelper);
+
+        Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
+
+        EasyMock.verify(placementHelper);
+        assertEquals(expectedHexes, actualLocations);
+
+    }
+
+    @Test
     public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndEmptyBoard_ExpectAllLandVertices() {
 
         Color playerColor = Color.RED;

@@ -37,6 +37,9 @@ public class PlacementHelper extends Observed {
             case PieceType.CITY -> {
                 return getValidCitySpots(pieceColor);
             }
+            case PieceType.ROBBER -> {
+                return getValidRobberSpots();
+            }
             default -> {
                 return null;
             }
