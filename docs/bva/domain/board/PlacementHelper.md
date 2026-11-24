@@ -53,7 +53,7 @@ Red for active player's color and Blue for an opponent (arbitrary).
 | Test Case 4 | piece is a Robber                                                         | `getValidRobberSpots()` is called, result returned                             | :white_check_mark: |
 | Test Case 5 | piece is a Harbor                                                         | `IllegalArgumentException` "No defined behavior exists for this piece type"    | :white_check_mark: |
 | Test Case 6 | piece is a `RED` Settlement, this method was already called on this piece | no other method is called, saved result returned                               | :white_check_mark: |
-| Test Case 7 | `RED` Settlement followed by `BLUE` Settlement                            | `getValidSettlementSpots()` is called once per piece with each result returned | :x:                |
+| Test Case 7 | `RED` Settlement followed by `BLUE` Settlement                            | `getValidSettlementSpots()` is called once per piece with each result returned | :white_check_mark: |
 
 ### Test: `Set<Vertex> getValidSettlementSpots(Color color)`
 
