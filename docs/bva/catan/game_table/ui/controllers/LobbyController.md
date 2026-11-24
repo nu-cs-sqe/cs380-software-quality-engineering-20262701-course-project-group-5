@@ -21,7 +21,7 @@ When a player enters data such as choosing a number of player, a language, or co
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `players : List<PlayerData>` | `GameSetup:createGame()` is called |
+| `players : List<PlayerData>` | `GameSetup:createGame()` and `Main:showGame()` are called  |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -33,13 +33,13 @@ When a player enters data such as choosing a number of player, a language, or co
 | Variable | Values |
 |---|---|
 | Input | List of size 3, list of size 4 |
-| Output | `GameSetup:createGame()` is called |
+| Output | `GameSetup:createGame()` and `Main:showGame()` are called |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|-------|-----------------|--------------|
-| Test Case 1  | `players` list of size 3 | `GameSetup:createGame(players)` is called | :x: |
-| Test Case 2  | `players` list of size 4 | `GameSetup:createGame(players)` is called | :x: |
+| Test Case 1  | `players` list of size 3 | `GameSetup:createGame()` and `Main:showGame()` are called  | :x: |
+| Test Case 2  | `players` list of size 4 | `GameSetup:createGame()` and `Main:showGame()` are called  | :x: |
 
 
 ### Method under test: `onDataEntry()`
