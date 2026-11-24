@@ -36,7 +36,7 @@ public class PlacementHelper extends Observed {
 
     }
 
-    public Set<Vertex> getValidCitySpots(Color color) {
+    Set<Vertex> getValidCitySpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
 
@@ -69,7 +69,7 @@ public class PlacementHelper extends Observed {
 
     }
 
-    public Set<Hex> getValidRobberSpots() {
+    Set<Hex> getValidRobberSpots() {
         Set<Hex> validHexes = new HashSet<>(gameBoard.getLandHexes());
         validHexes.removeIf(hex -> locationHasPieceOfType(hex, PieceType.ROBBER));
         return validHexes;
