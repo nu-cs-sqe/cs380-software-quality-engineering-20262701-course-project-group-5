@@ -8,12 +8,10 @@ import java.util.List;
 
 public class City extends Building {
   private ScoreTracker ownerVictoryPointsTracker;
-  private final int multiplier;
 
   public City(PieceData pieceData, BankResourceDistributor bankResourceDistributor, ScoreTracker ownerVictoryPointsTracker) {
     super(pieceData, bankResourceDistributor);
     this.ownerVictoryPointsTracker = ownerVictoryPointsTracker;
-    this.multiplier = 2;
   }
 
   @Override
