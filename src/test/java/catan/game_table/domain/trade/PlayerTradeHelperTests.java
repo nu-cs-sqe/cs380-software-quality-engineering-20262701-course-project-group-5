@@ -326,6 +326,18 @@ class PlayerTradeHelperTests {
         assertCounterRejectedWithOriginalPending(Color.BLUE, original, counter);
     }
 
+    //we don't do validation in ResourceStack to prevent negative quantities
+    @Test
+    void CounterTrade_WhenOfferedStackHasNegativeQuantity_RejectsCounterWithoutSideEffects()
+            throws InvalidTradeException {
+        TradeOffer original = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer counter = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(new BrickResourceStack(2)), List.of(new OreResourceStack(-1)));
+
+        assertCounterRejectedWithOriginalPending(Color.BLUE, original, counter);
+    }
+
     // tests for acceptTrade()
     @Test
     void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()

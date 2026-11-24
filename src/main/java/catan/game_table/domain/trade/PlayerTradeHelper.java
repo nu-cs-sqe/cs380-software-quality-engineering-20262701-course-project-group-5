@@ -43,7 +43,7 @@ public class PlayerTradeHelper extends Observed {
         if (actor != original.getReceiver() || !activeTradeOffers.contains(original)) {
             throw new InvalidTradeException();
         }
-        if (counter.getProposer() != actor || counter.getReceiver() != original.getProposer()) {
+        if (!hasReversedParties(original, counter) || !hasValidTradeTerms(counter)) {
             throw new InvalidTradeException();
         }
         activeTradeOffers.remove(original);
@@ -65,6 +65,10 @@ public class PlayerTradeHelper extends Observed {
         }
         activeTradeOffers.clear();
         notifyObservers();
+    }
+
+    private boolean hasReversedParties(TradeOffer original, TradeOffer counter) {
+        return counter.getProposer() == original.getReceiver() && counter.getReceiver() == original.getProposer();
     }
 
     private boolean isPendingOfferForReceiver(Color actor, TradeOffer offer) {
