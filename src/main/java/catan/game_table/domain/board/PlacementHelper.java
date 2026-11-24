@@ -70,9 +70,9 @@ public class PlacementHelper extends Observed {
     }
 
     public Set<Hex> getValidRobberSpots() {
-
-        return new HashSet<>(gameBoard.getLandHexes());
-
+        Set<Hex> validHexes = new HashSet<>(gameBoard.getLandHexes());
+        validHexes.removeIf(hex -> locationHasPieceOfType(hex, PieceType.ROBBER));
+        return validHexes;
     }
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {

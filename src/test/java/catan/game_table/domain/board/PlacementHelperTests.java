@@ -1342,6 +1342,33 @@ public class PlacementHelperTests {
     }
 
     @Test
+    public void GetValidRobberSpots_GivenRobberPlacedOnHex_ExpectOtherLandHexes() {
+
+        Piece robber = makePieceMock(PieceType.ROBBER, Color.NONE);
+
+        Hex hex1 = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex1.getPieces()).andStubReturn(List.of(robber));
+        Hex hex2 = EasyMock.createMock(Hex.class);
+        EasyMock.expect(hex2.getPieces()).andStubReturn(List.of());
+        EasyMock.replay(hex1, hex2);
+
+        GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
+        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(Set.of(hex1, hex2));
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Hex> actualHexes = placementHelper.getValidRobberSpots();
+        Set<Hex> expectedHexes = Set.of(hex2);
+
+        assertEquals(expectedHexes, actualHexes);
+
+    }
+
+    @Test
     public void Place_GivenSettlement_AndValidVertex_ExpectSettlementPlacedAtVertex() {
 
         Color playerColor = Color.RED;
