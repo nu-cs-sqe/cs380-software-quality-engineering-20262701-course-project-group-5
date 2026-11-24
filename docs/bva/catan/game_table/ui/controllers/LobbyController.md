@@ -1,10 +1,10 @@
-# Abstract Class LobbyController
+# Class LobbyController
 
 Classpath: catan.game_table.ui.controllers.LobbyController
 
 ## `public class LobbyController`
 
-The `LobbyController` links the `LobbyView`, `Main`, and `GameSetup` classes. The controller triggers the `LobbyView` to populate when given the signal from `Main` and allows users to input what color player they want to be. Once the players enter this information, `LobbyView` prompts `LobbyController` to route it back to `Main` and on to `GameSetup`.
+The `LobbyController` links the `LobbyView`, `Main`, and `GameSetup` classes. When changes to player number, color selection, or language are made in `LobbyView`, the `LobbyController` triggers the view to update. Once the players enter all the relevant information and hit start, `LobbyView` prompts `LobbyController` to route it on to `GameSetup` to create a `GameSession` before calling back to `Main` to return the newly instantiated session.
 
 ### `private void onStart(List<PlayerData> players)`
 
