@@ -223,6 +223,7 @@ class PlayerTradeHelperTests {
     // tests for counterTrade()
 
     //integration testing used, because methods check resource type and positive quantities
+    //use real TradeOffer objects to use exercise its equality
     @Test
     void CounterTrade_WhenBothPlayersCounter_ReplacesOnlyTheAnsweredOffer() throws InvalidTradeException {
         TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
@@ -265,6 +266,32 @@ class PlayerTradeHelperTests {
         assertFalse(redCounter.isAccepted());
         assertFalse(unrelatedOffer.isAccepted());
         assertEquals(List.of(offersAfterBlueCounter, offersAfterRedCounter), observedOffers);
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
+    @Test
+    void CounterTrade_WhenOriginalIsAnUnregisteredCopy_RejectsCounterWithoutSideEffects()
+            throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        List<ResourceStack> requested = List.of(new OreResourceStack(1));
+        List<ResourceStack> offered = List.of(new BrickResourceStack(1));
+        TradeOffer original = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        TradeOffer unregisteredCopy = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        TradeOffer counter = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(new BrickResourceStack(2)), List.of(new OreResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, original);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.counterTrade(Color.BLUE, unregisteredCopy, counter));
+
+        assertEquals(Set.of(original), helper.getActiveTradeOffers());
+        assertFalse(original.isAccepted());
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
