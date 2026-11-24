@@ -1,7 +1,7 @@
 # Class PlacementHelper
 Classpath: catan.game_table.domain.board.PlacementHelper
 
-## `public class PlacementHelper`
+## `public class PlacementHelper extends Observed`
 Helper that decides where pieces may legally be placed and performs placement on the `GameBoard`.
 
 ### `public PlacementHelper(GameBoard board, GamePhaseHolder gamePhaseHolder)`
@@ -9,10 +9,10 @@ Initializes a PlacementHelper for `board` and with access to the `GamePhase` pro
 
 ### TODO: getValidHexSpot(Piece piece) for the robber probably
 
-### `public Set<Point> getValidBuildingSpots(Color color)`
+### `Set<Vertex> getValidBuildingSpots(Color color)`
 Returns vertices where the player with `color` may place a building. A vertex is valid if it is unoccupied and no adjacent vertex has a building (using the distance rule). In `REGULAR` phase it must also connect to one of that player's own roads. In `SETUP` phase no road is required.
 
-### `public Set<Set<Point>> getValidRoadSpots(Color color)`
+### `Set<Edge> getValidRoadSpots(Color color)`
 Returns unoccupied edges where the player with `color` may place a road. In `REGULAR` phase the edge must connect to that player's own pieces. In `SETUP` phase the edge must touch the settlement just placed.
 
 ### `public void place(Piece piece, Location location) throws InvalidPlacementException`
@@ -26,7 +26,7 @@ On success, a `Settlement`, `Road` or `City` is placed on the board and removed 
 
 Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpots` (the active player's color). I use Red for active player's color and Blue for an opponent (arbitrary).
 
-### Test: `public List<Vertex> getValidBuildingSpots(Color color)`
+### Test: `Set<Vertex> getValidBuildingSpots(Color color)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
@@ -73,7 +73,7 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 | Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all vertices, B appearing once                                                                     | :white_check_mark: |
 | Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :white_check_mark: |
 
-### Test: `public List<Edge> getValidRoadSpots(Color color)`
+### Test: `Set<Edge> getValidRoadSpots(Color color)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
