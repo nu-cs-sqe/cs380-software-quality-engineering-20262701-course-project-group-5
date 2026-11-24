@@ -1,7 +1,7 @@
 package catan.game_table.domain.resource;
 
 public class OreResourceStack extends ResourceStack {
-    public OreResourceStack(int size){
+    public OreResourceStack(int size) {
         super(size);
     }
 

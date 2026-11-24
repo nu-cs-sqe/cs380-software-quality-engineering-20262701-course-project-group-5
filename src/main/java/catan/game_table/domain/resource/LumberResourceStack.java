@@ -1,7 +1,7 @@
 package catan.game_table.domain.resource;
 
 public class LumberResourceStack extends ResourceStack {
-    public LumberResourceStack(int size){
+    public LumberResourceStack(int size) {
         super(size);
     }
 
