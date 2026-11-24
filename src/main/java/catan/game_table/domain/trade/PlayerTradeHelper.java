@@ -18,7 +18,7 @@ public class PlayerTradeHelper extends Observed {
     private final TradeTurnContext turnContext;
 
     public PlayerTradeHelper(Map<Color, ResourceInventory> playerInventories, TradeTurnContext turnContext) {
-        this.playerInventories = playerInventories;
+        this.playerInventories = Map.copyOf(playerInventories);
         this.turnContext = turnContext;
     }
 
