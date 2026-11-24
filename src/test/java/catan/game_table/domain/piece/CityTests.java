@@ -15,7 +15,7 @@ import java.util.List;
 public class CityTests {
     //produce(products : ResourceProducts)
     @Test
-    public void ProduceResources_ValidProducts_VerifyCorrectFunctionCall() {
+    public void ProduceResources_ValidProducts_ForwardsProductsWithPieceColorToBank() {
         PieceData pieceData = new PieceData(Color.RED, PieceType.CITY);
         BankResourceDistributor bankResourceDistributor = EasyMock.createMock(BankResourceDistributor.class);
         ScoreTracker ownerVictoryPointsTracker = EasyMock.createMock(ScoreTracker.class);
