@@ -5,12 +5,13 @@ import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.exception.InvalidPlacementException;
 import catan.game_table.domain.piece.*;
+import catan.mvc_util.Observed;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PlacementHelper {
+public class PlacementHelper extends Observed {
 
     private final GameBoard gameBoard;
     private final GamePhaseHolder gamePhaseHolder;

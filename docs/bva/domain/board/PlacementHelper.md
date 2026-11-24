@@ -9,9 +9,13 @@ Initializes a PlacementHelper for `board` and with access to the `GamePhase` pro
 
 ### TODO: getValidHexSpot(Piece piece) for the robber probably
 
-### `Set<Location> getValidPlacements(Piece piece)`
+### `public void cacheValidSpots(Piece piece)`
 
-Returns location where the given `piece` can be placed using the `GameBoard` instance.
+Saves the locations where the given `piece` can be placed using the `GameBoard` instance, and notifies observers.
+
+### `public Set<Location> getSavedValidSpots()`
+
+Returns the last saved set of valid locations for the piece that `cacheValidSpots(…)` was called with.
 
 ### `Set<Vertex> getValidSettlementSpots(Color color)`
 
@@ -27,6 +31,11 @@ the player's own settlement is present at the vertex. In `SETUP` phase no locati
 ### `Set<Edge> getValidRoadSpots(Color color)`
 Returns unoccupied edges where the player with `color` may place a road. In `REGULAR` phase the edge must connect to that player's own pieces. In `SETUP` phase the edge must touch the settlement just placed.
 
+### `Set<Hex> getValidRobberSpots()`
+
+Returns `Hex`es that a `Robber` piece can be placed on, which equates to all but the `Hex` currently occupied by a
+`Robber`.
+
 ### `public void place(Piece piece, Location location) throws InvalidPlacementException`
 Places `piece` at `location` via the board. Throws the checked exception `InvalidPlacementException` if `location` is not currently a valid spot for `piece`. A spot is valid only if all of these hold: `location` is on this board; the piece type fits the location type (`Road` and `Harbor` on `Edge` only; `Settlement` and `City` on `Vertex` only; `Robber` on `Hex` only); and `location` does not already hold a second building (`Settlement`/`City`), `Road` or `Harbor`.
 A `City` is valid only on a vertex holding the active player's own `Settlement`. A `Road` and a `Harbor` may share an `Edge`.
@@ -38,6 +47,16 @@ On success, a `Settlement`, `Road` or `City` is placed on the board and removed 
 
 Own refers to the `color` passed to `getValidSettlementSpots` and `getValidRoadSpots` (the active player's color). I use
 Red for active player's color and Blue for an opponent (arbitrary).
+
+### Test: `cacheValidSpots(Piece piece)`
+
+|             | Input                       | Expected output                                                             | Implemented? |
+|-------------|-----------------------------|-----------------------------------------------------------------------------|--------------|
+| Test Case 1 | piece is a `RED` Settlement | `getValidSettlementSpots()` is called with `RED`, result saved              | :x:          |
+| Test Case 2 | piece is a `BLUE` Road      | `getValidRoadSpots()` is called with `BLUE`, result saved                   | :x:          |
+| Test Case 3 | piece is a `WHITE` City     | `getValidCitySpots()` is called with `WHITE`, result saved                  | :x:          |
+| Test Case 4 | piece is a Robber           | `getValidRobberSpots()` is called, result saved                             | :x:          |
+| Test Case 5 | piece is a Harbor           | `IllegalArgumentException` "No input validation exists for this piece type" | :x:          |
 
 ### Test: `Set<Vertex> getValidSettlementSpots(Color color)`
 
@@ -133,31 +152,34 @@ Each choice for all else.
 ### Test: `Set<Edge> getValidRoadSpots(Color color)`
 
 **Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
+
+| Inputs                                                                                                                                                                                 | Outputs                                                                                                    |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
 | `color : Color`; state: `gamePhase`, whether each edge is occupied, the pieces touching each edge (how many belong to `color`, and who owns them), the settlement just placed in SETUP | `List<Edge>`. The tests check which edges are returned: empty, exactly one element, more than one element. |
 
 **Step 2: Data types**
-| Variable | Type |
-|---|---|
-| `color` | Cases (RED, Not RED) |
-| `gamePhase` | Cases (SETUP, REGULAR) |
-| own pieces touching edge | Count |
-| owner of a piece touching edge | Cases (own, other color) |
-| edge occupied | Boolean |
-| edge touches the just-placed settlement (SETUP) | Boolean |
-| returned list (output) | Collection |
+
+| Variable                                        | Type                     |
+|-------------------------------------------------|--------------------------|
+| `color`                                         | Cases (RED, Not RED)     |
+| `gamePhase`                                     | Cases (SETUP, REGULAR)   |
+| own pieces touching edge                        | Count                    |
+| owner of a piece touching edge                  | Cases (own, other color) |
+| edge occupied                                   | Boolean                  |
+| edge touches the just-placed settlement (SETUP) | Boolean                  |
+| returned list (output)                          | Collection               |
 
 **Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| `color` | RED, BLUE (the other player colors behave the same) |
-| `gamePhase` | SETUP, REGULAR |
-| own pieces touching edge | 0, 1, more than one (a building at one end plus a road at the other) |
-| owner of a piece touching edge | own, other color |
-| edge occupied | true, false |
-| edge touches the just-placed settlement | true, false |
-| returned list (output) | empty, exactly one element, more than one element, maximum (3 in SETUP since a vertex has 3 max edges) |
+
+| Variable                                | Values                                                                                                 |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `color`                                 | RED, BLUE (the other player colors behave the same)                                                    |
+| `gamePhase`                             | SETUP, REGULAR                                                                                         |
+| own pieces touching edge                | 0, 1, more than one (a building at one end plus a road at the other)                                   |
+| owner of a piece touching edge          | own, other color                                                                                       |
+| edge occupied                           | true, false                                                                                            |
+| edge touches the just-placed settlement | true, false                                                                                            |
+| returned list (output)                  | empty, exactly one element, more than one element, maximum (3 in SETUP since a vertex has 3 max edges) |
 
 **Step 4: All combinations** of `gamePhase` x own pieces touching edge since the rules differ by phase, except SETUP with "more than one" (only the just-placed settlement matters in SETUP). Each choice for the rest.
 
@@ -175,36 +197,48 @@ Each choice for all else.
 | Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free                                  | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :white_check_mark: |
 | Test Case 11 | REGULAR, called with `RED`, one `RED` road adjacent to a `BLUE` settlement                                   | only the free edges not adjacent to the settlement                                              | :white_check_mark: |
 
+### Test: `Set<Hex> getValidRobberSpots()`
+
+Test board will have only 2 hexes.
+
+|             | Input                  | Expected output     | Implemented? |
+|-------------|------------------------|---------------------|--------------|
+| Test Case 1 | empty board            | all hexes           | :x:          |
+| Test Case 2 | robber placed on hex A | all hexes but hex A | :x:          |
+
 ### Test: `public void place(Piece piece, Location location)`
 
 **Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
+
+| Inputs                                                                                                                                                                   | Outputs                                                                                                                                                                |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `piece : Piece`, `location : Location`; state: the valid-spot list for that piece, the pieces already at the location (for Cities, we need to check owner of Settlement) | No return value. Outcome is one of: `InvalidPlacementException` (board and player inventory unchanged), piece placed (board and player inventory updated, see Step 4). |
 
 **Step 2: Data types**
-| Variable | Type |
-|---|---|
-| `piece` | Cases (Settlement, City, Road, Harbor, Robber) |
-| `location` | Cases (Vertex, Edge, Hex) |
-| location on this board | Boolean |
-| piece already at location | Cases (none, Settlement, City, Road, Harbor) |
-| valid-spot list | Collection |
-| owner of the `Settlement` at `location` (when placing a City) | Cases (own, other color) |
-| outcome (output) | Cases |
+
+| Variable                                                      | Type                                           |
+|---------------------------------------------------------------|------------------------------------------------|
+| `piece`                                                       | Cases (Settlement, City, Road, Harbor, Robber) |
+| `location`                                                    | Cases (Vertex, Edge, Hex)                      |
+| location on this board                                        | Boolean                                        |
+| piece already at location                                     | Cases (none, Settlement, City, Road, Harbor)   |
+| valid-spot list                                               | Collection                                     |
+| owner of the `Settlement` at `location` (when placing a City) | Cases (own, other color)                       |
+| outcome (output)                                              | Cases                                          |
 
 **Operations:** Searching (the valid-spot list for `location`)
 
 **Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| `piece` | Settlement, City, Road, Harbor, Robber |
-| `location` | Vertex, Edge, Hex |
-| location on this board | true, false |
-| piece already at location | none, Settlement, City, Road, Harbor |
-| valid-spot list | `location` not found, exactly one match, exactly one match in first position, exactly one match in last position |
-| owner of the `Settlement` at `location` (when placing a City) | own, other color |
-| outcome (output) | InvalidPlacementException, piece placed |
+
+| Variable                                                      | Values                                                                                                           |
+|---------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `piece`                                                       | Settlement, City, Road, Harbor, Robber                                                                           |
+| `location`                                                    | Vertex, Edge, Hex                                                                                                |
+| location on this board                                        | true, false                                                                                                      |
+| piece already at location                                     | none, Settlement, City, Road, Harbor                                                                             |
+| valid-spot list                                               | `location` not found, exactly one match, exactly one match in first position, exactly one match in last position |
+| owner of the `Settlement` at `location` (when placing a City) | own, other color                                                                                                 |
+| outcome (output)                                              | InvalidPlacementException, piece placed                                                                          |
 
 **Step 4**
 All combinations of piece type (Settlement, City, Road, Harbor, Robber) x location type (Vertex, Edge, Hex). Each choice for everything else.
