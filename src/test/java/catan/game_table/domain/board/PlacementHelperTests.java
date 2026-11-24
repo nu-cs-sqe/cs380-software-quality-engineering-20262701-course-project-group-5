@@ -661,6 +661,45 @@ public class PlacementHelperTests {
     }
 
     @Test
+    public void GetValidCitySpots_GivenRed_AndRegularPhase_AndRedSettlementPlaced_ExpectSettlementVertex() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.REGULAR;
+
+        Piece settlement = makePieceMock(PieceType.SETTLEMENT, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
+        Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(settlement));
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("F", "A")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+        EasyMock.replay(gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Vertex> actualVertices = placementHelper.getValidCitySpots(playerColor);
+        Set<String> expectedVertexNames = Set.of("A");
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        assertEquals(expectedVertices, actualVertices);
+
+    }
+
+    @Test
     public void GetValidRoadSpots_GivenRed_AndSetupPhase_AndRedSettlementPlaced_ExpectSettlementAdjacentEdges() {
 
         Color playerColor = Color.RED;

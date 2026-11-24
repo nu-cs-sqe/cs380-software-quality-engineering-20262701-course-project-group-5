@@ -144,7 +144,7 @@ Each choice for all else.
 | Test Case 1 | SETUP, called with `RED`, empty board                                                              | empty list               | :white_check_mark: |
 | Test Case 2 | REGULAR, called with `RED`, empty board                                                            | empty list               | :white_check_mark: |
 | Test Case 3 | SETUP, called with `RED`, a `RED` settlement on vertex V                                           | empty list               | :white_check_mark: |
-| Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on vertex V                                         | list containing vertex V | :x:                |
+| Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on vertex V                                         | list containing vertex V | :white_check_mark: |
 | Test Case 5 | REGULAR, called with `RED`, two `RED` settlements on vertex A and B                                | exactly `[A, B]`         | :x:                |
 | Test Case 6 | REGULAR, called with `RED`, one `RED` settlement on vertex A and one `BLUE` settlement on vertex B | list containing vertex A | :x:                |
 | Test Case 7 | REGULAR, called with `RED`, one `RED` city on vertex A and one `BLUE` city on vertex B             | empty list               | :x:                |

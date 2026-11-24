@@ -39,9 +39,14 @@ public class PlacementHelper extends Observed {
     public Set<Vertex> getValidCitySpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
+
+        if (gamePhase == GamePhase.SETUP) {
+            return new HashSet<>();
+        }
+
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
 
-        validVertices.removeIf(vertex -> true);
+        validVertices.removeIf(vertex -> !vertexHasSettlementOfColor(vertex, color));
 
         return validVertices;
 
@@ -115,6 +120,16 @@ public class PlacementHelper extends Observed {
         List<Piece> pieces = vertex.getPieces();
         for (Piece existingPiece : pieces) {
             if (existingPiece instanceof Settlement && existingPiece.getPieceData().getColor() == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean vertexHasSettlementOfColor(Vertex vertex, Color color) {
+        List<Piece> pieces = vertex.getPieces();
+        for (Piece piece : pieces) {
+            if (piece instanceof Settlement && piece.getPieceData().getColor() == color) {
                 return true;
             }
         }
