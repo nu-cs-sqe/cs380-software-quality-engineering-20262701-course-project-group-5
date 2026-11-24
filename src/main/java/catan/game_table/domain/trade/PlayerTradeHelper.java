@@ -47,6 +47,9 @@ public class PlayerTradeHelper extends Observed {
         notifyObservers();
     }
 
+    public void expireTradeOffers() {
+    }
+
     private boolean isPendingOfferForReceiver(Color actor, TradeOffer offer) {
         return actor == offer.getReceiver() && isPendingOffer(offer);
     }

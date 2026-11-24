@@ -297,6 +297,24 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    // tests for expireTradeOffers()
+    @Test
+    void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, false);
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.addObserver(observer);
+
+        helper.expireTradeOffers();
+
+        assertTrue(helper.getActiveTradeOffers().isEmpty());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     private static void assertProposalRejectedWithoutSideEffects(Color actor, TradeOffer offer,
                                                                  TradeTurnContext turnContext) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
