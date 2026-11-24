@@ -30,7 +30,7 @@ public class PlayerTradeHelper extends Observed {
         if (!isActivePlayerOnOpenTurn(actor) || actor != offer.getProposer()) {
             throw new InvalidTradeException();
         }
-        if (!isValidPlayerTrade(offer)) {
+        if (offer.isAccepted() || !isValidPlayerTrade(offer)) {
             throw new InvalidTradeException();
         }
         if (!activeTradeOffers.add(offer)) {

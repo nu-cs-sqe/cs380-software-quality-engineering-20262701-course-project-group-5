@@ -163,6 +163,34 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void ProposeTrade_WhenAcceptedOfferHasExpired_RejectsResubmission() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.acceptTrade(Color.BLUE, offer);
+        resetTurnContext(turnContext, Color.RED, false);
+        helper.expireTradeOffers();
+        assertTrue(helper.getActiveTradeOffers().isEmpty());
+        assertTrue(offer.isAccepted());
+
+        resetTurnContext(turnContext, Color.RED, true);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.proposeTrade(Color.RED, offer));
+
+        assertTrue(helper.getActiveTradeOffers().isEmpty());
+        assertTrue(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for acceptTrade()
     @Test
     void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()
@@ -260,7 +288,7 @@ class PlayerTradeHelperTests {
         helper.proposeTrade(Color.RED, offer);
         helper.addObserver(observer);
 
-        closeTrading(turnContext, Color.RED);
+        resetTurnContext(turnContext, Color.RED, false);
 
         assertThrows(InvalidTradeException.class, () -> helper.acceptTrade(Color.BLUE, offer));
 
@@ -327,7 +355,7 @@ class PlayerTradeHelperTests {
         helper.proposeTrade(Color.RED, acceptedOffer);
         helper.proposeTrade(Color.RED, unansweredOffer);
         helper.acceptTrade(Color.BLUE, acceptedOffer);
-        closeTrading(turnContext, Color.RED);
+        resetTurnContext(turnContext, Color.RED, false);
 
         Observer observer = EasyMock.createMock(Observer.class);
         observer.update();
@@ -369,9 +397,9 @@ class PlayerTradeHelperTests {
         return turnContext;
     }
 
-    private static void closeTrading(TradeTurnContext turnContext, Color activePlayer) {
+    private static void resetTurnContext(TradeTurnContext turnContext, Color activePlayer, boolean tradingOpen) {
         EasyMock.reset(turnContext);
-        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(false);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(tradingOpen);
         EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(activePlayer);
         EasyMock.replay(turnContext);
     }
