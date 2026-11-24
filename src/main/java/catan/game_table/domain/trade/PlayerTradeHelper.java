@@ -39,18 +39,16 @@ public class PlayerTradeHelper extends Observed {
         notifyObservers();
     }
 
-    public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException {
-        if (!turnContext.isTradingOpen()) {
+    public void counterTrade(Color actor, TradeOffer originalOffer, TradeOffer counterOffer)
+            throws InvalidTradeException {
+        if (!turnContext.isTradingOpen() || !isPendingOfferForReceiver(actor, originalOffer)) {
             throw new InvalidTradeException();
         }
-        if (actor != original.getReceiver() || !activeTradeOffers.contains(original)) {
+        if (!hasReversedParties(originalOffer, counterOffer) || !hasValidTradeTerms(counterOffer)) {
             throw new InvalidTradeException();
         }
-        if (!hasReversedParties(original, counter) || !hasValidTradeTerms(counter)) {
-            throw new InvalidTradeException();
-        }
-        activeTradeOffers.remove(original);
-        activeTradeOffers.add(counter);
+        activeTradeOffers.remove(originalOffer);
+        activeTradeOffers.add(counterOffer);
         notifyObservers();
     }
 
@@ -70,8 +68,9 @@ public class PlayerTradeHelper extends Observed {
         notifyObservers();
     }
 
-    private boolean hasReversedParties(TradeOffer original, TradeOffer counter) {
-        return counter.getProposer() == original.getReceiver() && counter.getReceiver() == original.getProposer();
+    private boolean hasReversedParties(TradeOffer originalOffer, TradeOffer counterOffer) {
+        return counterOffer.getProposer() == originalOffer.getReceiver()
+                && counterOffer.getReceiver() == originalOffer.getProposer();
     }
 
     private boolean isPendingOfferForReceiver(Color actor, TradeOffer offer) {

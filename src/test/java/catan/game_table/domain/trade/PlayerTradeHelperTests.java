@@ -362,6 +362,30 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void CounterTrade_WhenOriginalIsAccepted_RejectsCounterWithoutSideEffects() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer original = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer counter = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(new BrickResourceStack(2)), List.of(new OreResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, original);
+        helper.acceptTrade(Color.BLUE, original);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.counterTrade(Color.BLUE, original, counter));
+
+        assertEquals(Set.of(original), helper.getActiveTradeOffers());
+        assertTrue(original.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for acceptTrade()
     @Test
     void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()
