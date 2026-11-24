@@ -271,4 +271,4 @@ Deleting all entries from the set.
 |             | Inputs                                                                                     | Expected output                                                                                | Implemented?       |
 |-------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------|
 | Test Case 1 | Expire offers at turn end with no active offers.                                           | The active-offer set stays empty, inventories stay unchanged, and observers receive no update. | :white_check_mark: |
-| Test Case 2 | Expire offers after trading closes at turn end with one accepted and one unanswered offer. | Both offers are removed, and observers see the empty set without any cards moving.             | :x:                |
+| Test Case 2 | Expire offers after trading closes at turn end with one accepted and one unanswered offer. | Both offers are removed, and observers see the empty set without any cards moving.             | :white_check_mark: |
