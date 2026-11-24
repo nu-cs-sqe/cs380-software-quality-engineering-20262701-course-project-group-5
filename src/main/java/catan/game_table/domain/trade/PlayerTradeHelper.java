@@ -43,7 +43,7 @@ public class PlayerTradeHelper extends Observed {
         if (actor != original.getReceiver() || !activeTradeOffers.contains(original)) {
             throw new InvalidTradeException();
         }
-        if (counter.getReceiver() != original.getProposer()) {
+        if (counter.getProposer() != actor || counter.getReceiver() != original.getProposer()) {
             throw new InvalidTradeException();
         }
         activeTradeOffers.remove(original);
