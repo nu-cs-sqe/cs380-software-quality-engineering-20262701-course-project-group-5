@@ -20,7 +20,7 @@ public class PlacementHelper {
         this.gamePhaseHolder = gamePhaseHolder;
     }
 
-    public Set<Vertex> getValidBuildingSpots(Color color) {
+    public Set<Vertex> getValidSettlementSpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());

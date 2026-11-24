@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlacementHelperTests {
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndEmptyBoard_ExpectAllLandVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndEmptyBoard_ExpectAllLandVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -43,7 +43,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -52,7 +52,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndEmptyBoard_ExpectNoVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndEmptyBoard_ExpectNoVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -80,7 +80,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of();
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -89,7 +89,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndRedSettlementPlaced_ExpectVerticesTwoAwayFromSettlement() {
+    public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndRedSettlementPlaced_ExpectVerticesTwoAwayFromSettlement() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -119,7 +119,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("C", "D", "E");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -128,7 +128,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndRedRoadPlaced_ExpectRoadAdjacentVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndRedRoadPlaced_ExpectRoadAdjacentVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -158,7 +158,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("C", "D");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -167,7 +167,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndRedRoadPlaced_AndBlueSettlementOnRoad_ExpectNoVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndRedRoadPlaced_AndBlueSettlementOnRoad_ExpectNoVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -198,7 +198,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of();
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -207,7 +207,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndTwoSeparateRedRoadsPlaced_ExpectRoadAdjacentVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndTwoSeparateRedRoadsPlaced_ExpectRoadAdjacentVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -241,7 +241,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("A", "C", "D", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -250,7 +250,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndTwoConnectedRedRoadsPlaced_ExpectRoadAdjacentVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndTwoConnectedRedRoadsPlaced_ExpectRoadAdjacentVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -284,7 +284,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("C", "D", "E");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -293,7 +293,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndNoOpenBuildingSpotsDueToDistanceRule_ExpectNoVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndNoOpenBuildingSpotsDueToDistanceRule_ExpectNoVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -329,7 +329,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of();
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -338,7 +338,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndBlueRoadPlaced_ExpectNoVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndBlueRoadPlaced_ExpectNoVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -370,7 +370,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of();
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -379,7 +379,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndRegularPhase_AndRedSettlementPlusTwoLinearRoadsPlaced_ExpectVertexAtEndOfRoads() {
+    public void GetValidSettlementSpots_GivenRed_AndRegularPhase_AndRedSettlementPlusTwoLinearRoadsPlaced_ExpectVertexAtEndOfRoads() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -414,7 +414,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("C");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -423,7 +423,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndRedRoadPlaced_ExpectAllLandVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndRedRoadPlaced_ExpectAllLandVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -455,7 +455,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -464,7 +464,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenRed_AndSetupPhase_AndTwoConnectedRedRoadsPlaced_ExpectAllLandVertices() {
+    public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndTwoConnectedRedRoadsPlaced_ExpectAllLandVertices() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -498,7 +498,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
@@ -507,7 +507,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void GetValidBuildingSpots_GivenBlue_AndRegularPhase_AndBlueRoadPlaced_ExpectRoadAdjacentVertices() {
+    public void GetValidSettlementSpots_GivenBlue_AndRegularPhase_AndBlueRoadPlaced_ExpectRoadAdjacentVertices() {
 
         Color playerColor = Color.BLUE;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -539,7 +539,7 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
 
-        Set<Vertex> actualVertices = placementHelper.getValidBuildingSpots(playerColor);
+        Set<Vertex> actualVertices = placementHelper.getValidSettlementSpots(playerColor);
         Set<String> expectedVertexNames = Set.of("A", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
