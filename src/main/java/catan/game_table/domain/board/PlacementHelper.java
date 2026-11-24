@@ -36,6 +36,17 @@ public class PlacementHelper extends Observed {
 
     }
 
+    public Set<Vertex> getValidCitySpots(Color color) {
+
+        GamePhase gamePhase = gamePhaseHolder.getGamePhase();
+        Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
+
+        validVertices.removeIf(vertex -> true);
+
+        return validVertices;
+
+    }
+
     Set<Edge> getValidRoadSpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
