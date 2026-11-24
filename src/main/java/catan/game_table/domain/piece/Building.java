@@ -5,7 +5,7 @@ import catan.game_table.domain.resource.ResourceStack;
 
 import java.util.List;
 
-public class Building extends Piece {
+public abstract class Building extends Piece {
   protected PieceData pieceData;
   protected BankResourceDistributor bankResourceDistributor;
 
@@ -14,6 +14,5 @@ public class Building extends Piece {
     this.bankResourceDistributor = bankResourceDistributor;
   }
 
-  public void produceResources(List<ResourceStack> products) {
-  }
+  public abstract void produceResources(List<ResourceStack> products);
 }
