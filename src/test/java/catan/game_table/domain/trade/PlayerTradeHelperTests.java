@@ -11,6 +11,7 @@ import catan.mvc_util.Observer;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -217,6 +218,54 @@ class PlayerTradeHelperTests {
         assertThrows(UnsupportedOperationException.class, activeOffers::clear);
         assertEquals(expectedOffers, helper.getActiveTradeOffers());
         EasyMock.verify(redInventory, blueInventory);
+    }
+
+    // tests for counterTrade()
+
+    //integration testing used, because methods check resource type and positive quantities
+    @Test
+    void CounterTrade_WhenBothPlayersCounter_ReplacesOnlyTheAnsweredOffer() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer originalOffer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer unrelatedOffer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new LumberResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer blueCounter = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(new BrickResourceStack(2)), List.of(new OreResourceStack(1)));
+        TradeOffer redCounter = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(2)), List.of(new BrickResourceStack(2)));
+
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, originalOffer);
+        helper.proposeTrade(Color.RED, unrelatedOffer);
+
+        List<Set<TradeOffer>> observedOffers = new ArrayList<>();
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().andAnswer(() -> {
+            observedOffers.add(helper.getActiveTradeOffers());
+            return null;
+        }).times(2);
+        EasyMock.replay(observer);
+        helper.addObserver(observer);
+
+        helper.counterTrade(Color.BLUE, originalOffer, blueCounter);
+        Set<TradeOffer> offersAfterBlueCounter = Set.of(blueCounter, unrelatedOffer);
+        assertEquals(offersAfterBlueCounter, helper.getActiveTradeOffers());
+        assertFalse(blueCounter.isAccepted());
+
+        helper.counterTrade(Color.RED, blueCounter, redCounter);
+
+        Set<TradeOffer> offersAfterRedCounter = Set.of(redCounter, unrelatedOffer);
+        assertEquals(offersAfterRedCounter, helper.getActiveTradeOffers());
+        assertFalse(redCounter.isAccepted());
+        assertFalse(unrelatedOffer.isAccepted());
+        assertEquals(List.of(offersAfterBlueCounter, offersAfterRedCounter), observedOffers);
+        EasyMock.verify(observer, redInventory, blueInventory);
     }
 
     // tests for acceptTrade()
