@@ -16,6 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlayerTradeHelperTests {
@@ -29,17 +30,9 @@ class PlayerTradeHelperTests {
         ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
         EasyMock.expect(redInventory.hasResources(brick)).andStubReturn(false);
 
-        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
-        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
-        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
-
-        TradeOffer offer = EasyMock.createMock(TradeOffer.class);
-        EasyMock.expect(offer.getProposer()).andStubReturn(Color.RED);
-        EasyMock.expect(offer.getReceiver()).andStubReturn(Color.BLUE);
-        EasyMock.expect(offer.getOfferedResources()).andStubReturn(List.of(brick));
-        EasyMock.expect(offer.getRequestedResources()).andStubReturn(List.of(ore));
-        EasyMock.expect(offer.isAccepted()).andStubReturn(false);
-        EasyMock.replay(redInventory, blueInventory, turnContext, offer);
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = stubUnansweredOffer(Color.RED, Color.BLUE, List.of(brick), List.of(ore));
+        EasyMock.replay(redInventory, blueInventory);
 
         PlayerTradeHelper helper = new PlayerTradeHelper(
                 Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
@@ -58,5 +51,45 @@ class PlayerTradeHelperTests {
         assertEquals(Set.of(offer), helper.getActiveTradeOffers());
         assertFalse(offer.isAccepted());
         EasyMock.verify(observer, redInventory, blueInventory, offer);
+    }
+
+    @Test
+    void ProposeTrade_AfterTradingCloses_RejectsOfferWithoutSideEffects() {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, false);
+        TradeOffer offer = stubUnansweredOffer(Color.RED, Color.BLUE,
+                List.of(new BrickResourceStack(1)), List.of(new OreResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.addObserver(observer);
+        Set<TradeOffer> previousOffers = helper.getActiveTradeOffers();
+
+        assertThrows(InvalidTradeException.class, () -> helper.proposeTrade(Color.RED, offer));
+
+        assertEquals(previousOffers, helper.getActiveTradeOffers());
+        EasyMock.verify(observer, redInventory, blueInventory, offer);
+    }
+
+    private static TradeTurnContext stubTurnContext(Color activePlayer, boolean tradingOpen) {
+        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(tradingOpen);
+        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(activePlayer);
+        EasyMock.replay(turnContext);
+        return turnContext;
+    }
+
+    private static TradeOffer stubUnansweredOffer(Color proposer, Color receiver,
+                                                  List<ResourceStack> offered, List<ResourceStack> requested) {
+        TradeOffer offer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(offer.getProposer()).andStubReturn(proposer);
+        EasyMock.expect(offer.getReceiver()).andStubReturn(receiver);
+        EasyMock.expect(offer.getOfferedResources()).andStubReturn(offered);
+        EasyMock.expect(offer.getRequestedResources()).andStubReturn(requested);
+        EasyMock.expect(offer.isAccepted()).andStubReturn(false);
+        EasyMock.replay(offer);
+        return offer;
     }
 }
