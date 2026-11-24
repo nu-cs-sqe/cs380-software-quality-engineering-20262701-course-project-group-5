@@ -40,9 +40,10 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void counterTrade(Color actor, TradeOffer original, TradeOffer counter) throws InvalidTradeException {
-        if (!activeTradeOffers.remove(original)) {
+        if (actor != original.getReceiver() || !activeTradeOffers.contains(original)) {
             throw new InvalidTradeException();
         }
+        activeTradeOffers.remove(original);
         activeTradeOffers.add(counter);
         notifyObservers();
     }
