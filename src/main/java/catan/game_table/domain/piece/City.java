@@ -18,13 +18,7 @@ public class City extends Building {
 
   @Override
   public void produceResources(List<ResourceStack> products) {
-    ResourceStack resourceStack = products.getFirst();
-    int stackSize = resourceStack.getSize();
-    while (stackSize < stackSize * multiplier) {
-      resourceStack = resourceStack.add(resourceStack);
-      stackSize = resourceStack.getSize();
-    }
-    products.set(0, resourceStack);
+    products.set(0, products.getFirst().add(products.getFirst()));
     Color pieceColor = pieceData.getColor();
     bankResourceDistributor.produceResources(pieceColor, products);
   }
