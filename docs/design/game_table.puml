@@ -185,16 +185,17 @@ package player {
         -{final} placementHelper : PlacementHelper
         -{final} tradeHelper : TradeHelper
         -{final} purchaseHelper : PurchaseHelper
+        -{final} robberyHelper : RobberyHelper
         -awards : List<Award>
-        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
+        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper, purchaseHelper : PurchaseHelper, robberyHelper : RobberyHelper)
         +getInventory() : PlayerInventory
         +rollDice(dice : Dice) : void
         +play(item : Playable) : void
         +buy(item : Buyable) : void
         +getValidPlacements(piece : Piece) : List<Location>
         +place(piece : Piece, location : Location) : void
-        +proposePlayerTrade(otherPlayer : Color, trade : TradeOffer) : void
-        +acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer) : void
+        +proposePlayerTrade(proposer : Color, receiver : Color, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>) : void
+        +acceptPlayerTrade(trade : TradeOffer) : void
         +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void
     }
 
@@ -224,12 +225,13 @@ package trade {
 
     +class TradeHelper {
         -{final} board : GameBoard
-        -activeTradeOffers : Set<TradeOffer>
+        -activeTradeOffers : Map<Color, List<TradeOffer>>
         -playerInventories : Map<Color, ResourceInventory>
         +TradeHelper(gameBoard : GameBoard, playerInventories : Map<Color, ResourceInventory>)
-        +getActiveTradeOffers() : Set<TradeOffer>
-        +conductTrade(trade : TradeOffer) : void
-        +refuseTrade(trade : Trade) : void
+        +getActiveTradeOffers() : Map<Color, List<TradeOffer>>
+        +proposeTrade(proposer : Color, receiver : Color, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>) : void
+        +conductTrade(proposer : Color, receiver : Color) : void
+        +refuseTrade(proposer : Color, receiver : Color) : void
         -isValidTrade(trade : TradeOffer) : boolean
         -isValidPlayerTrade(trade : TradeOffer) : boolean
         -isValidBankTrade(trade : TradeOffer) : boolean
@@ -240,10 +242,8 @@ package trade {
         -{final} offeredResources : List<ResourceStack>
         -{final} proposer : Color
         -{final} receiver : Color
-        -{final} proposerInventory : ResourceInventory
-        -{final} receiverInventory : ResourceInventory
         -accepted : boolean
-        ~TradeOffer(proposer : Color, proposerInventory : ResourceInventory, receiver : Color, receiverInventory : ResourceInventory, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
+        ~TradeOffer(proposer : Color, receiver : Color, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
         +getProposer() : Color
         +getReceiver() : Color
         +isAccepted() : boolean
@@ -529,6 +529,8 @@ GameTableView ..|> Observer
 TradeController --> TradeView
 TradeController ..|> Observer
 TradeView ..|> Observer
+RobberyController ..|> Observer
+RobberyView ..|> Observer
 
 GameTableController --> GamePlayer
 GameTableController --> GameBoard
@@ -548,16 +550,19 @@ TradeController --> TradeHelper
 TradeView --> PlayerData
 
 RobberyController ..> PlayerData
+RobberyController --> RobberyView
 RobberyController --> GamePlayer
 RobberyController --> RobberyHelper
 RobberyView --> PlayerData
 
 TradeHelper --|> Observed
+TradeHelper --> Color
+TradeHelper --> ResourceInventory
 TradeHelper --> ResourceStack
 TradeHelper --> GameBoard
 TradeHelper --> TradeOffer
+TradeOffer --> Color
 TradeOffer --> ResourceStack
-TradeOffer --> ResourceInventory
 
 GameBoard --|> Observed
 Dice --|> Observed
@@ -586,8 +591,9 @@ GamePlayer --> Color
 GamePlayer --> Award
 GamePlayer ..> ResourceStack
 GamePlayer --> PlacementHelper
-GamePlayer ..> TradeOffer
+GamePlayer --> TradeHelper
 GamePlayer --> PurchaseHelper
+GamePlayer --> RobberyHelper
 
 PlacementHelper --> Color
 PlacementHelper --> GameBoard
