@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlayerTradeHelperTests {
 
+    //tests for proposeTrade()
     @Test
     void ProposeTrade_OnOpenTurnWithoutOfferedCards_QueuesOfferAndNotifiesObserver() throws InvalidTradeException {
         // integration testing, since I want the quantities to be specified
@@ -159,6 +160,43 @@ class PlayerTradeHelperTests {
 
         assertEquals(Set.of(offer), helper.getActiveTradeOffers());
         assertFalse(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
+    // tests for acceptTrade()
+    @Test
+    void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()
+            throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack ore = new OreResourceStack(1);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(ore), List.of(new BrickResourceStack(1)));
+        TradeOffer otherOffer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new LumberResourceStack(1)), List.of(new BrickResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(blueInventory.hasResources(ore)).andStubReturn(false);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.proposeTrade(Color.RED, otherOffer);
+
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().andAnswer(() -> {
+            assertTrue(offer.isAccepted());
+            assertEquals(Set.of(offer, otherOffer), helper.getActiveTradeOffers());
+            return null;
+        });
+        EasyMock.replay(observer);
+        helper.addObserver(observer);
+
+        helper.acceptTrade(Color.BLUE, offer);
+
+        assertTrue(offer.isAccepted());
+        assertFalse(otherOffer.isAccepted());
+        assertEquals(Set.of(offer, otherOffer), helper.getActiveTradeOffers());
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 

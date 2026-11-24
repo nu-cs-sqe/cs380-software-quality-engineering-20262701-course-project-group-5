@@ -39,6 +39,11 @@ public class PlayerTradeHelper extends Observed {
         notifyObservers();
     }
 
+    public void acceptTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
+        offer.markAccepted();
+        notifyObservers();
+    }
+
     private boolean isActivePlayerOnOpenTurn(Color actor) {
         return turnContext.isTradingOpen() && actor == turnContext.getActivePlayerColor();
     }
