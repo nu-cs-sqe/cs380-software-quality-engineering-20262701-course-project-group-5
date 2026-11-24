@@ -9,8 +9,20 @@ Initializes a PlacementHelper for `board` and with access to the `GamePhase` pro
 
 ### TODO: getValidHexSpot(Piece piece) for the robber probably
 
-### `Set<Vertex> getValidBuildingSpots(Color color)`
-Returns vertices where the player with `color` may place a building. A vertex is valid if it is unoccupied and no adjacent vertex has a building (using the distance rule). In `REGULAR` phase it must also connect to one of that player's own roads. In `SETUP` phase no road is required.
+### `Set<Location> getValidPlacements(Piece piece)`
+
+Returns location where the given `piece` can be placed using the `GameBoard` instance.
+
+### `Set<Vertex> getValidSettlementSpots(Color color)`
+
+Returns vertices where the player with `color` may place a settlement. A vertex is valid if it is unoccupied and no
+adjacent vertex has a building (using the distance rule). In `REGULAR` phase it must also connect to one of that
+player's own roads. In `SETUP` phase no road is required.
+
+### `Set<Vertex> getValidCitySpots(Color color)`
+
+Returns vertices where the player with `color` may place a city. A vertex is valid if the game is in `REGULAR` phase and
+the player's own settlement is present at the vertex. In `SETUP` phase no location is valid.
 
 ### `Set<Edge> getValidRoadSpots(Color color)`
 Returns unoccupied edges where the player with `color` may place a road. In `REGULAR` phase the edge must connect to that player's own pieces. In `SETUP` phase the edge must touch the settlement just placed.
@@ -24,36 +36,40 @@ On success, a `Settlement`, `Road` or `City` is placed on the board and removed 
 
 ## Boundary-Value Analysis
 
-Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpots` (the active player's color). I use Red for active player's color and Blue for an opponent (arbitrary).
+Own refers to the `color` passed to `getValidSettlementSpots` and `getValidRoadSpots` (the active player's color). I use
+Red for active player's color and Blue for an opponent (arbitrary).
 
-### Test: `Set<Vertex> getValidBuildingSpots(Color color)`
+### Test: `Set<Vertex> getValidSettlementSpots(Color color)`
 
 **Step 1: Inputs / outputs**
-| Inputs | Outputs |
-|---|---|
+
+| Inputs                                                                                                                                                                                                                                     | Outputs                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | `color : Color`; state: `gamePhase`, distance from each vertex to the nearest building (0 means the vertex itself is occupied), who owns that building, and the roads touching each vertex (how many belong to `color`, and who owns them) | `List<Vertex>`. The tests check which vertices are returned: empty, exactly one element, more than one element, maximum. |
 
 **Step 2: Data types**
-| Variable | Type |
-|---|---|
-| `color` | Cases (RED, Not RED) |
-| `gamePhase` | Cases (SETUP, REGULAR) |
-| distance to nearest building | Count (edges away) |
-| owner of the nearest building | Cases (own, other color) |
-| own roads touching vertex | Count |
+
+| Variable                        | Type                     |
+|---------------------------------|--------------------------|
+| `color`                         | Cases (RED, Not RED)     |
+| `gamePhase`                     | Cases (SETUP, REGULAR)   |
+| distance to nearest building    | Count (edges away)       |
+| owner of the nearest building   | Cases (own, other color) |
+| own roads touching vertex       | Count                    |
 | owner of a road touching vertex | Cases (own, other color) |
-| returned list (output) | Collection |
+| returned list (output)          | Collection               |
 
 **Step 3: Concrete values**
-| Variable | Values |
-|---|---|
-| `color` | RED, BLUE (the other player colors behave the same) |
-| `gamePhase` | SETUP, REGULAR |
-| distance to nearest building | 0 (vertex occupied), 1 (too close), 2 (smallest allowed distance) |
-| owner of the nearest building | own, other color |
-| own roads touching vertex | 0, 1, more than one |
-| owner of a road touching vertex | own, other color |
-| returned list (output) | empty, exactly one element, more than one element, maximum (54 vertices in SETUP on an empty board) |
+
+| Variable                        | Values                                                                                               |
+|---------------------------------|------------------------------------------------------------------------------------------------------|
+| `color`                         | RED, BLUE (the other player colors behave the same)                                                  |
+| `gamePhase`                     | SETUP, REGULAR                                                                                       |
+| distance to nearest building    | 0 (vertex occupied), 1 (too close), 2 (smallest allowed distance)                                    |
+| owner of the nearest building   | own, other color                                                                                     |
+| own roads touching vertex       | 0, 1, more than one                                                                                  |
+| owner of a road touching vertex | own, other color                                                                                     |
+| returned list (output)          | empty, exactly one element, more than one element, maximum (all vertices in SETUP on an empty board) |
 
 **Step 4: All combinations** of `gamePhase` x own roads touching vertex since road rule only applies in REGULAR phase. Each choice for all else.
 
@@ -72,6 +88,47 @@ Own refers to the `color` passed to `getValidBuildingSpots` and `getValidRoadSpo
 | Test Case 11 | SETUP, called with `RED`, one `RED` road between A and B, no buildings                                   | all vertices (a road is not required in SETUP)                                                     | :white_check_mark: |
 | Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all vertices, B appearing once                                                                     | :white_check_mark: |
 | Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :white_check_mark: |
+
+### Test: `Set<Vertex> getValidCitySpots(Color color)`
+
+**Step 1: Inputs / outputs**
+
+| Inputs                                                                      | Outputs                                                                                                                  |
+|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `color : Color`; state: `gamePhase`, what building is currently on a vertex | `List<Vertex>`. The tests check which vertices are returned: empty, exactly one element, more than one element, maximum. |
+
+**Step 2: Data types**
+
+| Variable                       | Type                                       |
+|--------------------------------|--------------------------------------------|
+| `color`                        | Cases (RED, Not RED)                       |
+| `gamePhase`                    | Cases (SETUP, REGULAR)                     |
+| existing building type         | Cases (none, settlement, not a settlement) |
+| owner of the existing building | Cases (none, own, other color)             |
+| returned list (output)         | Collection                                 |
+
+**Step 3: Concrete values**
+
+| Variable                       | Values                                                                                               |
+|--------------------------------|------------------------------------------------------------------------------------------------------|
+| `color`                        | RED, BLUE (the other player colors behave the same)                                                  |
+| `gamePhase`                    | SETUP, REGULAR                                                                                       |
+| existing building type         | none, Settlement, City                                                                               |
+| owner of the existing building | own, other color                                                                                     |
+| returned list (output)         | empty, exactly one element, more than one element, maximum (all vertices in SETUP on an empty board) |
+
+**Step 4: All combinations** of `gamePhase` x own roads touching vertex since road rule only applies in REGULAR phase.
+Each choice for all else.
+
+|             | Input                                                                                              | Expected output          | Implemented? |
+|-------------|----------------------------------------------------------------------------------------------------|--------------------------|--------------|
+| Test Case 1 | SETUP, called with `RED`, empty board                                                              | empty list               | :x:          |
+| Test Case 2 | REGULAR, called with `RED`, empty board                                                            | empty list               | :x:          |
+| Test Case 3 | SETUP, called with `RED`, a `RED` settlement on vertex V                                           | empty list               | :x:          |
+| Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on vertex V                                         | list containing vertex V | :x:          |
+| Test Case 5 | REGULAR, called with `RED`, two `RED` settlements on vertex A and B                                | exactly `[A, B]`         | :x:          |
+| Test Case 6 | REGULAR, called with `RED`, one `RED` settlement on vertex A and one `BLUE` settlement on vertex B | list containing vertex A | :x:          |
+| Test Case 7 | REGULAR, called with `RED`, one `RED` city on vertex A and one `BLUE` city on vertex B             | empty list               | :x:          |
 
 ### Test: `Set<Edge> getValidRoadSpots(Color color)`
 
