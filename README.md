@@ -24,4 +24,9 @@ N/A
 ### Mutation Testing
 N/A
 ### Others
-N/A
+
+Integration testing in Trade package:
+
+- Proposal and counteroffer tests use real `ResourceStack` objects to exercise resource-type and quantity validation.
+- Offer lifecycle tests use real `TradeOffer` objects to verify that identical terms can belong to distinct offers and that acceptance updates only the selected offer.
+
