@@ -89,6 +89,15 @@ class PlayerTradeHelperTests {
         assertProposalRejectedWithoutSideEffects(Color.RED, offer, turnContext);
     }
 
+    @Test
+    void ProposeTrade_WhenReceiverHasNoInventoryEntry_RejectsOfferWithoutSideEffects() {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = stubUnansweredOffer(Color.RED, Color.ORANGE,
+                List.of(new BrickResourceStack(1)), List.of(new OreResourceStack(1)));
+
+        assertProposalRejectedWithoutSideEffects(Color.RED, offer, turnContext);
+    }
+
     private static void assertProposalRejectedWithoutSideEffects(Color actor, TradeOffer offer,
                                                                  TradeTurnContext turnContext) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);

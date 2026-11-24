@@ -12,9 +12,11 @@ import java.util.Set;
 public class PlayerTradeHelper extends Observed {
 
     private final Set<TradeOffer> activeTradeOffers = new HashSet<>();
+    private final Map<Color, ResourceInventory> playerInventories;
     private final TradeTurnContext turnContext;
 
     public PlayerTradeHelper(Map<Color, ResourceInventory> playerInventories, TradeTurnContext turnContext) {
+        this.playerInventories = playerInventories;
         this.turnContext = turnContext;
     }
 
@@ -38,6 +40,7 @@ public class PlayerTradeHelper extends Observed {
     }
 
     private boolean isValidPlayerTrade(TradeOffer offer) {
-        return offer.getProposer() != offer.getReceiver();
+        Color receiver = offer.getReceiver();
+        return offer.getProposer() != receiver && playerInventories.containsKey(receiver);
     }
 }
