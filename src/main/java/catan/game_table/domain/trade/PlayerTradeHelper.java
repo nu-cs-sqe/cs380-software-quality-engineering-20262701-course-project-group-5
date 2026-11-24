@@ -40,6 +40,9 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void acceptTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
+        if (actor != offer.getReceiver()) {
+            throw new InvalidTradeException();
+        }
         offer.markAccepted();
         notifyObservers();
     }
