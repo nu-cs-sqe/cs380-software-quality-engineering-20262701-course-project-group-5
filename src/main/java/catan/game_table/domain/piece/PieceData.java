@@ -29,8 +29,4 @@ public class PieceData {
   public int hashCode() {
     return color.hashCode() + type.hashCode();
   }
-
-  public Color getColor() {
-    return color;
-  }
 }
