@@ -7,14 +7,26 @@ import java.util.List;
 
 public class TradeOffer {
 
+    private final Color proposer;
+    private final Color receiver;
     private final List<ResourceStack> requestedResources;
     private final List<ResourceStack> offeredResources;
     private boolean accepted;
 
     public TradeOffer(Color proposer, Color receiver, List<ResourceStack> requestedResources,
                       List<ResourceStack> offeredResources) {
+        this.proposer = proposer;
+        this.receiver = receiver;
         this.requestedResources = List.copyOf(requestedResources);
         this.offeredResources = List.copyOf(offeredResources);
+    }
+
+    public Color getProposer() {
+        return proposer;
+    }
+
+    public Color getReceiver() {
+        return receiver;
     }
 
     public List<ResourceStack> getRequestedResources() {
