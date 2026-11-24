@@ -23,7 +23,21 @@ public class PlacementHelper extends Observed {
 
     public Set<? extends Location> getAndCacheValidSpots(Piece inputPiece) {
 
-        return getValidSettlementSpots(inputPiece.getPieceData().getColor());
+        PieceData pieceData = inputPiece.getPieceData();
+        PieceType pieceType = pieceData.getPieceType();
+        Color pieceColor = pieceData.getColor();
+
+        switch (pieceType) {
+            case PieceType.SETTLEMENT -> {
+                return getValidSettlementSpots(pieceColor);
+            }
+            case PieceType.ROAD -> {
+                return getValidRoadSpots(pieceColor);
+            }
+            default -> {
+                return null;
+            }
+        }
 
     }
 
