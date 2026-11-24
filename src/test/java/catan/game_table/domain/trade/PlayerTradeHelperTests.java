@@ -222,6 +222,30 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory, whiteInventory);
     }
 
+    @Test
+    void AcceptTrade_WhenOfferIsAnUnregisteredCopy_RejectsOfferWithoutSideEffects() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        List<ResourceStack> requested = List.of(new OreResourceStack(1));
+        List<ResourceStack> offered = List.of(new BrickResourceStack(1));
+        TradeOffer pendingOffer = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        TradeOffer unregisteredOffer = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, pendingOffer);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.acceptTrade(Color.BLUE, unregisteredOffer));
+
+        assertEquals(Set.of(pendingOffer), helper.getActiveTradeOffers());
+        assertFalse(pendingOffer.isAccepted());
+        assertFalse(unregisteredOffer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     private static void assertProposalRejectedWithoutSideEffects(Color actor, TradeOffer offer,
                                                                  TradeTurnContext turnContext) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
