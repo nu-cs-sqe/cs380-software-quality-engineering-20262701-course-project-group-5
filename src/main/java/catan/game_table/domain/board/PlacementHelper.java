@@ -21,6 +21,12 @@ public class PlacementHelper extends Observed {
         this.gamePhaseHolder = gamePhaseHolder;
     }
 
+    public Set<? extends Location> getAndCacheValidSpots(Piece inputPiece) {
+
+        return getValidSettlementSpots(inputPiece.getPieceData().getColor());
+
+    }
+
     Set<Vertex> getValidSettlementSpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
