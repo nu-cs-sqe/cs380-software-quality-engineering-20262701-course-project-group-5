@@ -26,11 +26,18 @@ public class PlayerTradeHelper extends Observed {
         if (!isActivePlayerOnOpenTurn(actor) || actor != offer.getProposer()) {
             throw new InvalidTradeException();
         }
+        if (!isValidPlayerTrade(offer)) {
+            throw new InvalidTradeException();
+        }
         activeTradeOffers.add(offer);
         notifyObservers();
     }
 
     private boolean isActivePlayerOnOpenTurn(Color actor) {
         return turnContext.isTradingOpen() && actor == turnContext.getActivePlayerColor();
+    }
+
+    private boolean isValidPlayerTrade(TradeOffer offer) {
+        return offer.getProposer() != offer.getReceiver();
     }
 }
