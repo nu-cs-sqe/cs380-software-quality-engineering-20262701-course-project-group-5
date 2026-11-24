@@ -40,6 +40,10 @@ public class PlayerTradeHelper extends Observed {
     }
 
     private boolean isValidPlayerTrade(TradeOffer offer) {
+        return hasEligibleReceiver(offer) && !offer.getRequestedResources().isEmpty();
+    }
+
+    private boolean hasEligibleReceiver(TradeOffer offer) {
         Color receiver = offer.getReceiver();
         return offer.getProposer() != receiver && playerInventories.containsKey(receiver);
     }
