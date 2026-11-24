@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlayerTradeHelperTests {
 
-    //tests for proposeTrade()
+    // tests for proposeTrade()
     @Test
     void ProposeTrade_OnOpenTurnWithoutOfferedCards_QueuesOfferAndNotifiesObserver() throws InvalidTradeException {
         // integration testing, since I want the quantities to be specified
@@ -222,8 +222,8 @@ class PlayerTradeHelperTests {
 
     // tests for counterTrade()
 
-    //integration testing used, because methods check resource type and positive quantities
-    //use real TradeOffer objects to use exercise its equality functionality
+    // integration testing used, because methods check resource type and positive quantities
+    // use real TradeOffer objects to use exercise its equality functionality
     @Test
     void CounterTrade_WhenBothPlayersCounter_ReplacesOnlyTheAnsweredOffer() throws InvalidTradeException {
         TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
@@ -326,7 +326,7 @@ class PlayerTradeHelperTests {
         assertCounterRejectedWithOriginalPending(Color.BLUE, original, counter);
     }
 
-    //we don't do validation in ResourceStack to prevent negative quantities
+    // we don't do validation in ResourceStack to prevent negative quantities
     @Test
     void CounterTrade_WhenOfferedStackHasNegativeQuantity_RejectsCounterWithoutSideEffects()
             throws InvalidTradeException {
@@ -548,6 +548,40 @@ class PlayerTradeHelperTests {
 
         assertEquals(Set.of(offer), helper.getActiveTradeOffers());
         assertTrue(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
+    // tests for refuseTrade()
+
+    // real TradeOffer lets us verify that the refusal removes the specific offer and the unrelated one is not touched
+    @Test
+    void RefuseTrade_WhenReceiverRefusesPendingOffer_RemovesOnlyThatOffer() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer unrelatedOffer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new LumberResourceStack(1)), List.of(new BrickResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.proposeTrade(Color.RED, unrelatedOffer);
+
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().andAnswer(() -> {
+            assertEquals(Set.of(unrelatedOffer), helper.getActiveTradeOffers());
+            return null;
+        });
+        EasyMock.replay(observer);
+        helper.addObserver(observer);
+
+        helper.refuseTrade(Color.BLUE, offer);
+
+        assertEquals(Set.of(unrelatedOffer), helper.getActiveTradeOffers());
+        assertFalse(unrelatedOffer.isAccepted());
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 

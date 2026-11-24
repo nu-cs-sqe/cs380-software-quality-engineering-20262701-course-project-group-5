@@ -196,13 +196,13 @@ Searching for and deleting the offer.
 
 **Step 4: Each choice**
 
-|              | Inputs                                                                                                | Expected output                                                                          | Implemented? |
-|--------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|--------------|
-| Test Case 1  | During Red's open turn, Blue refuses an unanswered offer from Red while another offer is pending.     | Only the unrelated offer remains, and observers see the change without any cards moving. | :x:          |
-| Test Case 2  | During Red's open turn, Blue tries to refuse a Red-to-Blue offer that was already removed.            | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
-| Test Case 3  | During Red's open turn, White tries to refuse an unanswered offer from Red to Blue.                   | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
-| Test Case 4  | Blue tries to refuse an unanswered offer from Red after trading closes.                               | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
-| Test Case 5  | During Red's open turn, Blue tries to refuse an active offer from Red that Blue has already accepted. | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:          |
+|             | Inputs                                                                                                | Expected output                                                                          | Implemented?       |
+|-------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | During Red's open turn, Blue refuses an unanswered offer from Red while another offer is pending.     | Only the unrelated offer remains, and observers see the change without any cards moving. | :white_check_mark: |
+| Test Case 2 | During Red's open turn, Blue tries to refuse a Red-to-Blue offer that was already removed.            | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:                |
+| Test Case 3 | During Red's open turn, White tries to refuse an unanswered offer from Red to Blue.                   | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:                |
+| Test Case 4 | Blue tries to refuse an unanswered offer from Red after trading closes.                               | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:                |
+| Test Case 5 | During Red's open turn, Blue tries to refuse an active offer from Red that Blue has already accepted. | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:                |
 
 ### Test: `public void conductTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 
