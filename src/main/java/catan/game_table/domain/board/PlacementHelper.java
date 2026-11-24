@@ -16,6 +16,9 @@ public class PlacementHelper extends Observed {
     private final GameBoard gameBoard;
     private final GamePhaseHolder gamePhaseHolder;
 
+    private Piece cachedPiece;
+    private Set<? extends Location> cachedValidSpots;
+
     public PlacementHelper(GameBoard gameBoard, GamePhaseHolder gamePhaseHolder) {
         this.gameBoard = gameBoard;
         this.gamePhaseHolder = gamePhaseHolder;
@@ -23,9 +26,23 @@ public class PlacementHelper extends Observed {
 
     public Set<? extends Location> getAndCacheValidSpots(Piece inputPiece) {
 
+        if (cachedPiece == inputPiece) {
+            return cachedValidSpots;
+        }
+
+        cachedPiece = inputPiece;
+
         PieceData pieceData = inputPiece.getPieceData();
         PieceType pieceType = pieceData.getPieceType();
         Color pieceColor = pieceData.getColor();
+
+        cachedValidSpots = getValidSpots(pieceType, pieceColor);
+
+        return cachedValidSpots;
+
+    }
+
+    private Set<? extends Location> getValidSpots(PieceType pieceType, Color pieceColor) {
 
         switch (pieceType) {
             case PieceType.SETTLEMENT -> {
@@ -41,7 +58,7 @@ public class PlacementHelper extends Observed {
                 return getValidRobberSpots();
             }
             default -> {
-                return null;
+                throw new IllegalArgumentException("No defined behavior exists for this piece type");
             }
         }
 

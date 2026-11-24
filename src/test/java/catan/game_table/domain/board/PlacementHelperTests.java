@@ -207,6 +207,80 @@ public class PlacementHelperTests {
     }
 
     @Test
+    public void GetAndCacheValidSpots_GivenHarbor_ExpectIllegalArgumentException() {
+
+        GamePhase gamePhase = GamePhase.REGULAR;
+
+        Piece inputPiece = makePieceMock(PieceType.HARBOR, Color.NONE);
+
+        GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+
+        EasyMock.replay(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        String expectedMessage = "No defined behavior exists for this piece type";
+
+        Exception actualException = assertThrows(IllegalArgumentException.class, () -> placementHelper.getAndCacheValidSpots(inputPiece));
+        assertEquals(expectedMessage, actualException.getMessage());
+
+    }
+
+    @Test
+    public void GetAndCacheValidSpots_GivenRedSettlementTwice_ExpectCorrectMethodCalledOnce_AndSettlementSpotsReturned() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.SETUP;
+
+        Piece inputPiece = makePieceMock(PieceType.SETTLEMENT, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F");
+        Map<String, List<Piece>> vertexPieces = Map.of();
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("F", "A")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+        EasyMock.replay(gamePhaseHolder);
+
+        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
+        builder.addMockedMethod("getValidSettlementSpots");
+        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
+        builder.withArgs(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = builder.createMock();
+
+        Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        EasyMock.replay(placementHelper);
+
+        Set<? extends Location> actualLocations1 = placementHelper.getAndCacheValidSpots(inputPiece);
+        Set<? extends Location> actualLocations2 = placementHelper.getAndCacheValidSpots(inputPiece);
+
+        EasyMock.verify(placementHelper);
+        assertEquals(expectedVertices, actualLocations1);
+        assertEquals(expectedVertices, actualLocations2);
+
+    }
+
+    @Test
     public void GetValidSettlementSpots_GivenRed_AndSetupPhase_AndEmptyBoard_ExpectAllLandVertices() {
 
         Color playerColor = Color.RED;
