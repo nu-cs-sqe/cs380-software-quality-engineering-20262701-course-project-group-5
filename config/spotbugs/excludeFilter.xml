@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Per-bug SpotBugs suppressions for the Exploding Kittens project.
+    Per-bug SpotBugs suppressions for the Catan project.
 
     Add a <Match> entry here when a specific finding needs to be silenced for
     a specific class or pattern. Example:
