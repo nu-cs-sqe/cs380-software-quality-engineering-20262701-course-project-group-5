@@ -142,7 +142,7 @@ Each choice for all else.
 |             | Input                                                                                              | Expected output          | Implemented?       |
 |-------------|----------------------------------------------------------------------------------------------------|--------------------------|--------------------|
 | Test Case 1 | SETUP, called with `RED`, empty board                                                              | empty list               | :white_check_mark: |
-| Test Case 2 | REGULAR, called with `RED`, empty board                                                            | empty list               | :x:                |
+| Test Case 2 | REGULAR, called with `RED`, empty board                                                            | empty list               | :white_check_mark: |
 | Test Case 3 | SETUP, called with `RED`, a `RED` settlement on vertex V                                           | empty list               | :x:                |
 | Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on vertex V                                         | list containing vertex V | :x:                |
 | Test Case 5 | REGULAR, called with `RED`, two `RED` settlements on vertex A and B                                | exactly `[A, B]`         | :x:                |
