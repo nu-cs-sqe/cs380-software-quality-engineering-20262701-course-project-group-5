@@ -20,8 +20,8 @@
 
 ## Exceptions
 ### Code Coverage
-- Updated BVA and tests to cover the case where ResourceStack.hashCode() is different for two instances of ResourceStack
-- Added test cases for every child of ResourceStack to test their overrides of makeNewStackOfSameType, to justify actually creating those overrides under BVA. Previous production code did not qualify as "bare minimum", so code coverage left gaps. In this instance, test cases were documented and added after production code was written to resolve these gaps, we will be careful to avoid such violations going forward.
+- Updated BVA and tests to ensure that ResourceStack.hashCode() generates different hash codes when used with two instances of ResourceStack which would not be considered equal, in addition to testing the case where the hash codes are the same. This allows the full method to be justified under TDD, whereas before it could have simply always returned the same code, and all test cases where the hash codes must be the same would have passed.
+- Added test cases for every child of ResourceStack to test their overrides of makeNewStackOfSameType, to justify actually creating those overrides under TDD. Previous production code did not qualify as "bare minimum", so code coverage left gaps. In this instance, test cases were documented and added after production code was written to resolve these gaps, we will be careful to avoid such violations going forward.
 - `PieceData`: `equals()` requires null checks but our functions should not take null inputs so the branch is never covered.
 ### Mutation Testing
 - `PieceData`: `hashCode()` adds hash of PieceData's fields and an equivalent mutant where the fields are subtracted will not be killed.
