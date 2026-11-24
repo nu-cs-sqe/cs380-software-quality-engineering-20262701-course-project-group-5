@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SettlementTests {
-    //produce(products : ResourceProducts)
+    //produceResources(products : List<ResourceStack>)
     @Test
-    public void ProduceResources_ValidProducts_VerifyCorrectFunctionCall(){
+    public void ProduceResources_ValidProducts_VerifyCorrectFunctionCall() {
         PieceData pieceData = new PieceData(Color.BLUE, PieceType.SETTLEMENT);
         BankResourceDistributor bankResourceDistributor = EasyMock.createMock(BankResourceDistributor.class);
         ScoreTracker ownerVictoryPointsTracker = EasyMock.createMock(ScoreTracker.class);
