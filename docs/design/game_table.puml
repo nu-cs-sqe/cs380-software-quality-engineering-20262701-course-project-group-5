@@ -369,7 +369,6 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
-        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
         +produceResources(products : List<ResourceStack>) : void
     }
