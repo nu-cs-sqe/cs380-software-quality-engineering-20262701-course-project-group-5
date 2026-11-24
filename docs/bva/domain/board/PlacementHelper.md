@@ -51,7 +51,7 @@ Red for active player's color and Blue for an opponent (arbitrary).
 | Test Case 2 | piece is a `BLUE` Road                                                    | `getValidRoadSpots()` is called with `BLUE`, result returned                | :white_check_mark: |
 | Test Case 3 | piece is a `WHITE` City                                                   | `getValidCitySpots()` is called with `WHITE`, result returned               | :white_check_mark: |
 | Test Case 4 | piece is a Robber                                                         | `getValidRobberSpots()` is called, result returned                          | :white_check_mark: |
-| Test Case 5 | piece is a Harbor                                                         | `IllegalArgumentException` "No input validation exists for this piece type" | :x:                |
+| Test Case 5 | piece is a Harbor                                                         | `IllegalArgumentException` "No defined behavior exists for this piece type" | :x:                |
 | Test Case 6 | piece is a `RED` Settlement, this method was already called on this piece | no other method is called, saved result returned                            | :x:                |
 
 ### Test: `Set<Vertex> getValidSettlementSpots(Color color)`
