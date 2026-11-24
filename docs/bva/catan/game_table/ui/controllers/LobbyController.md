@@ -16,4 +16,27 @@ When a player hits the start button in the `LobbyView` after entering the number
 
 ## Boundary-Value Analysis
 
-N/A for this class.
+### Method under test: `open()`
+
+**Step 1: Inputs / outputs**
+| Inputs | Outputs |
+|---|---|
+| A player starts the game. | The `LobbyView` is populated. |
+
+**Step 2: Data types**
+| Variable | Type |
+|---|---|
+| Cases | Cases |
+
+**Step 3: Concrete values**
+| Variable | Values |
+|---|---|
+| Input | A player runs the application to start the game |
+| Output | `LobbyView`'s function to load is called |
+
+**Step 4: Each choice**
+|              | Input | Expected output | Implemented? |
+|--------------|----------------------------------------|----------------------------|--------------|
+| Test Case 1  | A player hits run application | `LobbyView`'s load function is called | :x: |
+
+
