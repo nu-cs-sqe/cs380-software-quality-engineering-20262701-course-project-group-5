@@ -7,14 +7,9 @@ Helper that decides where pieces may legally be placed and performs placement on
 ### `public PlacementHelper(GameBoard board, GamePhaseHolder gamePhaseHolder)`
 Initializes a PlacementHelper for `board` and with access to the `GamePhase` provided by `gamePhaseHolder`.
 
-### TODO: getValidHexSpot(Piece piece) for the robber probably
-
-### `public void cacheValidSpots(Piece piece)`
+### `public Set<? extends Location> getAndCacheValidSpots()`
 
 Saves the locations where the given `piece` can be placed using the `GameBoard` instance, and notifies observers.
-
-### `public Set<Location> getCachedValidSpots()`
-
 Returns the last saved set of valid locations for the piece that `cacheValidSpots(…)` was called with.
 
 ### `Set<Vertex> getValidSettlementSpots(Color color)`
@@ -48,7 +43,7 @@ On success, a `Settlement`, `Road` or `City` is placed on the board and removed 
 Own refers to the `color` passed to `getValidSettlementSpots` and `getValidRoadSpots` (the active player's color). I use
 Red for active player's color and Blue for an opponent (arbitrary).
 
-### Test: `cacheValidSpots(Piece piece)`
+### Test: `public Set<? extends Location> getAndCacheValidSpots(Piece piece)`
 
 |             | Input                       | Expected output                                                             | Implemented? |
 |-------------|-----------------------------|-----------------------------------------------------------------------------|--------------|
