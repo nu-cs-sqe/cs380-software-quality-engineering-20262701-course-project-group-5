@@ -42,12 +42,16 @@ public class PlayerTradeHelper extends Observed {
     }
 
     private boolean isValidPlayerTrade(TradeOffer offer) {
-        return hasEligibleReceiver(offer) && hasResourcesOnBothSides(offer);
+        return hasEligibleReceiver(offer) && hasValidTradeTerms(offer);
     }
 
     private boolean hasEligibleReceiver(TradeOffer offer) {
         Color receiver = offer.getReceiver();
         return offer.getProposer() != receiver && playerInventories.containsKey(receiver);
+    }
+
+    private boolean hasValidTradeTerms(TradeOffer offer) {
+        return hasResourcesOnBothSides(offer) && hasDisjointResourceTypes(offer);
     }
 
     private boolean hasResourcesOnBothSides(TradeOffer offer) {
@@ -56,5 +60,13 @@ public class PlayerTradeHelper extends Observed {
 
     private boolean hasPositiveResources(List<ResourceStack> resources) {
         return !resources.isEmpty() && resources.stream().allMatch(stack -> stack.getSize() > 0);
+    }
+
+    private boolean hasDisjointResourceTypes(TradeOffer offer) {
+        Set<Class<? extends ResourceStack>> offeredTypes = new HashSet<>();
+        for (ResourceStack stack : offer.getOfferedResources()) {
+            offeredTypes.add(stack.getClass());
+        }
+        return offer.getRequestedResources().stream().noneMatch(stack -> offeredTypes.contains(stack.getClass()));
     }
 }

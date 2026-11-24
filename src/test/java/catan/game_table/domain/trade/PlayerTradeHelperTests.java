@@ -3,6 +3,7 @@ package catan.game_table.domain.trade;
 import catan.game_table.domain.Color;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.resource.BrickResourceStack;
+import catan.game_table.domain.resource.LumberResourceStack;
 import catan.game_table.domain.resource.OreResourceStack;
 import catan.game_table.domain.resource.ResourceInventory;
 import catan.game_table.domain.resource.ResourceStack;
@@ -121,6 +122,17 @@ class PlayerTradeHelperTests {
         TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
         TradeOffer offer = stubUnansweredOffer(Color.RED, Color.BLUE,
                 List.of(new BrickResourceStack(0)), List.of(new OreResourceStack(1)));
+
+        assertProposalRejectedWithoutSideEffects(Color.RED, offer, turnContext);
+    }
+
+    @Test
+    // this test prevents players from trading matching resources, which is banned in Catan
+    void ProposeTrade_WhenResourceTypeAppearsOnBothSides_RejectsOfferWithoutSideEffects() {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = stubUnansweredOffer(Color.RED, Color.BLUE,
+                List.of(new LumberResourceStack(1), new BrickResourceStack(1)),
+                List.of(new OreResourceStack(1), new BrickResourceStack(2)));
 
         assertProposalRejectedWithoutSideEffects(Color.RED, offer, turnContext);
     }
