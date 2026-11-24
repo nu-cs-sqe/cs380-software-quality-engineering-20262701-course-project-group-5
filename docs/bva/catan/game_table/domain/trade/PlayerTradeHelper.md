@@ -168,7 +168,7 @@ Searching for the offer.
 | Test Case 2 | During Red's open turn, White tries to accept an unanswered offer from Red to Blue.                                                     | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :white_check_mark: |
 | Test Case 3 | During Red's open turn, Blue tries to accept an unregistered copy of a pending offer from Red.                                          | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :white_check_mark: |
 | Test Case 4 | Blue tries to accept an unanswered offer from Red after trading closes.                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                             | :white_check_mark: |
-| Test Case 5 | During Red's open turn, Blue tries to accept the same active offer from Red again.                                                      | Throws `InvalidTradeException`. The offer stays accepted and active, inventories stay unchanged, and observers receive no additional notification. | :x:                |
+| Test Case 5 | During Red's open turn, Blue tries to accept the same active offer from Red again.                                                      | Throws `InvalidTradeException`. The offer stays accepted and active, inventories stay unchanged, and observers receive no additional notification. | :white_check_mark: |
 
 ### Test: `public void refuseTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 

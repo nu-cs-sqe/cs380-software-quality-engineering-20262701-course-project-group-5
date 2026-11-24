@@ -40,15 +40,19 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void acceptTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
-        if (!turnContext.isTradingOpen() || !isActiveOfferForReceiver(actor, offer)) {
+        if (!turnContext.isTradingOpen() || !isPendingOfferForReceiver(actor, offer)) {
             throw new InvalidTradeException();
         }
         offer.markAccepted();
         notifyObservers();
     }
 
-    private boolean isActiveOfferForReceiver(Color actor, TradeOffer offer) {
-        return actor == offer.getReceiver() && activeTradeOffers.contains(offer);
+    private boolean isPendingOfferForReceiver(Color actor, TradeOffer offer) {
+        return actor == offer.getReceiver() && isPendingOffer(offer);
+    }
+
+    private boolean isPendingOffer(TradeOffer offer) {
+        return activeTradeOffers.contains(offer) && !offer.isAccepted();
     }
 
     private boolean isActivePlayerOnOpenTurn(Color actor) {
