@@ -191,6 +191,34 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    // so two offers with identical terms can stay active as separate instances
+    @Test
+    void ProposeTrade_WhenNewOfferMatchesAcceptedTerms_KeepsBothOffersActive() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        List<ResourceStack> requested = List.of(new OreResourceStack(1));
+        List<ResourceStack> offered = List.of(new BrickResourceStack(1));
+        TradeOffer acceptedOffer = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, acceptedOffer);
+        helper.acceptTrade(Color.BLUE, acceptedOffer);
+
+        TradeOffer newOffer = new TradeOffer(Color.RED, Color.BLUE, requested, offered);
+        helper.proposeTrade(Color.RED, newOffer);
+
+        Set<TradeOffer> expectedOffers = Set.of(acceptedOffer, newOffer);
+        Set<TradeOffer> activeOffers = helper.getActiveTradeOffers();
+        assertEquals(expectedOffers, activeOffers);
+        assertTrue(acceptedOffer.isAccepted());
+        assertFalse(newOffer.isAccepted());
+        assertThrows(UnsupportedOperationException.class, activeOffers::clear);
+        assertEquals(expectedOffers, helper.getActiveTradeOffers());
+        EasyMock.verify(redInventory, blueInventory);
+    }
+
     // tests for acceptTrade()
     @Test
     void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()
