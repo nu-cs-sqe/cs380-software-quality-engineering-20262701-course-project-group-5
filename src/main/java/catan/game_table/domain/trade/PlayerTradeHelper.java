@@ -33,7 +33,9 @@ public class PlayerTradeHelper extends Observed {
         if (!isValidPlayerTrade(offer)) {
             throw new InvalidTradeException();
         }
-        activeTradeOffers.add(offer);
+        if (!activeTradeOffers.add(offer)) {
+            throw new InvalidTradeException();
+        }
         notifyObservers();
     }
 

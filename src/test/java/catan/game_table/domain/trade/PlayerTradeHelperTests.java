@@ -137,6 +137,31 @@ class PlayerTradeHelperTests {
         assertProposalRejectedWithoutSideEffects(Color.RED, offer, turnContext);
     }
 
+    @Test
+    void ProposeTrade_WhenSameOfferInstanceIsSubmittedTwice_RejectsSecondSubmission() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.addObserver(observer);
+
+        helper.proposeTrade(Color.RED, offer);
+        assertEquals(Set.of(offer), helper.getActiveTradeOffers());
+
+        assertThrows(InvalidTradeException.class, () -> helper.proposeTrade(Color.RED, offer));
+
+        assertEquals(Set.of(offer), helper.getActiveTradeOffers());
+        assertFalse(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     private static void assertProposalRejectedWithoutSideEffects(Color actor, TradeOffer offer,
                                                                  TradeTurnContext turnContext) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
