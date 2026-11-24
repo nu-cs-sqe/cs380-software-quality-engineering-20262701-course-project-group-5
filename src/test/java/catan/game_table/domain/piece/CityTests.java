@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CityTests {
-    //produceResources(products : List<ResourceStack>)
     @Test
     public void ProduceResources_ValidProducts_ForwardsProductsWithPieceColorToBank() {
         PieceData pieceData = new PieceData(Color.RED, PieceType.CITY);
