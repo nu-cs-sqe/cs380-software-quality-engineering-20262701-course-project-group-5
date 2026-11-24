@@ -23,7 +23,7 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void proposeTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
-        if (!turnContext.isTradingOpen()) {
+        if (!turnContext.isTradingOpen() || actor != turnContext.getActivePlayerColor()) {
             throw new InvalidTradeException();
         }
         activeTradeOffers.add(offer);
