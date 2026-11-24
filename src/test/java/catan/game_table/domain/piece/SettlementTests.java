@@ -15,7 +15,7 @@ import java.util.List;
 public class SettlementTests {
     //produceResources(products : List<ResourceStack>)
     @Test
-    public void ProduceResources_ValidProducts_VerifyCorrectFunctionCall() {
+    public void ProduceResources_ValidProducts_ForwardsProductsWithPieceColorToBank() {
         PieceData pieceData = new PieceData(Color.BLUE, PieceType.SETTLEMENT);
         BankResourceDistributor bankResourceDistributor = EasyMock.createMock(BankResourceDistributor.class);
         ScoreTracker ownerVictoryPointsTracker = EasyMock.createMock(ScoreTracker.class);
