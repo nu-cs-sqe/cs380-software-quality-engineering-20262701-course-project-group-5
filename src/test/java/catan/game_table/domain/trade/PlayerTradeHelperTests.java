@@ -386,6 +386,40 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void CounterTrade_WhenCounterOfferIsAlreadyActive_LeavesBothOffersActive() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        TradeOffer firstOriginal = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new OreResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer secondOriginal = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(new LumberResourceStack(1)), List.of(new BrickResourceStack(1)));
+        TradeOffer counterOffer = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(new BrickResourceStack(2)), List.of(new OreResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, firstOriginal);
+        helper.proposeTrade(Color.RED, secondOriginal);
+
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(observer);
+        helper.addObserver(observer);
+        helper.counterTrade(Color.BLUE, firstOriginal, counterOffer);
+        Set<TradeOffer> expectedOffers = Set.of(secondOriginal, counterOffer);
+        assertEquals(expectedOffers, helper.getActiveTradeOffers());
+
+        assertThrows(InvalidTradeException.class, () -> helper.counterTrade(Color.BLUE, secondOriginal, counterOffer));
+
+        assertEquals(expectedOffers, helper.getActiveTradeOffers());
+        assertFalse(secondOriginal.isAccepted());
+        assertFalse(counterOffer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for acceptTrade()
     @Test
     void AcceptTrade_WhenReceiverHasNoRequestedCards_RecordsAgreementWithoutMovingCards()

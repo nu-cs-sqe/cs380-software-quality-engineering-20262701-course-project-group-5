@@ -47,6 +47,9 @@ public class PlayerTradeHelper extends Observed {
         if (!hasReversedParties(originalOffer, counterOffer) || !hasValidTradeTerms(counterOffer)) {
             throw new InvalidTradeException();
         }
+        if (activeTradeOffers.contains(counterOffer)) {
+            throw new InvalidTradeException();
+        }
         activeTradeOffers.remove(originalOffer);
         activeTradeOffers.add(counterOffer);
         notifyObservers();
