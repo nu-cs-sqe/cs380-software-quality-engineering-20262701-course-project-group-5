@@ -74,6 +74,9 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void conductTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
+        if (actor == offer.getProposer() && !offer.isAccepted()) {
+            throw new InvalidTradeException();
+        }
         ResourceInventory proposerInventory = playerInventories.get(offer.getProposer());
         ResourceInventory receiverInventory = playerInventories.get(offer.getReceiver());
         List<ResourceStack> offered = combineStacksByType(offer.getOfferedResources());
