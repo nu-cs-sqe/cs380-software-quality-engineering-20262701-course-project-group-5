@@ -20,6 +20,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -928,6 +929,35 @@ class PlayerTradeHelperTests {
         assertEquals(Set.of(offer), helper.getActiveTradeOffers());
         assertTrue(offer.isAccepted());
         EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
+    @Test
+    void ConductTrade_WhenFirstWithdrawalFails_ReportsInventoryFailure()
+            throws InvalidTradeException, NotEnoughInventoryException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack brick = new BrickResourceStack(1);
+        ResourceStack ore = new OreResourceStack(1);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE, List.of(ore), List.of(brick));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(brick)).andReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andReturn(true);
+        NotEnoughInventoryException withdrawalFailure = new NotEnoughInventoryException();
+        redInventory.removeResources(brick);
+        EasyMock.expectLastCall().andThrow(withdrawalFailure);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.acceptTrade(Color.BLUE, offer);
+
+        InvalidTradeException failure =
+                assertThrows(InvalidTradeException.class, () -> helper.conductTrade(Color.RED, offer));
+
+        assertSame(withdrawalFailure, failure.getCause());
+        assertEquals(Set.of(offer), helper.getActiveTradeOffers());
+        assertTrue(offer.isAccepted());
+        EasyMock.verify(redInventory, blueInventory);
     }
 
     // tests for expireTradeOffers()
