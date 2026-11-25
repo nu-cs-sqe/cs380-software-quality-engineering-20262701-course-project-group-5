@@ -32,13 +32,13 @@ When a player enters data such as choosing a number of player, a language, or co
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| Input | List of size 3, list of size 4 |
-| Output | `GameSetup:createGame()` and `Main:showGame()` are called |
+| Input | Invalid num of players (< 3), valid num of players (3, 4) |
+| Output | `GameSetup:createGame()` is called and an IllegalArgumentException is caught and displayed,`GameSetup:createGame()` and `Main:showGame()` are called  |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|-------|-----------------|--------------|
-| Test Case 1  | `players` list of size 3 | `GameSetup:createGame()` and `Main:showGame()` are called  | :x: |
+| Test Case 1  | `players` list of size 2 | `GameSetup:createGame()` is called and an IllegalArgumentException is caught and displayed  | :x: |
 | Test Case 2  | `players` list of size 4 | `GameSetup:createGame()` and `Main:showGame()` are called  | :x: |
 
 
