@@ -76,11 +76,31 @@ package ui {
         -{final} gameBoard : GameBoard
         +RobberyController(players : List<GamePlayer>, gameBoard : gameBoard, robberyHelper : RobberyHelper)
         +update() : void
+        …()
         -updateView() : void
         -routeUserInput() : void
     }
 
     +class RobberyView {
+        -{final} players : Set<PlayerData>
+        …
+        +update() : void
+        …()
+    }
+
+    +class DiscardController {
+        -{final} view : DiscardView
+        -{final} players : List<GamePlayer>
+        -{final} discardHelper : DiscardHelper
+        -{final} bank : Bank
+        +RobberyController(players : List<GamePlayer>, bank : Bank, discardHelper : DiscardHelper)
+        +update() : void
+        …()
+        -updateView() : void
+        -routeUserInput() : void
+    }
+
+    +class DiscardView {
         -{final} players : Set<PlayerData>
         …
         +update() : void
@@ -278,6 +298,18 @@ package robbery {
         ~setTarget(target : Color, targetInventory : ResourceInventory) : void
         +getInitiator() : Color
         +getTarget() : Color
+    }
+
+    +class DiscardHelper {
+        -{final} bankInventory : ResourceInventory
+        -{final} playerInventories : Map<Color, ResourceInventory>
+        -resourcesToDiscard : Map<Color, List<ResourceStack>>
+        +DiscardHelper(playerInventories : Map<Color, ResourceInventory>)
+        +getResourcesToDiscard() : Map<Color, List<ResourceStack>>
+        +addResourcesToDiscard(color : Color, List<ResourceStack>)
+        +removeResourcesToDiscard(color : Color, List<ResourceStack>)
+        +isDiscardQuantityMet(targetQuantity : int, color : Color) : boolean
+        +discardResources(color : Color) : void
     }
 
 }
@@ -531,6 +563,8 @@ TradeController ..|> Observer
 TradeView ..|> Observer
 RobberyController ..|> Observer
 RobberyView ..|> Observer
+DiscardController ..|> Observer
+DiscardView ..|> Observer
 
 GameTableController --> GamePlayer
 GameTableController --> GameBoard
@@ -552,8 +586,16 @@ TradeView --> PlayerData
 RobberyController ..> PlayerData
 RobberyController --> RobberyView
 RobberyController --> GamePlayer
+RobberyController --> GameBoard
 RobberyController --> RobberyHelper
 RobberyView --> PlayerData
+
+DiscardController ..> PlayerData
+DiscardController --> DiscardView
+DiscardController --> GamePlayer
+DiscardController --> Bank
+DiscardController --> DiscardHelper
+DiscardView --> PlayerData
 
 TradeHelper --|> Observed
 TradeHelper --> Color
@@ -690,6 +732,12 @@ RobberyHelper --> ResourceInventory
 RobberyHelper --> GameBoard
 Robbery --> Color
 Robbery --> ResourceInventory
+Robbery ..> ResourceStack
+
+DiscardHelper --|> Observed
+DiscardHelper --> ResourceStack
+DiscardHelper --> Color
+DiscardHelper --> ResourceInventory
 
 ResourceInventory ..> NotEnoughInventoryException
 PieceInventory ..> NotEnoughInventoryException
