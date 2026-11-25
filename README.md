@@ -23,6 +23,13 @@
 N/A
 ### Mutation Testing
 N/A
+
+### SpotBugs
+
+**`EI_EXPOSE_REP2` — Stores a reference to an externally mutable object**
+
+The filter applies to the `board` and `bank` assignments in the `BankTradeHelper` constructor. The helper shares the live `GameBoard` so harbor access reflects current placements, and it shares the live `Bank` so trades update the game's resource supply. [BankTradeHelper.java](src/main/java/catan/game_table/domain/trade/BankTradeHelper.java) · [SpotBugs filter](config/spotbugs/exclude.xml)
+
 ### Others
 
 Integration testing in Trade package:

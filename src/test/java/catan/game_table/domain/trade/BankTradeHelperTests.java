@@ -6,6 +6,8 @@ import catan.game_table.domain.board.GameBoard;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.piece.Harbor;
+import catan.game_table.domain.resource.BrickResourceStack;
+import catan.game_table.domain.resource.GrainResourceStack;
 import catan.game_table.domain.resource.LumberResourceStack;
 import catan.game_table.domain.resource.OreResourceStack;
 import catan.game_table.domain.resource.ResourceInventory;
@@ -72,5 +74,34 @@ class BankTradeHelperTests {
         helper.tradeWithBank(Color.RED, lumber, ore);
 
         EasyMock.verify(redInventory, bank, board, lumberHarbor);
+    }
+
+    @Test
+    void TradeWithBank_WhenPlayerHasGenericHarbor_AllowsThreeForOneRate()
+            throws InvalidTradeException, NotEnoughInventoryException {
+        ResourceStack grain = new GrainResourceStack(3);
+        ResourceStack brick = new BrickResourceStack(1);
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        Bank bank = EasyMock.createMock(Bank.class);
+        EasyMock.expect(redInventory.hasResources(grain)).andReturn(true);
+        EasyMock.expect(bank.hasResources(brick)).andReturn(true);
+        redInventory.removeResources(grain);
+        bank.addResources(grain);
+        bank.removeResources(brick);
+        redInventory.addResources(brick);
+
+        Harbor genericHarbor = EasyMock.createMock(Harbor.class);
+        EasyMock.expect(genericHarbor.getInputTrade()).andReturn(null);
+        GameBoard board = EasyMock.createMock(GameBoard.class);
+        EasyMock.expect(board.getHarborsFor(Color.RED)).andReturn(Set.of(genericHarbor));
+        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
+        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
+        EasyMock.replay(redInventory, bank, genericHarbor, board, turnContext);
+        BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
+
+        helper.tradeWithBank(Color.RED, grain, brick);
+
+        EasyMock.verify(redInventory, bank, board, genericHarbor);
     }
 }
