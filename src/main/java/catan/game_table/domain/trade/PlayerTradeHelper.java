@@ -93,6 +93,9 @@ public class PlayerTradeHelper extends Observed {
             failure.initCause(cause);
             throw failure;
         }
+        if (!offer.isAccepted()) {
+            offer.markAccepted();
+        }
         activeTradeOffers.remove(offer);
         notifyObservers();
     }

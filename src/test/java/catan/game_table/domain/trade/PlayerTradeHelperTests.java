@@ -815,6 +815,37 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void ConductTrade_WhenActivePlayerReceivesStockedCounteroffer_AcceptsAndCompletesTrade()
+            throws InvalidTradeException, NotEnoughInventoryException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack ore = new OreResourceStack(1);
+        ResourceStack twoBrick = new BrickResourceStack(2);
+        TradeOffer original = stubUnansweredOffer(Color.RED, Color.BLUE,
+                List.of(new BrickResourceStack(1)), List.of(ore));
+        TradeOffer counteroffer = new TradeOffer(Color.BLUE, Color.RED, List.of(twoBrick), List.of(ore));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(twoBrick)).andReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andReturn(true);
+        redInventory.removeResources(twoBrick);
+        blueInventory.addResources(twoBrick);
+        blueInventory.removeResources(ore);
+        redInventory.addResources(ore);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, original);
+        helper.counterTrade(Color.BLUE, original, counteroffer);
+        assertFalse(counteroffer.isAccepted());
+
+        helper.conductTrade(Color.RED, counteroffer);
+
+        assertTrue(counteroffer.isAccepted());
+        assertTrue(helper.getActiveTradeOffers().isEmpty());
+        EasyMock.verify(redInventory, blueInventory);
+    }
+
     // tests for expireTradeOffers()
     @Test
     void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {
