@@ -758,6 +758,39 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void ConductTrade_WhenReceiverSpendsGrainAfterAcceptance_LeavesAcceptedOfferActive()
+            throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack ore = new OreResourceStack(1);
+        ResourceStack grain = new GrainResourceStack(1);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE,
+                List.of(ore, grain), List.of(new BrickResourceStack(1), new BrickResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(new BrickResourceStack(2))).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(grain)).andStubReturn(true);
+        EasyMock.replay(redInventory, blueInventory);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.acceptTrade(Color.BLUE, offer);
+
+        EasyMock.reset(blueInventory);
+        EasyMock.expect(blueInventory.hasResources(ore)).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(grain)).andReturn(false);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(blueInventory, observer);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.conductTrade(Color.RED, offer));
+
+        assertEquals(Set.of(offer), helper.getActiveTradeOffers());
+        assertTrue(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for expireTradeOffers()
     @Test
     void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {
