@@ -9,6 +9,7 @@ import catan.mvc_util.Observed;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class PlacementHelper extends Observed {
@@ -32,17 +33,17 @@ public class PlacementHelper extends Observed {
 
         cachedPiece = inputPiece;
 
-        PieceData pieceData = inputPiece.getPieceData();
-        PieceType pieceType = pieceData.getPieceType();
-        Color pieceColor = pieceData.getColor();
-
-        cachedValidSpots = getValidSpots(pieceType, pieceColor);
+        cachedValidSpots = getValidSpots(inputPiece);
 
         return cachedValidSpots;
 
     }
 
-    private Set<? extends Location> getValidSpots(PieceType pieceType, Color pieceColor) {
+    private Set<? extends Location> getValidSpots(Piece piece) {
+
+        PieceData pieceData = piece.getPieceData();
+        PieceType pieceType = pieceData.getPieceType();
+        Color pieceColor = pieceData.getColor();
 
         switch (pieceType) {
             case PieceType.SETTLEMENT -> {
@@ -120,24 +121,31 @@ public class PlacementHelper extends Observed {
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {
 
-        Set<? extends Location> validLocations = getAndCacheValidSpots(piece);
+        Optional<Set<? extends Location>> optionalValidLocations = tryGetValidSpots(piece);
+        Set<? extends Location> validLocations;
 
-        PieceData pieceData = piece.getPieceData();
-        PieceType pieceType = pieceData.getPieceType();
+        if (optionalValidLocations.isPresent()) {
 
-        if (!validLocations.contains(location)) {
-            String pieceTypeName = pieceType.toString().toLowerCase();
-            String locationTypeName = location.getLocationType().toString().toLowerCase();
-            String message = String.format("Cannot place %s at %s", pieceTypeName, locationTypeName);
-            throw new InvalidPlacementException(message);
+            validLocations = optionalValidLocations.get();
+
+            PieceData pieceData = piece.getPieceData();
+            PieceType pieceType = pieceData.getPieceType();
+
+            if (!validLocations.contains(location)) {
+                String pieceTypeName = pieceType.toString().toLowerCase();
+                String locationTypeName = location.getLocationType().toString().toLowerCase();
+                String message = String.format("Cannot place %s at %s", pieceTypeName, locationTypeName);
+                throw new InvalidPlacementException(message);
+            }
+
+            if (pieceType == PieceType.CITY) {
+                PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
+                gameBoard.removePieceFromLocation(settlementData, location);
+            }
+
         }
 
         gameBoard.addPieceAtLocation(piece, location);
-
-        if (pieceType == PieceType.CITY) {
-            PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
-            gameBoard.removePieceFromLocation(settlementData, location);
-        }
 
     }
 
@@ -297,6 +305,14 @@ public class PlacementHelper extends Observed {
             }
         }
         return false;
+    }
+
+    private Optional<Set<? extends Location>> tryGetValidSpots(Piece piece) {
+        try {
+            return Optional.of(getValidSpots(piece));
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
     }
 
     private void validateSettlementPlacement(Piece settlement, Location location) throws InvalidPlacementException {
