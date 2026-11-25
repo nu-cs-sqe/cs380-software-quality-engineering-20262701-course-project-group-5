@@ -109,7 +109,6 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   public void addResources(ResourceStack stack) {
     int len = this.resources.size();
     for (int i = 0; i < len; i++) {
-
       ResourceStack currentStack = this.resources.get(i);
       if (currentStack.getClass().equals(stack.getClass())) {
         this.resources.set(i, currentStack.add(stack));
@@ -123,8 +122,6 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   @Override
   public boolean hasResources(ResourceStack stack) {
     for (ResourceStack currentStack : this.resources) {
-      // this should be a dictionary imo
-      // but gotta stick to design or some crap like that
       if (currentStack.getClass().equals(stack.getClass()) && currentStack.getSize() >= stack.getSize()) {
         return true;
       }
@@ -174,7 +171,6 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   }
 
   public boolean hasDevelopment(Development development) {
-    // this should also probably be a dictionary
     for (Development currentDev : this.developments) {
       if (currentDev.getClass().equals(development.getClass())) {
         return true;
