@@ -18,15 +18,20 @@ public class BankTradeHelper {
     private final GameBoard board;
     private final Bank bank;
     private final Map<Color, ResourceInventory> playerInventories;
+    private final TradeTurnContext turnContext;
 
     public BankTradeHelper(GameBoard board, Bank bank, Map<Color, ResourceInventory> playerInventories,
                            TradeTurnContext turnContext) {
         this.board = board;
         this.bank = bank;
         this.playerInventories = Map.copyOf(playerInventories);
+        this.turnContext = turnContext;
     }
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
+        if (actor != turnContext.getActivePlayerColor()) {
+            throw new InvalidTradeException();
+        }
         if (!requestsSingleDifferentResource(give, receive) || !hasAvailableTradeRate(actor, give)) {
             throw new InvalidTradeException();
         }

@@ -231,6 +231,29 @@ class BankTradeHelperTests {
         assertEquals(1, bank.getResourceCount(BrickResourceStack.class));
     }
 
+    @Test
+    void TradeWithBank_WhenBlueTradesDuringRedsTurn_RejectsTrade() {
+        ResourceStack lumber = new LumberResourceStack(4);
+        ResourceStack ore = new OreResourceStack(1);
+        Bank blueInventory = new Bank(List.of(lumber));
+        Bank bank = new Bank(List.of(ore));
+
+        GameBoard board = EasyMock.createMock(GameBoard.class);
+        EasyMock.expect(board.getHarborsFor(Color.BLUE)).andStubReturn(Set.of());
+        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
+        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
+        EasyMock.replay(board, turnContext);
+        BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.BLUE, blueInventory), turnContext);
+
+        assertThrows(InvalidTradeException.class, () -> helper.tradeWithBank(Color.BLUE, lumber, ore));
+
+        assertEquals(4, blueInventory.getResourceCount(LumberResourceStack.class));
+        assertEquals(0, blueInventory.getResourceCount(OreResourceStack.class));
+        assertEquals(0, bank.getResourceCount(LumberResourceStack.class));
+        assertEquals(1, bank.getResourceCount(OreResourceStack.class));
+    }
+
     private void assertStockedTradeRejected(ResourceStack give, ResourceStack receive, Set<Harbor> harbors) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
         Bank bank = EasyMock.createMock(Bank.class);
