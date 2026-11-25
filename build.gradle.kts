@@ -74,6 +74,7 @@ checkstyle{
 
 spotbugs {
     ignoreFailures = false
+    excludeFilter.set(file("config/spotbugs/excludeFilter.xml"))
     showStackTraces = true
     showProgress = true
     effort = Effort.DEFAULT
@@ -81,8 +82,6 @@ spotbugs {
     reportsDir = file("spotbugs")
     maxHeapSize = "1g"
     extraArgs = listOf("-nested:false")
-    excludeFilter.set(file("config/spotbugs/excludeFilter.xml"))
-
 }
 
 tasks.spotbugsMain {

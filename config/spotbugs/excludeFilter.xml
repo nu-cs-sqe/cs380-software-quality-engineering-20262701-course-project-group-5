@@ -24,4 +24,11 @@
         <Class name="catan.game_table.domain.piece.Settlement"/>
         <Bug pattern="URF_UNREAD_FIELD"/>
     </Match>
+    <Match>
+        <Class name="catan.game_table.domain.trade.BankTradeHelper"/>
+        <Method name="&lt;init&gt;" returns="void"
+                params="catan.game_table.domain.board.GameBoard,catan.game_table.domain.bank.Bank,java.util.Map,catan.game_table.domain.trade.TradeTurnContext"/>
+        <Field name="~(board|bank)"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
 </FindBugsFilter>

@@ -8,15 +8,19 @@ A subclass of `Piece` that a `GamePlayer` can trade with in preset ratios of `Re
 
 ### `public Harbor()`
 
-Constructs a `Harbor` piece with the default 3:1 trader ratio. 
+Constructs a generic harbor with a 3:1 trade rate for any resource type.
 
 ### `public Harbor(inputTrade : ResourceStack)`
 
-Constructs `Harbor` piece with an `inputTrade` that allows for a trade of ratio 2:1.
+Constructs a harbor with a 2:1 trade rate for the resource type specified by `inputTrade`.
 
-### `public ResourceStack getInputTrade()`
+### `public int getTradeRate()`
 
-Accessor for the `inputTrade` field to see the `ResourceStack` that was offered.
+Returns the number of resources the player gives for one resource from the bank.
+
+### `public Optional<ResourceStack> getInputTrade()`
+
+Returns the required resource for a 2:1 harbor. A generic harbor returns an empty optional because its 3:1 rate applies to any resource type.
 
 ## Boundary-Value Analysis
 
