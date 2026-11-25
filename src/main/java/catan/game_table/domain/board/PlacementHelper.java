@@ -35,11 +35,8 @@ public class PlacementHelper extends Observed {
         }
 
         cachedPiece = inputPiece;
-
         cachedValidSpots = getValidSpots(inputPiece);
-
         notifyObserversInternal();
-
         return cachedValidSpots;
 
     }
@@ -52,7 +49,7 @@ public class PlacementHelper extends Observed {
         validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
 
         if (gamePhase == GamePhase.REGULAR) {
-            validVertices.removeIf(vertex -> !vertexHasRoadsOfColor(vertex, color));
+            validVertices.removeIf(vertex -> !vertexConnectedToRoadsOfColor(vertex, color));
         }
 
         return validVertices;
@@ -139,7 +136,7 @@ public class PlacementHelper extends Observed {
         Set<Vertex> verticesInvalidUnderDistanceRule = new HashSet<>();
 
         for (Vertex vertex : existingVertices) {
-            if (locationHasBuilding(vertex)) {
+            if (vertexHasBuilding(vertex)) {
                 verticesInvalidUnderDistanceRule.add(vertex);
                 verticesInvalidUnderDistanceRule.addAll(gameBoard.getNeighboringVertices(vertex));
             }
@@ -174,8 +171,8 @@ public class PlacementHelper extends Observed {
         return false;
     }
 
-    private boolean locationHasBuilding(Location location) {
-        List<Piece> pieces = location.getPieces();
+    private boolean vertexHasBuilding(Vertex vertex) {
+        List<Piece> pieces = vertex.getPieces();
         for (Piece piece : pieces) {
             if (piece instanceof Building) {
                 return true;
@@ -184,8 +181,8 @@ public class PlacementHelper extends Observed {
         return false;
     }
 
-    private boolean locationHasBuildingOfColor(Location location, Color pieceColor) {
-        List<Piece> pieces = location.getPieces();
+    private boolean vertexHasBuildingOfColor(Vertex vertex, Color pieceColor) {
+        List<Piece> pieces = vertex.getPieces();
         for (Piece piece : pieces) {
             if (piece instanceof Building) {
                 PieceData existingPieceData = piece.getPieceData();
@@ -196,7 +193,7 @@ public class PlacementHelper extends Observed {
         return false;
     }
 
-    private boolean vertexHasRoadsOfColor(Vertex vertex, Color color) {
+    private boolean vertexConnectedToRoadsOfColor(Vertex vertex, Color color) {
         Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
         for (Edge edge : connectingEdges) {
             if (edgeHasRoadOfColor(edge, color)) {
@@ -218,7 +215,7 @@ public class PlacementHelper extends Observed {
 
         Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
         for (Vertex vertex : endpointVertices) {
-            if (locationHasBuildingOfColor(vertex, color)) {
+            if (vertexHasBuildingOfColor(vertex, color)) {
                 return true;
             }
         }
@@ -241,7 +238,7 @@ public class PlacementHelper extends Observed {
         Set<Edge> blockedEdges = new HashSet<>();
 
         for (Vertex vertex : endpointVertices) {
-            if (locationHasBuilding(vertex) && !locationHasBuildingOfColor(vertex, color)) {
+            if (vertexHasBuilding(vertex) && !vertexHasBuildingOfColor(vertex, color)) {
                 blockedEdges.addAll(gameBoard.getConnectingEdges(vertex));
             }
         }
@@ -255,7 +252,7 @@ public class PlacementHelper extends Observed {
     private boolean edgeTouchingJustPlacedBuilding(Edge edge, Color color) {
         Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
         for (Vertex vertex : endpointVertices) {
-            if (locationHasBuildingOfColor(vertex, color)) {
+            if (vertexHasBuildingOfColor(vertex, color)) {
                 return !vertexConnectedToRoadOfSameColor(vertex, color);
             }
         }
