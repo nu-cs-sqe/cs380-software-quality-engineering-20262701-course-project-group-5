@@ -209,7 +209,7 @@ Searching for and deleting the offer.
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `actor` and `trade`, with trading status, active player, offer status, and both inventories. | Transfers cards and removes the offer or rejects the exchange without changing offers or inventories. |
+| `actor` and `trade`, with trading status, active player, offer status, both inventories, and the outcome of the first withdrawal. | Transfers cards and removes the offer or rejects the exchange without changing offers or inventories. |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -219,6 +219,7 @@ Searching for and deleting the offer.
 | whether this offer is active | Cases |
 | stock of each resource owed by either player | Counts |
 | resource lists | Pairs of collections |
+| first withdrawal after both stock checks pass | Cases |
 
 **Step 3: Concrete values**
 | Variable | Values |
@@ -228,21 +229,23 @@ Searching for and deleting the offer.
 | whether this offer is active | offer still in the active set, offer already completed and removed |
 | stock of each resource owed by either player | exactly enough or surplus, proposer short by one on a repeated resource, receiver short by one on a required resource |
 | resource lists | one stack per side, multiple stacks with repeated or distinct resource types |
+| first withdrawal after both stock checks pass | succeeds, or throws `NotEnoughInventoryException` before any cards move |
 
 Repeated stacks of the same resource on one side interact because their quantities must be added before checking stock.
 
 **Step 4: Each choice**
 
-|             | Inputs                                                                                                                                                                                             | Expected output                                                                                                                                           | Implemented?       |
-|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | During Red's open turn, Red finalizes an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]`. Red holds 2 brick, and Blue holds 2 ore and 1 grain. Another offer is pending.             | Red loses 2 brick and gains 1 ore and 1 grain. Blue gains 2 brick and keeps 1 ore and 0 grain. Observers see only the unrelated offer after the exchange. | :white_check_mark: |
-| Test Case 2 | During Red's open turn, Red tries to finalize Blue's unanswered counteroffer of `[1 ore, 1 ore]` for 2 brick when Blue has only 1 ore and Red has 2 brick.                                         | Throws `InvalidTradeException`. The counteroffer stays unanswered and active, and neither inventory changes.                                              | :white_check_mark: |
-| Test Case 3 | During Red's open turn, Blue accepts Red's offer of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` while both players have enough stock. Blue spends the required grain before Red tries to finalize. | Throws `InvalidTradeException`. The offer stays accepted and active, and both inventories stay as they were immediately before finalization.              | :white_check_mark: |
-| Test Case 4 | During Red's open turn, Red tries to finalize a stocked trade that Blue has yet to accept.                                                                                                         | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
-| Test Case 5 | During Red's open turn, Red finalizes Blue's unanswered counteroffer to give Red 1 ore for 2 brick with enough stock on both sides.                                                                | Blue gives Red 1 ore, Red gives Blue 2 brick, and the counteroffer is marked accepted and removed.                                                        | :white_check_mark: |
-| Test Case 6 | During Red's open turn, Blue tries to finalize a stocked, accepted offer from Red.                                                                                                                 | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
-| Test Case 7 | During Red's open turn, Red twice tries to finalize their accepted offer to give Blue 1 brick for 1 ore, starting with enough stock for two exchanges.                                             | The first call transfers the cards and removes the offer, and the second throws `InvalidTradeException` without further changes.                          | :white_check_mark: |
-| Test Case 8 | After trading closes on Red's turn, Red tries to finalize a stocked, accepted offer to Blue.                                                                                                       | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
+|             | Inputs                                                                                                                                                                                                                    | Expected output                                                                                                                                           | Implemented?       |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | During Red's open turn, Red finalizes an accepted trade of `[1 brick, 1 brick]` for `[1 ore, 1 grain]`. Red holds 2 brick, and Blue holds 2 ore and 1 grain. Another offer is pending.                                    | Red loses 2 brick and gains 1 ore and 1 grain. Blue gains 2 brick and keeps 1 ore and 0 grain. Observers see only the unrelated offer after the exchange. | :white_check_mark: |
+| Test Case 2 | During Red's open turn, Red tries to finalize Blue's unanswered counteroffer of `[1 ore, 1 ore]` for 2 brick when Blue has only 1 ore and Red has 2 brick.                                                                | Throws `InvalidTradeException`. The counteroffer stays unanswered and active, and neither inventory changes.                                              | :white_check_mark: |
+| Test Case 3 | During Red's open turn, Blue accepts Red's offer of `[1 brick, 1 brick]` for `[1 ore, 1 grain]` while both players have enough stock. Blue spends the required grain before Red tries to finalize.                        | Throws `InvalidTradeException`. The offer stays accepted and active, and both inventories stay as they were immediately before finalization.              | :white_check_mark: |
+| Test Case 4 | During Red's open turn, Red tries to finalize a stocked trade that Blue has yet to accept.                                                                                                                                | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
+| Test Case 5 | During Red's open turn, Red finalizes Blue's unanswered counteroffer to give Red 1 ore for 2 brick with enough stock on both sides.                                                                                       | Blue gives Red 1 ore, Red gives Blue 2 brick, and the counteroffer is marked accepted and removed.                                                        | :white_check_mark: |
+| Test Case 6 | During Red's open turn, Blue tries to finalize a stocked, accepted offer from Red.                                                                                                                                        | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
+| Test Case 7 | During Red's open turn, Red twice tries to finalize their accepted offer to give Blue 1 brick for 1 ore, starting with enough stock for two exchanges.                                                                    | The first call transfers the cards and removes the offer, and the second throws `InvalidTradeException` without further changes.                          | :white_check_mark: |
+| Test Case 8 | After trading closes on Red's turn, Red tries to finalize a stocked, accepted offer to Blue.                                                                                                                              | Throws `InvalidTradeException` without changing offers or inventories.                                                                                    | :white_check_mark: |
+| Test Case 9 | During Red's open turn, Red finalizes an accepted, active offer to give Blue 1 brick for 1 ore. Both stock checks pass, but Red's first withdrawal of 1 brick throws `NotEnoughInventoryException` before any cards move. | Throws `InvalidTradeException` with the original withdrawal exception as its cause. The offer stays accepted and active, and neither inventory changes.   | :x:                |
 
 ### Test: `public void expireTradeOffers()`
 
