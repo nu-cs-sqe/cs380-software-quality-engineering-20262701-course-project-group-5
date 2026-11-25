@@ -8,7 +8,7 @@ The `LobbyController` links the `LobbyView`, `Main`, and `GameSetup` classes. Wh
 
 ### `private void onStart(List<PlayerData> players)`
 
-When a player hits the start button in the `LobbyView` after entering the number of players and what colors they chose, this information is routed through `onStart()` so it can be passed to `GameSetup` to trigger the creation of a new `GameSession` that is then passed back to `LobbyController` and then to `Main`.
+When a player hits the start button in the `LobbyView` after entering the number of players and what colors they chose, this information is routed through `onStart()` so it can be passed to `GameSetup` to trigger the creation of a new `GameSession` that is then passed back to `LobbyController` and then to `Main`. If the given number of players is not large enough, an error will be displayed to let the players know.
 
 ### `private void onDataEntry()`
 
@@ -33,12 +33,12 @@ When a player enters data such as choosing a number of player, a language, or co
 | Variable | Values |
 |---|---|
 | Input | Invalid num of players (< 3), valid num of players (3, 4) |
-| Output | `GameSetup:createGame()` is called and an IllegalArgumentException is caught and displayed,`GameSetup:createGame()` and `Main:showGame()` are called  |
+| Output | `GameSetup:createGame()` is called and an IllegalArgumentException is caught and `LobbyView:showError()` is called with the error message,`GameSetup:createGame()` and `Main:showGame()` are called  |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|-------|-----------------|--------------|
-| Test Case 1  | `players` list of size 2 | `GameSetup:createGame()` is called and an IllegalArgumentException is caught and displayed  | :x: |
+| Test Case 1  | `players` list of size 2 | `GameSetup:createGame()` is called, an IllegalArgumentException is caught, and `LobbyView:showError()` is called with the error message | :x: |
 | Test Case 2  | `players` list of size 4 | `GameSetup:createGame()` and `Main:showGame()` are called  | :x: |
 
 
