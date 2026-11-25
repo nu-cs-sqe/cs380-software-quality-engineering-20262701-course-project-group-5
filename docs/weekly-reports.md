@@ -78,3 +78,25 @@ TODO:
 - Breanna: TDD for added "neighbors" functionality in GameBoard
 - Check and merge Breanna's completed TDDs (2 reviews done on each)
 - TDD on remaining packages / classes
+
+# Week 8 (11/15/2026 - 11/22/2026)
+**Planning and Progress Tracking:**
+
+1. [merged] Breanna: TDD on Hex, GameBoard, Location and its inheritors
+2. [in review, approved] Daniel: Revised TDD on Resource package ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/120))
+3. [in review] Anthony: TDD on GamePlayer ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/96))
+4. [in progress] Breanna & Daniel: BVA and TDD on Bank, BVA done by Breanna, TDD will be done by Daniel ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/123))
+5. [in progress] Breanna: BVA and TDD on trade package ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/125))
+6. [in progress] Xavier: TDD on PlacementHelper class ([link to PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/71))
+7. [in progress] Hayley: TDD on City and Settlement ([link to city PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/122/changes))
+   ([link to settlement PR](https://github.com/nu-cs-sqe/cs380-software-quality-engineering-20262701-course-project-group-5/pull/99))
+8. [merged] Hayley: TDD on PieceData class
+
+TODO:
+- Xavier and Anthony: Design for Development, Robber, Award
+- Daniel: TDD on Bank package (done by Monday / early Tuesday)
+- Breanna and Hayley: Controller design
+- Breanna: TDD on Trade package (done by Tuesday)
+- Anyone: BVA & TDD for Development, Robber, Award
+- Anyone: BVA & TDD for controllers
+

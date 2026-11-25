@@ -84,6 +84,15 @@ package domain {
     ORANGE
 }
 
++enum LocationType {
+    VERTEX,
+    EDGE,
+    HEX
+    -{final} label : String
+    -LocationType(label : String)
+    +toString() : String
+}
+
 package exception {
 
 +exception NotEnoughInventoryException
@@ -139,7 +148,7 @@ package bank {
     +class BankResourceDistributor {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} bankInventory : ResourceInventory
-        -resourcesToDistribute : Map<Color, List<ResourceStack>
+        -resourcesToDistribute : Map<Color, List<ResourceStack>>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
         +produceResources(color : Color, products : List<ResourceStack>) : void
         +finalizeProduction() : void
@@ -308,6 +317,7 @@ package board {
         -{final} products : List<ResourceStack>
         +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
         -Hex(tokenValue : int, vertices : Set<Vertex>, products : List<ResourceStack>)
+        +getLocationType() : LocationType
         +canProduce() : boolean
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
@@ -347,7 +357,8 @@ package board {
 
     +abstract class Location {
         #pieces : List<Piece>
-        +getPieceData() : List<PieceData>
+        +{abstract} getLocationType() : LocationType
+        +getPieces() : List<Piece>
         +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
         +holdsPieceWithData(data : PieceData) : boolean
@@ -356,6 +367,7 @@ package board {
     +class Vertex {
         -{final} point : Point
         +Vertex(point : Point)
+        +getLocationType() : LocationType
         +getPoint() : Point
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -363,6 +375,7 @@ package board {
     +class Edge {
         -{final} endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
+        +getLocationType() : LocationType
         +getEndpoints() : Set<Point>
     }
 
@@ -390,7 +403,6 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
-        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -505,6 +517,7 @@ package award {
 
 }
 
+
 Observed --> Observer
 
 GameTableController --> GameTableView
@@ -558,6 +571,7 @@ Bank ..|> ResourceInventory
 BankResourceDistributor --|> Observed
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
+BankResourceDistributor --> ResourceStack
 
 PurchaseHelper -u-> PlayerInventory
 PurchaseHelper --> Bank
@@ -619,6 +633,7 @@ DesertHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
+Location ..> LocationType
 Vertex --> Point
 Vertex --|> Location
 Edge --> Piece
