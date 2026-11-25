@@ -1722,6 +1722,8 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
@@ -1816,6 +1818,8 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidCitySpots(playerColor)).andReturn(expectedVertices).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
@@ -1916,6 +1920,8 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidRoadSpots(playerColor)).andReturn(expectedEdges).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
@@ -1994,7 +2000,10 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
-        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder);
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
+        EasyMock.replay(placementHelper);
 
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
         EasyMock.expectLastCall();
@@ -2027,6 +2036,8 @@ public class PlacementHelperTests {
 
         PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidRobberSpots()).andReturn(expectedHexes).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
@@ -2081,6 +2092,7 @@ public class PlacementHelperTests {
         builder.addMockedMethod("getValidCitySpots");
         builder.addMockedMethod("getValidRoadSpots");
         builder.addMockedMethod("getValidRobberSpots");
+        builder.addMockedMethod("notifyObserversInternal");
         builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
         builder.withArgs(gameBoard, gamePhaseHolder);
 
