@@ -5,15 +5,13 @@ import catan.game_table.domain.bank.Bank;
 import catan.game_table.domain.board.GameBoard;
 import catan.game_table.domain.exception.InvalidTradeException;
 import catan.game_table.domain.exception.NotEnoughInventoryException;
+import catan.game_table.domain.piece.Harbor;
 import catan.game_table.domain.resource.ResourceInventory;
 import catan.game_table.domain.resource.ResourceStack;
 
 import java.util.Map;
 
 public class BankTradeHelper {
-
-    private static final int GENERIC_HARBOR_RATE = 3;
-    private static final int RESOURCE_HARBOR_RATE = 2;
 
     private final GameBoard board;
     private final Bank bank;
@@ -27,10 +25,10 @@ public class BankTradeHelper {
     }
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
-        if (give.getSize() == GENERIC_HARBOR_RATE && !hasGenericHarbor(actor)) {
+        if (give.getSize() == Harbor.GENERIC_TRADE_RATE && !hasGenericHarbor(actor)) {
             throw new InvalidTradeException();
         }
-        if (give.getSize() == RESOURCE_HARBOR_RATE && !hasMatchingHarbor(actor, give)) {
+        if (give.getSize() == Harbor.RESOURCE_TRADE_RATE && !hasMatchingHarbor(actor, give)) {
             throw new InvalidTradeException();
         }
         ResourceInventory playerInventory = playerInventories.get(actor);
@@ -50,14 +48,14 @@ public class BankTradeHelper {
     }
 
     private boolean hasGenericHarbor(Color actor) {
-        return board.getHarborsFor(actor).stream().anyMatch(harbor -> harbor.getInputTrade() == null);
+        return board.getHarborsFor(actor).stream()
+                .anyMatch(harbor -> harbor.getTradeRate() == Harbor.GENERIC_TRADE_RATE);
     }
 
     private boolean hasMatchingHarbor(Color actor, ResourceStack give) {
-        return board.getHarborsFor(actor).stream().anyMatch(harbor -> {
-            ResourceStack harborInput = harbor.getInputTrade();
-            return harborInput != null && harborInput.getClass() == give.getClass();
-        });
+        return board.getHarborsFor(actor).stream()
+                .flatMap(harbor -> harbor.getInputTrade().stream())
+                .anyMatch(inputTrade -> inputTrade.getClass() == give.getClass());
     }
 
     private void withdrawTradeResources(ResourceInventory playerInventory, ResourceStack give, ResourceStack receive)

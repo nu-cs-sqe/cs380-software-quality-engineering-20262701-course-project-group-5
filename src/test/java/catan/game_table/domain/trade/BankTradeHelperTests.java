@@ -61,19 +61,18 @@ class BankTradeHelperTests {
         bank.removeResources(ore);
         redInventory.addResources(ore);
 
-        Harbor lumberHarbor = EasyMock.createMock(Harbor.class);
-        EasyMock.expect(lumberHarbor.getInputTrade()).andStubReturn(new LumberResourceStack(1));
+        Harbor lumberHarbor = new Harbor(new LumberResourceStack(1));
         GameBoard board = EasyMock.createMock(GameBoard.class);
         EasyMock.expect(board.getHarborsFor(Color.RED)).andStubReturn(Set.of(lumberHarbor));
         TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
         EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
         EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
-        EasyMock.replay(redInventory, bank, lumberHarbor, board, turnContext);
+        EasyMock.replay(redInventory, bank, board, turnContext);
         BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
 
         helper.tradeWithBank(Color.RED, lumber, ore);
 
-        EasyMock.verify(redInventory, bank, board, lumberHarbor);
+        EasyMock.verify(redInventory, bank, board);
     }
 
     @Test
@@ -90,19 +89,18 @@ class BankTradeHelperTests {
         bank.removeResources(brick);
         redInventory.addResources(brick);
 
-        Harbor genericHarbor = EasyMock.createMock(Harbor.class);
-        EasyMock.expect(genericHarbor.getInputTrade()).andReturn(null);
+        Harbor genericHarbor = new Harbor();
         GameBoard board = EasyMock.createMock(GameBoard.class);
         EasyMock.expect(board.getHarborsFor(Color.RED)).andReturn(Set.of(genericHarbor));
         TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
         EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
         EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
-        EasyMock.replay(redInventory, bank, genericHarbor, board, turnContext);
+        EasyMock.replay(redInventory, bank, board, turnContext);
         BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
 
         helper.tradeWithBank(Color.RED, grain, brick);
 
-        EasyMock.verify(redInventory, bank, board, genericHarbor);
+        EasyMock.verify(redInventory, bank, board);
     }
 
     @Test
@@ -119,20 +117,18 @@ class BankTradeHelperTests {
         bank.removeResources(ore);
         redInventory.addResources(ore);
 
-        Harbor genericHarbor = EasyMock.createMock(Harbor.class);
-        EasyMock.expect(genericHarbor.getInputTrade()).andStubReturn(null);
-        Harbor lumberHarbor = EasyMock.createMock(Harbor.class);
-        EasyMock.expect(lumberHarbor.getInputTrade()).andReturn(new LumberResourceStack(1));
+        Harbor genericHarbor = new Harbor();
+        Harbor lumberHarbor = new Harbor(new LumberResourceStack(1));
         GameBoard board = EasyMock.createMock(GameBoard.class);
         EasyMock.expect(board.getHarborsFor(Color.RED)).andReturn(Set.of(genericHarbor, lumberHarbor));
         TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
         EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
         EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
-        EasyMock.replay(redInventory, bank, genericHarbor, lumberHarbor, board, turnContext);
+        EasyMock.replay(redInventory, bank, board, turnContext);
         BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
 
         helper.tradeWithBank(Color.RED, lumber, ore);
 
-        EasyMock.verify(redInventory, bank, board, genericHarbor, lumberHarbor);
+        EasyMock.verify(redInventory, bank, board);
     }
 }

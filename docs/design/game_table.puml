@@ -424,10 +424,12 @@ package piece {
     }
 
     +class Harbor {
-        -inputTrade : ResourceStack
+        -{final} tradeRate : int
+        -{final} inputTrade : Optional<ResourceStack>
         +Harbor()
         +Harbor(inputTrade : ResourceStack)
-        +getInputTrade() : ResourceStack
+        +getTradeRate() : int
+        +getInputTrade() : Optional<ResourceStack>
     }
 
     +interface PieceInventory {
