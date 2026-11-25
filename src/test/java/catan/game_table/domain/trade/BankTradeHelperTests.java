@@ -156,6 +156,12 @@ class BankTradeHelperTests {
         assertStockedTradeRejected(new LumberResourceStack(3), new OreResourceStack(1), Set.of());
     }
 
+    @Test
+    void TradeWithBank_WhenPlayerHasLumberHarbor_RejectsOneForOneRate() {
+        Harbor lumberHarbor = new Harbor(new LumberResourceStack(1));
+        assertStockedTradeRejected(new LumberResourceStack(1), new OreResourceStack(1), Set.of(lumberHarbor));
+    }
+
     private void assertStockedTradeRejected(ResourceStack give, ResourceStack receive, Set<Harbor> harbors) {
         ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
         Bank bank = EasyMock.createMock(Bank.class);
