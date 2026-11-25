@@ -16,7 +16,7 @@ public class Settlement extends Building {
 
   @Override
   public void produceResources(List<ResourceStack> products) {
-    Color pieceColor = pieceData.getColor();
+    Color pieceColor = this.pieceData.getColor();
     bankResourceDistributor.produceResources(pieceColor, products);
   }
 }

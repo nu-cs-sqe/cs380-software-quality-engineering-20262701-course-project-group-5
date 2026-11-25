@@ -24,4 +24,14 @@
         <Class name="catan.game_table.domain.piece.Settlement"/>
         <Bug pattern="URF_UNREAD_FIELD"/>
     </Match>
+
+    <Match>
+        <Bug code="EI2"/>
+    </Match>
+
+    <Match>
+        <Class name="catan.game_table.domain.player.GamePlayer"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+
 </FindBugsFilter>

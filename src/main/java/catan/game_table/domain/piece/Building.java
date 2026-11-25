@@ -5,11 +5,10 @@ import catan.game_table.domain.resource.ResourceStack;
 import java.util.List;
 
 public abstract class Building extends Piece {
-  protected PieceData pieceData;
   protected BankResourceDistributor bankResourceDistributor;
 
   public Building(PieceData pieceData, BankResourceDistributor bankResourceDistributor) {
-    this.pieceData = pieceData;
+    super(pieceData);
     this.bankResourceDistributor = bankResourceDistributor;
   }
 

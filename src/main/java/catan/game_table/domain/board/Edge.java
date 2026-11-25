@@ -20,9 +20,7 @@ public class Edge extends Location {
         return LocationType.EDGE;
     }
 
-    public Set<Point> getEndpoints() {
-        return endpoints;
-    }
+    public Set<Point> getEndpoints() { return Set.copyOf(endpoints); }
 
     private static Set<Point> validatedEndpoints(Point first, Point second) {
         long horizontalDistance = Math.abs((long) first.x() - second.x());
