@@ -28,14 +28,12 @@ public class PlayerInventoryTests {
   public void Add_Piece_With_Exception(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
-
     Piece piece;
 
     if (type.equals("Harbor")) {
-      piece = new Harbor(data);
+      piece = new Harbor();
     } else if (type.equals("Robber")) {
-      piece = new Robber(data);
+      piece = new Robber();
     } else {
       throw new IllegalStateException("should only be robber or harbor");
     }
@@ -126,14 +124,12 @@ public class PlayerInventoryTests {
   public void Has_Piece_Illegal_Pieces(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
-
     Piece piece;
 
     if (type.equals("Harbor")) {
-      piece = new Harbor(data);
+      piece = new Harbor();
     } else if (type.equals("Robber")) {
-      piece = new Robber(data);
+      piece = new Robber();
     } else {
       throw new IllegalStateException("should only be robber or harbor");
     }
@@ -190,14 +186,12 @@ public class PlayerInventoryTests {
   public void Remove_Piece_With_Exceptions(String type, String msg) {
     PlayerInventory inv = new PlayerInventory(new ArrayList<>());
 
-    PieceData data = new PieceData(Color.NONE, PieceType.CITY);
-
     Piece piece;
 
     if (type.equals("Harbor")) {
-      piece = new Harbor(data);
+      piece = new Harbor();
     } else if (type.equals("Robber")) {
-      piece = new Robber(data);
+      piece = new Robber();
     } else {
       throw new IllegalStateException("should only be robber or harbor");
     }

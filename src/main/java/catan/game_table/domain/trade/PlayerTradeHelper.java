@@ -1,8 +1,10 @@
 package catan.game_table.domain.trade;
 
+import catan.game_table.domain.Color;
+
 public class PlayerTradeHelper {
 
-  public void addTradeOffer(TradeOffer offer) {
+  public void proposeTrade(Color actor, TradeOffer offer) {
 
   }
 

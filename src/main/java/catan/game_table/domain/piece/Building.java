@@ -1,24 +1,16 @@
 package catan.game_table.domain.piece;
 
 import catan.game_table.domain.bank.BankResourceDistributor;
-import catan.game_table.domain.resource.ResourceProducts;
 import catan.game_table.domain.resource.ResourceStack;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Building extends Piece {
+  protected BankResourceDistributor bankResourceDistributor;
 
-  public Building(PieceData data, BankResourceDistributor distributor) {
-    super(data);
+  public Building(PieceData pieceData, BankResourceDistributor bankResourceDistributor) {
+    super(pieceData);
+    this.bankResourceDistributor = bankResourceDistributor;
   }
 
-  public void produceResources(ResourceProducts products) {
-
-  }
-
-  public List<ResourceStack> getCost() {
-    return new ArrayList<>();
-  }
-
+  public abstract void produceResources(List<ResourceStack> products);
 }

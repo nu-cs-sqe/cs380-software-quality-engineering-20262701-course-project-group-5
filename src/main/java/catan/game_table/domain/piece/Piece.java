@@ -1,17 +1,17 @@
 package catan.game_table.domain.piece;
 
-public abstract class Piece {
+import catan.game_table.domain.Color;
+import catan.game_table.domain.PieceType;
+import java.util.Locale;
 
-  private PieceData data;
+public abstract class Piece {
+  protected final PieceData pieceData;
 
   public Piece(PieceData data) {
-    this.data = data;
+    this.pieceData = data;
   }
 
   public PieceData getPieceData() {
-    return data;
+    return this.pieceData;
   }
-
-  public void onPlaceEffect() {}
-
 }

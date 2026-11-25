@@ -63,7 +63,7 @@ public class GamePlayer {
       throw new InvalidTradeException("Cannot offer to same player as proposed");
     }
 
-    this.playerTradeHelper.addTradeOffer(trade);
+    this.playerTradeHelper.proposeTrade(this.color, trade);
 
   }
 
