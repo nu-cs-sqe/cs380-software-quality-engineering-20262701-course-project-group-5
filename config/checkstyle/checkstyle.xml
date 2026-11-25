@@ -20,6 +20,7 @@
 
     <property name="charset" value="UTF-8"/>
 
+    <!-- this is not failing anything -->
     <property name="severity" value="${org.checkstyle.google.severity}" default="warning"/>
 
     <property name="fileExtensions" value="java, properties, xml"/>
