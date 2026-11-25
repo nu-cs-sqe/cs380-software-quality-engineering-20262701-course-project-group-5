@@ -1929,10 +1929,10 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenRoad_AndEdgeHasRoadAlready_ExpectInvalidPlacementException() {
+    public void Place_GivenRoad_AndInvalidLocation_ExpectInvalidPlacementException() {
 
         Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
+        GamePhase gamePhase = GamePhase.REGULAR;
         Piece pieceToPlace = makePieceMock(PieceType.ROAD, playerColor);
         Piece existingPiece = makePieceMock(PieceType.ROAD, playerColor);
 
@@ -1958,20 +1958,23 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
+        Set<Set<String>> expectedEdgeNames = Set.of(
+                Set.of("B", "C"),
+                Set.of("A", "F")
+        );
+        Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
+
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidRoadSpots(playerColor)).andReturn(expectedEdges).times(1);
+        EasyMock.replay(placementHelper);
+
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+        String expectedMessage = "Cannot place road at edge";
 
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s already holds a %s",
-                "road",
-                "edge",
-                "edge",
-                "road"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
+        Exception exception = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(expectedMessage, exception.getMessage());
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 
