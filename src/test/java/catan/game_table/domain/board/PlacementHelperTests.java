@@ -2057,10 +2057,6 @@ public class PlacementHelperTests {
 
     }
 
-    private PlacementHelper makePlacementHelperWithMockedGetters(GameBoard gameBoard, GamePhaseHolder gamePhaseHolder) {
-        return makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, true);
-    }
-
     private PlacementHelper makePlacementHelperWithMockedGetters(GameBoard gameBoard, GamePhaseHolder gamePhaseHolder, boolean autoReplay) {
 
         IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
