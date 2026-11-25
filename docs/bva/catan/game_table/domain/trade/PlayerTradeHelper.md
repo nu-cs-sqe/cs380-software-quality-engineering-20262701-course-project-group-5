@@ -202,7 +202,7 @@ Searching for and deleting the offer.
 | Test Case 2 | During Red's open turn, Blue tries to refuse a Red-to-Blue offer that was already removed.            | Throws `InvalidTradeException` without changing offers or inventories.                   | :white_check_mark: |
 | Test Case 3 | During Red's open turn, White tries to refuse an unanswered offer from Red to Blue.                   | Throws `InvalidTradeException` without changing offers or inventories.                   | :white_check_mark: |
 | Test Case 4 | Blue tries to refuse an unanswered offer from Red after trading closes.                               | Throws `InvalidTradeException` without changing offers or inventories.                   | :white_check_mark: |
-| Test Case 5 | During Red's open turn, Blue tries to refuse an active offer from Red that Blue has already accepted. | Throws `InvalidTradeException` without changing offers or inventories.                   | :x:                |
+| Test Case 5 | During Red's open turn, Blue tries to refuse an active offer from Red that Blue has already accepted. | Throws `InvalidTradeException` without changing offers or inventories.                   | :white_check_mark: |
 
 ### Test: `public void conductTrade(Color actor, TradeOffer trade) throws InvalidTradeException`
 

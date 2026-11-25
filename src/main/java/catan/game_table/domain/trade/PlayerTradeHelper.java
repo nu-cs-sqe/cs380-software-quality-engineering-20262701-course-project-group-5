@@ -64,10 +64,7 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void refuseTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
-        if (!turnContext.isTradingOpen()) {
-            throw new InvalidTradeException();
-        }
-        if (actor != offer.getReceiver() || !activeTradeOffers.contains(offer)) {
+        if (!turnContext.isTradingOpen() || !isPendingOfferForReceiver(actor, offer)) {
             throw new InvalidTradeException();
         }
         activeTradeOffers.remove(offer);
