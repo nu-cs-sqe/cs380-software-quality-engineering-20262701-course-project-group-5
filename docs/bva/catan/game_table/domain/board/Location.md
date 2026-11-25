@@ -7,8 +7,14 @@ Direct known subclasses: `Vertex`, `Edge`, `Hex`
 
 A place on the board that holds pieces.
 
-### `public List<PieceData> getPieceData()`
-Returns the `PieceData` of each piece at this location, in the order added. Returns an empty list if there are none.
+### `public abstract LocationType getLocationType()`
+Returns `VERTEX` for a vertex, `EDGE` for an edge, and `HEX` for any hex.
+
+### `public List<Piece> getPieces()`
+Returns the pieces at this location in the order added. Returns an empty list if there are none.
+
+### `public boolean holdsPieceWithData(PieceData data)`
+Returns true if any piece at this location has the same `type` and `color` as `data`. Otherwise returns false.
 
 ### `public void addPiece(Piece piece)`
 Adds `piece` to the end of this location's pieces. It does not check whether the placement is valid.
@@ -20,33 +26,43 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 
 `Location` is abstract, so the tests below are run on a `Vertex` (with a `Settlement`), an `Edge` (with a `Road`) and a `Hex` (with the `Robber`). Cases with two pieces use an `Edge` holding a `Road` and a `Harbor`. `Location` itself does not limit what or how many pieces it holds, assume responsibilities lie in `PlacementHelper`.
 
-### Test: `public List<PieceData> getPieceData()`
+### Test: `public boolean holdsPieceWithData(PieceData data)`
 
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| none; state: the pieces at the location | `List<PieceData>`, one entry per piece, in the order added. Its size is one of: empty, exactly one, more than one. |
+| `data : PieceData`; state: the pieces at the location | `boolean` indicating whether any piece has matching data |
 
 **Step 2: Data types**
 | Variable | Type |
 |---|---|
+| `data` | Cases (a valid `PieceData`) |
 | pieces at location | Collection |
-| returned list (output) | Collection |
+| `data` vs a stored piece's data | Pair of References (object equality) |
+| returned value (output) | Boolean |
+
+**Operations:** Searching for a piece whose data equals `data`.
 
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| pieces at location | empty, exactly one, more than one |
-| returned list (output) | empty, exactly one element, more than one element |
+| pieces at location | empty, exactly one, two |
+| `data` vs a stored piece's data | same object, different object with equal contents, same type with a different color, same color with a different type |
+| matching piece | none, only piece, first of two, last of two |
+| returned value (output) | true, false |
 
 **Step 4: Each choice**
 
-|             | Input                                   | Expected output               | Implemented? |
-|-------------|-----------------------------------------|-------------------------------|--------------|
-| Test Case 1 | `Vertex` with no pieces                 | empty list                    | :x:          |
-| Test Case 2 | `Vertex` with one `Settlement`          | list with that piece's data   | :x:          |
-| Test Case 3 | `Edge` with a `Road` then a `Harbor`    | list with both, in that order | :x:          |
-| Test Case 4 | `Hex` with the `Robber`                 | list with the Robber's data   | :x:          |
+|             | Input                                                                                                  | Expected output | Implemented?       |
+|-------------|--------------------------------------------------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Empty `Vertex`, query with settlement data                                                             | false           | :white_check_mark: |
+| Test Case 2 | `Vertex` with one `Settlement`, query with the settlement data                                         | true            | :white_check_mark: |
+| Test Case 3 | `Edge` with a `Road` then a `Harbor`, query with the road's data                                       | true            | :white_check_mark: |
+| Test Case 4 | `Edge` with a `Road` then a `Harbor`, query with the harbor's data                                     | true            | :white_check_mark: |
+| Test Case 5 | `Edge` with a `Road` then a `Harbor`, query with settlement data                                       | false           | :white_check_mark: |
+| Test Case 6 | `Vertex` with one `Settlement`, query with a different `PieceData` object with the same type and color | true            | :white_check_mark: |
+| Test Case 7 | `Edge` with one `Road`, query with the same type and a different color                                 | false           | :white_check_mark: |
+| Test Case 8 | `Vertex` with one `Settlement`, query with the same color and a different type                         | false           | :white_check_mark: |
 
 ### Test: `public void addPiece(Piece piece)`
 
@@ -73,11 +89,11 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 
 **Step 4: Each choice**
 
-|             | Input                                        | Expected output                                  | Implemented? |
-|-------------|----------------------------------------------|--------------------------------------------------|--------------|
-| Test Case 1 | empty `Vertex`, add a `Settlement`           | vertex holds exactly that piece                  | :x:          |
-| Test Case 2 | `Edge` with one `Road`, add a `Harbor`       | edge holds both, the `Harbor` after the `Road`   | :x:          |
-| Test Case 3 | empty `Hex`, add the `Robber`                | hex holds exactly that piece                     | :x:          |
+|             | Input                                  | Expected output                                | Implemented?       |
+|-------------|----------------------------------------|------------------------------------------------|--------------------|
+| Test Case 1 | empty `Vertex`, add a `Settlement`     | vertex holds exactly that piece                | :white_check_mark: |
+| Test Case 2 | `Edge` with one `Road`, add a `Harbor` | edge holds both, the `Harbor` after the `Road` | :white_check_mark: |
+| Test Case 3 | empty `Hex`, add the `Robber`          | hex holds exactly that piece                   | :white_check_mark: |
 
 ### Test: `public void removePieceWithData(PieceData data)`
 
@@ -110,13 +126,13 @@ Removes the first piece whose data equals `data`, meaning the same `type` and th
 
 **Step 4: Each choice**
 
-|             | Input                                                                         | Expected output                  | Implemented? |
-|-------------|-------------------------------------------------------------------------------|----------------------------------|--------------|
-| Test Case 1 | no pieces                                                                     | no change, no exception          | :x:          |
-| Test Case 2 | one piece, `data` is that piece's own data                                    | location is empty                | :x:          |
-| Test Case 3 | `Edge` with a `Road` then a `Harbor`, `data` matches the `Road` only (first)  | only the `Harbor` remains        | :x:          |
-| Test Case 4 | `Edge` with a `Road` then a `Harbor`, `data` matches the `Harbor` only (last) | only the `Road` remains          | :x:          |
-| Test Case 5 | `Edge` with a `Road` then a `Harbor`, `data` matches neither                  | no change, both remain           | :x:          |
-| Test Case 6 | one piece, a different `PieceData` object with equal `type` and `color`       | piece removed, location is empty | :x:          |
-| Test Case 7 | `Hex` with the `Robber`, `data` is the Robber's data                          | hex is empty                     | :x:          |
-| Test Case 8 | `Edge` with one `Road`, `data` has the same `type` but a different `color`    | no change, the `Road` remains    | :x:          |
+|             | Input                                                                         | Expected output                  | Implemented?       |
+|-------------|-------------------------------------------------------------------------------|----------------------------------|--------------------|
+| Test Case 1 | no pieces                                                                     | no change, no exception          | :white_check_mark: |
+| Test Case 2 | one piece, `data` is that piece's own data                                    | location is empty                | :white_check_mark: |
+| Test Case 3 | `Edge` with a `Road` then a `Harbor`, `data` matches the `Road` only (first)  | only the `Harbor` remains        | :white_check_mark: |
+| Test Case 4 | `Edge` with a `Road` then a `Harbor`, `data` matches the `Harbor` only (last) | only the `Road` remains          | :white_check_mark: |
+| Test Case 5 | `Edge` with a `Road` then a `Harbor`, `data` matches neither                  | no change, both remain           | :white_check_mark: |
+| Test Case 6 | one piece, a different `PieceData` object with equal `type` and `color`       | piece removed, location is empty | :white_check_mark: |
+| Test Case 7 | `Hex` with the `Robber`, `data` is the Robber's data                          | hex is empty                     | :white_check_mark: |
+| Test Case 8 | `Edge` with one `Road`, `data` has the same `type` but a different `color`    | no change, the `Road` remains    | :white_check_mark: |

@@ -74,7 +74,7 @@ checkstyle{
 
 spotbugs {
     ignoreFailures = false
-    excludeFilter.set(file("config/spotbugs/exclude.xml"))
+    excludeFilter.set(file("config/spotbugs/excludeFilter.xml"))
     showStackTraces = true
     showProgress = true
     effort = Effort.DEFAULT

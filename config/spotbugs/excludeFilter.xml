@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Per-bug SpotBugs suppressions for the Catan project.
+
+    Add a <Match> entry here when a specific finding needs to be silenced for
+    a specific class or pattern. Example:
+
+      <Match>
+        <Class name="domain.SomeClass"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+      </Match>
+
+    The file is referenced from build.gradle.kts via
+    spotbugs { excludeFilter.set(file("config/spotbugs/excludeFilter.xml")) }.
+-->
+<FindBugsFilter>
+    <!--
+        assertThrows(..., () -> obj.method()) intentionally ignores the return
+        value of a non-void method that is expected to throw before producing
+        a value. SpotBugs flags this as RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT
+        on pure getters, so suppress for test classes only.
+    -->
+    <Match>
+        <Class name="catan.game_table.domain.piece.Settlement"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+    <Match>
+        <Class name="catan.game_table.domain.trade.BankTradeHelper"/>
+        <Method name="&lt;init&gt;" returns="void"
+                params="catan.game_table.domain.board.GameBoard,catan.game_table.domain.bank.Bank,java.util.Map,catan.game_table.domain.trade.TradeTurnContext"/>
+        <Field name="~(board|bank)"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>
