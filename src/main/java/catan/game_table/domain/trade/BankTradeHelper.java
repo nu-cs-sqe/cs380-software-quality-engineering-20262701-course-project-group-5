@@ -29,7 +29,7 @@ public class BankTradeHelper {
     }
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
-        if (actor != turnContext.getActivePlayerColor()) {
+        if (!turnContext.isTradingOpen() || actor != turnContext.getActivePlayerColor()) {
             throw new InvalidTradeException();
         }
         if (!requestsSingleDifferentResource(give, receive) || !hasAvailableTradeRate(actor, give)) {
