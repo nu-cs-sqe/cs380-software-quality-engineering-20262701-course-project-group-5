@@ -846,6 +846,31 @@ class PlayerTradeHelperTests {
         EasyMock.verify(redInventory, blueInventory);
     }
 
+    @Test
+    void ConductTrade_WhenActorIsNotTheActivePlayer_RejectsTradeWithoutSideEffects() throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack brick = new BrickResourceStack(1);
+        ResourceStack ore = new OreResourceStack(1);
+        TradeOffer offer = new TradeOffer(Color.RED, Color.BLUE, List.of(ore), List.of(brick));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(brick)).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andStubReturn(true);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.acceptTrade(Color.BLUE, offer);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.conductTrade(Color.BLUE, offer));
+
+        assertEquals(Set.of(offer), helper.getActiveTradeOffers());
+        assertTrue(offer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for expireTradeOffers()
     @Test
     void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {

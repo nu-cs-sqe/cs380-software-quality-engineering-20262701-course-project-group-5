@@ -74,6 +74,9 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void conductTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
+        if (actor != turnContext.getActivePlayerColor()) {
+            throw new InvalidTradeException();
+        }
         if (actor == offer.getProposer() && !offer.isAccepted()) {
             throw new InvalidTradeException();
         }
