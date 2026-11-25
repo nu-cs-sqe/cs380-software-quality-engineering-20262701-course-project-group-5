@@ -13,6 +13,7 @@ import java.util.Map;
 public class BankTradeHelper {
 
     private static final int GENERIC_HARBOR_RATE = 3;
+    private static final int RESOURCE_HARBOR_RATE = 2;
 
     private final GameBoard board;
     private final Bank bank;
@@ -27,6 +28,9 @@ public class BankTradeHelper {
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
         if (give.getSize() == GENERIC_HARBOR_RATE && !hasGenericHarbor(actor)) {
+            throw new InvalidTradeException();
+        }
+        if (give.getSize() == RESOURCE_HARBOR_RATE && !hasMatchingHarbor(actor, give)) {
             throw new InvalidTradeException();
         }
         ResourceInventory playerInventory = playerInventories.get(actor);
@@ -47,6 +51,13 @@ public class BankTradeHelper {
 
     private boolean hasGenericHarbor(Color actor) {
         return board.getHarborsFor(actor).stream().anyMatch(harbor -> harbor.getInputTrade() == null);
+    }
+
+    private boolean hasMatchingHarbor(Color actor, ResourceStack give) {
+        return board.getHarborsFor(actor).stream().anyMatch(harbor -> {
+            ResourceStack harborInput = harbor.getInputTrade();
+            return harborInput != null && harborInput.getClass() == give.getClass();
+        });
     }
 
     private void withdrawTradeResources(ResourceInventory playerInventory, ResourceStack give, ResourceStack receive)
