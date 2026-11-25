@@ -1689,7 +1689,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenSettlement_AndValidVertex_ExpectSettlementPlacedAtVertex() {
+    public void Place_GivenSettlement_AndValidLocation_ExpectSettlementPlacedAtLocation() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -1717,15 +1717,20 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
+        Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        EasyMock.replay(placementHelper);
+
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
         EasyMock.expectLastCall();
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
         assertDoesNotThrow(() -> placementHelper.place(pieceToPlace, destinationLocation));
-        EasyMock.verify(gameBoard);
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 
@@ -2720,6 +2725,26 @@ public class PlacementHelperTests {
 
         Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
         assertEquals(exceptionMessage, actualException.getMessage());
+
+    }
+
+    private PlacementHelper makePlacementHelperWithMockedGetters(GameBoard gameBoard, GamePhaseHolder gamePhaseHolder, boolean autoReplay) {
+
+        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
+        builder.addMockedMethod("getValidSettlementSpots");
+        builder.addMockedMethod("getValidCitySpots");
+        builder.addMockedMethod("getValidRoadSpots");
+        builder.addMockedMethod("getValidRobberSpots");
+        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
+        builder.withArgs(gameBoard, gamePhaseHolder);
+
+        PlacementHelper placementHelper = builder.createMock();
+
+        if (autoReplay) {
+            EasyMock.replay(placementHelper);
+        }
+
+        return placementHelper;
 
     }
 

@@ -120,18 +120,7 @@ public class PlacementHelper extends Observed {
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {
 
-        switch (piece) {
-            case Settlement settlement -> validateSettlementPlacement(piece, location);
-            case City city -> {
-                validateCityPlacement(piece, location);
-                PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
-                gameBoard.removePieceFromLocation(settlementData, location);
-            }
-            case Road road -> validateRoadPlacement(piece, location);
-            case Robber robber -> validateRobberPlacement(piece, location);
-            default -> {
-            }
-        }
+        Set<? extends Location> validLocations = getAndCacheValidSpots(piece);
 
         gameBoard.addPieceAtLocation(piece, location);
 

@@ -233,14 +233,14 @@ Test board will have only 2 hexes.
 Each choice of piece type (Settlement, City, Road, Harbor, Robber) x valid spots result (valid, invalid) except Harbor +
 invalid. Each choice for everything else.
 
-|             | Input                                                                 | Expected output                                                         | Implemented? |
-|-------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------------|
-| Test Case 1 | `Settlement`, a valid location for a settlement                       | `Settlement` placed on that vertex                                      | :x:          |
-| Test Case 2 | `Settlement`, an invalid location for a settlement                    | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
-| Test Case 3 | `City`, a valid location holding the active player's own `Settlement` | the `Settlement` is removed from and the `City` is placed on the vertex | :x:          |
-| Test Case 4 | `City`, an invalid location for a city                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
-| Test Case 5 | `Road`, a valid location for a road                                   | `Road` placed on that edge                                              | :x:          |
-| Test Case 6 | `Road`, an invalid location for a road                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
-| Test Case 7 | `Harbor`, any location                                                | `Harbor` placed on that location                                        | :x:          |
-| Test Case 8 | `Robber`, a valid location for a robber                               | `Robber` placed on that hex                                             | :x:          |
-| Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
+|             | Input                                                                 | Expected output                                                         | Implemented?       |
+|-------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------------------|
+| Test Case 1 | `Settlement`, a valid location for a settlement                       | `Settlement` placed on that vertex                                      | :white_check_mark: |
+| Test Case 2 | `Settlement`, an invalid location for a settlement                    | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
+| Test Case 3 | `City`, a valid location holding the active player's own `Settlement` | the `Settlement` is removed from and the `City` is placed on the vertex | :x:                |
+| Test Case 4 | `City`, an invalid location for a city                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
+| Test Case 5 | `Road`, a valid location for a road                                   | `Road` placed on that edge                                              | :x:                |
+| Test Case 6 | `Road`, an invalid location for a road                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
+| Test Case 7 | `Harbor`, any location                                                | `Harbor` placed on that location                                        | :x:                |
+| Test Case 8 | `Robber`, a valid location for a robber                               | `Robber` placed on that hex                                             | :x:                |
+| Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
