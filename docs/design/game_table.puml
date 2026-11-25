@@ -74,7 +74,7 @@ package ui {
         -{final} players : List<GamePlayer>
         -{final} robberyHelper : RobberyHelper
         -{final} gameBoard : GameBoard
-        +RobberyController(players : List<GamePlayer>, gameBoard : gameBoard)
+        +RobberyController(players : List<GamePlayer>, gameBoard : gameBoard, robberyHelper : RobberyHelper)
         +update() : void
         -updateView() : void
         -routeUserInput() : void
