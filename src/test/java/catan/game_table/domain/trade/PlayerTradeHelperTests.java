@@ -728,6 +728,36 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    @Test
+    void ConductTrade_WhenCombinedCounterofferExceedsStock_LeavesCounterofferUnanswered()
+            throws InvalidTradeException {
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        ResourceStack ore = new OreResourceStack(1);
+        ResourceStack twoBrick = new BrickResourceStack(2);
+        TradeOffer original = stubUnansweredOffer(Color.RED, Color.BLUE,
+                List.of(new BrickResourceStack(1)), List.of(ore));
+        TradeOffer counteroffer = new TradeOffer(Color.BLUE, Color.RED,
+                List.of(twoBrick), List.of(ore, new OreResourceStack(1)));
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(twoBrick)).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andStubReturn(true);
+        EasyMock.expect(blueInventory.hasResources(new OreResourceStack(2))).andReturn(false);
+        Observer observer = EasyMock.createMock(Observer.class);
+        EasyMock.replay(redInventory, blueInventory, observer);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, original);
+        helper.counterTrade(Color.BLUE, original, counteroffer);
+        helper.addObserver(observer);
+
+        assertThrows(InvalidTradeException.class, () -> helper.conductTrade(Color.RED, counteroffer));
+
+        assertEquals(Set.of(counteroffer), helper.getActiveTradeOffers());
+        assertFalse(counteroffer.isAccepted());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for expireTradeOffers()
     @Test
     void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {
