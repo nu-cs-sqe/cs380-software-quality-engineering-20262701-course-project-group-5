@@ -168,25 +168,22 @@ package bank {
 package player {
 
     +class GamePlayer {
-        -{final} color : Color
+        -{final} playerData : PlayerData
         -{final} victoryPointsTracker : ScoreTracker
         -{final} roadLengthTracker : ScoreTracker
         -{final} armySizeTracker : ScoreTracker
         -{final} inventory : PlayerInventory
-        -{final} placementHelper : PlacementHelper
-        -{final} tradeHelper : TradeHelper
-        -{final} purchaseHelper : PurchaseHelper
         -awards : List<Award>
-        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
+        +GamePlayer(playerData: PlayerData, inventory: PlayerInventory)
         +getInventory() : PlayerInventory
-        +rollDice(dice : Dice) : void
-        +play(item : Playable) : void
-        +buy(item : Buyable) : void
-        +getValidPlacements(piece : Piece) : List<Location>
-        +place(piece : Piece, location : Location) : void
-        +proposePlayerTrade(otherPlayer : Color, trade : TradeOffer) : void
-        +acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer) : void
-        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void
+        +getScore(): int
+        +getColor(): Color
+        +getName(): Name
+        +getAwards(): List<Award>
+        +addAward(award: Award): void
+        +getVictoryPointTracker(): ScoreTracker
+        +getLongestRoadTracker(): ScoreTracker
+        +getArmySizeTracker(): ScoreTracker
     }
 
     +class PlayerInventory {
@@ -535,16 +532,8 @@ Buyable ..> ResourceStack
 GamePlayer --|> Observed
 GamePlayer --> ScoreTracker
 GamePlayer --> PlayerInventory
-GamePlayer ..> Piece
-GamePlayer ..> Buyable
-GamePlayer ..> Playable
-GamePlayer ..> Dice
 GamePlayer --> Color
 GamePlayer --> Award
-GamePlayer ..> ResourceStack
-GamePlayer --> PlacementHelper
-GamePlayer ..> TradeOffer
-GamePlayer --> PurchaseHelper
 
 PlacementHelper --> Color
 PlacementHelper --> GameBoard
