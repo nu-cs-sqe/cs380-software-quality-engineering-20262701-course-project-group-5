@@ -1,5 +1,7 @@
 package catan.game_table.domain.board;
 
+import catan.game_table.domain.Color;
+import catan.game_table.domain.piece.Harbor;
 import catan.game_table.domain.piece.Piece;
 import catan.game_table.domain.piece.PieceData;
 import catan.mvc_util.Observed;
@@ -47,6 +49,11 @@ public class GameBoard extends Observed {
 
     public Set<Vertex> getNeighbors(Vertex vertex) {
         return Set.copyOf(neighbors.get(vertex));
+    }
+
+    public Set<Harbor> getHarborsFor(Color player) {
+        // TODO: harbor eligibility
+        return Set.of();
     }
 
     public void produceResourcesForToken(int tokenValue) {
