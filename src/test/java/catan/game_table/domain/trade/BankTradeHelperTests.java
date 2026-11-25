@@ -15,9 +15,11 @@ import catan.game_table.domain.resource.ResourceStack;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BankTradeHelperTests {
@@ -179,6 +181,30 @@ class BankTradeHelperTests {
     @Test
     void TradeWithBank_WhenPlayerOffersLumberForLumber_RejectsTrade() {
         assertStockedTradeRejected(new LumberResourceStack(4), new LumberResourceStack(1), Set.of());
+    }
+
+    @Test
+    void TradeWithBank_WhenPlayerIsOneLumberShort_RejectsTrade() {
+        ResourceStack lumber = new LumberResourceStack(4);
+        ResourceStack ore = new OreResourceStack(1);
+        Bank redInventory = new Bank(List.of(new LumberResourceStack(3), new BrickResourceStack(1)));
+        Bank bank = new Bank(List.of(ore));
+
+        GameBoard board = EasyMock.createMock(GameBoard.class);
+        EasyMock.expect(board.getHarborsFor(Color.RED)).andStubReturn(Set.of());
+        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
+        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
+        EasyMock.replay(board, turnContext);
+        BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
+
+        assertThrows(InvalidTradeException.class, () -> helper.tradeWithBank(Color.RED, lumber, ore));
+
+        assertEquals(3, redInventory.getResourceCount(LumberResourceStack.class));
+        assertEquals(1, redInventory.getResourceCount(BrickResourceStack.class));
+        assertEquals(0, redInventory.getResourceCount(OreResourceStack.class));
+        assertEquals(0, bank.getResourceCount(LumberResourceStack.class));
+        assertEquals(1, bank.getResourceCount(OreResourceStack.class));
     }
 
     private void assertStockedTradeRejected(ResourceStack give, ResourceStack receive, Set<Harbor> harbors) {
