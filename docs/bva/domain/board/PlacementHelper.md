@@ -45,15 +45,15 @@ Red for active player's color and Blue for an opponent (arbitrary).
 
 ### Test: `public Set<? extends Location> getAndCacheValidSpots(Piece piece)`
 
-|             | Input                                                                     | Expected output                                                                | Implemented?       |
-|-------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | piece is a `RED` Settlement                                               | `getValidSettlementSpots()` is called with `RED`, result returned              | :white_check_mark: |
-| Test Case 2 | piece is a `BLUE` Road                                                    | `getValidRoadSpots()` is called with `BLUE`, result returned                   | :white_check_mark: |
-| Test Case 3 | piece is a `WHITE` City                                                   | `getValidCitySpots()` is called with `WHITE`, result returned                  | :white_check_mark: |
-| Test Case 4 | piece is a Robber                                                         | `getValidRobberSpots()` is called, result returned                             | :white_check_mark: |
-| Test Case 5 | piece is a Harbor                                                         | `IllegalArgumentException` "No defined behavior exists for this piece type"    | :white_check_mark: |
-| Test Case 6 | piece is a `RED` Settlement, this method was already called on this piece | no other method is called, saved result returned                               | :white_check_mark: |
-| Test Case 7 | `RED` Settlement followed by `BLUE` Settlement                            | `getValidSettlementSpots()` is called once per piece with each result returned | :white_check_mark: |
+|             | Input                                                                     | Expected output                                                                                              | Implemented?       |
+|-------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | piece is a `RED` Settlement                                               | `getValidSettlementSpots()` is called with `RED`, result returned, observers notified                        | :white_check_mark: |
+| Test Case 2 | piece is a `BLUE` Road                                                    | `getValidRoadSpots()` is called with `BLUE`, result returned, observers notified                             | :white_check_mark: |
+| Test Case 3 | piece is a `WHITE` City                                                   | `getValidCitySpots()` is called with `WHITE`, result returned, observers notified                            | :white_check_mark: |
+| Test Case 4 | piece is a Robber                                                         | `getValidRobberSpots()` is called, result returned, observers notified                                       | :white_check_mark: |
+| Test Case 5 | piece is a Harbor                                                         | `IllegalArgumentException` "No defined behavior exists for this piece type"                                  | :white_check_mark: |
+| Test Case 6 | piece is a `RED` Settlement, this method was already called on this piece | no other method is called, saved result returned, observers notified each time                               | :white_check_mark: |
+| Test Case 7 | `RED` Settlement followed by `BLUE` Settlement                            | `getValidSettlementSpots()` is called once per piece with each result returned, observers notified each time | :white_check_mark: |
 
 ### Test: `Set<Vertex> getValidSettlementSpots(Color color)`
 
@@ -207,61 +207,40 @@ Test board will have only 2 hexes.
 
 **Step 1: Inputs / outputs**
 
-| Inputs                                                                                                                                                                   | Outputs                                                                                                                                                                |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `piece : Piece`, `location : Location`; state: the valid-spot list for that piece, the pieces already at the location (for Cities, we need to check owner of Settlement) | No return value. Outcome is one of: `InvalidPlacementException` (board and player inventory unchanged), piece placed (board and player inventory updated, see Step 4). |
+| Inputs                                                                            | Outputs                                                                                                                                                                |
+|-----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `piece : Piece`, `location : Location`; state: the valid-spot list for that piece | No return value. Outcome is one of: `InvalidPlacementException` (board and player inventory unchanged), piece placed (board and player inventory updated, see Step 4). |
 
 **Step 2: Data types**
 
-| Variable                                                      | Type                                           |
-|---------------------------------------------------------------|------------------------------------------------|
-| `piece`                                                       | Cases (Settlement, City, Road, Harbor, Robber) |
-| `location`                                                    | Cases (Vertex, Edge, Hex)                      |
-| location on this board                                        | Boolean                                        |
-| piece already at location                                     | Cases (none, Settlement, City, Road, Harbor)   |
-| valid-spot list                                               | Collection                                     |
-| owner of the `Settlement` at `location` (when placing a City) | Cases (own, other color)                       |
-| outcome (output)                                              | Cases                                          |
+| Variable                          | Type                                             |
+|-----------------------------------|--------------------------------------------------|
+| `piece`                           | Cases (Settlement, City, Road, Harbor, Robber)   |
+| valid spots result for `location` | Cases (location is valid, location is not valid) |
+| outcome (output)                  | Cases                                            |
 
 **Operations:** Searching (the valid-spot list for `location`)
 
 **Step 3: Concrete values**
 
-| Variable                                                      | Values                                                                                                           |
-|---------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| `piece`                                                       | Settlement, City, Road, Harbor, Robber                                                                           |
-| `location`                                                    | Vertex, Edge, Hex                                                                                                |
-| location on this board                                        | true, false                                                                                                      |
-| piece already at location                                     | none, Settlement, City, Road, Harbor                                                                             |
-| valid-spot list                                               | `location` not found, exactly one match, exactly one match in first position, exactly one match in last position |
-| owner of the `Settlement` at `location` (when placing a City) | own, other color                                                                                                 |
-| outcome (output)                                              | InvalidPlacementException, piece placed                                                                          |
+| Variable                          | Values                                  |
+|-----------------------------------|-----------------------------------------|
+| `piece`                           | Settlement, City, Road, Harbor, Robber  |
+| valid spots result for `location` | valid, invalid                          |
+| outcome (output)                  | InvalidPlacementException, piece placed |
 
 **Step 4**
-All combinations of piece type (Settlement, City, Road, Harbor, Robber) x location type (Vertex, Edge, Hex). Each choice for everything else.
+Each choice of piece type (Settlement, City, Road, Harbor, Robber) x valid spots result (valid, invalid) except Harbor +
+invalid. Each choice for everything else.
 
-|              | Input                                                       | Expected output                                                                                                                                                     | Implemented?       |
-|--------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 1  | `Settlement`, a valid vertex                                | `Settlement` placed on that vertex                                                                                                                                  | :white_check_mark: |
-| Test Case 2  | `Settlement`, vertex adjacent to an existing building       | `InvalidPlacementException` "Cannot place %s at %s: too close to an existing building"                                                                              | :white_check_mark: |
-| Test Case 3  | `Settlement`, a `Vertex` already holding a `Settlement`     | `InvalidPlacementException` "Cannot place %s at %s: %s already holds a %s"                                                                                          | :white_check_mark: |
-| Test Case 4  | `Settlement`, a `Vertex` already holding a `City`           | `InvalidPlacementException` "Cannot place %s at %s: %s already holds a %s"                                                                                          | :white_check_mark: |
-| Test Case 5  | `Settlement`, a `Vertex` not on this board                  | `InvalidPlacementException` "Cannot place %s at %s: %s is not on this board"                                                                                        | :white_check_mark: |
-| Test Case 6  | `Settlement`, an `Edge`                                     | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 7  | `Settlement`, a `Hex`                                       | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 8  | `City`, vertex holding the active player's own `Settlement` | the `Settlement` is removed from the vertex and returned to the player's inventory first, then the `City` is placed on the vertex; the vertex holds only the `City` | :white_check_mark: |
-| Test Case 9  | `City`, vertex holding a `BLUE` `Settlement`                | `InvalidPlacementException` "Cannot place %s at %s: not your color"                                                                                                 | :white_check_mark: |
-| Test Case 10 | `City`, an empty `Vertex`                                   | `InvalidPlacementException` "Cannot place %s at %s: %s cannot be placed on empty %s"                                                                                | :white_check_mark: |
-| Test Case 11 | `City`, a `Vertex` already holding a `City`                 | `InvalidPlacementException` "Cannot place %s at %s: %s already holds a %s"                                                                                          | :white_check_mark: |
-| Test Case 12 | `City`, an `Edge`                                           | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 13 | `City`, a `Hex`                                             | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 14 | `Road`, a valid edge                                        | `Road` placed on that edge                                                                                                                                          | :white_check_mark: |
-| Test Case 15 | `Road`, an edge already holding a `Road`                    | `InvalidPlacementException` "Cannot place %s at %s: %s already holds a %s"                                                                                          | :white_check_mark: |
-| Test Case 16 | `Road`, an edge holding only a `Harbor`                     | `Road` placed on that edge, the `Harbor` remains                                                                                                                    | :white_check_mark: |
-| Test Case 17 | `Road`, a `Vertex`                                          | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 18 | `Road`, a `Hex`                                             | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 20 | `Harbor`, a location                                        | `Harbor` placed on that location                                                                                                                                    | :x:                |
-| Test Case 21 | `Robber`, a `Vertex`                                        | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 22 | `Robber`, an `Edge`                                         | `InvalidPlacementException` "Cannot place %s at %s: %s does not fit a %s"                                                                                           | :white_check_mark: |
-| Test Case 23 | `Robber`, a `Hex`                                           | `Robber` placed on that hex                                                                                                                                         | :white_check_mark: |
-| Test Case 24 | `Robber`, a `Hex` already holding a `Robber`                | `InvalidPlacementException` "Cannot place %s at %s: %s already holds a %s"                                                                                          | :white_check_mark: |
+|             | Input                                                                 | Expected output                                                         | Implemented? |
+|-------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------------|
+| Test Case 1 | `Settlement`, a valid location for a settlement                       | `Settlement` placed on that vertex                                      | :x:          |
+| Test Case 2 | `Settlement`, an invalid location for a settlement                    | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
+| Test Case 3 | `City`, a valid location holding the active player's own `Settlement` | the `Settlement` is removed from and the `City` is placed on the vertex | :x:          |
+| Test Case 4 | `City`, an invalid location for a city                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
+| Test Case 5 | `Road`, a valid location for a road                                   | `Road` placed on that edge                                              | :x:          |
+| Test Case 6 | `Road`, an invalid location for a road                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
+| Test Case 7 | `Harbor`, any location                                                | `Harbor` placed on that location                                        | :x:          |
+| Test Case 8 | `Robber`, a valid location for a robber                               | `Robber` placed on that hex                                             | :x:          |
+| Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:          |
