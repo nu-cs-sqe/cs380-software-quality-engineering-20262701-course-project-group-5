@@ -27,7 +27,7 @@ public class BankTradeHelper {
     }
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
-        if (receive.getSize() != 1 || !hasAvailableTradeRate(actor, give)) {
+        if (!requestsSingleDifferentResource(give, receive) || !hasAvailableTradeRate(actor, give)) {
             throw new InvalidTradeException();
         }
         ResourceInventory playerInventory = playerInventories.get(actor);
@@ -44,6 +44,10 @@ public class BankTradeHelper {
         }
         bank.addResources(give);
         playerInventory.addResources(receive);
+    }
+
+    private boolean requestsSingleDifferentResource(ResourceStack give, ResourceStack receive) {
+        return receive.getSize() == 1 && give.getClass() != receive.getClass();
     }
 
     private boolean hasAvailableTradeRate(Color actor, ResourceStack give) {
