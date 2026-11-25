@@ -29,4 +29,9 @@
         <Bug code="EI2"/>
     </Match>
 
+    <Match>
+        <Class name="catan.game_table.domain.player.GamePlayer"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+
 </FindBugsFilter>

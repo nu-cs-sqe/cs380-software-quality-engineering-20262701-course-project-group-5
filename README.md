@@ -30,6 +30,7 @@ N/A
 ## Spotbugs
 URF_UNREAD_FIELD — "Field is written but never read"
 EI_EXPOSE_REP2 — "May expose internal representation by incorporating reference to mutable object"
+EI_EXPOSE_REP — "May expose internal representation by incorporating reference to mutable object"
 
 Files:
 src/main/java/catan/game_table/domain/piece/Settlement.java (class-level)
