@@ -50,8 +50,8 @@ public class GamePlayer {
   }
 
   public void buy(Buyable item) throws NotEnoughInventoryException {
-    boolean success = this.purchaseHelper.buyDevelopment(item);
-    if (!success) {
+    boolean purchaseSuccess = this.purchaseHelper.buyDevelopment(item);
+    if (!purchaseSuccess) {
       throw new NotEnoughInventoryException();
     }
   }
