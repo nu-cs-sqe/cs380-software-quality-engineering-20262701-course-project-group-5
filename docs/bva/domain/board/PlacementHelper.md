@@ -243,4 +243,4 @@ invalid. Each choice for everything else.
 | Test Case 6 | `Road`, an invalid location for a road                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :white_check_mark: |
 | Test Case 7 | `Harbor`, any location                                                | `Harbor` placed on that location                                        | :x:                |
 | Test Case 8 | `Robber`, a valid location for a robber                               | `Robber` placed on that hex                                             | :white_check_mark: |
-| Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
+| Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :white_check_mark: |

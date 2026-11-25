@@ -2108,51 +2108,33 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenRobber_AndHexHasRobberAlready_ExpectInvalidPlacementException() {
+    public void Place_GivenRobber_AndInvalidLocation_ExpectInvalidPlacementException() {
 
-        Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
-        Piece pieceToPlace = makePieceMock(PieceType.ROBBER, playerColor);
+        Piece pieceToPlace = makePieceMock(PieceType.ROBBER, Color.NONE);
 
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of();
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = EasyMock.createMock(Hex.class);
-        EasyMock.expect(destinationLocation.getLocationType()).andStubReturn(LocationType.HEX);
-        EasyMock.expect(destinationLocation.getPieces()).andStubReturn(List.of(pieceToPlace));
+        Location destinationLocation = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(destinationLocation.getLocationType()).andStubReturn(LocationType.VERTEX);
         EasyMock.replay(destinationLocation);
 
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
+        Set<Hex> expectedHexes = Set.of();
+
+        GameBoard gameBoard = makeGameBoardMock(new HashMap<>(), new HashMap<>(), false);
 
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidRobberSpots()).andReturn(expectedHexes).times(1);
+        EasyMock.replay(placementHelper);
 
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s already holds a %s",
-                "robber",
-                "hex",
-                "hex",
-                "robber"
-        );
+        String expectedMessage = "Cannot place robber at vertex";
 
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
+        Exception exception = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(expectedMessage, exception.getMessage());
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 
