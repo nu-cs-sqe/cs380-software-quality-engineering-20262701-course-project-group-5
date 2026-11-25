@@ -21,6 +21,10 @@
         on pure getters, so suppress for test classes only.
     -->
     <Match>
+        <Class name="catan.game_table.domain.piece.City"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+    <Match>
         <Class name="catan.game_table.domain.piece.Settlement"/>
         <Bug pattern="URF_UNREAD_FIELD"/>
     </Match>

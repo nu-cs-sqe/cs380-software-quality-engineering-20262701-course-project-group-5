@@ -42,4 +42,4 @@ Accessor for the cost of a City in terms of `ResourcesStack`s, in this case a `G
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|----------------------------------------|----------------------------|--------------|
-| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called with the right `color` and `products` | :x: |
+| Test Case 1  | `products` is a valid `List<ResourceStack>`| `bankResourceDistributor:produceResources()` is called with the right `color` and `products` | :white_check_mark: |
