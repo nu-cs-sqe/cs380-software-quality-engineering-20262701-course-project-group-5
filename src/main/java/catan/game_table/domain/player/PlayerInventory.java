@@ -55,8 +55,8 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
       throw new IllegalArgumentException("player cannot own the robber");
     }
 
-    for (Piece current_piece : this.pieces) {
-      if (current_piece.getClass().equals(piece.getClass())) {
+    for (Piece currentPiece : this.pieces) {
+      if (currentPiece.getClass().equals(piece.getClass())) {
         return true;
       }
     }
@@ -88,20 +88,20 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     }
 
 
-    int to_remove = -1;
+    int indexToRemove = -1;
     int size = this.pieces.size();
 
 
     // remove from the end
     for (int i = size - 1; i > -1; i--) {
       if (this.pieces.get(i).getClass().equals(piece.getClass())) {
-        to_remove = i;
+        indexToRemove = i;
         break;
       }
     }
 
-    if (to_remove != -1) {
-      this.pieces.remove(to_remove);
+    if (indexToRemove != -1) {
+      this.pieces.remove(indexToRemove);
     }
   }
 
@@ -110,9 +110,9 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
     int len = this.resources.size();
     for (int i = 0; i < len; i++) {
 
-      ResourceStack current_stack = this.resources.get(i);
-      if (current_stack.getClass().equals(stack.getClass())) {
-        this.resources.set(i, current_stack.add(stack));
+      ResourceStack currentStack = this.resources.get(i);
+      if (currentStack.getClass().equals(stack.getClass())) {
+        this.resources.set(i, currentStack.add(stack));
         return;
       }
     }
@@ -122,10 +122,10 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public boolean hasResources(ResourceStack stack) {
-    for (ResourceStack current_stack : this.resources) {
+    for (ResourceStack currentStack : this.resources) {
       // this should be a dictionary imo
       // but gotta stick to design or some crap like that
-      if (current_stack.getClass().equals(stack.getClass()) && current_stack.getSize() >= stack.getSize()) {
+      if (currentStack.getClass().equals(stack.getClass()) && currentStack.getSize() >= stack.getSize()) {
         return true;
       }
     }
@@ -134,24 +134,24 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   @Override
   public void removeResources(ResourceStack stack) throws NotEnoughInventoryException {
-    int to_remove = -1;
+    int indexToRemove = -1;
     int len = this.resources.size();
-    boolean found_any = false;
+    boolean foundAny = false;
 
     for (int i = 0; i < len; i++) {
-      ResourceStack current_stack = this.resources.get(i);
+      ResourceStack currentStack = this.resources.get(i);
 
-      if (current_stack.getClass().equals(stack.getClass())) {
+      if (currentStack.getClass().equals(stack.getClass())) {
 
-        int current_size = current_stack.getSize();
+        int current_size = currentStack.getSize();
         int look_up_size = stack.getSize();
         if (current_size > look_up_size) {
-          this.resources.set(i, current_stack.subtract(stack));
-          found_any = true;
+          this.resources.set(i, currentStack.subtract(stack));
+          foundAny = true;
           break;
         } else if (current_size == look_up_size) {
-          to_remove = i;
-          found_any = true;
+          indexToRemove = i;
+          foundAny = true;
           break;
         } else {
           throw new NotEnoughInventoryException();
@@ -159,11 +159,11 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
       }
     }
 
-    if (to_remove != -1) {
-      this.resources.remove(to_remove);
+    if (indexToRemove != -1) {
+      this.resources.remove(indexToRemove);
     }
 
-    if (!found_any) {
+    if (!foundAny) {
       throw new NotEnoughInventoryException();
     }
 
@@ -175,8 +175,8 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
 
   public boolean hasDevelopment(Development development) {
     // this should also probably be a dictionary
-    for (Development current_dev : this.developments) {
-      if (current_dev.getClass().equals(development.getClass())) {
+    for (Development currentDev : this.developments) {
+      if (currentDev.getClass().equals(development.getClass())) {
         return true;
       }
     }
@@ -184,21 +184,21 @@ public class PlayerInventory implements PieceInventory, ResourceInventory {
   }
 
   public void removeDevelopment(Development development) throws NotEnoughInventoryException {
-    int to_remove = -1;
+    int indexToRemove = -1;
     int size = this.developments.size();
 
     for (int i = 0; i < size; i++) {
       Development current_development = this.developments.get(i);
       if (current_development.getClass().equals(development.getClass())) {
-        to_remove = i;
+        indexToRemove = i;
         break;
       }
     }
 
-    if (to_remove == -1) {
+    if (indexToRemove == -1) {
       throw new NotEnoughInventoryException();
     } else {
-      this.developments.remove(to_remove);
+      this.developments.remove(indexToRemove);
     }
   }
 

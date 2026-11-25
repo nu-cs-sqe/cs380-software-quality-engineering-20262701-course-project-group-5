@@ -50,8 +50,8 @@ public class GamePlayer {
   }
 
   public void buy(Buyable item) throws NotEnoughInventoryException {
-    boolean res = this.purchaseHelper.buyDevelopment(item);
-    if (!res) {
+    boolean success = this.purchaseHelper.buyDevelopment(item);
+    if (!success) {
       throw new NotEnoughInventoryException();
     }
   }
@@ -78,7 +78,7 @@ public class GamePlayer {
   }
 
   public List<Location> getValidPlacements(Piece piece) {
-    List<Location> res = new ArrayList<>();
+    List<Location> validLocations = new ArrayList<>();
 
     Class<? extends Piece> piece_class = piece.getClass();
 
@@ -88,35 +88,35 @@ public class GamePlayer {
       // stupid ass java does not let me return direcctly
       // because getvalidbuildingspots returns a list of vertices
       // and it is apparently not smart enough to know that vertex inherits from location
-      res.addAll(this.placementHelper.getValidBuildingSpots(this.color));
+      validLocations.addAll(this.placementHelper.getValidBuildingSpots(this.color));
     } else if (piece_class.equals(Robber.class)) {
-      res.addAll(this.placementHelper.getValidRobberSpots());
+      validLocations.addAll(this.placementHelper.getValidRobberSpots());
     } else if (piece_class.equals(Road.class)) {
-      res.addAll(this.placementHelper.getValidRoadSpots(this.color));
+      validLocations.addAll(this.placementHelper.getValidRoadSpots(this.color));
     } else {
       throw new RuntimeException("Invalid piece type");
     }
 
-    return res;
+    return validLocations;
   }
 
   public void build(Piece piece, Location location) {
 
-    Class<? extends Location> location_type = location.getClass();
-    Class<? extends Piece> piece_type = piece.getClass();
+    Class<? extends Location> locationType = location.getClass();
+    Class<? extends Piece> pieceType = piece.getClass();
 
-    boolean is_building = piece_type.equals(City.class) || piece_type.equals(Settlement.class);
+    boolean is_building = pieceType.equals(City.class) || pieceType.equals(Settlement.class);
 
-    if (piece_type.equals(Robber.class) || piece_type.equals(Harbor.class)) {
+    if (pieceType.equals(Robber.class) || pieceType.equals(Harbor.class)) {
       throw new InvalidPlacementException("Cannot build either robber or harbor");
     }
 
     //? should this logic be passed into the purchaseHelper itself?
-    if (is_building && !location_type.equals(Vertex.class)) {
+    if (is_building && !locationType.equals(Vertex.class)) {
       throw new InvalidPlacementException("Settlements/Cities can only be build on points");
     }
 
-    if (piece_type.equals(Road.class) && !location_type.equals(Edge.class)) {
+    if (pieceType.equals(Road.class) && !locationType.equals(Edge.class)) {
       throw new InvalidPlacementException("Roads can only be build on edges");
     }
 
