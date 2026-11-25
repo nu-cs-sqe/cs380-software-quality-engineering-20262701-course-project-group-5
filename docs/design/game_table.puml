@@ -270,7 +270,7 @@ package robbery {
 
     +class Robbery {
         -{final} initiator : Color
-        -{final} target : Color
+        -target : Color
         -initiatorInventory : ResourceInventory
         -targetInventory : ResourceInventory
         -{final} randomSource : Random
