@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BankTradeHelperTests {
 
-    // tests for tradeWithBank()
     @Test
     void TradeWithBank_OnOpenTurnWithStockForStandardRate_ExchangesResources()
             throws InvalidTradeException, NotEnoughInventoryException {
