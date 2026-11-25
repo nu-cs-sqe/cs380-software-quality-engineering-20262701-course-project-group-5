@@ -38,7 +38,7 @@ public class PlacementHelper extends Observed {
 
         cachedValidSpots = getValidSpots(inputPiece);
 
-        //notifyObservers();
+        notifyObserversInternal();
 
         return cachedValidSpots;
 

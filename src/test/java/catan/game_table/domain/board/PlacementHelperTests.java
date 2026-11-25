@@ -44,17 +44,13 @@ public class PlacementHelperTests {
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
         EasyMock.replay(gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidSettlementSpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
@@ -94,20 +90,16 @@ public class PlacementHelperTests {
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
         EasyMock.replay(gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidRoadSpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<Set<String>> expectedEdgeNames = Set.of(
                 Set.of("A", "B"),
                 Set.of("F", "A")
         );
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidRoadSpots(playerColor)).andReturn(expectedEdges).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
@@ -146,17 +138,13 @@ public class PlacementHelperTests {
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
         EasyMock.replay(gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidCitySpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<String> expectedVertexNames = Set.of();
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidCitySpots(playerColor)).andReturn(expectedVertices).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
@@ -187,16 +175,12 @@ public class PlacementHelperTests {
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidRobberSpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<Hex> expectedHexes = Set.of(hex1, hex2);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidRobberSpots()).andReturn(expectedHexes).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
@@ -258,17 +242,13 @@ public class PlacementHelperTests {
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
         EasyMock.replay(gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidSettlementSpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations1 = placementHelper.getAndCacheValidSpots(inputPiece);
@@ -309,20 +289,16 @@ public class PlacementHelperTests {
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
         EasyMock.replay(gamePhaseHolder);
 
-        IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
-        builder.addMockedMethod("getValidSettlementSpots");
-        builder.withConstructor(GameBoard.class, GamePhaseHolder.class);
-        builder.withArgs(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = builder.createMock();
-
         Set<String> expectedVertexNames1 = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices1 = filterVerticesWithNames(expectedVertexNames1, vertexMap);
         Set<String> expectedVertexNames2 = Set.of("A", "B", "C", "D", "E", "F");
         Set<Vertex> expectedVertices2 = filterVerticesWithNames(expectedVertexNames2, vertexMap);
 
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidSettlementSpots(Color.RED)).andReturn(expectedVertices1).times(1);
         EasyMock.expect(placementHelper.getValidSettlementSpots(Color.BLUE)).andReturn(expectedVertices2).times(1);
+        placementHelper.notifyObserversInternal();
+        EasyMock.expectLastCall().times(2);
         EasyMock.replay(placementHelper);
 
         Set<? extends Location> actualLocations1 = placementHelper.getAndCacheValidSpots(inputPiece1);
