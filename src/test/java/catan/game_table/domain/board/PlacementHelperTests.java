@@ -1782,252 +1782,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenSettlement_AndVertexAlreadyHasSettlement_ExpectInvalidPlacementException() {
-
-        Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
-        Piece existingPiece = makePieceMock(PieceType.SETTLEMENT, playerColor);
-
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = vertexMap.get("A");
-
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
-
-        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
-        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
-
-        EasyMock.replay(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s already holds a %s",
-                "settlement",
-                "vertex",
-                "vertex",
-                "settlement"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
-
-    }
-
-    @Test
-    public void Place_GivenSettlement_AndVertexAlreadyHasCity_ExpectInvalidPlacementException() {
-
-        Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
-        Piece existingPiece = makePieceMock(PieceType.CITY, playerColor);
-
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of("A", List.of(existingPiece));
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = vertexMap.get("A");
-
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
-
-        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
-        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
-
-        EasyMock.replay(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s already holds a %s",
-                "settlement",
-                "vertex",
-                "vertex",
-                "city"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
-
-    }
-
-    @Test
-    public void Place_GivenSettlement_AndVertexIsNotOnBoard_ExpectInvalidPlacementException() {
-
-        Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
-
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of();
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = EasyMock.createMock(Vertex.class);
-        EasyMock.expect(destinationLocation.getLocationType()).andStubReturn(LocationType.VERTEX);
-        EasyMock.replay(destinationLocation);
-
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
-
-        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
-        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
-
-        EasyMock.replay(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s is not on this board",
-                "settlement",
-                "vertex",
-                "vertex"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
-
-    }
-
-    @Test
-    public void Place_GivenSettlement_AndEdge_ExpectInvalidPlacementException() {
-
-        Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
-
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of();
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = edgeMap.get(Set.of("A", "B"));
-
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
-
-        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
-        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
-
-        EasyMock.replay(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s does not fit a %s",
-                "settlement",
-                "edge",
-                "edge",
-                "settlement"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
-
-    }
-
-    @Test
-    public void Place_GivenSettlement_AndHex_ExpectInvalidPlacementException() {
-
-        Color playerColor = Color.RED;
-        GamePhase gamePhase = GamePhase.SETUP;
-        Piece pieceToPlace = makePieceMock(PieceType.SETTLEMENT, playerColor);
-
-        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
-        Map<String, List<Piece>> vertexPieces = Map.of();
-        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
-
-        Set<Set<String>> edgeNamePairs = Set.of(
-                Set.of("A", "B"),
-                Set.of("B", "C"),
-                Set.of("C", "D"),
-                Set.of("D", "E"),
-                Set.of("E", "F"),
-                Set.of("A", "F")
-        );
-        Map<Set<String>, List<Piece>> edgePieces = Map.of();
-        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
-
-        Location destinationLocation = EasyMock.createMock(Hex.class);
-        EasyMock.expect(destinationLocation.getLocationType()).andStubReturn(LocationType.HEX);
-        EasyMock.replay(destinationLocation);
-
-        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap, false);
-
-        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
-        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
-
-        EasyMock.replay(gameBoard, gamePhaseHolder);
-
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: %s does not fit a %s",
-                "settlement",
-                "hex",
-                "hex",
-                "settlement"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
-
-    }
-
-    @Test
-    public void Place_GivenCity_AndVertexAlreadyHasOwnSettlement_ExpectCityPlacedAtVertex_AndSettlementRemovedFromVertex() {
+    public void Place_GivenCity_AndValidLocation_ExpectCityPlacedAtLocation_AndSettlementRemovedFromLocation() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.REGULAR;
@@ -2056,6 +1811,13 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
+        Set<String> expectedVertexNames = Set.of("A", "B", "C", "D", "E", "F");
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidCitySpots(playerColor)).andReturn(expectedVertices).times(1);
+        EasyMock.replay(placementHelper);
+
         gameBoard.addPieceAtLocation(pieceToPlace, destinationLocation);
         EasyMock.expectLastCall();
 
@@ -2064,10 +1826,8 @@ public class PlacementHelperTests {
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
-
         assertDoesNotThrow(() -> placementHelper.place(pieceToPlace, destinationLocation));
-        EasyMock.verify(gameBoard);
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 

@@ -134,6 +134,11 @@ public class PlacementHelper extends Observed {
 
         gameBoard.addPieceAtLocation(piece, location);
 
+        if (pieceType == PieceType.CITY) {
+            PieceData settlementData = getFirstPieceDataWithType(location, PieceType.SETTLEMENT);
+            gameBoard.removePieceFromLocation(settlementData, location);
+        }
+
     }
 
     private Set<Vertex> getVerticesInvalidUnderDistanceRule(Set<Vertex> existingVertices) {
