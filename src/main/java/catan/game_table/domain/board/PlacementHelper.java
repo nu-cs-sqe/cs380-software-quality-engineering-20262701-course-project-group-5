@@ -138,7 +138,7 @@ public class PlacementHelper extends Observed {
         for (Vertex vertex : existingVertices) {
             if (vertexHasBuilding(vertex)) {
                 verticesInvalidUnderDistanceRule.add(vertex);
-                verticesInvalidUnderDistanceRule.addAll(gameBoard.getNeighboringVertices(vertex));
+                verticesInvalidUnderDistanceRule.addAll(gameBoard.getAdjacentVertices(vertex));
             }
         }
 
@@ -194,7 +194,7 @@ public class PlacementHelper extends Observed {
     }
 
     private boolean vertexConnectedToRoadsOfColor(Vertex vertex, Color color) {
-        Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
+        Set<Edge> connectingEdges = gameBoard.getIncidentEdges(vertex);
         for (Edge edge : connectingEdges) {
             if (edgeHasRoadOfColor(edge, color)) {
                 return true;
@@ -213,14 +213,14 @@ public class PlacementHelper extends Observed {
 
     private boolean edgeTouchingSameColorPiece(Edge edge, Color color) {
 
-        Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
+        Set<Vertex> endpointVertices = gameBoard.getEndpointVertices(edge);
         for (Vertex vertex : endpointVertices) {
             if (vertexHasBuildingOfColor(vertex, color)) {
                 return true;
             }
         }
 
-        Set<Edge> connectingEdges = new HashSet<>(gameBoard.getConnectingEdges(edge));
+        Set<Edge> connectingEdges = new HashSet<>(gameBoard.getAdjacentEdges(edge));
 
         for (Edge connectingEdge : connectingEdges) {
             if (edgeHasRoadOfColor(connectingEdge, color)) {
@@ -239,7 +239,7 @@ public class PlacementHelper extends Observed {
 
         for (Vertex vertex : endpointVertices) {
             if (vertexHasBuilding(vertex) && !vertexHasBuildingOfColor(vertex, color)) {
-                blockedEdges.addAll(gameBoard.getConnectingEdges(vertex));
+                blockedEdges.addAll(gameBoard.getIncidentEdges(vertex));
             }
         }
 
@@ -250,7 +250,7 @@ public class PlacementHelper extends Observed {
     }
 
     private boolean edgeTouchingJustPlacedBuilding(Edge edge, Color color) {
-        Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
+        Set<Vertex> endpointVertices = gameBoard.getEndpointVertices(edge);
         for (Vertex vertex : endpointVertices) {
             if (vertexHasBuildingOfColor(vertex, color)) {
                 return !vertexConnectedToRoadOfSameColor(vertex, color);
@@ -260,7 +260,7 @@ public class PlacementHelper extends Observed {
     }
 
     private boolean vertexConnectedToRoadOfSameColor(Vertex vertex, Color color) {
-        Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
+        Set<Edge> connectingEdges = gameBoard.getIncidentEdges(vertex);
         for (Edge edge : connectingEdges) {
             if (edgeHasRoadOfColor(edge, color)) {
                 return true;

@@ -2216,8 +2216,8 @@ public class PlacementHelperTests {
 
             constructSingleVertexConnectorSets(vertexMap, edgeMap, vertexName, neighboringVertices, connectingEdges);
 
-            EasyMock.expect(gameBoard.getNeighboringVertices(vertex)).andStubReturn(neighboringVertices);
-            EasyMock.expect(gameBoard.getConnectingEdges(vertex)).andStubReturn(connectingEdges);
+            EasyMock.expect(gameBoard.getAdjacentVertices(vertex)).andStubReturn(neighboringVertices);
+            EasyMock.expect(gameBoard.getIncidentEdges(vertex)).andStubReturn(connectingEdges);
 
         }
     }
@@ -2232,8 +2232,8 @@ public class PlacementHelperTests {
 
             constructSingleEdgeConnectorSets(vertexMap, edgeMap, edgeNamePair, neighboringVertices, connectingEdges);
 
-            EasyMock.expect(gameBoard.getNeighboringVertices(edge)).andStubReturn(neighboringVertices);
-            EasyMock.expect(gameBoard.getConnectingEdges(edge)).andStubReturn(connectingEdges);
+            EasyMock.expect(gameBoard.getEndpointVertices(edge)).andStubReturn(neighboringVertices);
+            EasyMock.expect(gameBoard.getAdjacentEdges(edge)).andStubReturn(connectingEdges);
 
         }
     }

@@ -19,11 +19,19 @@ public class GameBoard {
         return null;
     }
 
-    public Set<Edge> getConnectingEdges(Location location) {
+    public Set<Vertex> getAdjacentVertices(Vertex vertex) {
         return null;
     }
 
-    public Set<Vertex> getNeighboringVertices(Location location) {
+    public Set<Vertex> getEndpointVertices(Edge edge) {
+        return null;
+    }
+
+    public Set<Edge> getIncidentEdges(Vertex vertex) {
+        return null;
+    }
+
+    public Set<Edge> getAdjacentEdges(Edge edge) {
         return null;
     }
 
