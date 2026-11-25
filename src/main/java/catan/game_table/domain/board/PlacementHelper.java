@@ -122,6 +122,16 @@ public class PlacementHelper extends Observed {
 
         Set<? extends Location> validLocations = getAndCacheValidSpots(piece);
 
+        PieceData pieceData = piece.getPieceData();
+        PieceType pieceType = pieceData.getPieceType();
+
+        if (!validLocations.contains(location)) {
+            String pieceTypeName = pieceType.toString().toLowerCase();
+            String locationTypeName = location.getLocationType().toString().toLowerCase();
+            String message = String.format("Cannot place %s at %s", pieceTypeName, locationTypeName);
+            throw new InvalidPlacementException(message);
+        }
+
         gameBoard.addPieceAtLocation(piece, location);
 
     }

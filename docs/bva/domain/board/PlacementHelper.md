@@ -236,7 +236,7 @@ invalid. Each choice for everything else.
 |             | Input                                                                 | Expected output                                                         | Implemented?       |
 |-------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `Settlement`, a valid location for a settlement                       | `Settlement` placed on that vertex                                      | :white_check_mark: |
-| Test Case 2 | `Settlement`, an invalid location for a settlement                    | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
+| Test Case 2 | `Settlement`, an invalid location for a settlement                    | `InvalidPlacementException` "Cannot place %s at %s"                     | :white_check_mark: |
 | Test Case 3 | `City`, a valid location holding the active player's own `Settlement` | the `Settlement` is removed from and the `City` is placed on the vertex | :x:                |
 | Test Case 4 | `City`, an invalid location for a city                                | `InvalidPlacementException` "Cannot place %s at %s"                     | :x:                |
 | Test Case 5 | `Road`, a valid location for a road                                   | `Road` placed on that edge                                              | :x:                |

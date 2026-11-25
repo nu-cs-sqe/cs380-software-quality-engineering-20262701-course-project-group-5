@@ -1735,7 +1735,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenSettlement_AndVertexInvalidUnderDistanceRule_ExpectInvalidPlacementException() {
+    public void Place_GivenSettlement_AndInvalidLocation_ExpectInvalidPlacementException() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -1764,20 +1764,20 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
+        Set<String> expectedVertexNames = Set.of("C", "D", "E");
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
+        EasyMock.replay(placementHelper);
+
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+        String expectedMessage = "Cannot place settlement at vertex";
 
-        String expectedMessage = String.format(
-                "Cannot place %s at %s: too close to an existing building",
-                "settlement",
-                "vertex"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(expectedMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
+        Exception exception = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(expectedMessage, exception.getMessage());
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 
