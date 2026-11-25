@@ -2,10 +2,12 @@ package catan.game_table.domain.trade;
 
 import catan.game_table.domain.Color;
 import catan.game_table.domain.exception.InvalidTradeException;
+import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.resource.ResourceInventory;
 import catan.game_table.domain.resource.ResourceStack;
 import catan.mvc_util.Observed;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -71,12 +73,53 @@ public class PlayerTradeHelper extends Observed {
         notifyObservers();
     }
 
+    public void conductTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
+        ResourceInventory proposerInventory = playerInventories.get(offer.getProposer());
+        ResourceInventory receiverInventory = playerInventories.get(offer.getReceiver());
+        List<ResourceStack> offered = combineStacksByType(offer.getOfferedResources());
+        List<ResourceStack> requested = combineStacksByType(offer.getRequestedResources());
+
+        if (!hasResources(proposerInventory, offered) || !hasResources(receiverInventory, requested)) {
+            throw new InvalidTradeException();
+        }
+        try {
+            transferResources(proposerInventory, receiverInventory, offered);
+            transferResources(receiverInventory, proposerInventory, requested);
+        } catch (NotEnoughInventoryException cause) {
+            InvalidTradeException failure = new InvalidTradeException();
+            failure.initCause(cause);
+            throw failure;
+        }
+        activeTradeOffers.remove(offer);
+        notifyObservers();
+    }
+
     public void expireTradeOffers() {
         if (activeTradeOffers.isEmpty()) {
             return;
         }
         activeTradeOffers.clear();
         notifyObservers();
+    }
+
+    private List<ResourceStack> combineStacksByType(List<ResourceStack> stacks) {
+        Map<Class<? extends ResourceStack>, ResourceStack> totals = new HashMap<>();
+        for (ResourceStack stack : stacks) {
+            totals.merge(stack.getClass(), stack, ResourceStack::add);
+        }
+        return List.copyOf(totals.values());
+    }
+
+    private boolean hasResources(ResourceInventory inventory, List<ResourceStack> resources) {
+        return resources.stream().allMatch(inventory::hasResources);
+    }
+
+    private void transferResources(ResourceInventory from, ResourceInventory to, List<ResourceStack> resources)
+            throws NotEnoughInventoryException {
+        for (ResourceStack stack : resources) {
+            from.removeResources(stack);
+            to.addResources(stack);
+        }
     }
 
     private boolean hasReversedParties(TradeOffer originalOffer, TradeOffer counterOffer) {

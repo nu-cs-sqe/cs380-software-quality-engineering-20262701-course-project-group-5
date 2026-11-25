@@ -2,7 +2,9 @@ package catan.game_table.domain.trade;
 
 import catan.game_table.domain.Color;
 import catan.game_table.domain.exception.InvalidTradeException;
+import catan.game_table.domain.exception.NotEnoughInventoryException;
 import catan.game_table.domain.resource.BrickResourceStack;
+import catan.game_table.domain.resource.GrainResourceStack;
 import catan.game_table.domain.resource.LumberResourceStack;
 import catan.game_table.domain.resource.OreResourceStack;
 import catan.game_table.domain.resource.ResourceInventory;
@@ -674,6 +676,58 @@ class PlayerTradeHelperTests {
         EasyMock.verify(observer, redInventory, blueInventory);
     }
 
+    // tests for conductTrade()
+    @Test
+    void ConductTrade_WhenAcceptedOfferContainsRepeatedStacks_TransfersCombinedQuantities()
+            throws InvalidTradeException, NotEnoughInventoryException {
+        ResourceStack brick = new BrickResourceStack(1);
+        ResourceStack twoBrick = new BrickResourceStack(2);
+        ResourceStack ore = new OreResourceStack(1);
+        ResourceStack grain = new GrainResourceStack(1);
+        List<ResourceStack> offered = List.of(brick, new BrickResourceStack(1));
+        List<ResourceStack> requested = List.of(ore, grain);
+        TradeOffer offer = stubUnansweredOffer(Color.RED, Color.BLUE, offered, requested);
+        TradeOffer unrelatedOffer = stubUnansweredOffer(Color.RED, Color.BLUE,
+                List.of(brick), List.of(new LumberResourceStack(1)));
+
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        ResourceInventory blueInventory = EasyMock.createMock(ResourceInventory.class);
+        EasyMock.expect(redInventory.hasResources(twoBrick)).andReturn(true);
+        EasyMock.expect(blueInventory.hasResources(ore)).andReturn(true);
+        EasyMock.expect(blueInventory.hasResources(grain)).andReturn(true);
+        EasyMock.expect(blueInventory.hasResources(new OreResourceStack(2))).andStubReturn(true);
+        redInventory.removeResources(twoBrick);
+        blueInventory.addResources(twoBrick);
+        blueInventory.removeResources(ore);
+        blueInventory.removeResources(grain);
+        redInventory.addResources(ore);
+        redInventory.addResources(grain);
+        EasyMock.replay(redInventory, blueInventory);
+
+        TradeTurnContext turnContext = stubTurnContext(Color.RED, true);
+        PlayerTradeHelper helper = new PlayerTradeHelper(
+                Map.of(Color.RED, redInventory, Color.BLUE, blueInventory), turnContext);
+        helper.proposeTrade(Color.RED, offer);
+        helper.proposeTrade(Color.RED, unrelatedOffer);
+        EasyMock.reset(offer);
+        replayOffer(offer, Color.RED, Color.BLUE, offered, requested, true);
+
+        Observer observer = EasyMock.createMock(Observer.class);
+        observer.update();
+        EasyMock.expectLastCall().andAnswer(() -> {
+            assertEquals(Set.of(unrelatedOffer), helper.getActiveTradeOffers());
+            EasyMock.verify(redInventory, blueInventory);
+            return null;
+        });
+        EasyMock.replay(observer);
+        helper.addObserver(observer);
+
+        helper.conductTrade(Color.RED, offer);
+
+        assertEquals(Set.of(unrelatedOffer), helper.getActiveTradeOffers());
+        EasyMock.verify(observer, redInventory, blueInventory);
+    }
+
     // tests for expireTradeOffers()
     @Test
     void ExpireTradeOffers_WhenNoOffersAreActive_LeavesOfferSetEmpty() {
@@ -779,12 +833,17 @@ class PlayerTradeHelperTests {
     private static TradeOffer stubUnansweredOffer(Color proposer, Color receiver,
                                                   List<ResourceStack> offered, List<ResourceStack> requested) {
         TradeOffer offer = EasyMock.createMock(TradeOffer.class);
+        replayOffer(offer, proposer, receiver, offered, requested, false);
+        return offer;
+    }
+
+    private static void replayOffer(TradeOffer offer, Color proposer, Color receiver,
+                                    List<ResourceStack> offered, List<ResourceStack> requested, boolean accepted) {
         EasyMock.expect(offer.getProposer()).andStubReturn(proposer);
         EasyMock.expect(offer.getReceiver()).andStubReturn(receiver);
         EasyMock.expect(offer.getOfferedResources()).andStubReturn(offered);
         EasyMock.expect(offer.getRequestedResources()).andStubReturn(requested);
-        EasyMock.expect(offer.isAccepted()).andStubReturn(false);
+        EasyMock.expect(offer.isAccepted()).andStubReturn(accepted);
         EasyMock.replay(offer);
-        return offer;
     }
 }
