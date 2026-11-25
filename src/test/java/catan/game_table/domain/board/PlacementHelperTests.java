@@ -1832,7 +1832,7 @@ public class PlacementHelperTests {
     }
 
     @Test
-    public void Place_GivenCity_AndVertexHasOtherSettlement_ExpectInvalidPlacementException() {
+    public void Place_GivenCity_AndInvalidLocation_ExpectInvalidPlacementException() {
 
         Color playerColor = Color.RED;
         GamePhase gamePhase = GamePhase.SETUP;
@@ -1861,20 +1861,20 @@ public class PlacementHelperTests {
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
         EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
 
+        Set<String> expectedVertexNames = Set.of();
+        Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
+
+        PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
+        EasyMock.expect(placementHelper.getValidCitySpots(playerColor)).andReturn(expectedVertices).times(1);
+        EasyMock.replay(placementHelper);
+
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+        String expectedMessage = "Cannot place city at vertex";
 
-        String exceptionMessage = String.format(
-                "Cannot place %s at %s: not your color",
-                "city",
-                "vertex"
-        );
-
-        Exception actualException = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
-        assertEquals(exceptionMessage, actualException.getMessage());
-
-        EasyMock.verify(gameBoard);
+        Exception exception = assertThrows(InvalidPlacementException.class, () -> placementHelper.place(pieceToPlace, destinationLocation));
+        assertEquals(expectedMessage, exception.getMessage());
+        EasyMock.verify(placementHelper, gameBoard);
 
     }
 
