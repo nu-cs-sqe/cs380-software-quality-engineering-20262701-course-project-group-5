@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class BankTradeHelperTests {
 
     // tests for tradeWithBank()
@@ -128,6 +130,28 @@ class BankTradeHelperTests {
         BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
 
         helper.tradeWithBank(Color.RED, lumber, ore);
+
+        EasyMock.verify(redInventory, bank, board);
+    }
+
+    @Test
+    void TradeWithBank_WhenPlayerHasOnlyGenericHarbor_RejectsTwoForOneRate() {
+        ResourceStack lumber = new LumberResourceStack(2);
+        ResourceStack ore = new OreResourceStack(1);
+        ResourceInventory redInventory = EasyMock.createMock(ResourceInventory.class);
+        Bank bank = EasyMock.createMock(Bank.class);
+        EasyMock.expect(redInventory.hasResources(lumber)).andStubReturn(true);
+        EasyMock.expect(bank.hasResources(ore)).andStubReturn(true);
+
+        GameBoard board = EasyMock.createMock(GameBoard.class);
+        EasyMock.expect(board.getHarborsFor(Color.RED)).andStubReturn(Set.of(new Harbor()));
+        TradeTurnContext turnContext = EasyMock.createMock(TradeTurnContext.class);
+        EasyMock.expect(turnContext.isTradingOpen()).andStubReturn(true);
+        EasyMock.expect(turnContext.getActivePlayerColor()).andStubReturn(Color.RED);
+        EasyMock.replay(redInventory, bank, board, turnContext);
+        BankTradeHelper helper = new BankTradeHelper(board, bank, Map.of(Color.RED, redInventory), turnContext);
+
+        assertThrows(InvalidTradeException.class, () -> helper.tradeWithBank(Color.RED, lumber, ore));
 
         EasyMock.verify(redInventory, bank, board);
     }
