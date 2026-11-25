@@ -4,7 +4,10 @@ import catan.game_table.domain.Color;
 import catan.game_table.domain.GamePhase;
 import catan.game_table.domain.GamePhaseHolder;
 import catan.game_table.domain.exception.InvalidPlacementException;
-import catan.game_table.domain.piece.*;
+import catan.game_table.domain.piece.Building;
+import catan.game_table.domain.piece.Piece;
+import catan.game_table.domain.piece.PieceData;
+import catan.game_table.domain.piece.PieceType;
 import catan.mvc_util.Observed;
 
 import java.util.HashSet;
@@ -39,32 +42,6 @@ public class PlacementHelper extends Observed {
 
     }
 
-    private Set<? extends Location> getValidSpots(Piece piece) {
-
-        PieceData pieceData = piece.getPieceData();
-        PieceType pieceType = pieceData.getPieceType();
-        Color pieceColor = pieceData.getColor();
-
-        switch (pieceType) {
-            case PieceType.SETTLEMENT -> {
-                return getValidSettlementSpots(pieceColor);
-            }
-            case PieceType.ROAD -> {
-                return getValidRoadSpots(pieceColor);
-            }
-            case PieceType.CITY -> {
-                return getValidCitySpots(pieceColor);
-            }
-            case PieceType.ROBBER -> {
-                return getValidRobberSpots();
-            }
-            default -> {
-                throw new IllegalArgumentException("No defined behavior exists for this piece type");
-            }
-        }
-
-    }
-
     Set<Vertex> getValidSettlementSpots(Color color) {
 
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
@@ -73,7 +50,7 @@ public class PlacementHelper extends Observed {
         validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
 
         if (gamePhase == GamePhase.REGULAR) {
-            validVertices.removeIf(vertex -> vertexHasNoRoadsOfColor(vertex, color));
+            validVertices.removeIf(vertex -> !vertexHasRoadsOfColor(vertex, color));
         }
 
         return validVertices;
@@ -90,7 +67,7 @@ public class PlacementHelper extends Observed {
 
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
 
-        validVertices.removeIf(vertex -> !vertexHasSettlementOfColor(vertex, color));
+        validVertices.removeIf(vertex -> !locationHasPieceOfTypeAndColor(vertex, PieceType.SETTLEMENT, color));
 
         return validVertices;
 
@@ -154,7 +131,7 @@ public class PlacementHelper extends Observed {
         Set<Vertex> verticesInvalidUnderDistanceRule = new HashSet<>();
 
         for (Vertex vertex : existingVertices) {
-            if (vertexHasBuildingAlready(vertex)) {
+            if (locationHasBuilding(vertex)) {
                 verticesInvalidUnderDistanceRule.add(vertex);
                 verticesInvalidUnderDistanceRule.addAll(gameBoard.getNeighboringVertices(vertex));
             }
@@ -162,39 +139,6 @@ public class PlacementHelper extends Observed {
 
         return verticesInvalidUnderDistanceRule;
 
-    }
-
-    private boolean vertexHasBuildingAlready(Vertex vertex) {
-        List<Piece> pieces = vertex.getPieces();
-        for (Piece piece : pieces) {
-            if (piece instanceof Building) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean canDoCityUpgrade(Piece piece, Vertex vertex, Color color) {
-        if (!(piece instanceof City)) {
-            return false;
-        }
-        List<Piece> pieces = vertex.getPieces();
-        for (Piece existingPiece : pieces) {
-            if (existingPiece instanceof Settlement && existingPiece.getPieceData().getColor() == color) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean vertexHasSettlementOfColor(Vertex vertex, Color color) {
-        List<Piece> pieces = vertex.getPieces();
-        for (Piece piece : pieces) {
-            if (piece instanceof Settlement && piece.getPieceData().getColor() == color) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private boolean locationHasPieceOfType(Location location, PieceType pieceType) {
@@ -209,41 +153,64 @@ public class PlacementHelper extends Observed {
         return false;
     }
 
-    private boolean vertexHasNoRoadsOfColor(Vertex vertex, Color color) {
+    private boolean locationHasPieceOfTypeAndColor(Location location, PieceType pieceType, Color pieceColor) {
+        List<Piece> pieces = location.getPieces();
+        for (Piece piece : pieces) {
+            PieceData existingPieceData = piece.getPieceData();
+            PieceType existingPieceType = existingPieceData.getPieceType();
+            Color existingPieceColor = existingPieceData.getColor();
+            if (pieceType == existingPieceType && pieceColor == existingPieceColor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean locationHasBuilding(Location location) {
+        List<Piece> pieces = location.getPieces();
+        for (Piece piece : pieces) {
+            if (piece instanceof Building) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean locationHasBuildingOfColor(Location location, Color pieceColor) {
+        List<Piece> pieces = location.getPieces();
+        for (Piece piece : pieces) {
+            if (piece instanceof Building) {
+                PieceData existingPieceData = piece.getPieceData();
+                Color existingPieceColor = existingPieceData.getColor();
+                return existingPieceColor == pieceColor;
+            }
+        }
+        return false;
+    }
+
+    private boolean vertexHasRoadsOfColor(Vertex vertex, Color color) {
         Set<Edge> connectingEdges = gameBoard.getConnectingEdges(vertex);
         for (Edge edge : connectingEdges) {
             if (edgeHasRoadOfColor(edge, color)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private boolean edgeHasRoadOfColor(Edge edge, Color color) {
-        List<Piece> pieces = edge.getPieces();
-        for (Piece piece : pieces) {
-            if (piece instanceof Road && piece.getPieceData().getColor() == color) {
-                return true;
-            }
-        }
-        return false;
+        return locationHasPieceOfTypeAndColor(edge, PieceType.ROAD, color);
     }
 
     private boolean edgeHasRoadAlready(Edge edge) {
-        List<Piece> pieces = edge.getPieces();
-        for (Piece piece : pieces) {
-            if (piece instanceof Road) {
-                return true;
-            }
-        }
-        return false;
+        return locationHasPieceOfType(edge, PieceType.ROAD);
     }
 
     private boolean edgeTouchingSameColorPiece(Edge edge, Color color) {
 
         Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
         for (Vertex vertex : endpointVertices) {
-            if (vertexHasBuildingOfColor(vertex, color)) {
+            if (locationHasBuildingOfColor(vertex, color)) {
                 return true;
             }
         }
@@ -266,7 +233,7 @@ public class PlacementHelper extends Observed {
         Set<Edge> blockedEdges = new HashSet<>();
 
         for (Vertex vertex : endpointVertices) {
-            if (vertexHasBuildingAlready(vertex) && !vertexHasBuildingOfColor(vertex, color)) {
+            if (locationHasBuilding(vertex) && !locationHasBuildingOfColor(vertex, color)) {
                 blockedEdges.addAll(gameBoard.getConnectingEdges(vertex));
             }
         }
@@ -277,20 +244,10 @@ public class PlacementHelper extends Observed {
 
     }
 
-    private boolean vertexHasBuildingOfColor(Vertex vertex, Color color) {
-        List<Piece> pieces = vertex.getPieces();
-        for (Piece piece : pieces) {
-            if (piece instanceof Building && piece.getPieceData().getColor() == color) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean edgeTouchingJustPlacedBuilding(Edge edge, Color color) {
         Set<Vertex> endpointVertices = gameBoard.getNeighboringVertices(edge);
         for (Vertex vertex : endpointVertices) {
-            if (vertexHasBuildingOfColor(vertex, color)) {
+            if (locationHasBuildingOfColor(vertex, color)) {
                 return !vertexConnectedToRoadOfSameColor(vertex, color);
             }
         }
@@ -307,197 +264,38 @@ public class PlacementHelper extends Observed {
         return false;
     }
 
+    private Set<? extends Location> getValidSpots(Piece piece) {
+
+        PieceData pieceData = piece.getPieceData();
+        PieceType pieceType = pieceData.getPieceType();
+        Color pieceColor = pieceData.getColor();
+
+        switch (pieceType) {
+            case PieceType.SETTLEMENT -> {
+                return getValidSettlementSpots(pieceColor);
+            }
+            case PieceType.ROAD -> {
+                return getValidRoadSpots(pieceColor);
+            }
+            case PieceType.CITY -> {
+                return getValidCitySpots(pieceColor);
+            }
+            case PieceType.ROBBER -> {
+                return getValidRobberSpots();
+            }
+            default -> {
+                throw new IllegalArgumentException("No defined behavior exists for this piece type");
+            }
+        }
+
+    }
+
     private Optional<Set<? extends Location>> tryGetValidSpots(Piece piece) {
         try {
             return Optional.of(getValidSpots(piece));
         } catch (RuntimeException e) {
             return Optional.empty();
         }
-    }
-
-    private void validateSettlementPlacement(Piece settlement, Location location) throws InvalidPlacementException {
-
-        String pieceTypeName = settlement.getPieceData().getPieceType().toString().toLowerCase();
-        String locationTypeName = location.getLocationType().toString().toLowerCase();
-
-        Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
-
-        Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
-        if (!validVertices.contains(vertex)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s is not on this board",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName
-                    )
-            );
-        }
-
-        if (vertexHasBuildingAlready(vertex)) {
-            String existingPieceTypeName = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s already holds a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            existingPieceTypeName
-                    )
-            );
-        }
-
-        validVertices.removeAll(getVerticesInvalidUnderDistanceRule(validVertices));
-
-        if (!validVertices.contains(vertex)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: too close to an existing building",
-                            pieceTypeName,
-                            locationTypeName
-                    )
-            );
-        }
-
-    }
-
-    private void validateCityPlacement(Piece city, Location location) throws InvalidPlacementException {
-
-        String pieceTypeName = city.getPieceData().getPieceType().toString().toLowerCase();
-        String locationTypeName = location.getLocationType().toString().toLowerCase();
-
-        Vertex vertex = enforceVertex(location, pieceTypeName, locationTypeName);
-
-        if (location.getPieces().isEmpty()) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "%s cannot be placed on empty %s",
-                            pieceTypeName,
-                            locationTypeName
-                    )
-            );
-        }
-
-        if (locationHasPieceOfType(location, PieceType.CITY)) {
-            String existingPieceTypeName = getFirstPieceData(vertex).getPieceType().toString().toLowerCase();
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s already holds a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            existingPieceTypeName
-                    )
-            );
-        }
-
-        if (!canDoCityUpgrade(city, vertex, city.getPieceData().getColor())) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: not your color",
-                            pieceTypeName,
-                            locationTypeName
-                    )
-            );
-        }
-
-    }
-
-    private void validateRoadPlacement(Piece road, Location location) throws InvalidPlacementException {
-
-        String pieceTypeName = road.getPieceData().getPieceType().toString().toLowerCase();
-        String locationTypeName = location.getLocationType().toString().toLowerCase();
-
-        Edge edge = enforceEdge(location, pieceTypeName, locationTypeName);
-
-        if (locationHasPieceOfType(edge, PieceType.ROAD)) {
-            String existingPieceTypeName = getFirstPieceData(location).getPieceType().toString().toLowerCase();
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s already holds a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            existingPieceTypeName
-                    )
-            );
-        }
-
-    }
-
-    private void validateRobberPlacement(Piece robber, Location location) throws InvalidPlacementException {
-
-        String pieceTypeName = robber.getPieceData().getPieceType().toString().toLowerCase();
-        String locationTypeName = location.getLocationType().toString().toLowerCase();
-
-        Hex hex = enforceHex(location, pieceTypeName, locationTypeName);
-
-        if (locationHasPieceOfType(hex, PieceType.ROBBER)) {
-            String existingPieceTypeName = getFirstPieceData(location).getPieceType().toString().toLowerCase();
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s already holds a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            existingPieceTypeName
-                    )
-            );
-        }
-
-    }
-
-    private Vertex enforceVertex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
-        if (!(location instanceof Vertex vertex)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s does not fit a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            pieceTypeName
-                    )
-            );
-        }
-        return vertex;
-    }
-
-    private Edge enforceEdge(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
-        if (!(location instanceof Edge edge)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s does not fit a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            pieceTypeName
-                    )
-            );
-        }
-        return edge;
-    }
-
-    private Hex enforceHex(Location location, String pieceTypeName, String locationTypeName) throws InvalidPlacementException {
-        if (!(location instanceof Hex hex)) {
-            throw new InvalidPlacementException(
-                    String.format(
-                            "Cannot place %s at %s: %s does not fit a %s",
-                            pieceTypeName,
-                            locationTypeName,
-                            locationTypeName,
-                            pieceTypeName
-                    )
-            );
-        }
-        return hex;
-    }
-
-    private PieceData getFirstPieceData(Location location) {
-        List<Piece> locationPieces = location.getPieces();
-        for (Piece piece : locationPieces) {
-            return piece.getPieceData();
-        }
-        throw new RuntimeException();
     }
 
     private PieceData getFirstPieceDataWithType(Location location, PieceType pieceType) {
