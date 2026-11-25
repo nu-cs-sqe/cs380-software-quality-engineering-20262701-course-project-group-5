@@ -64,7 +64,9 @@ public class PlayerTradeHelper extends Observed {
     }
 
     public void refuseTrade(Color actor, TradeOffer offer) throws InvalidTradeException {
-        activeTradeOffers.remove(offer);
+        if (!activeTradeOffers.remove(offer)) {
+            throw new InvalidTradeException();
+        }
         notifyObservers();
     }
 
