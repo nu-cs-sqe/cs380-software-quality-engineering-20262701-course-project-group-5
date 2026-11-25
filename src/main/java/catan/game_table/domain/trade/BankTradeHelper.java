@@ -27,7 +27,7 @@ public class BankTradeHelper {
     }
 
     public void tradeWithBank(Color actor, ResourceStack give, ResourceStack receive) throws InvalidTradeException {
-        if (!hasAvailableTradeRate(actor, give)) {
+        if (receive.getSize() != 1 || !hasAvailableTradeRate(actor, give)) {
             throw new InvalidTradeException();
         }
         ResourceInventory playerInventory = playerInventories.get(actor);
