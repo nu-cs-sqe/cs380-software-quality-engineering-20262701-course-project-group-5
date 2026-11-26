@@ -4,11 +4,21 @@ import catan.game_table.domain.player.PlayerData;
 
 import java.util.List;
 
-public class GameSetup {
-    public GameSetup() {
 
+public class GameSetup {
+  private static final int minPlayerNum = 3;
+
+  public GameSetup() {
+  }
+
+  public GameSession createGame(List<PlayerData> player) {
+    int playerNum = player.size();
+    if(playerNum < minPlayerNum) {
+      throw new IllegalArgumentException("Not enough players");
     }
-    public GameSession createGame(List<PlayerData> player) {
-        return new GameSession();
+    else {
+      return new GameSession();
     }
+
+  }
 }

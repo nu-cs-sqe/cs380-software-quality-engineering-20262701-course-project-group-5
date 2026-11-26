@@ -1,6 +1,7 @@
 package catan.game_table.ui;
 
 
+import catan.game_table.domain.match_model.GameSession;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,6 +11,9 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
+    public static void showGame(GameSession a) {
+    }
+
     @Override
     public void start(Stage stage) {
         String javaVersion = System.getProperty("java.version");
