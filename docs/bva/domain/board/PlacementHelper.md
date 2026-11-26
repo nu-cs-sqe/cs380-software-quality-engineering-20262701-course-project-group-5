@@ -36,6 +36,11 @@ Places `piece` at `location` via the board. Throws the checked exception `Invali
 A `City` is valid only on a vertex holding the active player's own `Settlement`. A `Road` and a `Harbor` may share an `Edge`.
 On success, a `Settlement`, `Road` or `City` is placed on the board and removed from the inventory of the player whose color the piece has. Placing a `City` first removes that player's `Settlement` from the vertex and returns it to the player's inventory, and only then places the `City`. `Harbor` and `Robber` are not taken from a player's inventory. If an exception is thrown, neither the board nor the inventory changes.
 
+### `PieceData getFirstPieceDataWithType(Location location, PieceType pieceType)`
+
+Returns the `PieceData` of the first `Piece` held by `location` and with `pieceType`. Throws `RuntimeException` if no
+matching `Piece` is found.
+
 ### TODO: remove() function ?
 
 ## Boundary-Value Analysis
@@ -247,3 +252,13 @@ invalid. Each choice for everything else.
 | Test Case 7 | `Harbor`, any location                                                | `Harbor` placed on that location                                        | :white_check_mark: |
 | Test Case 8 | `Robber`, a valid location for a robber                               | `Robber` placed on that hex                                             | :white_check_mark: |
 | Test Case 9 | `Robber`, an invalid location for a robber                            | `InvalidPlacementException` "Cannot place %s at %s"                     | :white_check_mark: |
+
+### Test: `PieceData getFirstPieceDataWithType(Location location, PieceType pieceType)`
+
+|             | Input                                                                    | Expected output                     | Implemented? |
+|-------------|--------------------------------------------------------------------------|-------------------------------------|--------------|
+| Test Case 1 | PieceType `SETTLEMENT`, a location containing a `Settlement`             | The `PieceData` of the `Settlement` | :x:          |
+| Test Case 2 | PieceType `CITY`, a location containing a `City` and then a `Settlement` | The `PieceData` of the `CITY`       | :x:          |
+| Test Case 3 | PieceType `CITY`, a location containing a `Settlement` and then a `City` | The `PieceData` of the `CITY`       | :x:          |
+| Test Case 4 | PieceType `SETTLEMENT`, a location containing a `City`                   | `RuntimeException`                  | :x:          |
+| Test Case 5 | PieceType `SETTLEMENT`, a location containing a no pieces                | `RuntimeException`                  | :x:          |
