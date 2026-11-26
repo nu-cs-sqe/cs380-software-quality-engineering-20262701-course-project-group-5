@@ -104,6 +104,7 @@ Red for active player's color and Blue for an opponent (arbitrary).
 | Test Case 11 | SETUP, called with `RED`, one `RED` road between A and B, no buildings                                   | all vertices (a road is not required in SETUP)                                                     | :white_check_mark: |
 | Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all vertices, B appearing once                                                                     | :white_check_mark: |
 | Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :white_check_mark: |
+| Extra Case 1 | SETUP, called with `RED`, one `RED` road on a vertex                                                     | all vertices                                                                                       | :white_check_mark: |
 
 ### Test: `Set<Vertex> getValidCitySpots(Color color)`
 
