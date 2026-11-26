@@ -1,14 +1,17 @@
 package catan.game_table.ui.controllers;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.match_model.GameSession;
 import catan.game_table.domain.models.LobbyModel;
 import catan.game_table.domain.player.PlayerData;
+import catan.game_table.ui.Main;
 import catan.game_table.ui.ViewRouter;
 import catan.game_table.ui.views.LobbyView;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LobbyControllerTests {
     @Test
@@ -30,7 +33,9 @@ public class LobbyControllerTests {
 
         LobbyController lobbyController = new LobbyController(lobbyView, lobbyModel, viewRouter);
 
-        lobbyController.onStart(playerList);
+        Consumer<GameSession> mainCallback = Main::showGame;
+
+        lobbyController.onStart(playerList, mainCallback);
 
         EasyMock.verify(lobbyView);
     }
