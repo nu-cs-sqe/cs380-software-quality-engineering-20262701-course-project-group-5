@@ -200,10 +200,11 @@ Each choice for all else.
 
 Test board will have only 2 hexes.
 
-|             | Input                  | Expected output          | Implemented?       |
-|-------------|------------------------|--------------------------|--------------------|
-| Test Case 1 | empty board            | all land hexes           | :white_check_mark: |
-| Test Case 2 | robber placed on hex A | all land hexes but hex A | :white_check_mark: |
+|              | Input                  | Expected output          | Implemented?       |
+|--------------|------------------------|--------------------------|--------------------|
+| Test Case 1  | empty board            | all land hexes           | :white_check_mark: |
+| Test Case 2  | robber placed on hex A | all land hexes but hex A | :white_check_mark: |
+| Extra Case 1 | road placed on hex     | all land hexes           | :white_check_mark: |
 
 ### Test: `public void place(Piece piece, Location location)`
 
