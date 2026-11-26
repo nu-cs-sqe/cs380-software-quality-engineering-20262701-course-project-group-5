@@ -259,6 +259,6 @@ invalid. Each choice for everything else.
 |-------------|--------------------------------------------------------------------------|-------------------------------------|--------------------|
 | Test Case 1 | PieceType `SETTLEMENT`, a location containing a `Settlement`             | The `PieceData` of the `Settlement` | :white_check_mark: |
 | Test Case 2 | PieceType `CITY`, a location containing a `City` and then a `Settlement` | The `PieceData` of the `CITY`       | :white_check_mark: |
-| Test Case 3 | PieceType `CITY`, a location containing a `Settlement` and then a `City` | The `PieceData` of the `CITY`       | :x:                |
+| Test Case 3 | PieceType `CITY`, a location containing a `Settlement` and then a `City` | The `PieceData` of the `CITY`       | :white_check_mark: |
 | Test Case 4 | PieceType `SETTLEMENT`, a location containing a `City`                   | `RuntimeException`                  | :x:                |
 | Test Case 5 | PieceType `SETTLEMENT`, a location containing a no pieces                | `RuntimeException`                  | :x:                |

@@ -2226,6 +2226,38 @@ public class PlacementHelperTests {
 
     }
 
+    @Test
+    public void GetFirstPieceDataWithType_GivenCity_AndLocationWithSettlementThenCity_ExpectCityPieceData() {
+
+        PieceType inputType = PieceType.CITY;
+
+        Piece piece1 = makePieceMock(PieceType.SETTLEMENT, Color.BLUE);
+        Piece piece2 = makePieceMock(PieceType.CITY, Color.RED);
+
+        Location location = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(location.getPieces()).andStubReturn(List.of(piece1, piece2));
+
+        GameBoard gameBoard = makeGameBoardMock(new HashMap<>(), new HashMap<>(), false);
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+
+        EasyMock.replay(location, gameBoard, gamePhaseHolder);
+
+        PieceData expectedPieceData = EasyMock.createMock(PieceData.class);
+        EasyMock.expect(expectedPieceData.getColor()).andStubReturn(Color.RED);
+        EasyMock.expect(expectedPieceData.getPieceType()).andStubReturn(PieceType.CITY);
+        EasyMock.replay(expectedPieceData);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        PieceData actualPieceData = placementHelper.getFirstPieceDataWithType(location, inputType);
+
+        boolean sameColor = expectedPieceData.getColor() == actualPieceData.getColor();
+        boolean sameType = expectedPieceData.getPieceType() == actualPieceData.getPieceType();
+
+        assertTrue(sameColor && sameType);
+
+    }
+
     private PlacementHelper makePlacementHelperWithMockedGetters(GameBoard gameBoard, GamePhaseHolder gamePhaseHolder, boolean autoReplay) {
 
         IMockBuilder<PlacementHelper> builder = EasyMock.createMockBuilder(PlacementHelper.class);
