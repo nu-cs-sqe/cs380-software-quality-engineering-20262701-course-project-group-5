@@ -1652,6 +1652,46 @@ public class PlacementHelperTests {
     }
 
     @Test
+    public void GetValidRoadSpots_GivenRed_AndRegularPhase_AndInvalidPiecePlacedAtVertex_ExpectNoEdges() {
+
+        Color playerColor = Color.RED;
+        GamePhase gamePhase = GamePhase.REGULAR;
+
+        Piece road = makePieceMock(PieceType.ROAD, playerColor);
+
+        Set<String> vertexNames = Set.of("A", "B", "C", "D", "E", "F", "G");
+        Map<String, List<Piece>> vertexPieces = Map.of("F", List.of(road));
+        Map<String, Vertex> vertexMap = makeVertexMocks(vertexNames, vertexPieces);
+
+        Set<Set<String>> edgeNamePairs = Set.of(
+                Set.of("A", "B"),
+                Set.of("B", "C"),
+                Set.of("C", "D"),
+                Set.of("D", "E"),
+                Set.of("E", "F"),
+                Set.of("A", "F"),
+                Set.of("F", "G")
+        );
+        Map<Set<String>, List<Piece>> edgePieces = Map.of();
+        Map<Set<String>, Edge> edgeMap = makeEdgeMocks(edgeNamePairs, edgePieces);
+
+        GameBoard gameBoard = makeGameBoardMock(vertexMap, edgeMap);
+
+        GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
+        EasyMock.expect(gamePhaseHolder.getGamePhase()).andStubReturn(gamePhase);
+        EasyMock.replay(gamePhaseHolder);
+
+        PlacementHelper placementHelper = new PlacementHelper(gameBoard, gamePhaseHolder);
+
+        Set<Edge> actualEdges = placementHelper.getValidRoadSpots(playerColor);
+        Set<Set<String>> expectedEdgeNames = Set.of();
+        Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
+
+        assertEquals(expectedEdges, actualEdges);
+
+    }
+
+    @Test
     public void GetValidRobberSpots_GivenEmptyBoard_ExpectAllLandHexes() {
 
         Hex hex1 = EasyMock.createMock(Hex.class);

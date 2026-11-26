@@ -224,7 +224,7 @@ public class PlacementHelper extends Observed {
 
         for (Edge connectingEdge : connectingEdges) {
             if (edgeHasRoadOfColor(connectingEdge, color)) {
-                Set<Edge> blockedEdges = getBlockedConnectingEdges(edge, color, endpointVertices);
+                Set<Edge> blockedEdges = getConnectingEdgesBehindBuilding(edge, color, endpointVertices);
                 return !blockedEdges.contains(connectingEdge);
             }
         }
@@ -233,12 +233,12 @@ public class PlacementHelper extends Observed {
 
     }
 
-    private Set<Edge> getBlockedConnectingEdges(Edge edge, Color color, Set<Vertex> endpointVertices) {
+    private Set<Edge> getConnectingEdgesBehindBuilding(Edge edge, Color color, Set<Vertex> endpointVertices) {
 
         Set<Edge> blockedEdges = new HashSet<>();
 
         for (Vertex vertex : endpointVertices) {
-            if (vertexHasBuilding(vertex) && !vertexHasBuildingOfColor(vertex, color)) {
+            if (vertexHasBuilding(vertex)) {
                 blockedEdges.addAll(gameBoard.getIncidentEdges(vertex));
             }
         }

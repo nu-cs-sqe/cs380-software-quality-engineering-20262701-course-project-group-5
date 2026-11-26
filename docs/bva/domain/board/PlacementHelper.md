@@ -194,6 +194,7 @@ Each choice for all else.
 | Test Case 9  | REGULAR, called with `RED`, one `RED` settlement with 3 adjacent edges, two of them occupied by `BLUE` roads | exactly the one remaining free edge                                                             | :white_check_mark: |
 | Test Case 10 | REGULAR, called with `BLUE`, one `BLUE` settlement, all adjacent edges free                                  | exactly the edges adjacent to the `BLUE` settlement (own means the color passed in)             | :white_check_mark: |
 | Test Case 11 | REGULAR, called with `RED`, one `RED` road adjacent to a `BLUE` settlement                                   | only the free edges not adjacent to the settlement                                              | :white_check_mark: |
+| Extra Case 1 | REGULAR, called with `RED`, one `RED` road on a vertex                                                       | no edges                                                                                        | :white_check_mark: |
 
 ### Test: `Set<Hex> getValidRobberSpots()`
 
