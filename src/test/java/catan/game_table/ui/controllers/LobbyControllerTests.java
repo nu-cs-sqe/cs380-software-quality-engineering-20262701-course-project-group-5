@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LobbyControllerTests {
     @Test
-    public void OnStart_PlayerListSizeTwo_CreateGame_ShowError() {
+    public void OnStart_PlayerListSizeTwo_ShowErrorInView() {
         LobbyView lobbyView = EasyMock.createMock(LobbyView.class);
         LobbyModel lobbyModel = EasyMock.createMock(LobbyModel.class);
         ViewRouter viewRouter = EasyMock.createMock(ViewRouter.class);
