@@ -303,7 +303,7 @@ public class PlacementHelper extends Observed {
         }
     }
 
-    private PieceData getFirstPieceDataWithType(Location location, PieceType pieceType) {
+    PieceData getFirstPieceDataWithType(Location location, PieceType pieceType) {
         List<Piece> locationPieces = location.getPieces();
         for (Piece piece : locationPieces) {
             if (piece.getPieceData().getPieceType() == pieceType)
