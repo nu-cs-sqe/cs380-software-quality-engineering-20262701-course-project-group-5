@@ -36,7 +36,7 @@ public class PlacementHelper extends Observed {
 
         cachedPiece = inputPiece;
         cachedValidSpots = getValidSpots(inputPiece);
-        notifyObserversInternal();
+        notifyObservers();
         return cachedValidSpots;
 
     }
@@ -123,12 +123,8 @@ public class PlacementHelper extends Observed {
 
         gameBoard.addPieceAtLocation(piece, location);
 
-        notifyObserversInternal();
-
-    }
-
-    void notifyObserversInternal() {
         notifyObservers();
+
     }
 
     private Set<Vertex> getVerticesInvalidUnderDistanceRule(Set<Vertex> existingVertices) {
