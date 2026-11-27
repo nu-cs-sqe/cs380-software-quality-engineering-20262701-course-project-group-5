@@ -37,7 +37,7 @@ public class PlacementHelper extends Observed {
         cachedPiece = inputPiece;
         cachedValidSpots = getValidSpots(inputPiece);
         notifyObservers();
-        return cachedValidSpots;
+        return Set.copyOf(cachedValidSpots);
 
     }
 
@@ -52,7 +52,7 @@ public class PlacementHelper extends Observed {
             validVertices.removeIf(vertex -> !vertexConnectedToRoadsOfColor(vertex, color));
         }
 
-        return validVertices;
+        return Set.copyOf(validVertices);
 
     }
 
@@ -61,14 +61,14 @@ public class PlacementHelper extends Observed {
         GamePhase gamePhase = gamePhaseHolder.getGamePhase();
 
         if (gamePhase == GamePhase.SETUP) {
-            return new HashSet<>();
+            return Set.of();
         }
 
         Set<Vertex> validVertices = new HashSet<>(gameBoard.getLandVertices());
 
         validVertices.removeIf(vertex -> !locationHasPieceOfTypeAndColor(vertex, PieceType.SETTLEMENT, color));
 
-        return validVertices;
+        return Set.copyOf(validVertices);
 
     }
 
@@ -85,14 +85,14 @@ public class PlacementHelper extends Observed {
             validEdges.removeIf(edge -> !edgeTouchingJustPlacedBuilding(edge, color));
         }
 
-        return validEdges;
+        return Set.copyOf(validEdges);
 
     }
 
     Set<Hex> getValidRobberSpots() {
         Set<Hex> validHexes = new HashSet<>(gameBoard.getLandHexes());
         validHexes.removeIf(hex -> locationHasPieceOfType(hex, PieceType.ROBBER));
-        return validHexes;
+        return Set.copyOf(validHexes);
     }
 
     public void place(Piece piece, Location location) throws InvalidPlacementException {
