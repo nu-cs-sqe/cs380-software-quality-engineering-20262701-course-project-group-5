@@ -6,9 +6,14 @@ import catan.game_table.domain.PieceType;
 public class PieceData {
   public final Color color;
   public final PieceType type;
+
   public PieceData(Color color, PieceType type) {
     this.color = color;
     this.type = type;
+  }
+
+  public Color getColor() {
+    return color;
   }
 
   @Override
