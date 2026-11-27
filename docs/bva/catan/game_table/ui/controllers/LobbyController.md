@@ -4,11 +4,15 @@ Classpath: catan.game_table.ui.controllers.LobbyController
 
 ## `public class LobbyController`
 
-The `LobbyController` links the `LobbyView`, `Main`, and `GameSetup` classes. When changes to player number, color selection, or language are made in `LobbyView`, the `LobbyController` triggers the view to update. Once the players enter all the relevant information and hit start, `LobbyView` prompts `LobbyController` to route it on to `GameSetup` to create a `GameSession` before calling back to `Main` to return the newly instantiated session.
+The `LobbyController` links the `LobbyView`, `Main`, and `GameSetup` classes with the help of a `ViewRouter` and `GameScreenFactory`. When changes to player number, color selection, or language are made in `LobbyView`, the `LobbyController` triggers the view to update. Once the players enter all the relevant information and hit start, `LobbyView` prompts `LobbyController` to route it on to `GameSetup` to create a `GameSession` and new set of views that can be routed to with `ViewRouter`.
 
+### `public LobbyController(LobbyView lobbyView, LobbyModel lobbyModel, ViewRouter viewRouter, GameSetup gameSetup, GameScreenFactory gameScreenFactory)`
+
+Constructs a LobbyController to link the `lobbyView` and `lobbyModel` and also to be able to set up the game of Catan and route users on to the next relevant views.
+ 
 ### `private void onStart(List<PlayerData> players)`
 
-When a player hits the start button in the `LobbyView` after entering the number of players and what colors they chose, this information is routed through `onStart()` so it can be passed to `GameSetup` to trigger the creation of a new `GameSession` that is then passed back to `LobbyController` and then to `Main`. If the given number of players is not large enough, an error will be displayed to let the players know.
+When a player hits the start button in the `LobbyView` after entering the number of players and what colors they chose, this information is routed through `onStart()` so it can be passed to `GameSetup:createGame()` to make a new `GameSession`. If the session is successfully made, `GameScreenFactory:create()` will be called with the new session to build a Scene of the game, which will then be displayed with `ViewRouter:show()`. If the given number of players passed on to `GameSetup:createGame()` is not large enough, an error will be displayed to let the players know.
 
 ### `private void onDataEntry()`
 
@@ -21,7 +25,7 @@ When a player enters data such as choosing a number of player, a language, or co
 **Step 1: Inputs / outputs**
 | Inputs | Outputs |
 |---|---|
-| `players : List<PlayerData>` | `Main:showGame()` or `LobbyView:showError()` are called  |
+| `players : List<PlayerData>` | `GameSetup:createGame()`->`GameScreenFactory:create()`->`ViewRouter:show()` are called in succession or `GameSetup:createGame()` errors and `LobbyView:showError()` is called  |
 
 **Step 2: Data types**
 | Variable | Type |
@@ -32,14 +36,14 @@ When a player enters data such as choosing a number of player, a language, or co
 **Step 3: Concrete values**
 | Variable | Values |
 |---|---|
-| Input | Invalid num of players (< 3), valid num of players (3, 4) |
-| Output | `LobbyView:showError()` is called with the error message,`Main:showGame()` is called  |
+| Input | Invalid num of players (< 3), valid num of players (3/4) |
+| Output | `GameSetup:createGame()` errors and `LobbyView:showError()` is called,`GameSetup:createGame()`->`GameScreenFactory:create()`->`ViewRouter:show()` are called |
 
 **Step 4: Each choice**
 |              | Input | Expected output | Implemented? |
 |--------------|-------|-----------------|--------------|
-| Test Case 1  | `players` list of size 2 | `LobbyView:showError()` is called with the error message | :x: |
-| Test Case 2  | `players` list of size 4 | `Main:showGame()` is called  | :x: |
+| Test Case 1  | `players` list of size 2 | `GameSetup:createGame()` errors and `LobbyView:showError()` is called | :x: |
+| Test Case 2  | `players` list of size 4 | `GameSetup:createGame()`->`GameScreenFactory:create()`->`ViewRouter:show()` are called | :x: |
 
 
 ### Method under test: `onDataEntry()`
