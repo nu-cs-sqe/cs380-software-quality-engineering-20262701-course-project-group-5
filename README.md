@@ -33,5 +33,7 @@ Note: the Resource package should be integration tested with the bank and player
 URF_UNREAD_FIELD — "Field is written but never read"
 
 Files:
+src/main/java/catan/game_table/domain/piece/City.java (class-level)
+Why: The City class has a ScoreTracker field of the player that owns it. The City class initializes the field so that when placed on the board, the PlacementHelper can trigger an update to the owning players points. Because the write and the read are in different methods, SpotBugs treats the field as written but never read.
 src/main/java/catan/game_table/domain/piece/Settlement.java (class-level)
 Why: The Settlement class has a ScoreTracker field of the player that owns it. The Settlement class initializes the field so that when placed on the board, the PlacementHelper can trigger an update to the owning players points. Because the write and the read are in different methods, SpotBugs treats the field as written but never read.
