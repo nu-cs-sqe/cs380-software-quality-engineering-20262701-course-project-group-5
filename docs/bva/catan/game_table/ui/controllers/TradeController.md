@@ -66,3 +66,19 @@ Clear the controller's screen and selected offer, then ask `GameTableController`
 ## Boundary-Value Analysis
 
 Combines cases and uses parameterized tests for repeated setups.
+
+**Step 1: Inputs / outputs**
+
+| Inputs                                                               | Outputs                                                                 |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------|
+| Trading status, overlay screen, confirmed viewer, and current offers | Viewer requirement, screen, and available actions                       |
+| Selected offer ID or form values, plus the model result              | Trade command and refresh on success, or a displayed error on rejection |
+
+**Step 2: Data types**
+
+| Variable                                              | Type       |
+|-------------------------------------------------------|------------|
+| Trading open, offer selected                          | Booleans   |
+| Screen, viewer match, offer eligibility, model result | Cases      |
+| Overview offers                                       | Collection |
+| Selected offer ID                                     | Search key |
