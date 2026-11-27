@@ -51,10 +51,12 @@ public class PlacementHelperTests {
         EasyMock.expect(placementHelper.getValidSettlementSpots(playerColor)).andReturn(expectedVertices).times(1);
         EasyMock.replay(placementHelper);
 
-        Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
+        Set<Location> actualLocations = (Set<Location>) placementHelper.getAndCacheValidSpots(inputPiece);
 
         EasyMock.verify(placementHelper);
         assertEquals(expectedVertices, actualLocations);
+        Location testLocation = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualLocations.add(testLocation));
 
     }
 
@@ -98,10 +100,12 @@ public class PlacementHelperTests {
         EasyMock.expect(placementHelper.getValidRoadSpots(playerColor)).andReturn(expectedEdges).times(1);
         EasyMock.replay(placementHelper);
 
-        Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
+        Set<Location> actualLocations = (Set<Location>) placementHelper.getAndCacheValidSpots(inputPiece);
 
         EasyMock.verify(placementHelper);
         assertEquals(expectedEdges, actualLocations);
+        Location testLocation = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualLocations.add(testLocation));
 
     }
 
@@ -141,10 +145,12 @@ public class PlacementHelperTests {
         EasyMock.expect(placementHelper.getValidCitySpots(playerColor)).andReturn(expectedVertices).times(1);
         EasyMock.replay(placementHelper);
 
-        Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
+        Set<Location> actualLocations = (Set<Location>) placementHelper.getAndCacheValidSpots(inputPiece);
 
         EasyMock.verify(placementHelper);
         assertEquals(expectedVertices, actualLocations);
+        Location testLocation = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualLocations.add(testLocation));
 
     }
 
@@ -169,16 +175,18 @@ public class PlacementHelperTests {
 
         EasyMock.replay(gameBoard, gamePhaseHolder);
 
-        Set<Hex> expectedHexes = Set.of(hex1, hex2);
+        Set<Hex> expectedHexes = new HashSet<>(Set.of(hex1, hex2));
 
         PlacementHelper placementHelper = makePlacementHelperWithMockedGetters(gameBoard, gamePhaseHolder, false);
         EasyMock.expect(placementHelper.getValidRobberSpots()).andReturn(expectedHexes).times(1);
         EasyMock.replay(placementHelper);
 
-        Set<? extends Location> actualLocations = placementHelper.getAndCacheValidSpots(inputPiece);
+        Set<Location> actualLocations = (Set<Location>) placementHelper.getAndCacheValidSpots(inputPiece);
 
         EasyMock.verify(placementHelper);
         assertEquals(expectedHexes, actualLocations);
+        Location testLocation = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualLocations.add(testLocation));
 
     }
 
@@ -332,6 +340,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -369,6 +379,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -408,6 +420,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -447,6 +461,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -487,6 +503,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -530,6 +548,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -573,6 +593,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -618,6 +640,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -659,6 +683,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -703,6 +729,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -744,6 +772,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -787,6 +817,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -828,6 +860,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -867,6 +901,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -904,6 +940,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -941,6 +979,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -980,6 +1020,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -1019,6 +1061,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -1062,6 +1106,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -1105,6 +1151,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -1148,6 +1196,8 @@ public class PlacementHelperTests {
         Set<Vertex> expectedVertices = filterVerticesWithNames(expectedVertexNames, vertexMap);
 
         assertEquals(expectedVertices, actualVertices);
+        Vertex testVertex = EasyMock.createMock(Vertex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualVertices.add(testVertex));
 
     }
 
@@ -1192,6 +1242,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.addAll(Set.of(testEdge)));
 
     }
 
@@ -1241,6 +1293,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1279,6 +1333,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1317,6 +1373,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1361,6 +1419,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1404,6 +1464,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1459,6 +1521,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1506,6 +1570,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1551,6 +1617,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1595,6 +1663,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1636,6 +1706,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1676,6 +1748,8 @@ public class PlacementHelperTests {
         Set<Edge> expectedEdges = filterEdgesWithNames(expectedEdgeNames, edgeMap);
 
         assertEquals(expectedEdges, actualEdges);
+        Edge testEdge = EasyMock.createMock(Edge.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualEdges.add(testEdge));
 
     }
 
@@ -1689,7 +1763,7 @@ public class PlacementHelperTests {
         EasyMock.replay(hex1, hex2);
 
         GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
-        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(Set.of(hex1, hex2));
+        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(new HashSet<>(Set.of(hex1, hex2)));
 
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
 
@@ -1701,6 +1775,8 @@ public class PlacementHelperTests {
         Set<Hex> expectedHexes = Set.of(hex1, hex2);
 
         assertEquals(expectedHexes, actualHexes);
+        Hex testHex = EasyMock.createMock(Hex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualHexes.add(testHex));
 
     }
 
@@ -1716,7 +1792,7 @@ public class PlacementHelperTests {
         EasyMock.replay(hex1, hex2);
 
         GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
-        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(Set.of(hex1, hex2));
+        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(new HashSet<>(Set.of(hex1, hex2)));
 
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
 
@@ -1728,6 +1804,8 @@ public class PlacementHelperTests {
         Set<Hex> expectedHexes = Set.of(hex2);
 
         assertEquals(expectedHexes, actualHexes);
+        Hex testHex = EasyMock.createMock(Hex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualHexes.add(testHex));
 
     }
 
@@ -1743,7 +1821,7 @@ public class PlacementHelperTests {
         EasyMock.replay(hex1, hex2);
 
         GameBoard gameBoard = makeGameBoardMock(Map.of(), Map.of(), false);
-        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(Set.of(hex1, hex2));
+        EasyMock.expect(gameBoard.getLandHexes()).andStubReturn(new HashSet<>(Set.of(hex1, hex2)));
 
         GamePhaseHolder gamePhaseHolder = EasyMock.createMock(GamePhaseHolder.class);
 
@@ -1755,6 +1833,8 @@ public class PlacementHelperTests {
         Set<Hex> expectedHexes = Set.of(hex1, hex2);
 
         assertEquals(expectedHexes, actualHexes);
+        Hex testHex = EasyMock.createMock(Hex.class);
+        assertThrows(UnsupportedOperationException.class, () -> actualHexes.add(testHex));
 
     }
 
