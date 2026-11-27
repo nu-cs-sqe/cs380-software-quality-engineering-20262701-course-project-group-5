@@ -71,6 +71,6 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 ### Test: `public int getsize()`
 
-|             | State of the System                               | Expected output | Implemented? |
-|-------------|---------------------------------------------------|-----------------|--------------|
-| Test Case 1 | An instance of `BrickResourceStack` with size `1` | `1`             | :x:          |
+|             | State of the System                               | Expected output | Implemented?       |
+|-------------|---------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | An instance of `BrickResourceStack` with size `1` | `1`             | :white_check_mark: |
