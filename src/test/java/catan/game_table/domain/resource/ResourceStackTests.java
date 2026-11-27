@@ -6,11 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class ResourceStackTests {
     @Test
-    public void Add_NearMaxStack_WithStackOfOne_ProducesMaxStack(){
+    public void Add_NearMaxStack_WithStackOfOne_ProducesMaxStack() {
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
         BrickResourceStack stackOfNearMax = new BrickResourceStack(Integer.MAX_VALUE - 1);
 
@@ -22,19 +23,19 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Add_EmptyStack_WithEmptyStack_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfEmpty = new BrickResourceStack(0);
-        BrickResourceStack secondStackOfEmpty = new BrickResourceStack(0);
+    public void Add_EmptyStack_WithEmptyStack_ProducesEmptyStack() {
+        LumberResourceStack firstStackOfEmpty = new LumberResourceStack(0);
+        LumberResourceStack secondStackOfEmpty = new LumberResourceStack(0);
 
         ResourceStack resultStack = firstStackOfEmpty.add(secondStackOfEmpty);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new LumberResourceStack(expectedSize), resultStack);
     }
 
     @Test
-    public void Add_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
+    public void Add_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException() {
         LumberResourceStack stackOfEmptyLumber = new LumberResourceStack(0);
         BrickResourceStack stackOfEmptyBrick = new BrickResourceStack(0);
 
@@ -44,7 +45,37 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack(){
+    public void Add_StackOfOre_WithStackOfOre_ProducesStackOfOre() {
+        OreResourceStack firstStackOfOre = new OreResourceStack(0);
+        OreResourceStack secondStackOfOre = new OreResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfOre.add(secondStackOfOre);
+
+        assertInstanceOf(OreResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Add_StackOfGrain_WithStackOfGrain_ProducesStackOfGrain() {
+        GrainResourceStack firstStackOfGrain = new GrainResourceStack(0);
+        GrainResourceStack secondStackOfGrain = new GrainResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfGrain.add(secondStackOfGrain);
+
+        assertInstanceOf(GrainResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Add_StackOfWool_WithStackOfWool_ProducesStackOfWool() {
+        WoolResourceStack firstStackOfWool = new WoolResourceStack(0);
+        WoolResourceStack secondStackOfWool = new WoolResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfWool.add(secondStackOfWool);
+
+        assertInstanceOf(WoolResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Subtract_MaxStack_WithStackOfOne_ProducesMaxMinusOneStack() {
         BrickResourceStack stackOfMax = new BrickResourceStack(Integer.MAX_VALUE);
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
 
@@ -56,31 +87,31 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Subtract_StackOfOne_WithStackOfOne_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
-        BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
+    public void Subtract_StackOfOne_WithStackOfOne_ProducesEmptyStack() {
+        LumberResourceStack firstStackOfOne = new LumberResourceStack(1);
+        LumberResourceStack secondStackOfOne = new LumberResourceStack(1);
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new LumberResourceStack(expectedSize), resultStack);
     }
 
     @Test
-    public void Subtract_StackOfMax_WithStackOfMax_ProducesEmptyStack(){
-        BrickResourceStack firstStackOfOne = new BrickResourceStack(Integer.MAX_VALUE);
-        BrickResourceStack secondStackOfOne = new BrickResourceStack(Integer.MAX_VALUE);
+    public void Subtract_StackOfMax_WithStackOfMax_ProducesEmptyStack() {
+        OreResourceStack firstStackOfOne = new OreResourceStack(Integer.MAX_VALUE);
+        OreResourceStack secondStackOfOne = new OreResourceStack(Integer.MAX_VALUE);
 
         ResourceStack resultStack = firstStackOfOne.subtract(secondStackOfOne);
 
         int expectedSize = 0;
 
-        assertEquals(new BrickResourceStack(expectedSize), resultStack);
+        assertEquals(new OreResourceStack(expectedSize), resultStack);
     }
 
     @Test
-    public void Subtract_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException(){
+    public void Subtract_EmptyStackLumber_WithEmptyStackBrick_ThrowsIllegalArgumentException() {
         LumberResourceStack stackOfEmptyLumber = new LumberResourceStack(0);
         BrickResourceStack stackOfEmptyBrick = new BrickResourceStack(0);
 
@@ -90,7 +121,27 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue(){
+    public void Subtract_StackOfGrain_WithStackOfGrain_ProducesStackOfGrain() {
+        GrainResourceStack firstStackOfGrain = new GrainResourceStack(0);
+        GrainResourceStack secondStackOfGrain = new GrainResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfGrain.subtract(secondStackOfGrain);
+
+        assertInstanceOf(GrainResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Subtract_StackOfWool_WithStackOfWool_ProducesStackOfWool() {
+        WoolResourceStack firstStackOfWool = new WoolResourceStack(0);
+        WoolResourceStack secondStackOfWool = new WoolResourceStack(0);
+
+        ResourceStack resultStack = firstStackOfWool.subtract(secondStackOfWool);
+
+        assertInstanceOf(WoolResourceStack.class, resultStack);
+    }
+
+    @Test
+    public void Equals_StackOfOne_WithStackOfOne_ReturnsTrue() {
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
 
@@ -98,7 +149,7 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Equals_StackOfOne_WithStackOfTwo_ReturnsFalse(){
+    public void Equals_StackOfOne_WithStackOfTwo_ReturnsFalse() {
         BrickResourceStack stackOfOne = new BrickResourceStack(1);
         BrickResourceStack stackOfTwo = new BrickResourceStack(2);
 
@@ -106,7 +157,7 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Equals_StackOfOneLumber_WithStackOfOneBrick_ReturnsFalse(){
+    public void Equals_StackOfOneLumber_WithStackOfOneBrick_ReturnsFalse() {
         LumberResourceStack stackOfOneLumber = new LumberResourceStack(1);
         BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
 
@@ -114,7 +165,7 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Equals_StackOfOneBrick_WithStackOfOneLumber_ReturnsFalse(){
+    public void Equals_StackOfOneBrick_WithStackOfOneLumber_ReturnsFalse() {
         BrickResourceStack stackOfOneBrick = new BrickResourceStack(1);
         LumberResourceStack stackOfOneLumber = new LumberResourceStack(1);
 
@@ -122,14 +173,14 @@ public class ResourceStackTests {
     }
 
     @Test
-    public void Equals_StackOfOne_WithThis_ReturnsTrue(){
+    public void Equals_StackOfOne_WithThis_ReturnsTrue() {
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
 
         assertTrue(firstStackOfOne.equals(firstStackOfOne));
     }
 
     @Test
-    public void Hash_StackOfOne_WithStackOfOne_ProducesSameHashCode(){
+    public void Hash_StackOfOne_WithStackOfOne_ProducesSameHashCode() {
         BrickResourceStack firstStackOfOne = new BrickResourceStack(1);
         BrickResourceStack secondStackOfOne = new BrickResourceStack(1);
 
@@ -137,5 +188,27 @@ public class ResourceStackTests {
         int secondHash = secondStackOfOne.hashCode();
 
         assertEquals(firstHash, secondHash);
+    }
+
+    @Test
+    public void Hash_EmptyStack_WithStackOfOne_ProducesDifferentHashCode() {
+        BrickResourceStack stackOfEmpty = new BrickResourceStack(0);
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+
+        int firstHash = stackOfEmpty.hashCode();
+        int secondHash = stackOfOne.hashCode();
+
+        assertNotEquals(firstHash, secondHash);
+    }
+
+    @Test
+    public void GetSize_StackOfOne_ReturnsOne() {
+        BrickResourceStack stackOfOne = new BrickResourceStack(1);
+
+        int actual = stackOfOne.getSize();
+
+        int expected = 1;
+
+        assertEquals(expected, actual);
     }
 }

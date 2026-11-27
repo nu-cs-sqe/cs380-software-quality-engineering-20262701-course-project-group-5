@@ -16,6 +16,9 @@ Returns a new `ResourceStack` with the sum of the sizes of this and `otherStack`
 ### `public ResourceStack subtract(ResourceStack otherStack)`
 Returns a new `ResourceStack` with the size of `this` minus the size of `otherStack`. Throws an `IllegalArgumentException` if `otherStack` is not the same type as this.
 
+The return type of the add and subtract methods have 5 different cases for their return type because they could return any of the different subclasses of ResourceStack.
+Therefore, our tests for the add and subtract methods must return each of the 5 subclasses at least once
+
 ### `public final int getSize()`
 Returns the size of this `ResourceStack`.
 
@@ -32,22 +35,27 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 |             | State of the System                                                                           | Expected output                                                          | Implemented?       |
 |-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `INT_MAX - 1`           | `BrickResourceStack` with size `INT_MAX`                                 | :white_check_mark: |
-| Test Case 2 | `BrickResourceStack` with size `0` and `BrickResourceStack` with size `0`                     | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
+| Test Case 2 | `LumberResourceStack` with size `0` and `LumberResourceStack` with size `0`                   | `LumberResourceStack` with size `0`                                      | :white_check_mark: |
 | Test Case 3 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
+| Test Case 4 | `OreResourceStack` of any size with `OreResourceStack` of any size                            | `OreResourceStack`                                                       | :white_check_mark: |
+| Test Case 5 | `GrainResourceStack` of any size with `GrainResourceStack` of any size                        | `GrainResourceStack`                                                     | :white_check_mark: |
+| Test Case 6 | `WoolResourceStack` of any size with `WoolResourceStack` of any size                          | `WoolResourceStack`                                                      | :white_check_mark: |
 
 ### Test: `public ResourceStack subtract(ResourceStack otherStack)`
 
 |             | State of the System                                                                           | Expected output                                                          | Implemented?       |
 |-------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------|
 | Test Case 1 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `1`               | `BrickResourceStack` with size `INT_MAX - 1`                             | :white_check_mark: |
-| Test Case 2 | `BrickResourceStack` with size `1` and `BrickResourceStack` with size `1`                     | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
-| Test Case 3 | `BrickResourceStack` with size `INT_MAX` and `BrickResourceStack` with size `INT_MAX`         | `BrickResourceStack` with size `0`                                       | :white_check_mark: |
+| Test Case 2 | `LumberResourceStack` with size `1` and `LumberResourceStack` with size `1`                   | `LumberResourceStack` with size `0`                                      | :white_check_mark: |
+| Test Case 3 | `OreResourceStack` with size `INT_MAX` and `OreResourceStack` with size `INT_MAX`             | `OreResourceStack` with size `0`                                         | :white_check_mark: |
 | Test Case 4 | Let this be a `LumberResourceStack` with size `0`, input a `BrickResourceStack` with size `0` | `IllegalArgumentException` "Incompatible ResourceStack types: %s and %s" | :white_check_mark: |
+| Test Case 5 | `GrainResourceStack` of any size with `GrainResourceStack` of any size                        | `GrainResourceStack`                                                     | :white_check_mark: |
+| Test Case 6 | `WoolResourceStack` of any size with `WoolResourceStack` of any size                          | `WoolResourceStack`                                                      | :white_check_mark: |
 
 ### Test: `public boolean equals(Object other)`
 
-|             | State of the System                                                                           | Expected output | Implemented? |
-|-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------|
+|             | State of the System                                                                           | Expected output | Implemented?       |
+|-------------|-----------------------------------------------------------------------------------------------|-----------------|--------------------|
 | Test Case 1 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `1`  | true            | :white_check_mark: |
 | Test Case 2 | Let this be a `BrickResourceStack` with size `1`, input a `BrickResourceStack` with size `2`  | false           | :white_check_mark: |
 | Test Case 3 | Let this be a `LumberResourceStack` with size `1`, input a `BrickResourceStack` with size `1` | false           | :white_check_mark: |
@@ -56,6 +64,13 @@ Returns an integer dependent on the size and the concrete subclass of this `Reso
 
 ### Test: `public int hashCode()`
 
-|             | State of the System                                        | Expected output      | Implemented? |
-|-------------|------------------------------------------------------------|----------------------|--------------|
-| Test Case 1 | Two different `BrickResourceStack` instances with size `1` | same value from each | :white_check_mark: |
+|             | State of the System                                                                   | Expected output       | Implemented?       |
+|-------------|---------------------------------------------------------------------------------------|-----------------------|--------------------|
+| Test Case 1 | Two different `BrickResourceStack` instances with size `1`                            | same value from each  | :white_check_mark: |
+| Test Case 2 | Two different `BrickResourceStack` instances, one with size `1` and one with size `0` | different hash values | :white_check_mark: |
+
+### Test: `public int getsize()`
+
+|             | State of the System                               | Expected output | Implemented?       |
+|-------------|---------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | An instance of `BrickResourceStack` with size `1` | `1`             | :white_check_mark: |

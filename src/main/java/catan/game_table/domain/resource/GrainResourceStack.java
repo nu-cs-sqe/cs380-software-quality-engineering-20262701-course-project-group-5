@@ -1,7 +1,7 @@
 package catan.game_table.domain.resource;
 
 public class GrainResourceStack extends ResourceStack {
-    public GrainResourceStack (int size){
+    public GrainResourceStack (int size) {
         super(size);
     }
 
