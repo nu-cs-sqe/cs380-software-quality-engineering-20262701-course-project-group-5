@@ -99,16 +99,16 @@ Red for active player's color and Blue for an opponent (arbitrary).
 | Test Case 1  | SETUP, called with `RED`, empty board                                                                    | all vertices                                                                                       | :white_check_mark: |
 | Test Case 2  | REGULAR, called with `RED`, empty board, no roads                                                        | empty list                                                                                         | :white_check_mark: |
 | Test Case 3  | SETUP, called with `RED`, a `RED` settlement on vertex V                                                 | every vertex except V (distance 0) and V's neighbors (distance 1); vertices at distance 2 included | :white_check_mark: |
-| Test Case 4  | REGULAR, called with `RED`, one `RED` road between vertices A and B, no buildings anywhere               | exactly `[A, B]`                                                                                   | :white_check_mark: |
-| Test Case 5  | REGULAR, called with `RED`, one `RED` road between A and B, a `BLUE` settlement on A                     | empty list (A is occupied, B is distance 1 from the settlement)                                    | :white_check_mark: |
-| Test Case 6  | REGULAR, called with `RED`, two separate `RED` roads A to B and C to D, no buildings, far apart          | exactly `[A, B, C, D]`, no duplicates                                                              | :white_check_mark: |
-| Test Case 7  | REGULAR, called with `RED`, `RED` roads A to B and B to C, no buildings                                  | exactly `[A, B, C]`, with B appearing once                                                         | :white_check_mark: |
+| Test Case 4  | REGULAR, called with `RED`, one `RED` road on one edge, no buildings anywhere                            | exactly the endpoints of the edge                                                                  | :white_check_mark: |
+| Test Case 5  | REGULAR, called with `RED`, one `RED` road on one edge, a `BLUE` settlement on one endpoint of the edge  | empty list (one endpoint is occupied, other is distance 1 from the settlement)                     | :white_check_mark: |
+| Test Case 6  | REGULAR, called with `RED`, two separate `RED` roads on far-apart edges                                  | exactly the endpoints of the two edges                                                             | :white_check_mark: |
+| Test Case 7  | REGULAR, called with `RED`, two `RED` roads on edges sharing an endpoint                                 | exactly the three relevant endpoints                                                               | :white_check_mark: |
 | Test Case 8  | SETUP, called with `RED`, every vertex is occupied or next to a building                                 | empty list                                                                                         | :white_check_mark: |
-| Test Case 9  | REGULAR, called with `RED`, one `BLUE` road between A and B, `RED` has no roads, no buildings            | empty list (only own roads count)                                                                  | :white_check_mark: |
+| Test Case 9  | REGULAR, called with `RED`, one `BLUE` road on an eddge, `RED` has no roads, no buildings                | empty list (only own roads count)                                                                  | :white_check_mark: |
 | Test Case 10 | REGULAR, called with `RED`, `RED` settlement S with `RED` roads S to V1 and V1 to V2, no other buildings | exactly `[V2]` (V1 is too close to S)                                                              | :white_check_mark: |
-| Test Case 11 | SETUP, called with `RED`, one `RED` road between A and B, no buildings                                   | all vertices (a road is not required in SETUP)                                                     | :white_check_mark: |
-| Test Case 12 | SETUP, called with `RED`, `RED` roads A to B and B to C, no buildings                                    | all vertices, B appearing once                                                                     | :white_check_mark: |
-| Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road between A and B, no buildings anywhere                      | exactly `[A, B]` (own means the color passed in)                                                   | :white_check_mark: |
+| Test Case 11 | SETUP, called with `RED`, one `RED` road, no buildings                                                   | all vertices (a road is not required in SETUP)                                                     | :white_check_mark: |
+| Test Case 12 | SETUP, called with `RED`, two connected `RED` roads, no buildings                                        | all vertices                                                                                       | :white_check_mark: |
+| Test Case 13 | REGULAR, called with `BLUE`, one `BLUE` road on an edge, no buildings anywhere                           | exactly the endpoints of the edge (own means the color passed in)                                  | :white_check_mark: |
 | Extra Case 1 | SETUP, called with `RED`, one `RED` road on a vertex                                                     | all vertices                                                                                       | :white_check_mark: |
 
 ### Test: `Set<Vertex> getValidCitySpots(Color color)`
@@ -142,15 +142,15 @@ Red for active player's color and Blue for an opponent (arbitrary).
 **Step 4: All combinations** of `gamePhase` x own roads touching vertex since road rule only applies in REGULAR phase.
 Each choice for all else.
 
-|             | Input                                                                                              | Expected output          | Implemented?       |
-|-------------|----------------------------------------------------------------------------------------------------|--------------------------|--------------------|
-| Test Case 1 | SETUP, called with `RED`, empty board                                                              | empty list               | :white_check_mark: |
-| Test Case 2 | REGULAR, called with `RED`, empty board                                                            | empty list               | :white_check_mark: |
-| Test Case 3 | SETUP, called with `RED`, a `RED` settlement on vertex V                                           | empty list               | :white_check_mark: |
-| Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on vertex V                                         | list containing vertex V | :white_check_mark: |
-| Test Case 5 | REGULAR, called with `RED`, two `RED` settlements on vertex A and B                                | exactly `[A, B]`         | :white_check_mark: |
-| Test Case 6 | REGULAR, called with `RED`, one `RED` settlement on vertex A and one `BLUE` settlement on vertex B | list containing vertex A | :white_check_mark: |
-| Test Case 7 | REGULAR, called with `RED`, one `RED` city on vertex A and one `BLUE` city on vertex B             | empty list               | :white_check_mark: |
+|             | Input                                                                                                      | Expected output                  | Implemented?       |
+|-------------|------------------------------------------------------------------------------------------------------------|----------------------------------|--------------------|
+| Test Case 1 | SETUP, called with `RED`, empty board                                                                      | empty list                       | :white_check_mark: |
+| Test Case 2 | REGULAR, called with `RED`, empty board                                                                    | empty list                       | :white_check_mark: |
+| Test Case 3 | SETUP, called with `RED`, a `RED` settlement on a vertex                                                   | empty list                       | :white_check_mark: |
+| Test Case 4 | REGULAR, called with `RED`, a `RED` settlement on a vertex                                                 | list containing the vertex       | :white_check_mark: |
+| Test Case 5 | REGULAR, called with `RED`, two `RED` settlements on two vertices                                          | exactly the two vertices         | :white_check_mark: |
+| Test Case 6 | REGULAR, called with `RED`, one `RED` settlement on one vertex and one `BLUE` settlement on another vertex | list containing the first vertex | :white_check_mark: |
+| Test Case 7 | REGULAR, called with `RED`, one `RED` city on one vertex and one `BLUE` city on another vertex             | empty list                       | :white_check_mark: |
 
 ### Test: `Set<Edge> getValidRoadSpots(Color color)`
 
