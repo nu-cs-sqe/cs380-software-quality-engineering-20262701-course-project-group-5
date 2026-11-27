@@ -6,10 +6,9 @@ this will be loosely based on the code review rules I (Anthony) had at my co-op 
 1. Every commit has to be working according to TDD
     1. There should not be any "fixed \<thing I introduced in this PR\>" commits
     2. See "rewriting history" on the git documentation: https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
-    3. every commit should compile, all tests should pass
-    4. commits should have meaningful titles, no "wip", no "fixed this one function". I will not enforce an extra commit description (this is separate from the commit -m "title")
-    5. Run all linters before each commit
-    6. commits generally should be limited in scope to 1 source file + corresponding tests file
+    3. commits should have meaningful titles, no "wip", no "fixed this one function". I will not enforce an extra commit description (this is separate from the commit -m "title")
+    4. Run all linters before converting a PR to "ready for review", optionally before each commit
+    5. commits generally should be limited in scope to 1 source file + corresponding tests file
 2. PR contents
     1. Descriptive title, and should be similar to its corresponding issue
         1. For a canned format you could use "TYPE: \<short description\>". See https://github.com/py-pdf/pypdf/pulls for examples
@@ -35,4 +34,3 @@ this will be loosely based on the code review rules I (Anthony) had at my co-op 
 ## Other code style things
 
 1. I guess we can just use the google one: https://google.github.io/styleguide/javaguide.html
-2. Run all linters before each commit
