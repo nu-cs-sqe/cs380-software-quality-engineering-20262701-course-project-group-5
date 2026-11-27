@@ -62,3 +62,7 @@ Send the confirmed active player, `give`, and `receive` to `GameSession` for `tr
 ### `private void onClose()`
 
 Clear the controller's screen and selected offer, then ask `GameTableController` to close the overlay. Any outstanding offers remain available if the player reopens trading on the same turn.
+
+## Boundary-Value Analysis
+
+Combines cases and uses parameterized tests for repeated setups.
