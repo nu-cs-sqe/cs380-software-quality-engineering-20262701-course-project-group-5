@@ -1,11 +1,14 @@
 package catan.game_table.ui.controllers;
 
+import catan.game_table.domain.match_model.GameSession;
 import catan.game_table.domain.match_model.GameSetup;
 import catan.game_table.domain.models.LobbyModel;
 import catan.game_table.domain.player.PlayerData;
 import catan.game_table.ui.GameScreenFactory;
 import catan.game_table.ui.ViewRouter;
 import catan.game_table.ui.views.LobbyView;
+import javafx.scene.Scene;
+
 import java.util.List;
 
 public class LobbyController {
@@ -25,7 +28,9 @@ public class LobbyController {
 
   void onStart(List<PlayerData> players) {
     try {
-      gameSetup.createGame(players);
+      GameSession session = gameSetup.createGame(players);
+      Scene gameScene = gameScreenFactory.create(session);
+      viewRouter.show(gameScene);
     } catch (IllegalArgumentException error) {
       lobbyView.showError(error.getMessage());
     }
