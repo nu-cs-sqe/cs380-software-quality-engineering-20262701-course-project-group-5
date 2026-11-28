@@ -1,19 +1,5 @@
 @startuml
 
-left to right direction
-skinparam nodesep 20
-skinparam ranksep 25
-
-<style>
-classDiagram {
-  .added {
-    LineColor #FFD700
-    LineThickness 2
-  }
-}
-</style>
-hide <<added>> stereotype
-
 package mvc_util {
 
 +interface Observer {
@@ -33,149 +19,56 @@ package game_table {
 
 package ui {
 
-    +class Main <<added>> {
-        +start(stage : Stage) : void
-        +showLobby() : void
-        +showGame(game : GameSession) : void
-    }
-
-    +class LobbyController <<added>> {
-        -{final} view : LobbyView
-        -{final} setup : GameSetup
-        +onStart(players : List<PlayerData>) : void
-    }
-
-    +class LobbyView <<added>> {
-        +showPlayerFields(minimum : int, maximum : int, colors : Set<Color>) : void
-        +showError(message : String) : void
-    }
-
     +class GameTableController {
         -{final} view : GameTableView
-        -{final} game : GameSession
-        -{final} trade : TradeController
-        -{final} robber : RobberController
-        -confirmedViewer : Optional<Color>
-        -nextViewer : Optional<Color>
-        -selectedBuild : Optional<BuildType>
-        -tradeOpen : boolean
-        +open() : void
+        -{final} board : GameBoard
+        -{final} dice : Dice
+        -{final} bank : Bank
+        -{final} bankResourceDistributor : BankResourceDistributor
+        -{final} players : List<GamePlayer>
+        -{final} placementHelper : PlacementHelper
+        -{final} tradeHelper : TradeHelper
+        -{final} purchaseHelper : PurchaseHelper
+        -activePlayer : GamePlayer
+        -gamePhase : GamePhase
+        -turnPhase : TurnPhase
+        +GameTableController(Set<PlayerData>, board : GameBoard, dice : Dice, bank : Bank)
         +update() : void
-        +onReady() : void
-        +requestHandoff(nextViewer : Color) : void
-        +getConfirmedViewer() : Optional<Color>
-        +onRoll() : void
-        +onSelectBuild(type : BuildType) : void
-        +onVertexSelected(point : Point) : void
-        +onEdgeSelected(endpoints : Set<Point>) : void
-        +onHexSelected(center : Point) : void
-        +onOpenTrade() : void
-        +onCloseTrade() : void
-        +onBuyDevelopment() : void
-        +onPlayDevelopment(cardIndex : int) : void
-        +onChooseYearOfPlenty(cards : List<ResourceStack>) : void
-        +onChooseMonopoly(type : ResourceType) : void
-        +onFinishRoadBuilding() : void
-        +onEndTurn() : void
-        +onPlayAgain() : void
-        -renderBoard() : void
-        -renderControls() : void
-        -renderConfirmedHand() : void
+        -updateView() : void
+        +getGamePhase() : GamePhase
+        -routeUserInput() : void
+        -startNewPlayerTurn() : void
+        -startCurrentPlayerDiceRoll() : void
+        -startCurrentPlayerAction() : void
+        -startCurrentPlayerPlacementTurn() : void
+        -startCurrentPlayerGameTurn() : void
+        -endCurrentPlayerTurn() : void
     }
 
     +class GameTableView {
-        +showBoard(board : BoardViewData) : void
-        +highlight(vertices : Set<Point>, edges : Set<Set<Point>>, hexes : Set<Point>) : void
-        +showPlayer(player : PlayerData, active : boolean, handCount : int, developmentCount : int, points : int, awards : Set<String>) : void
-        +showBank(resources : List<ResourceStack>, developmentCount : int) : void
-        +showPrivateHand(resources : List<ResourceStack>, cards : List<DevelopmentType>, playableIndices : Set<Integer>) : void
-        +hidePrivateInformation() : void
-        +showOverlay(content : Node) : void
-        +closeOverlay() : void
-        +showHandoff(player : Color) : void
-        +showSetupPrompt(round : int, type : BuildType) : void
-        +showRollPrompt() : void
-        +showRoll(total : int) : void
-        +showProduction(awards : Map<Color, List<ResourceStack>>) : void
-        +showActions(builds : Set<BuildType>, costs : Map<BuildType, List<ResourceStack>>, canBuyDevelopment : boolean) : void
-        +showDevelopmentChoice(effect : DevelopmentType, roadsRemaining : int, canFinishRoadBuilding : boolean) : void
-        +showVictory(winner : Color, scores : Map<Color, ScoreBreakdown>) : void
-        +showError(message : String) : void
-        -toScreen(point : Point) : Point2D
-        -hitTestVertex(x : double, y : double) : Optional<Point>
-        -hitTestEdge(x : double, y : double) : Optional<Set<Point>>
-        -hitTestHex(x : double, y : double) : Optional<Point>
+        -{final} players : Set<PlayerData>
+        …
+        +GameTableView(Set<PlayerData>)
+        +update() : void
+        …()
     }
 
     +class TradeController {
         -{final} view : TradeView
-        -{final} game : GameSession
-        -{final} table : GameTableController
-        -offersById : Map<Integer, TradeOffer>
-        +open() : Node
+        -{final} players : List<GamePlayer>
+        -{final} tradeHelper : TradeHelper
         +update() : void
-        +onOpenProposal() : void
-        +onPropose(receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : void
-        +onRequestResponse(offerId : int) : void
-        +onAccept(offerId : int) : void
-        +onDecline(offerId : int) : void
-        +onCounter(offerId : int, give : List<ResourceStack>, receive : List<ResourceStack>) : void
-        +onFinalize(offerId : int) : void
-        +onOpenBankTrade() : void
-        +onBankTrade(give : ResourceStack, receive : ResourceStack) : void
-        +onClose() : void
+        -updateView() : void
+        -routeUserInput() : void
     }
 
     +class TradeView {
-        +getContent() : Node
-        +showOffers(offers : List<TradeOfferViewData>) : void
-        +showProposal(recipients : List<PlayerData>, hand : List<ResourceStack>) : void
-        +showResponse(offer : TradeOfferViewData, hand : List<ResourceStack>) : void
-        +showBankTrade(hand : List<ResourceStack>, rates : Map<ResourceType, Set<Integer>>) : void
-        +showError(message : String) : void
+        -{final} players : Set<PlayerData>
+        …
+        +update() : void
+        …()
     }
 
-    +class RobberController <<added>> {
-        -{final} view : RobberView
-        -{final} game : GameSession
-        -{final} table : GameTableController
-        +showCurrentPrompt() : Node
-        +onDiscard(cards : List<ResourceStack>) : void
-        +onHexSelected(center : Point) : void
-        +onVictimSelected(victim : Color) : void
-    }
-
-    +class RobberView <<added>> {
-        +getContent() : Node
-        +showDiscard(requiredCount : int, hand : List<ResourceStack>) : void
-        +showMovePrompt() : void
-        +showVictims(players : List<PlayerData>) : void
-        +showError(message : String) : void
-    }
-
-    +class BoardViewData <<added>> {
-        +{final} hexes : List<HexViewData>
-        +{final} vertices : Map<Point, List<PieceData>>
-        +{final} edges : Map<Set<Point>, List<PieceData>>
-        +{final} harborLabels : Map<Set<Point>, String>
-        +{final} robberCenter : Point
-    }
-
-    +class HexViewData <<added>> {
-        +{final} corners : List<Point>
-        +{final} center : Point
-        +{final} terrain : String
-        +{final} token : OptionalInt
-    }
-
-    +class TradeOfferViewData <<added>> {
-        +{final} id : int
-        +{final} proposer : Color
-        +{final} receiver : Color
-        +{final} offered : List<ResourceStack>
-        +{final} requested : List<ResourceStack>
-        +{final} accepted : boolean
-    }
 }
 
 package domain {
@@ -188,26 +81,30 @@ package domain {
     ORANGE
 }
 
++enum LocationType {
+    VERTEX,
+    EDGE,
+    HEX
+    -{final} label : String
+    -LocationType(label : String)
+    +toString() : String
+}
+
 package exception {
 
 +exception NotEnoughInventoryException
 +exception InvalidPlacementException
-+exception InvalidTradeException
-+exception InvalidGameActionException <<added>>
 
 }
 
     +enum GamePhase {
         SETUP,
-        REGULAR,
-        GAME_OVER
+        REGULAR
     }
 
     +enum TurnPhase {
-        ROLL,
-        ACTION,
-        ROBBER,
-        DEVELOPMENT_CHOICE
+        PRODUCTION,
+        ACTION
     }
 
     +interface GamePhaseHolder {
@@ -229,130 +126,6 @@ package exception {
         +removeScore(score : int) : void
     }
 
-package match <<added>> {
-    +class GameSession <<added>> {
-        -{static} {final} WINNING_SCORE : int = 10
-        -{final} turnState : TurnState
-        -{final} board : GameBoard
-        -{final} dice : Dice
-        -{final} bank : Bank
-        -{final} players : Map<Color, GamePlayer>
-        -{final} production : BankResourceDistributor
-        -{final} placement : PlacementHelper
-        -{final} purchases : PurchaseHelper
-        -{final} playerTrades : PlayerTradeHelper
-        -{final} bankTrades : BankTradeHelper
-        -{final} robber : RobberResolution
-        -{final} developments : DevelopmentHelper
-        -{final} longestRoad : LongestRoadAward
-        -{final} largestArmy : LargestArmyAward
-        -setupPlacementIndex : int
-        -setupSettlement : Optional<Vertex>
-        -lastProduction : Map<Color, List<ResourceStack>>
-        -winner : Optional<Color>
-        +getTurnState() : TurnState
-        +getBoard() : GameBoard
-        +getBank() : Bank
-        +getPlayers() : List<GamePlayer>
-        +getPlayer(color : Color) : GamePlayer
-        +getPlayerTradeHelper() : PlayerTradeHelper
-        +getSetupRound() : int
-        +getRequiredSetupPiece() : BuildType
-        +getLegalSetupLocations() : Set<Location>
-        +getRobberResolution() : RobberResolution
-        +getDevelopmentHelper() : DevelopmentHelper
-        +getPublicScore(player : Color) : int
-        +getAwards(player : Color) : Set<Award>
-        +getScoreBreakdown(player : Color) : ScoreBreakdown
-        +getLastRoll() : OptionalInt
-        +getLastProduction() : Map<Color, List<ResourceStack>>
-        +getWinner() : Optional<Color>
-        +placeStartingPiece(actor : Color, location : Location) : void throws InvalidGameActionException, InvalidPlacementException
-        +rollDice(actor : Color) : int throws InvalidGameActionException
-        +discardForRobber(actor : Color, cards : List<ResourceStack>) : void throws InvalidGameActionException
-        +moveRobber(actor : Color, destination : Hex) : void throws InvalidGameActionException
-        +stealForRobber(actor : Color, victim : Color) : void throws InvalidGameActionException
-        +getLegalBuildLocations(actor : Color, type : BuildType) : Set<Location>
-        +getBuildCosts() : Map<BuildType, List<ResourceStack>>
-        +getAffordableBuilds(actor : Color) : Set<BuildType>
-        +build(actor : Color, type : BuildType, location : Location) : void throws InvalidGameActionException, InvalidPlacementException
-        +getBankTradeRates(actor : Color) : Map<ResourceType, Set<Integer>>
-        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void throws InvalidTradeException
-        +canBuyDevelopment(actor : Color) : boolean
-        +buyDevelopment(actor : Color) : Development throws InvalidGameActionException
-        +playDevelopment(actor : Color, card : Development) : void throws InvalidGameActionException
-        +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void throws InvalidGameActionException
-        +chooseMonopoly(actor : Color, type : ResourceType) : void throws InvalidGameActionException
-        +placeFreeRoad(actor : Color, edge : Edge) : void throws InvalidGameActionException, InvalidPlacementException
-        +finishRoadBuilding(actor : Color) : void throws InvalidGameActionException
-        +endTurn(actor : Color) : void throws InvalidGameActionException
-        -advanceSnakePlacement() : void
-        -grantStartingResources(player : Color, secondSettlement : Vertex) : void
-        -produceResources(roll : int) : void
-        -resumeAfterCompletedEffect() : void
-        -refreshAwardsAndCheckVictory() : void
-    }
-
-    +class TurnState <<added>> {
-        -{final} turnOrder : List<Color>
-        -activePlayerIndex : int
-        -turnNumber : int
-        -gamePhase : GamePhase
-        -turnPhase : TurnPhase
-        -resumePhase : Optional<TurnPhase>
-        +TurnState(turnOrder : List<Color>)
-        +getGamePhase() : GamePhase
-        +getTurnPhase() : TurnPhase
-        +getActivePlayerColor() : Color
-        +getTurnOrder() : List<Color>
-        +getTurnNumber() : int
-        +isTradingOpen() : boolean
-        ~setSetupPlayer(player : Color) : void
-        ~beginRegularPlay() : void
-        ~beginAction() : void
-        ~beginInterrupt(phase : TurnPhase, resume : TurnPhase) : void
-        ~resumeTurn() : void
-        ~advanceTurn() : void
-        ~finishGame() : void
-    }
-
-    +class GameSetup <<added>> {
-        -{final} random : Random
-        +GameSetup(random : Random)
-        +createGame(players : List<PlayerData>) : GameSession throws InvalidGameActionException
-        -validatePlayers(players : List<PlayerData>) : void throws InvalidGameActionException
-        -createTurnOrder(players : List<PlayerData>, dice : Dice) : List<Color>
-        ' Uses fixed terrain, number tokens, and harbors. The robber starts on the desert.
-        -createFixedBoard() : GameBoard
-        -createBank() : Bank
-        -createStartingInventories(players : List<PlayerData>) : Map<Color, PlayerInventory>
-    }
-
-    +class RobberResolution <<added>> {
-        -{static} {final} HAND_LIMIT : int = 7
-        -{final} board : GameBoard
-        -{final} bank : Bank
-        -{final} playerInventories : Map<Color, PlayerInventory>
-        -{final} random : Random
-        -discardQueue : List<Color>
-        -requiredDiscards : Map<Color, Integer>
-        -actor : Color
-        -destinationChosen : boolean
-        -eligibleVictims : Set<Color>
-        +startFromSeven(actor : Color, turnOrder : List<Color>) : void
-        +startFromKnight(actor : Color) : void
-        +isComplete() : boolean
-        +getNextDiscarder() : Optional<Color>
-        +getRequiredDiscardCount(player : Color) : int
-        +discard(player : Color, cards : List<ResourceStack>) : void throws InvalidGameActionException
-        +getLegalDestinations() : Set<Hex>
-        +move(actor : Color, destination : Hex) : void throws InvalidGameActionException
-        +getEligibleVictims() : Set<Color>
-        +steal(actor : Color, victim : Color) : void throws InvalidGameActionException
-        -drawRandomResource(victim : Color) : ResourceStack
-    }
-}
-
 package bank {
 
     +class Bank {
@@ -363,34 +136,26 @@ package bank {
         +hasResources(stack : ResourceStack) : boolean
         +removeResources(stack : ResourceStack) : void
         +hasDevelopmentsRemaining() : boolean
-        +drawDevelopment() : Development throws InvalidGameActionException
+        +removeDevelopment() : void
         +getResourceCount(Class<ResourceStack> resourceStackClass) : int
-        +getAvailableResources() : List<ResourceStack>
         +getDevelopmentCount() : int
     }
 
     +class BankResourceDistributor {
         -{final} playerInventories : Map<Color, ResourceInventory>
         -{final} bankInventory : ResourceInventory
-        -resourcesToDistribute : Map<Color, List<ResourceStack>
+        -resourcesToDistribute : Map<Color, List<ResourceStack>>
         +BankResourceDistributor(playerInventories : Map<Color, ResourceInventory>, bankInventory : ResourceInventory)
         +produceResources(color : Color, products : List<ResourceStack>) : void
-        +finalizeProduction() : Map<Color, List<ResourceStack>>
+        +finalizeProduction() : void
         +abortProduction() : void
-        -resolveShortagesByResource() : Map<Color, List<ResourceStack>>
     }
 
     +class PurchaseHelper {
         -{final} playerInventories : Map<Color, PlayerInventory>
         -bank : Bank
-        -{final} placement : PlacementHelper
-        +PurchaseHelper(bank : Bank, playerInventories : Map<Color, PlayerInventory>, placement : PlacementHelper)
+        +PurchaseHelper(bank : Bank, playerInventories : Map<Color, PlayerInventory>)
         +buy(player : Color, item : Buyable) : void
-        +build(player : Color, type : BuildType, location : Location) : void throws InvalidGameActionException, InvalidPlacementException
-        +canBuyDevelopment(player : Color) : boolean
-        +buyDevelopment(player : Color) : Development throws InvalidGameActionException
-        +getBuildCosts() : Map<BuildType, List<ResourceStack>>
-        +getAffordableBuilds(player : Color) : Set<BuildType>
         -canBuy(player : Color, item : Buyable) : boolean
     }
 
@@ -404,32 +169,24 @@ package player {
 
     +class GamePlayer {
         -{final} color : Color
-        -{final} data : PlayerData
         -{final} victoryPointsTracker : ScoreTracker
+        -{final} roadLengthTracker : ScoreTracker
         -{final} armySizeTracker : ScoreTracker
         -{final} inventory : PlayerInventory
         -{final} placementHelper : PlacementHelper
-        -{final} playerTradeHelper : PlayerTradeHelper
-        -{final} bankTradeHelper : BankTradeHelper
+        -{final} tradeHelper : TradeHelper
         -{final} purchaseHelper : PurchaseHelper
-        -{final} developmentHelper : DevelopmentHelper
-        +GamePlayer(data : PlayerData, inventory : PlayerInventory, placementHelper : PlacementHelper, playerTradeHelper : PlayerTradeHelper, bankTradeHelper : BankTradeHelper, purchaseHelper : PurchaseHelper, developmentHelper : DevelopmentHelper)
-        +getData() : PlayerData
+        -awards : List<Award>
+        +GamePlayer(color : Color, placementHelper : PlacementHelper, tradeHelper : TradeHelper)
         +getInventory() : PlayerInventory
-        +getBuildingVictoryPoints() : int
-        +getPlayedKnightCount() : int
-        +recordKnightPlayed() : void
         +rollDice(dice : Dice) : void
-        +play(card : Development) : void throws InvalidGameActionException
+        +play(item : Playable) : void
         +buy(item : Buyable) : void
         +getValidPlacements(piece : Piece) : List<Location>
-        +place(piece : Piece, location : Location) : void throws InvalidPlacementException
-        +proposePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
-        +counterPlayerTrade(original : TradeOffer, counter : TradeOffer) : void throws InvalidTradeException
-        +acceptPlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
-        +refusePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
-        +finalizePlayerTrade(trade : TradeOffer) : void throws InvalidTradeException
-        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void throws InvalidTradeException
+        +place(piece : Piece, location : Location) : void
+        +proposePlayerTrade(otherPlayer : Color, trade : TradeOffer) : void
+        +acceptPlayerTrade(proposingPlayer : Color, trade : TradeOffer) : void
+        +tradeWithBank(give : ResourceStack, receive : ResourceStack) : void
     }
 
     +class PlayerInventory {
@@ -445,67 +202,37 @@ package player {
         +addDevelopment(development : Development) : void
         +hasDevelopment(development : Development) : boolean
         +removeDevelopment(development : Development) : void
-        +getPieceCount(type : BuildType) : int
-        +getAvailablePiece(type : BuildType) : Optional<Piece>
-        +getResourceCardCount() : int
-        +getResourceStacks() : List<ResourceStack>
-        +getDevelopments() : List<Development>
     }
 
     +class PlayerData {
         +{final} color : Color
         +{final} name : String
-        +PlayerData(color : Color, name : String)
     }
 
 }
 
 package trade {
 
-    +interface TradeTurnContext {
-        +getActivePlayerColor() : Color
-        +isTradingOpen() : boolean
-    }
-
-    +class PlayerTradeHelper {
-        -{final} playerInventories : Map<Color, ResourceInventory>
-        -{final} turnContext : TradeTurnContext
-        -{final} activeTradeOffers : Set<TradeOffer>
-        +PlayerTradeHelper(playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
-        +getActiveTradeOffers() : Set<TradeOffer>
-        +proposeTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
-        +counterTrade(actor : Color, original : TradeOffer, counter : TradeOffer) : void throws InvalidTradeException
-        +acceptTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
-        +refuseTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
-        +conductTrade(actor : Color, trade : TradeOffer) : void throws InvalidTradeException
-        +expireTradeOffers() : void
-        -isValidPlayerTrade(trade : TradeOffer) : boolean
-    }
-
-    +class BankTradeHelper {
+    +class TradeHelper {
         -{final} board : GameBoard
-        -{final} bank : Bank
-        -{final} playerInventories : Map<Color, ResourceInventory>
-        -{final} turnContext : TradeTurnContext
-        +BankTradeHelper(board : GameBoard, bank : Bank, playerInventories : Map<Color, ResourceInventory>, turnContext : TradeTurnContext)
-        +getAvailableRates(actor : Color) : Map<ResourceType, Set<Integer>>
-        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void throws InvalidTradeException
-        -isValidBankTrade(actor : Color, give : ResourceStack, receive : ResourceStack) : boolean
+        -{final} activeTradeOffers : Set<TradeOffer>
+        +getActiveTradeOffers() : Set<TradeOffer>
+        +conductTrade(trade : TradeOffer) : void
+        +refuseTrade(trade : Trade) : void
+        -isValidTrade(trade : TradeOffer) : boolean
+        -isValidPlayerTrade(trade : TradeOffer) : boolean
+        -isValidBankTrade(trade : TradeOffer) : boolean
     }
 
     +class TradeOffer {
         -{final} requestedResources : List<ResourceStack>
         -{final} offeredResources : List<ResourceStack>
-        -{final} proposer : Color
-        -{final} receiver : Color
+        -{final} proposer : ResourceInventory
+        -{final} receiver : ResourceInventory
         -accepted : boolean
-        +TradeOffer(proposer : Color, receiver : Color, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
-        +getProposer() : Color
-        +getReceiver() : Color
+        +TradeOffer(proposer : ResourceInventory, receiver : ResourceInventory, requestedResources : List<ResourceStack>, offeredResources : List<ResourceStack>)
         +getRequestedResources() : List<ResourceStack>
         +getOfferedResources() : List<ResourceStack>
-        +isAccepted() : boolean
-        ~markAccepted() : void
     }
 
 }
@@ -516,30 +243,15 @@ package board {
         -{final} vertices : Set<Vertex>
         -{final} edges : Set<Edge>
         -{final} hexes : Set<Hex>
-        -{final} harborsByEdge : Map<Edge, Harbor>
         -{final} neighbors : Map<Vertex, Set<Vertex>>
-        -robberHex : Hex
         -{static} {final} MIN_TOKEN_VALUE : int = 2
         -{static} {final} MAX_TOKEN_VALUE : int = 12
         +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>)
-        +GameBoard(hexes : Set<Hex>, vertices : Set<Vertex>, edges : Set<Edge>, harborsByEdge : Map<Edge, Harbor>)
         -createNeighbors() : void
         -indexVerticesByPoint() : Map<Point, Vertex>
         -linkEndpointsOf(edge : Edge, vertexAt : Map<Point, Vertex>) : void
         -link(first : Vertex, second : Vertex) : void
         +getNeighbors(vertex : Vertex) : Set<Vertex>
-        +getHexes() : Set<Hex>
-        +getVertices() : Set<Vertex>
-        +getEdges() : Set<Edge>
-        +getHarborsByEdge() : Map<Edge, Harbor>
-        +getHexesAt(vertex : Vertex) : Set<Hex>
-        +findVertex(point : Point) : Optional<Vertex>
-        +findEdge(endpoints : Set<Point>) : Optional<Edge>
-        +findHex(center : Point) : Optional<Hex>
-        +getHarborsFor(player : Color) : Set<Harbor>
-        +getRobberHex() : Hex
-        +moveRobber(destination : Hex) : void
-        +getAdjacentBuildingOwners(hex : Hex) : Set<Color>
         +produceResourcesForToken(tokenValue : int) : void
         -{static} requireValidTokenValue(tokenValue : int) : void
         +addPieceAtLocation(piece : Piece, location : Location) : void
@@ -550,18 +262,16 @@ package board {
         -{final} board : GameBoard
         -{final} gamePhaseHolder : GamePhaseHolder
         +getValidBuildingSpots(color : Color) : List<Vertex>
-        +getValidCitySpots(color : Color) : List<Vertex>
         +getValidRoadSpots(color : Color) : List<Edge>
-        +getValidSetupRoadSpots(color : Color, settlement : Vertex) : List<Edge>
         ' build
-        +place(piece : Piece, location : Location) : void throws InvalidPlacementException
+        +place(piece : Piece, location : Location) : void
         ' checks for validity, ties to highlighting
         -isValidBuildingSpot(vertex : Vertex) : boolean
         -isValidRoadSpot(edge : Edge) : boolean
         -isFarEnoughFromBuildings(vertex : Vertex) : boolean
         -isVertexConnectedToOwnRoad(color : Color, vertex : Vertex) : boolean
         -isEdgeConnectedToOwnPieces(color : Color, edge : Edge) : boolean
-        -touchesSetupSettlement(edge : Edge, settlement : Vertex) : boolean
+        -touchesSetupSettlement(color : Color, edge : Edge) : boolean
     }
 
     +abstract class Hex {
@@ -573,12 +283,8 @@ package board {
         -{final} products : List<ResourceStack>
         +Hex(tokenValue : int, vertices : Set<Vertex>, edges : Set<Edge>, products : List<ResourceStack>)
         -Hex(tokenValue : int, vertices : Set<Vertex>, products : List<ResourceStack>)
+        +getLocationType() : LocationType
         +canProduce() : boolean
-        +getTerrain() : String
-        +getCenter() : Point
-        +getVertices() : Set<Vertex>
-        +getCorners() : List<Point>
-        +getProducts() : List<ResourceStack>
         +getTokenValue() : int
         +setCanProduce(canProduce : boolean) : void
         +produceResources() : void
@@ -617,7 +323,8 @@ package board {
 
     +abstract class Location {
         #pieces : List<Piece>
-        +getPieceData() : List<PieceData>
+        +{abstract} getLocationType() : LocationType
+        +getPieces() : List<Piece>
         +addPiece(piece : Piece) : void
         +removePieceWithData(data : PieceData) : void
         +holdsPieceWithData(data : PieceData) : boolean
@@ -626,6 +333,7 @@ package board {
     +class Vertex {
         -{final} point : Point
         +Vertex(point : Point)
+        +getLocationType() : LocationType
         +getPoint() : Point
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -633,6 +341,7 @@ package board {
     +class Edge {
         -{final} endpoints : Set<Point>
         +Edge(endpoint1 : Point, endpoint2 : Point)
+        +getLocationType() : LocationType
         +getEndpoints() : Set<Point>
     }
 
@@ -651,12 +360,6 @@ package board {
 
 package piece {
 
-    +enum BuildType <<added>> {
-        ROAD,
-        SETTLEMENT,
-        CITY
-    }
-
     +abstract class Piece {
         -data : PieceData
         +Piece(data : PieceData)
@@ -666,7 +369,6 @@ package piece {
 
     +abstract class Building {
         -bankResourceDistributor : BankResourceDistributor
-        -multiplier : int
         +Building(data : PieceData, bankResourceDistributor : BankResourceDistributor)
         +produceResources(products : List<ResourceStack>) : void
     }
@@ -674,7 +376,6 @@ package piece {
     +class PieceData {
         +{final} type : String
         +{final} color : Color
-        +PieceData(type : String, color : Color)
         +equals(o : Object) : boolean
         +hashCode() : int
     }
@@ -694,12 +395,10 @@ package piece {
     }
 
     +class Road {
-        +Road(data : PieceData)
         +getCost() : List<ResourceStack>
     }
 
     +class Robber {
-        +Robber()
     }
 
     +class Harbor {
@@ -707,8 +406,6 @@ package piece {
         +Harbor()
         +Harbor(inputTrade : ResourceStack)
         +getInputTrade() : ResourceStack
-        +getRate() : int
-        +getRequiredResourceType() : Optional<ResourceType>
     }
 
     +interface PieceInventory {
@@ -719,15 +416,11 @@ package piece {
 
 }
 
-package resource {
-
-    +enum ResourceType <<added>> {
-        BRICK,
-        LUMBER,
-        ORE,
-        GRAIN,
-        WOOL
+    +interface Playable {
+        +onPlayEffect() : void
     }
+
+package resource {
 
     +abstract class ResourceStack {
         -size : int
@@ -735,7 +428,6 @@ package resource {
         +add(otherStack : ResourceStack) : ResourceStack
         +subtract(otherStack : ResourceStack) : ResourceStack
         +getSize() : int
-        +getType() : ResourceType
         +equals(other : Object) : boolean
         +hashCode() : int
     }
@@ -765,73 +457,22 @@ package resource {
 
 package development {
 
-    +class Development {
-        -{final} type : DevelopmentType
-        +Development(type : DevelopmentType)
-        +getType() : DevelopmentType
+    +abstract class Development {
+        +onPlayEffect() : void
         +getCost() : List<ResourceStack>
     }
 
-    +enum DevelopmentType <<added>> {
-        KNIGHT,
-        ROAD_BUILDING,
-        YEAR_OF_PLENTY,
-        MONOPOLY,
-        VICTORY_POINT
-    }
-
-    +class DevelopmentHelper <<added>> {
-        -{final} turnState : TurnState
-        -{final} bank : Bank
-        -{final} placement : PlacementHelper
-        -{final} playerInventories : Map<Color, PlayerInventory>
-        -acquiredOnTurn : Map<Development, Integer>
-        -lastPlayedTurn : int
-        -pendingEffect : Optional<DevelopmentType>
-        -roadsRemaining : int
-        +recordPurchase(card : Development) : void
-        +getPlayableCards(actor : Color) : List<Development>
-        +play(actor : Color, card : Development) : void throws InvalidGameActionException
-        +getPendingEffect() : Optional<DevelopmentType>
-        +getRoadsRemaining() : int
-        +getLegalFreeRoads(actor : Color) : Set<Edge>
-        +canFinishRoadBuilding(actor : Color) : boolean
-        +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void throws InvalidGameActionException
-        +chooseMonopoly(actor : Color, type : ResourceType) : void throws InvalidGameActionException
-        +placeFreeRoad(actor : Color, edge : Edge) : void throws InvalidGameActionException, InvalidPlacementException
-        +finishRoadBuilding(actor : Color) : void throws InvalidGameActionException
-    }
 }
 
 package award {
 
     +interface Award {
-        +getHolder() : Optional<Color>
-        +getVictoryPoints() : int
     }
 
     +class LongestRoadAward {
-        -{static} {final} MIN_LENGTH : int = 5
-        -holder : Optional<Color>
-        +updateHolder(board : GameBoard, players : List<GamePlayer>) : void
-        +getHolder() : Optional<Color>
-        +getVictoryPoints() : int
-        -computeLength(board : GameBoard, player : Color) : int
     }
 
     +class LargestArmyAward {
-        -{static} {final} MIN_KNIGHTS : int = 3
-        -holder : Optional<Color>
-        +updateHolder(players : List<GamePlayer>) : void
-        +getHolder() : Optional<Color>
-        +getVictoryPoints() : int
-    }
-
-    +class ScoreBreakdown <<added>> {
-        +{final} buildingPoints : int
-        +{final} awardPoints : int
-        +{final} developmentPoints : int
-        +total() : int
     }
 
 }
@@ -839,76 +480,40 @@ package award {
 }
 
 }
+
 
 Observed --> Observer
 
-Main --> LobbyController
-Main --> GameTableController
-LobbyController "1" --> "1" LobbyView
-LobbyController --> GameSetup
-LobbyController ..> Main : starts match
-
-GameTableController "1" --> "1" GameTableView
+GameTableController --> GameTableView
 GameTableController ..|> Observer
-GameTableController --> GameSession
-GameTableController --> TradeController
-GameTableController --> RobberController
-GameTableController ..> Main : returns to lobby
-GameTableController ..> BoardViewData : creates
-GameTableView ..> BoardViewData
-BoardViewData --> HexViewData
-
-TradeController "1" --> "1" TradeView
+GameTableController ..|> GamePhaseHolder
+GameTableView ..|> Observer
+TradeController --> TradeView
 TradeController ..|> Observer
-TradeController --> GameSession
-TradeController ..> GameTableController : requests handoff
-TradeController ..> PlayerTradeHelper : observes offers
-TradeController ..> InvalidTradeException : handles
-TradeView ..> TradeOfferViewData
+TradeView ..|> Observer
 
-RobberController "1" --> "1" RobberView
-RobberController --> GameSession
-RobberController ..> GameTableController : requests handoff
+GameTableController --> GamePlayer
+GameTableController --> GameBoard
+GameTableController --> Bank
+GameTableController --> BankResourceDistributor
+GameTableController --> Dice
+GameTableController --> GamePhase
+GameTableController --> TurnPhase
+GameTableController --> PlacementHelper
+GameTableController --> PurchaseHelper
+GameTableController ..> PlayerData
+GameTableView --> PlayerData
 
-GameSetup ..> GameSession : creates
-GameSetup ..> GameBoard : creates fixed layout
-GameSession --|> Observed
-GameSession --> TurnState
-GameSession --> GameBoard
-GameSession --> Bank
-GameSession --> Dice
-GameSession --> GamePlayer
-GameSession --> PlacementHelper
-GameSession --> BankResourceDistributor
-GameSession --> PurchaseHelper
-GameSession --> PlayerTradeHelper
-GameSession --> BankTradeHelper
-GameSession --> RobberResolution
-GameSession --> DevelopmentHelper
-GameSession --> LongestRoadAward
-GameSession --> LargestArmyAward
-GameSession ..> ScoreBreakdown
-TurnState ..|> GamePhaseHolder
-TurnState ..|> TradeTurnContext
-TurnState --> GamePhase
-TurnState --> TurnPhase
-RobberResolution --> GameBoard : moves robber and blocks production
-RobberResolution --> Bank
-RobberResolution --> PlayerInventory
+TradeController ..> PlayerData
+TradeController --> GamePlayer
+TradeController --> TradeHelper
+TradeView --> PlayerData
 
-PlayerTradeHelper --> ResourceInventory
-PlayerTradeHelper --> TradeTurnContext
-PlayerTradeHelper --> TradeOffer
-PlayerTradeHelper --|> Observed
-BankTradeHelper --> GameBoard
-BankTradeHelper --> Bank
-BankTradeHelper --> ResourceInventory
-BankTradeHelper --> TradeTurnContext
-BankTradeHelper ..> ResourceStack
-BankTradeHelper ..> Harbor
-TradeTurnContext ..> Color
+TradeHelper --> ResourceStack
+TradeHelper --> GameBoard
+TradeHelper --> TradeOffer
 TradeOffer --> ResourceStack
-TradeOffer --> Color
+TradeOffer --> ResourceInventory
 
 GameBoard --|> Observed
 Dice --|> Observed
@@ -918,10 +523,10 @@ Bank ..|> ResourceInventory
 BankResourceDistributor --|> Observed
 BankResourceDistributor --> Color
 BankResourceDistributor --> ResourceInventory
+BankResourceDistributor --> ResourceStack
 
 PurchaseHelper -u-> PlayerInventory
 PurchaseHelper --> Bank
-PurchaseHelper --> PlacementHelper
 PurchaseHelper --> Color
 PurchaseHelper ..> Buyable
 
@@ -932,17 +537,14 @@ GamePlayer --> ScoreTracker
 GamePlayer --> PlayerInventory
 GamePlayer ..> Piece
 GamePlayer ..> Buyable
-GamePlayer ..> Development
+GamePlayer ..> Playable
 GamePlayer ..> Dice
 GamePlayer --> Color
-GamePlayer --> PlayerData
+GamePlayer --> Award
 GamePlayer ..> ResourceStack
 GamePlayer --> PlacementHelper
-GamePlayer --> PlayerTradeHelper
-GamePlayer --> BankTradeHelper
 GamePlayer ..> TradeOffer
 GamePlayer --> PurchaseHelper
-GamePlayer --> DevelopmentHelper
 
 PlacementHelper --> Color
 PlacementHelper --> GameBoard
@@ -957,7 +559,6 @@ ResourceInventory ..> ResourceStack
 GameBoard --> Hex
 GameBoard --> Vertex
 GameBoard --> Edge
-GameBoard --> Harbor
 GameBoard ..> Location
 GameBoard ..> Piece
 GameBoard ..> PieceData
@@ -981,6 +582,7 @@ DesertHex --|> Hex
 
 Location --> Piece
 Location ..> PieceData
+Location ..> LocationType
 Vertex --> Point
 Vertex --|> Location
 Edge --> Piece
@@ -995,6 +597,7 @@ PlayerInventory ..|> PieceInventory
 PlayerInventory --> ResourceStack
 PlayerInventory --> Piece
 PlayerInventory --> Bank
+PlayerInventory ..> Playable
 PlayerInventory ..> Buyable
 
 Building --|> Piece
@@ -1025,25 +628,14 @@ City --> ScoreTracker
 
 PieceData --> Color
 
+Development ..|> Playable
 Development ..|> Buyable
-Development --> DevelopmentType
-DevelopmentHelper --> TurnState
-DevelopmentHelper --> Bank
-DevelopmentHelper --> PlacementHelper
-DevelopmentHelper --> PlayerInventory
-DevelopmentHelper ..> Development
 
 LongestRoadAward ..|> Award
 LargestArmyAward ..|> Award
-LongestRoadAward ..> GameBoard
-LargestArmyAward ..> GamePlayer
 
 ResourceInventory ..> NotEnoughInventoryException
 PieceInventory ..> NotEnoughInventoryException
 PlacementHelper ..> InvalidPlacementException
-PlayerTradeHelper ..> InvalidTradeException
-BankTradeHelper ..> InvalidTradeException
-InvalidTradeException --|> Exception
-InvalidGameActionException --|> Exception
 
 @enduml
