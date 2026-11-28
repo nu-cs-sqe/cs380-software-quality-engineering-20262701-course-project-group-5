@@ -5,8 +5,8 @@ import catan.game_table.ui.views.GameTableView;
 import javafx.scene.Scene;
 
 public class GameScreenFactory {
-    public Scene create(GameSession gameSession) {
-        GameTableView gameTableView = new GameTableView();
-        return new Scene(gameTableView);
-    }
+  public Scene create(GameSession gameSession) {
+    GameTableView gameTableView = new GameTableView();
+    return new Scene(gameTableView);
+  }
 }
