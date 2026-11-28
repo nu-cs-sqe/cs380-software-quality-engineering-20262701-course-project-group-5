@@ -462,6 +462,64 @@ package development {
         +getCost() : List<ResourceStack>
     }
 
+    +class Knight {
+        -robber: Robber
+        +Knight(robber: Robber)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    Knight ..|> Development
+
+    +class Monopoly {
+        -resourceType: Class<? extends ResourceStack>
+        -receiver: ResourceInventory
+        +Monopoly()
+        +setReceiver(playerInventory: ResourceInventory): void
+        +setResourceType(type: Class<? extends ResourceStack>): void
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    Monopoly ..|> Development
+    Monopoly --> ResourceInventory
+    Monopoly --> ResourceStack
+
+    +class RoadBuilder {
+        -player: GamePlayer
+        +RoadBuilder()
+        +setColor(player: GamePlayer)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    RoadBuilder ..|> Development
+    RoadBuilder --> ResourceStack
+    RoadBuilder --> GamePlayer: calls the build method on game player twice
+
+    +class YearOfPlenty {
+        -asks: List<ResourceStack>
+        -distributor: BankResourceDistributor
+        +YearOfPlenty(distributor: BankResourceDistributor)
+        +setAsks(resources: List<ResourceStack>)
+        +onPlayEffect() : void
+        +getCost() : List<ResourceStack>
+    }
+
+    YearOfPlenty ..|> Development
+    YearOfPlenty --> ResourceStack
+    YearOfPlenty --> BankResourceDistributor: calls the distributor to get the resources
+
+    +class VictoryPointCard {
+            -scoreTracker: ScoreTracker
+            +VictoryPointCard(tracker: ScoreTracker)
+            +onPlayEffect() : void
+            +getCost() : List<ResourceStack>
+        }
+
+        VictoryPointCard ..|> Development
+        VictoryPointCard --> ResourceStack
+        VictoryPointCard --> ScoreTracker
 }
 
 package award {
