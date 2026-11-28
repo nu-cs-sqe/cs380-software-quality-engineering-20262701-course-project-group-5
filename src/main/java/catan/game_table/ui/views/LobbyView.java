@@ -1,9 +1,7 @@
 package catan.game_table.ui.views;
 
-public class LobbyView {
-  public LobbyView() {}
+import javafx.scene.layout.StackPane;
 
-  public void showError(String errorMessage) {
-
-  }
+public class LobbyView extends StackPane {
+  public void showError(String errorMessage) {}
 }

@@ -1,7 +1,12 @@
 package catan.game_table.ui.controllers;
 
 import catan.game_table.domain.Color;
+import catan.game_table.domain.match_model.GameSetup;
+import catan.game_table.domain.models.LobbyModel;
 import catan.game_table.domain.player.PlayerData;
+import catan.game_table.ui.GameScreenFactory;
+import catan.game_table.ui.ViewRouter;
+import catan.game_table.ui.views.LobbyView;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
