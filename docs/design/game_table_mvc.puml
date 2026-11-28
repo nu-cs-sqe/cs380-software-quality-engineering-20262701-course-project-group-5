@@ -392,11 +392,7 @@ GameSession ..> TradeOffer : creates offers and resolves UI IDs
 note right of GameTableView
   The GUI shows only legal choices for the confirmed viewer.
   Controllers use GameSession's read-only checks to render actions,
-  offers, and board targets. Accept appears only for an active,
-  unanswered offer addressed to the viewer. Form confirmation
-  appears only after the model accepts the draft as eligible.
-  Eligibility and submission reuse the same model rules.
-  The model validates again when the viewer submits a choice.
+  offers, and board targets. The model validates again when the viewer submits a choice.
 end note
 
 @enduml
