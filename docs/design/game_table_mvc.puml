@@ -104,13 +104,19 @@ package "Match model" {
         +getWinner() : Optional<Color>
         .. Starting placements and regular turns ..
         +getRequiredSetupPiece() : PieceType
+        +getLegalSetupLocations() : Set<Location>
         +placeStartingPiece(actor : Color, location : Location) : void
         +rollDice(actor : Color) : int
+        +getLegalBuildLocations(actor : Color, type : PieceType) : Set<Location>
         +build(actor : Color, type : PieceType, location : Location) : void
         +endTurn(actor : Color) : void
         .. Player and bank trades ..
         +isTradingOpen() : boolean
         +getTradeOffers(viewer : Color) : Map<Integer, TradeOffer>
+        +canProposeTrade(actor : Color, receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : boolean
+        +canCounterTrade(actor : Color, offerId : int, give : List<ResourceStack>, receive : List<ResourceStack>) : boolean
+        +canFinalizeTrade(actor : Color, offerId : int) : boolean
+        +canTradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : boolean
         +proposeTrade(actor : Color, receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : void
         +acceptTrade(actor : Color, offerId : int) : void
         +declineTrade(actor : Color, offerId : int) : void
@@ -121,12 +127,18 @@ package "Match model" {
         -pendingDiscarders : Deque<Color>
         +getNextDiscarder() : Optional<Color>
         +getRequiredDiscardCount(player : Color) : int
+        +canDiscardForRobber(actor : Color, cards : List<ResourceStack>) : boolean
+        +getLegalRobberDestinations() : Set<Hex>
         +getEligibleRobberVictims() : Set<Color>
         +discardForRobber(actor : Color, cards : List<ResourceStack>) : void
         +moveRobber(actor : Color, destination : Hex) : void
         +stealForRobber(actor : Color, victim : Color) : void
         .. Development cards ..
+        +canBuyDevelopment(actor : Color) : boolean
+        +getPlayableDevelopmentCards(actor : Color) : List<Development>
         +getPendingDevelopmentChoice() : Optional<DevelopmentType>
+        +canChooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : boolean
+        +getLegalFreeRoads(actor : Color) : Set<Edge>
         +buyDevelopment(actor : Color) : void
         +playDevelopment(actor : Color, card : Development) : void
         +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void
@@ -201,16 +213,27 @@ package "Match model" {
         +getResourceCardCount() : int
         +getDevelopments() : List<Development>
     }
-    class PlacementHelper
+    class PlacementHelper {
+        +getValidCitySpots(actor : Color) : List<Vertex>
+    }
     class PurchaseHelper {
+        +canAffordBuild(actor : Color, piece : Buyable) : boolean
+        +canBuyDevelopment(actor : Color) : boolean
         +buyDevelopment(buyerColor : Color) : Development throws NotEnoughInventoryException
     }
     interface Buyable
-    class PlayerTradeHelper
+    class PlayerTradeHelper {
+        +canProposeTrade(actor : Color, offer : TradeOffer) : boolean
+        +canCounterTrade(actor : Color, original : TradeOffer, counter : TradeOffer) : boolean
+        +canFinalizeTrade(actor : Color, offer : TradeOffer) : boolean
+    }
     class TradeOffer
-    class BankTradeHelper
+    class BankTradeHelper {
+        +canTradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : boolean
+    }
     class RobberyHelper {
         +RobberyHelper(gameBoard : GameBoard, playerInventories : Map<Color, PlayerInventory>, randomSource : Random)
+        +getLegalDestinations() : Set<Hex>
         +getEligibleVictims() : Set<Color>
         +move(actor : Color, destination : Hex) : void
     }
@@ -221,6 +244,7 @@ package "Match model" {
     }
     class DiscardHelper {
         +DiscardHelper(bankInventory : ResourceInventory, playerInventories : Map<Color, PlayerInventory>)
+        +canDiscard(color : Color, cards : List<ResourceStack>) : boolean
         +discardResources(color : Color, cards : List<ResourceStack>) : void
     }
     enum DevelopmentType {
@@ -247,8 +271,11 @@ package "Match model" {
         -freeRoadsRemaining : int
         +DevelopmentHelper(turnState : TurnState, bank : Bank, placementHelper : PlacementHelper, playerInventories : Map<Color, PlayerInventory>)
         +recordPurchase(card : Development) : void
+        +getPlayableCards(actor : Color) : List<Development>
         +play(actor : Color, card : Development) : void
         +getPendingEffect() : Optional<DevelopmentType>
+        +canChooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : boolean
+        +getLegalFreeRoads(actor : Color) : Set<Edge>
         +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void
         +chooseMonopoly(actor : Color, type : Class<? extends ResourceStack>) : void
         +placeFreeRoad(actor : Color, edge : Edge) : void
@@ -361,5 +388,15 @@ GameBoard --|> Observed
 GameBoard --> Robber : tracks its hex
 Robber --|> Piece
 GameSession ..> TradeOffer : creates offers and resolves UI IDs
+
+note right of GameTableView
+  The GUI shows only legal choices for the confirmed viewer.
+  Controllers use GameSession's read-only checks to render actions,
+  offers, and board targets. Accept appears only for an active,
+  unanswered offer addressed to the viewer. Form confirmation
+  appears only after the model accepts the draft as eligible.
+  Eligibility and submission reuse the same model rules.
+  The model validates again when the viewer submits a choice.
+end note
 
 @enduml
