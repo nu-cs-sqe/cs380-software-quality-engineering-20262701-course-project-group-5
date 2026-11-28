@@ -1,17 +1,11 @@
 package catan.game_table.ui.controllers;
 
 import catan.game_table.domain.Color;
-import catan.game_table.domain.match_model.GameSession;
-import catan.game_table.domain.models.LobbyModel;
 import catan.game_table.domain.player.PlayerData;
-import catan.game_table.ui.Main;
-import catan.game_table.ui.ViewRouter;
-import catan.game_table.ui.views.LobbyView;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class LobbyControllerTests {
     @Test
@@ -19,24 +13,24 @@ public class LobbyControllerTests {
         LobbyView lobbyView = EasyMock.createMock(LobbyView.class);
         LobbyModel lobbyModel = EasyMock.createMock(LobbyModel.class);
         ViewRouter viewRouter = EasyMock.createMock(ViewRouter.class);
+        GameSetup gameSetup = EasyMock.createMock(GameSetup.class);
+        GameScreenFactory gameScreenFactory = EasyMock.createMock(GameScreenFactory.class);
 
         PlayerData playerOne = new PlayerData(Color.BLUE, "Player1");
         PlayerData playerTwo = new PlayerData(Color.RED, "Player2");
         List<PlayerData> playerList = Arrays.asList(playerOne, playerTwo);
-
         IllegalArgumentException error = new IllegalArgumentException("Not enough players.");
+        EasyMock.expect(gameSetup.createGame(playerList)).andThrow(error);
 
         lobbyView.showError(error.getMessage());
         EasyMock.expectLastCall();
 
-        EasyMock.replay(lobbyView);
+        EasyMock.replay(lobbyView, gameSetup);
 
-        LobbyController lobbyController = new LobbyController(lobbyView, lobbyModel, viewRouter);
+        LobbyController lobbyController = new LobbyController(lobbyView, lobbyModel, viewRouter, gameSetup, gameScreenFactory);
 
-        Consumer<GameSession> mainCallback = Main::showGame;
+        lobbyController.onStart(playerList);
 
-        lobbyController.onStart(playerList, mainCallback);
-
-        EasyMock.verify(lobbyView);
+        EasyMock.verify(lobbyView, gameSetup);
     }
 }
