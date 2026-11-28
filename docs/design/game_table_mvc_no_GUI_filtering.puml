@@ -1,0 +1,365 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+hide empty members
+
+package "JavaFX UI" {
+    class Main {
+        +start(stage : Stage) : void
+    }
+    class ViewRouter {
+        -{final} stage : Stage
+        +ViewRouter(stage : Stage)
+        +show(scene : Scene) : void
+    }
+    class GameScreenFactory {
+        +GameScreenFactory(showLobby : Runnable)
+        +create(session : GameSession) : Scene
+    }
+
+    class LobbyController {
+        +LobbyController(lobbyView : LobbyView, lobbyModel : LobbyModel, viewRouter : ViewRouter, gameSetup : GameSetup, gameScreenFactory : GameScreenFactory)
+        ~onStart(players : List<PlayerData>) : void
+        -onDataEntry() : void
+    }
+    class LobbyView {
+        +showError(message : String) : void
+    }
+
+    class GameTableController {
+        +open() : void
+        +close() : void
+        +update() : void
+        -onReady() : void
+        -onRoll() : void
+        -onSelectBuild(type : PieceType) : void
+        -onVertexSelected(vertex : Vertex) : void
+        -onEdgeSelected(edge : Edge) : void
+        -onHexSelected(hex : Hex) : void
+        -onOpenTrade() : void
+        -onCloseTrade() : void
+        -onBuyDevelopment() : void
+        -onPlayDevelopment(card : Development) : void
+        -onChooseYearOfPlenty(cards : List<ResourceStack>) : void
+        -onChooseMonopoly(type : Class<? extends ResourceStack>) : void
+        -onEndTurn() : void
+        -onPlayAgain() : void
+    }
+    class GameTableView
+
+    class TradeController {
+        +open() : void
+        +requiredViewer() : Color
+        +render(viewer : Color) : Node
+        -onOpenProposal() : void
+        -onPropose(receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        -onRequestResponse(offerId : int) : void
+        -onAccept(offerId : int) : void
+        -onDecline(offerId : int) : void
+        -onCounter(offerId : int, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        -onFinalize(offerId : int) : void
+        -onOpenBankTrade() : void
+        -onBankTrade(give : ResourceStack, receive : ResourceStack) : void
+        -onClose() : void
+    }
+    class TradeView
+
+    class RobberyController {
+        +render(viewer : Color) : Node
+        +onHexSelected(hex : Hex) : void
+        -onVictimSelected(victim : Color) : void
+    }
+    class RobberyView
+    class DiscardController {
+        +render(viewer : Color) : Node
+        -onDiscard(cards : List<ResourceStack>) : void
+    }
+    class DiscardView
+}
+
+package "Lobby model" {
+    class LobbyModel
+}
+
+package "Match model" {
+    class PlayerData <<record>> {
+        color : Color
+        name : String
+    }
+    interface Observer
+    abstract class Observed
+    class GameSetup {
+        +createGame(players : List<PlayerData>) : GameSession
+    }
+    class GameSession {
+        .. Match state and scoring ..
+        +getActivePlayer() : Color
+        +getGamePhase() : GamePhase
+        +getTurnPhase() : TurnPhase
+        +getBoard() : GameBoard
+        +getPlayers() : List<PlayerData>
+        +getResourceHand(player : Color) : List<ResourceStack>
+        +getDevelopmentHand(player : Color) : List<Development>
+        +getPublicScore(player : Color) : int
+        +getWinner() : Optional<Color>
+        .. Starting placements and regular turns ..
+        +getRequiredSetupPiece() : PieceType
+        +placeStartingPiece(actor : Color, location : Location) : void
+        +rollDice(actor : Color) : int
+        +build(actor : Color, type : PieceType, location : Location) : void
+        +endTurn(actor : Color) : void
+        .. Player and bank trades ..
+        +isTradingOpen() : boolean
+        +getTradeOffers(viewer : Color) : Map<Integer, TradeOffer>
+        +proposeTrade(actor : Color, receiver : Color, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        +acceptTrade(actor : Color, offerId : int) : void
+        +declineTrade(actor : Color, offerId : int) : void
+        +counterTrade(actor : Color, offerId : int, give : List<ResourceStack>, receive : List<ResourceStack>) : void
+        +finalizeTrade(actor : Color, offerId : int) : void
+        +tradeWithBank(actor : Color, give : ResourceStack, receive : ResourceStack) : void
+        .. Robber ..
+        -pendingDiscarders : Deque<Color>
+        +getNextDiscarder() : Optional<Color>
+        +getRequiredDiscardCount(player : Color) : int
+        +getEligibleRobberVictims() : Set<Color>
+        +discardForRobber(actor : Color, cards : List<ResourceStack>) : void
+        +moveRobber(actor : Color, destination : Hex) : void
+        +stealForRobber(actor : Color, victim : Color) : void
+        .. Development cards ..
+        +getPendingDevelopmentChoice() : Optional<DevelopmentType>
+        +buyDevelopment(actor : Color) : void
+        +playDevelopment(actor : Color, card : Development) : void
+        +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void
+        +chooseMonopoly(actor : Color, type : Class<? extends ResourceStack>) : void
+        +placeFreeRoad(actor : Color, edge : Edge) : void
+    }
+    enum PieceType {
+        CITY
+        HARBOR
+        ROAD
+        ROBBER
+        SETTLEMENT
+    }
+    class TurnState {
+        -turnNumber : int
+        -turnPhase : TurnPhase
+        -resumePhase : Optional<TurnPhase>
+        +TurnState(turnOrder : List<Color>)
+        +getActivePlayerColor() : Color
+        +getTurnOrder() : List<Color>
+        +getTurnNumber() : int
+        +getGamePhase() : GamePhase
+        +getTurnPhase() : TurnPhase
+        +isTradingOpen() : boolean
+        ~setSetupPlayer(player : Color) : void
+        ~beginRegularPlay() : void
+        ~beginAction() : void
+        ~beginInterrupt(phase : TurnPhase, resume : TurnPhase) : void
+        ~advanceTurn() : void
+        ~resumeTurn() : void
+        ~finishGame() : void
+    }
+    enum TurnPhase {
+        ROLL
+        ACTION
+        ROBBER
+        DEVELOPMENT_CHOICE
+    }
+    enum GamePhase {
+        SETUP
+        REGULAR
+        GAME_OVER
+    }
+    interface TradeTurnContext {
+        +getActivePlayerColor() : Color
+        +isTradingOpen() : boolean
+    }
+    interface GamePhaseHolder {
+        +getGamePhase() : GamePhase
+    }
+    class GameBoard {
+        +getRobberHex() : Hex
+        +moveRobber(destination : Hex) : void
+        +getAdjacentBuildingOwners(hex : Hex) : Set<Color>
+    }
+    abstract class Piece
+    class Robber
+    class Dice
+    class Bank
+    interface ResourceInventory
+    class BankResourceDistributor
+    class GamePlayer {
+        +GamePlayer(playerData : PlayerData, inventory : PlayerInventory)
+        +getBuildingVictoryPoints() : int
+        +getPlayedKnightCount() : int
+        +recordKnightPlayed() : void
+    }
+    class ScoreTracker
+    class PlayerInventory {
+        +getAvailablePiece(type : PieceType) : Optional<Piece>
+        +getResourceStacks() : List<ResourceStack>
+        +getResourceCardCount() : int
+        +getDevelopments() : List<Development>
+    }
+    class PlacementHelper
+    class PurchaseHelper {
+        +buyDevelopment(buyerColor : Color) : Development throws NotEnoughInventoryException
+    }
+    interface Buyable
+    class PlayerTradeHelper
+    class TradeOffer
+    class BankTradeHelper
+    class RobberyHelper {
+        +RobberyHelper(gameBoard : GameBoard, playerInventories : Map<Color, PlayerInventory>, randomSource : Random)
+        +getEligibleVictims() : Set<Color>
+        +move(actor : Color, destination : Hex) : void
+    }
+    class Robbery {
+        ~Robbery(initiator : Color, initiatorInventory : PlayerInventory, randomSource : Random)
+        ~setTarget(target : Color, targetInventory : PlayerInventory) : void
+        +getTarget() : Optional<Color>
+    }
+    class DiscardHelper {
+        +DiscardHelper(bankInventory : ResourceInventory, playerInventories : Map<Color, PlayerInventory>)
+        +discardResources(color : Color, cards : List<ResourceStack>) : void
+    }
+    enum DevelopmentType {
+        KNIGHT
+        MONOPOLY
+        ROAD_BUILDING
+        YEAR_OF_PLENTY
+        VICTORY_POINT
+    }
+    abstract class Development {
+        -{final} type : DevelopmentType
+        #Development(type : DevelopmentType)
+        +getType() : DevelopmentType
+    }
+    class Knight
+    class Monopoly
+    class RoadBuilder
+    class YearOfPlenty
+    class VictoryPointCard
+    class DevelopmentHelper {
+        -purchaseTurnByCard : Map<Development, Integer>
+        -lastPlayedTurn : OptionalInt
+        -pendingEffect : Optional<DevelopmentType>
+        -freeRoadsRemaining : int
+        +DevelopmentHelper(turnState : TurnState, bank : Bank, placementHelper : PlacementHelper, playerInventories : Map<Color, PlayerInventory>)
+        +recordPurchase(card : Development) : void
+        +play(actor : Color, card : Development) : void
+        +getPendingEffect() : Optional<DevelopmentType>
+        +chooseYearOfPlenty(actor : Color, cards : List<ResourceStack>) : void
+        +chooseMonopoly(actor : Color, type : Class<? extends ResourceStack>) : void
+        +placeFreeRoad(actor : Color, edge : Edge) : void
+        +countVictoryPointCards(player : Color) : int
+    }
+    class LongestRoadAward {
+        +updateHolder(board : GameBoard, players : List<GamePlayer>) : void
+    }
+    class LargestArmyAward {
+        +updateHolder(players : List<GamePlayer>) : void
+    }
+}
+
+Main ..> LobbyController : wires lobby
+Main ..> LobbyView : creates lobby scene
+Main ..> LobbyModel : creates lobby model
+Main ..> GameSetup : creates match factory
+Main ..> ViewRouter : wires stage navigation
+Main ..> GameScreenFactory : wires return to lobby
+LobbyController --> LobbyModel : reads lobby choices
+LobbyController --> LobbyView : binds Start and shows errors
+LobbyController --> GameSetup : submits players
+LobbyController --> GameScreenFactory : creates scene with the session
+LobbyController --> ViewRouter : shows the resulting scene
+GameScreenFactory ..> GameTableController : wires table
+GameScreenFactory ..> TradeController : wires trade overlay
+GameScreenFactory ..> RobberyController : wires robber overlay
+GameScreenFactory ..> DiscardController : wires discard overlay
+GameSetup ..> GameSession : creates and wires one match
+GameSetup ..> PlayerData : validates lobby choices
+
+GameTableController --> GameTableView : binds table actions and renders
+GameTableController --> GameSession : reads state and submits turn actions
+GameTableController ..|> Observer
+Observed --> Observer
+GameSession --|> Observed
+
+GameTableController --> TradeController : opens and renders trade workflow
+GameTableController --> RobberyController : renders prompt and routes hex clicks
+GameTableController --> DiscardController : renders discard prompt
+GameTableView ..> TradeView : hosts overlay content
+GameTableView ..> RobberyView : hosts overlay content
+GameTableView ..> DiscardView : hosts overlay content
+TradeController --> TradeView : binds trade commands and renders
+RobberyController --> RobberyView : binds robber commands and renders
+DiscardController --> DiscardView : binds discard commands and renders
+TradeController --> GameSession : queries and submits trades
+RobberyController --> GameSession : moves robber and submits victim choice
+DiscardController --> GameSession : reads required discard and submits cards
+TradeController ..> GameTableController : uses viewer and overlay callbacks
+RobberyController ..> GameTableController : uses confirmed viewer callback
+DiscardController ..> GameTableController : uses confirmed viewer callback
+
+GameSession --> TurnState
+GameSession --> GameBoard
+GameSession --> Dice
+GameSession --> Bank
+GameSession --> BankResourceDistributor
+GameSession --> GamePlayer
+GameSession --> PlacementHelper
+GameSession --> PurchaseHelper
+GameSession --> PlayerTradeHelper
+GameSession --> BankTradeHelper
+GameSession --> RobberyHelper
+GameSession --> DiscardHelper
+GameSession --> DevelopmentHelper
+GameSession --> LongestRoadAward
+GameSession --> LargestArmyAward
+PurchaseHelper --> PlacementHelper
+PurchaseHelper --> Bank
+PurchaseHelper --> PlayerInventory
+DevelopmentHelper --> PlacementHelper
+DevelopmentHelper --> TurnState
+DevelopmentHelper --> Bank
+DevelopmentHelper --> PlayerInventory
+DevelopmentHelper ..> Development
+Development ..|> Buyable
+Knight --|> Development
+Monopoly --|> Development
+RoadBuilder --|> Development
+YearOfPlenty --|> Development
+VictoryPointCard --|> Development
+GamePlayer --> PlayerData
+GamePlayer --> PlayerInventory
+GamePlayer --> ScoreTracker : building points
+Bank ..|> ResourceInventory
+PlayerInventory ..|> ResourceInventory
+Bank --|> Observed
+BankResourceDistributor --|> Observed
+BankResourceDistributor --> Bank
+BankResourceDistributor --> ResourceInventory : player inventories
+PlayerTradeHelper --|> Observed
+PlayerTradeHelper --> TradeOffer
+PlayerTradeHelper --> TradeTurnContext
+BankTradeHelper --> TradeTurnContext
+BankTradeHelper --> Bank
+BankTradeHelper --> GameBoard
+TurnState ..|> TradeTurnContext
+TurnState ..|> GamePhaseHolder
+PlacementHelper --> GamePhaseHolder
+RobberyHelper --|> Observed
+DiscardHelper --|> Observed
+RobberyHelper --> Robbery
+RobberyHelper --> GameBoard
+RobberyHelper --> PlayerInventory : reads hands
+Robbery --> PlayerInventory : initiator and target
+DiscardHelper --> PlayerInventory : reads hands
+DiscardHelper --> ResourceInventory : shared bank
+GameBoard --|> Observed
+GameBoard --> Robber : tracks its hex
+Robber --|> Piece
+GameSession ..> TradeOffer : creates offers and resolves UI IDs
+
+@enduml
